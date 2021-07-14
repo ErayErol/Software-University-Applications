@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using Models;
 
     public class MessiFinderDbContext : IdentityDbContext
     {
@@ -9,5 +10,11 @@
             : base(options)
         {
         }
+
+        public virtual DbSet<Game> Games { get; init; }
+        
+        public virtual DbSet<Player> Players { get; init; }
+        
+        public virtual DbSet<Playground> Playgrounds { get; init; }
     }
 }
