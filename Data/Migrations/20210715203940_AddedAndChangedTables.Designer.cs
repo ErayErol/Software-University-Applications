@@ -4,14 +4,16 @@ using MessiFinder.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MessiFinder.Data.Migrations
 {
     [DbContext(typeof(MessiFinderDbContext))]
-    partial class MessiFinderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210715203940_AddedAndChangedTables")]
+    partial class AddedAndChangedTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,6 +28,11 @@ namespace MessiFinder.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -39,6 +46,11 @@ namespace MessiFinder.Data.Migrations
 
                     b.Property<int>("PlaygroundId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Town")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<bool>("WithGoalkeeper")
                         .HasColumnType("bit");

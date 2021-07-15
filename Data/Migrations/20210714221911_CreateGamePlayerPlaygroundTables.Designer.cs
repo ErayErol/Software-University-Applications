@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MessiFinder.Data.Migrations
 {
     [DbContext(typeof(MessiFinderDbContext))]
-    [Migration("20210712184516_KeepItSimpleTables")]
-    partial class KeepItSimpleTables
+    [Migration("20210714221911_CreateGamePlayerPlaygroundTables")]
+    partial class CreateGamePlayerPlaygroundTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,34 +23,45 @@ namespace MessiFinder.Data.Migrations
 
             modelBuilder.Entity("MessiFinder.Data.Models.Game", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<int>("PlaygroundId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PlaygroundId1")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Town")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PlaygroundId1");
+                    b.HasIndex("PlaygroundId");
 
                     b.ToTable("Games");
                 });
 
             modelBuilder.Entity("MessiFinder.Data.Models.Player", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -64,8 +75,15 @@ namespace MessiFinder.Data.Migrations
 
             modelBuilder.Entity("MessiFinder.Data.Models.Playground", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -73,6 +91,11 @@ namespace MessiFinder.Data.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Town")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
@@ -286,7 +309,9 @@ namespace MessiFinder.Data.Migrations
                 {
                     b.HasOne("MessiFinder.Data.Models.Playground", "Playground")
                         .WithMany()
-                        .HasForeignKey("PlaygroundId1");
+                        .HasForeignKey("PlaygroundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Playground");
                 });

@@ -33,13 +33,48 @@
             {
                 new Playground
                 {
-                    Name = "Avenue", 
-                    Description = "In the summer this place is number 1 to play mini football."
+                    Name = "Avenue",
+                    Country = "Bulgaria",
+                    Town = "Haskovo",
+                    Description = "In the summer this place is number 1 to play mini football.",
+                    Address = "ул. Дунав 1 - в парка под супермаркет авеню",
+                    ImageUrl = "https://imgrabo.com/pics/businesses/b18e8a5e845a9317f4e301b3ffd58c14.jpeg"
                 },
                 new Playground
                 {
                     Name = "Kortove",
-                    Description = "In the winter this place is number 1 to play mini football, because the players play inside."
+                    Country = "Bulgaria",
+                    Town = "Haskovo",
+                    Description = "In the winter this place is number 1 to play mini football, because the players play inside.",
+                    Address = "След Хотел Европа - до тенис кортовете",
+                    ImageUrl = "https://tennishaskovo.com/uploads/galerii/baza_kenana/44.jpg"
+                },
+                new Playground
+                {
+                    Name = "Yildizlar",
+                    Country = "Turkey",
+                    Town = "Edirne",
+                    Description = "In the summer this place is number 1 to play mini football in Edirne.",
+                    Address = "Ilk Okullun yaninda.",
+                    ImageUrl = "https://hotel-evrika.com/wp-content/uploads/2019/12/VIK_6225-1024x683.jpg"
+                },
+                new Playground
+                {
+                    Name = "Optimum",
+                    Country = "Bulgaria",
+                    Town = "Plovdiv",
+                    Description = "In summer and winter this place is number 1 to play mini football in Plovdiv.",
+                    Address = "бул. „Асеновградско шосе",
+                    ImageUrl = "https://imgrabo.com/pics/guide/900x600/20150901162641_20158.jpg"
+                },
+                new Playground
+                {
+                    Name = "Avangard Fitness",
+                    Country = "Bulgaria",
+                    Town = "Plovdiv",
+                    Description = "You can workout in fitness and then play football with friends.",
+                    Address = "жк. Тракия 96-Д, 4023 кв. Капитан Бураго",
+                    ImageUrl = "https://fitness-avantgarde.com/sites/default/files/img_8189.jpg"
                 },
             });
 

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MessiFinder.Data.Migrations
 {
     [DbContext(typeof(MessiFinderDbContext))]
-    [Migration("20210710132958_GamePlayerPlaygroundTables")]
-    partial class GamePlayerPlaygroundTables
+    [Migration("20210715221300_DeleteCountryAndTownInGameTable")]
+    partial class DeleteCountryAndTownInGameTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,25 +21,12 @@ namespace MessiFinder.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("GamePlayer", b =>
-                {
-                    b.Property<string>("GamesId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PlayersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("GamesId", "PlayersId");
-
-                    b.HasIndex("PlayersId");
-
-                    b.ToTable("GamePlayer");
-                });
-
             modelBuilder.Entity("MessiFinder.Data.Models.Game", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -49,48 +36,33 @@ namespace MessiFinder.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("NumberOfPlayers")
+                        .HasColumnType("int");
 
                     b.Property<int>("PlaygroundId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PlaygroundId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("WithGoalKeeper")
+                    b.Property<bool>("WithGoalkeeper")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PlaygroundId1");
+                    b.HasIndex("PlaygroundId");
 
                     b.ToTable("Games");
                 });
 
             modelBuilder.Entity("MessiFinder.Data.Models.Player", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -99,8 +71,10 @@ namespace MessiFinder.Data.Migrations
 
             modelBuilder.Entity("MessiFinder.Data.Models.Playground", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -117,20 +91,14 @@ namespace MessiFinder.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<bool>("IsFree")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsOutside")
-                        .HasColumnType("bit");
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("PlayersCapacity")
-                        .HasMaxLength(16)
-                        .HasColumnType("int");
 
                     b.Property<string>("Town")
                         .IsRequired()
@@ -342,26 +310,13 @@ namespace MessiFinder.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("GamePlayer", b =>
-                {
-                    b.HasOne("MessiFinder.Data.Models.Game", null)
-                        .WithMany()
-                        .HasForeignKey("GamesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MessiFinder.Data.Models.Player", null)
-                        .WithMany()
-                        .HasForeignKey("PlayersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("MessiFinder.Data.Models.Game", b =>
                 {
                     b.HasOne("MessiFinder.Data.Models.Playground", "Playground")
-                        .WithMany("Games")
-                        .HasForeignKey("PlaygroundId1");
+                        .WithMany()
+                        .HasForeignKey("PlaygroundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Playground");
                 });
@@ -415,11 +370,6 @@ namespace MessiFinder.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("MessiFinder.Data.Models.Playground", b =>
-                {
-                    b.Navigation("Games");
                 });
 #pragma warning restore 612, 618
         }

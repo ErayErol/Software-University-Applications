@@ -1,0 +1,40 @@
+﻿@model CountryListingFormModel
+
+@{
+    ViewData["Title"] = "Create Game";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="offset-1 offset-sm-1 offset-md-2 offset-lg-3 offset-xl-3 col-10 col-sm-9 col-md-8 col-lg-6 col-xl-5">
+            <h3 class="mt-3 mb-3">First step to Create Game</h3>
+
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="Country">Select Country:</label>
+                    <select asp-for="Country" class="form-control">
+                        @foreach (var country in Model.Countries)
+                        {
+                            @if (country == "Bulgaria")
+                            {
+                                <option selected="selected" value="@country"> @country </option>
+                            }
+                            else
+                            {
+                                <option value="@country"> @country </option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Town">Town</label>
+                    <input asp-for="Town" type="text" class="form-control alphaonly">
+                    <span asp-validation-for="Town" class="small text-danger"></span>
+                </div>
+
+                <input class="btn btn-success float-right" type="submit" value="View Playgrounds" />
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+﻿@model IEnumerable<GameAllViewModel>
+
+<div class="row">
+    @if (Model.Any())
+    {
+        @foreach (var game in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <img class="card-img-top" src="@game.Playground.ImageUrl" alt="@game.Playground.Name @game.Playground.Country - @game.Playground.Town">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-center">@game.Playground.Name - @game.Playground.Country @game.Playground.Town</h5>
+                        <h3 class="card-title text-center">@game.Date.ToString("g")</h3>
+                        @*<a asp-controller="Cars" asp-action="Details" asp-route-id="@playground.Id" class="btn btn-primary">View More</a>*@
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <h5 class="mt-3 mb-3 text-danger">There are no games.</h5>
+
+        <div class="button-holder">
+            <a href="/Game/GameCreate" class="btn btn-success">Create Game</a>
+        </div>
+    }
+
+</div>

@@ -1,5 +1,7 @@
 namespace MessiFinder
 {
+    using Infrastructure;
+    using MessiFinder.Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -7,7 +9,6 @@ namespace MessiFinder
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using MessiFinder.Data;
 
     public class Startup
     {
@@ -41,6 +42,8 @@ namespace MessiFinder
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDatabase();
+
             if (env.IsDevelopment())
             {
                 app
@@ -58,7 +61,7 @@ namespace MessiFinder
                 .UseStaticFiles()
                 .UseRouting()
                 .UseAuthentication()
-                ?.UseAuthorization()
+                .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapDefaultControllerRoute();
