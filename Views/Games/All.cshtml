@@ -1,0 +1,111 @@
+﻿@model GameAllQueryModel
+
+<form method="get">
+    <div class="row p-3">
+
+        <div class="form-group mr-5">
+            <input asp-for="SearchTerm" type="text" placeholder="Search by name..." class="form-control">
+        </div>
+
+        <div class="form-group mr-5">
+            <div class="form-group">
+                <select asp-for="Town" class="form-control">
+                    <option value="" disabled selected>Search by town</option>
+                    @foreach (var town in Model.Towns)
+                    {
+                        <option value="@town">@town</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group mr-5">
+            <input type="submit" class="btn btn-primary" value="Search" />
+        </div>
+
+        <div class="row mr-3">
+            <div class="form-group">
+                <div class="form-group">
+                    <select asp-for="Sorting" class="form-control">
+                        <option value="0">Date Created</option>
+                        <option value="1">Town</option>
+                        <option value="2">Playground Name</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Sort" />
+        </div>
+
+    </div>
+</form>
+
+@{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    var maxPage = Math.Ceiling((double)Model.TotalGames / GameAllQueryModel.GamesPerPage);
+    maxPage = maxPage == 0 ? 1 : maxPage;
+}
+
+<div class="row mb-5">
+    <div class="col-md-6">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="Games"
+           asp-action="All"
+           asp-route-currentPage="@previousPage"
+           asp-route-town="@Model.Town"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@((int)Model.Sorting)"><<</a>
+    </div>
+    <div class="col-md-6">
+        <a class="btn btn-primary float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)"
+           asp-controller="Games"
+           asp-action="All"
+           asp-route-currentPage="@(Model.CurrentPage + 1)"
+           asp-route-town="@Model.Town"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@((int)Model.Sorting)">>></a>
+    </div>
+</div>
+
+<div class="row">
+    @if (Model.Games.Any())
+    {
+        @foreach (var game in Model.Games)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img class="card-img-top" src="@game.Playground.ImageUrl" alt="@game.Playground.Name @game.Playground.Country - @game.Playground.Town">
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <h4 class="card-title text-primary">@game.Playground.Name</h4>
+                        </div>
+                        <h6 class="card-title">Place : @game.Playground.Country, @game.Playground.Town</h6>
+                        <h6 class="card-title">Date : @game.Date.ToString("g")</h6>
+                        <div class="text-center mt-4">
+                            <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn btn-primary">View More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="https://thumbs.dreamstime.com/b/comic-boom-oops-icon-simple-black-style-illustration-web-122999699.jpg" alt="Just oops image">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">There are no games</h5>
+                    <a href="/Games/CountryListing" class="btn btn-success">Create Game</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

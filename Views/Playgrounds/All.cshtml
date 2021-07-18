@@ -1,0 +1,16 @@
+﻿@model IEnumerable<PlaygroundAllViewModel>
+
+<div class="row">
+    @foreach (var playground in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <img class="card-img-top" src="@playground.ImageUrl" alt="@playground.Name @playground.Country - @playground.Town">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">@playground.Name - @playground.Country @playground.Town</h5>
+                    @*<a asp-controller="Cars" asp-action="Details" asp-route-id="@playground.Id" class="btn btn-primary">View More</a>*@
+                </div>
+            </div>
+        </div>
+    }
+</div>
