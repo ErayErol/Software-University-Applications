@@ -1,12 +1,12 @@
 ﻿namespace MessiFinder.Controllers
 {
     using Data;
+    using Data.Models;
     using Microsoft.AspNetCore.Mvc;
     using Models.Games;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
-    using Data.Models;
+    using Utilities;
 
     public class GamesController : Controller
     {
@@ -18,7 +18,7 @@
         public IActionResult CountryListing()
             => View(new CountryListingFormModel()
             {
-                Countries = GetCountries(),
+                Countries = Countries.GetAll(),
             });
 
         [HttpPost]
@@ -26,8 +26,8 @@
         {
             if (ModelState.IsValid == false)
             {
-                gameForm.Countries = GetCountries();
-                return (IActionResult)View(gameForm);
+                gameForm.Countries = Countries.GetAll();
+                return View(gameForm);
             }
 
             return RedirectToAction("PlaygroundListing", "Games", gameForm);
@@ -51,10 +51,10 @@
                 this.ModelState.AddModelError(nameof(gamePlaygroundModel.PlaygroundId), "Playground does not exist!");
             }
 
-            return RedirectToAction("GameCreate", "Games", gamePlaygroundModel);
+            return RedirectToAction("Create", "Games", gamePlaygroundModel);
         }
 
-        public IActionResult GameCreate(PlaygroundListingViewModel gameForm)
+        public IActionResult Create(PlaygroundListingViewModel gameForm)
         {
             return View(new GameCreateFormModel()
             {
@@ -63,7 +63,7 @@
         }
 
         [HttpPost]
-        public IActionResult GameCreate(GameCreateFormModel gameCreateModel)
+        public IActionResult Create(GameCreateFormModel gameCreateModel)
         {
             if (ModelState.IsValid == false)
             {
@@ -82,21 +82,63 @@
             this.data.Games.Add(game);
             this.data.SaveChanges();
 
-            return RedirectToAction("GameAll", "Games");
-
+            return RedirectToAction(nameof(All));
         }
 
-        public IActionResult GameAll()
+        public IActionResult All(GameAllQueryModel query)
         {
-            var playgrounds = this.data
-                .Games
-                .Select(p => new GameAllViewModel()
+            var gamesQuery = this.data.Games.AsQueryable();
+
+            if (string.IsNullOrWhiteSpace(query.Town) == false)
+            {
+                gamesQuery = gamesQuery.Where(g => g.Playground.Town == query.Town);
+            }
+
+            if (string.IsNullOrWhiteSpace(query.SearchTerm) == false)
+            {
+                gamesQuery = gamesQuery
+                    .Where(g => g.Playground
+                        .Name
+                        .ToLower()
+                        .Contains(query.SearchTerm.ToLower()));
+            }
+
+            gamesQuery = query.Sorting switch
+            {
+                GameSorting.Town => gamesQuery.OrderBy(g => g.Playground.Town),
+                GameSorting.PlaygroundName => gamesQuery.OrderBy(g => g.Playground.Name),
+                GameSorting.DateCreated or _ => gamesQuery.OrderBy(g => g.Id)
+            };
+
+            var totalGames = gamesQuery.Count();
+
+            var games = gamesQuery
+                .Skip((query.CurrentPage - 1) * GameAllQueryModel.GamesPerPage)
+                .Take(GameAllQueryModel.GamesPerPage)
+                .Select(p => new GameListingViewModel()
                 {
+                    Id = p.Id,
                     Playground = p.Playground,
                     Date = p.Date,
-                });
+                }).AsEnumerable();
 
-            return View(playgrounds);
+            var towns = this.data
+                .Playgrounds
+                .Select(p => p.Town)
+                .Distinct()
+                .OrderBy(t => t)
+                .AsEnumerable();
+
+            query.TotalGames = totalGames;
+            query.Games = games;
+            query.Towns = towns;
+
+            return View(query);
+        }
+
+        public IActionResult Details(int id)
+        {
+            return View();
         }
 
         private IEnumerable<PlaygroundListingViewModel> GetPlaygroundViewModels(string town, string country)
@@ -109,26 +151,6 @@
                     PlaygroundId = x.Id,
                     Name = x.Name,
                 }).ToList();
-        }
-
-        public static IEnumerable<string> GetCountries()
-        {
-            var cultureList = new List<string>();
-
-            CultureInfo[] getCultureInfo = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
-
-            foreach (var getCulture in getCultureInfo)
-            {
-                RegionInfo getRegionInfo = new RegionInfo(getCulture.LCID);
-
-                if (cultureList.Contains(getRegionInfo.EnglishName) == false)
-                {
-                    cultureList.Add(getRegionInfo.EnglishName);
-                }
-            }
-
-            cultureList.Sort();
-            return cultureList;
         }
     }
 }

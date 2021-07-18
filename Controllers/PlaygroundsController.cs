@@ -13,11 +13,11 @@
         public PlaygroundsController(MessiFinderDbContext data)
             => this.data = data;
 
-        public IActionResult PlaygroundCreate()
+        public IActionResult Create()
             => View();
 
         [HttpPost]
-        public IActionResult PlaygroundCreate(PlaygroundCreateFormModel playgroundModel)
+        public IActionResult Create(PlaygroundCreateFormModel playgroundModel)
         {
             if (ModelState.IsValid == false)
             {
@@ -47,10 +47,10 @@
             this.data.Playgrounds.Add(playground);
             this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(All));
         }
 
-        public IActionResult PlaygroundAll()
+        public IActionResult All()
         {
             var playgrounds = this.data
                 .Playgrounds
