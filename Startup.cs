@@ -1,5 +1,6 @@
 namespace MessiFinder
 {
+    using CloudinaryDotNet;
     using Infrastructure;
     using MessiFinder.Data;
     using Microsoft.AspNetCore.Builder;
@@ -10,18 +11,22 @@ namespace MessiFinder
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
+    using static Data.DataConstants.Cloudinary;
+
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-            => Configuration = configuration;
+        private readonly IConfiguration configuration;
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services
                 .AddDbContext<MessiFinderDbContext>(options => options
-                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    .UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
             services
                 .AddDatabaseDeveloperPageExceptionFilter();
@@ -35,6 +40,13 @@ namespace MessiFinder
                     options.Password.RequireNonAlphanumeric = false;
                 })
                 .AddEntityFrameworkStores<MessiFinderDbContext>();
+
+            // Cloudinary Setup
+            //Cloudinary cloudinary = new Cloudinary(new Account(
+            //    CloudName, // this.configuration["Cloudinary:CloudName"],
+            //    ApiKey, //this.configuration["Cloudinary:ApiKey"],
+            //    ApiSecret)); //this.configuration["Cloudinary:ApiSecret"]));
+            //services.AddSingleton(cloudinary);
 
             services
                 .AddControllersWithViews();
