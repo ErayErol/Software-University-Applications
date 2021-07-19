@@ -2,9 +2,12 @@
 {
     using Data;
     using Data.Models;
+    using Infrastructure;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Models.Playgrounds;
     using System.Linq;
+    using Utilities;
 
     public class PlaygroundsController : Controller
     {
@@ -13,14 +16,38 @@
         public PlaygroundsController(MessiFinderDbContext data)
             => this.data = data;
 
+        [Authorize]
         public IActionResult Create()
-            => View();
+        {
+            if (this.UserIsAdmin() == false)
+            {
+                return View();
+            }
 
+            return View(new PlaygroundCreateFormModel()
+            {
+                Countries = Countries.GetAll(),
+            });
+        }
+
+        [Authorize]
         [HttpPost]
         public IActionResult Create(PlaygroundCreateFormModel playgroundModel)
         {
+            var adminId = this.data
+                .Admins
+                .Where(d => d.UserId == this.User.GetId())
+                .Select(d => d.Id)
+                .FirstOrDefault();
+
+            if (adminId == 0)
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
             if (ModelState.IsValid == false)
             {
+                playgroundModel.Countries = Countries.GetAll();
                 return View(playgroundModel);
             }
 
@@ -41,7 +68,13 @@
                 Town = playgroundModel.Town,
                 Address = playgroundModel.Address,
                 ImageUrl = playgroundModel.ImageUrl,
+                PhoneNumber = playgroundModel.PhoneNumber,
+                Parking = playgroundModel.Parking,
+                Cafe = playgroundModel.Cafe,
+                Shower = playgroundModel.Shower,
+                ChangingRoom = playgroundModel.ChangingRoom,
                 Description = playgroundModel.Description,
+                AdminId = adminId
             };
 
             this.data.Playgrounds.Add(playground);
@@ -66,5 +99,10 @@
 
             return View(playgrounds);
         }
+
+        private bool UserIsAdmin()
+            => this.data
+                .Admins
+                .Any(d => d.UserId == this.User.GetId());
     }
 }

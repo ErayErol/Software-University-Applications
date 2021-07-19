@@ -1,8 +1,9 @@
 ﻿@model GameCreateFormModel
 
 @{
-    ViewData["Title"] = "Create Game";
+    ViewBag.Title = "Create Game";
 }
+
 
 <div class="container">
     <div class="row">
@@ -19,12 +20,18 @@
 
                 <div class="form-group">
                     <label asp-for="NumberOfPlayers">Number of Players</label>
-                    <input asp-for="NumberOfPlayers" min="8" max="16" type="number" class="form-control">
+                    <input asp-for="NumberOfPlayers" min="8" max="22" type="number" class="form-control">
                     <span asp-validation-for="NumberOfPlayers" class="small text-danger"></span>
                 </div>
 
                 <input asp-for="WithGoalkeeper" type="checkbox">
                 <label asp-for="WithGoalkeeper">With Goalkeeper</label>
+
+                <input asp-for="Ball" type="checkbox">
+                <label asp-for="Ball">Ball</label>
+
+                <input asp-for="Jerseys" type="checkbox">
+                <label asp-for="Jerseys">Jerseys</label>
 
                 <div class="mb-3">
                     <label asp-for="Description">Description</label>
@@ -32,7 +39,7 @@
                     <span asp-validation-for="Description" class="small text-danger"></span>
                 </div>
 
-                <input class="btn btn-success float-right" type="submit" value="Create"/>
+                <input class="btn btn-success float-right" type="submit" value="Create" />
             </form>
         </div>
     </div>

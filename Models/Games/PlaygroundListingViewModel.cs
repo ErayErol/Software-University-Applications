@@ -2,8 +2,9 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using Data.Models;
-    using static Data.DataConstants;
+
+    using static Data.DataConstants.ErrorMessages;
+    using static Data.DataConstants.Playground;
 
     public class PlaygroundListingViewModel
     {
@@ -12,7 +13,7 @@
         public string Country { get; set; }
 
         [Required]
-        [StringLength(DefaultMaxNameLength, MinimumLength = DefaultMinNameLength, ErrorMessage = ErrorRange)]
+        [StringLength(TownMaxLength, MinimumLength = TownMinLength, ErrorMessage = Range)]
         public string Town { get; set; }
 
         [Display(Name = "Playground")]

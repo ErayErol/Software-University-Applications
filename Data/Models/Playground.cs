@@ -1,8 +1,9 @@
 ﻿namespace MessiFinder.Data.Models
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using static DataConstants;
+    using static DataConstants.Playground;
 
     public class Playground
     {
@@ -10,28 +11,48 @@
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(DefaultMaxNameLength)]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
         [Required]
-        [MaxLength(DefaultMaxNameLength)]
+        [MaxLength(CountryMaxLength)]
         public string Country { get; set; }
 
         [Required]
-        [MaxLength(DefaultMaxNameLength)]
+        [MaxLength(TownMaxLength)]
         public string Town { get; set; }
 
         [Required]
-        [MaxLength(DefaultMaxDescription)]
+        [MaxLength(AddressMaxLength)]
         public string Address { get; set; }
 
         [Required]
         public string ImageUrl { get; set; }
 
         [Required]
-        [MaxLength(DefaultMaxDescription)]
+        [MaxLength(PhoneNumberMaxLength)]
+        public string PhoneNumber { get; set; }
+
+        public bool Parking { get; set; }
+
+        public bool Shower { get; set; }
+
+        public bool ChangingRoom { get; set; }
+
+        public bool Cafe { get; set; }
+
+        [Required]
+        [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
-        // you can add Stars(Rate), For reservations, Parking, Shower, Ball, Shirts, Changing room, Cafe
+        public int GameId { get; init; }
+
+        public virtual IEnumerable<Game> Games { get; init; } = new HashSet<Game>();
+
+        public int AdminId { get; set; }
+
+        public virtual Admin Admin { get; init; }
+
+        // you can add Stars(Rate) only user that played here,
     }
 }

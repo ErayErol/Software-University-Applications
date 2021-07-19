@@ -6,6 +6,8 @@
     using Models.Games;
     using System.Collections.Generic;
     using System.Linq;
+    using Infrastructure;
+    using Microsoft.AspNetCore.Authorization;
     using Utilities;
 
     public class GamesController : Controller
@@ -15,12 +17,21 @@
         public GamesController(MessiFinderDbContext data)
             => this.data = data;
 
+        [Authorize]
         public IActionResult CountryListing()
-            => View(new CountryListingFormModel()
+        {
+            if (this.UserIsAdmin() == false)
+            {
+                return View();
+            }
+
+            return View(new CountryListingFormModel
             {
                 Countries = Countries.GetAll(),
             });
+        }
 
+        [Authorize]
         [HttpPost]
         public IActionResult CountryListing(CountryListingFormModel gameForm)
         {
@@ -33,8 +44,13 @@
             return RedirectToAction("PlaygroundListing", "Games", gameForm);
         }
 
+        [Authorize]
         public IActionResult PlaygroundListing(CountryListingFormModel gameForm)
         {
+            gameForm.Town =
+                gameForm.Town[0].ToString().ToUpper()
+                + gameForm.Town.Substring(1, gameForm.Town.Length - 1).ToLower();
+
             return View(new PlaygroundListingViewModel()
             {
                 Playgrounds = this.GetPlaygroundViewModels(gameForm.Town, gameForm.Country),
@@ -43,6 +59,7 @@
             });
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult PlaygroundListing(PlaygroundListingViewModel gamePlaygroundModel)
         {
@@ -56,15 +73,32 @@
 
         public IActionResult Create(PlaygroundListingViewModel gameForm)
         {
+            if (this.UserIsAdmin() == false)
+            {
+                return View();
+            }
+
             return View(new GameCreateFormModel()
             {
                 PlaygroundId = gameForm.PlaygroundId,
             });
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(GameCreateFormModel gameCreateModel)
         {
+            var adminId = this.data
+                .Admins
+                .Where(d => d.UserId == this.User.GetId())
+                .Select(d => d.Id)
+                .FirstOrDefault();
+
+            if (adminId == 0)
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
             if (ModelState.IsValid == false)
             {
                 return View(gameCreateModel);
@@ -77,6 +111,9 @@
                 Date = gameCreateModel.Date.Value,
                 NumberOfPlayers = gameCreateModel.NumberOfPlayers.Value,
                 WithGoalkeeper = gameCreateModel.WithGoalkeeper,
+                Ball = gameCreateModel.Ball,
+                Jerseys = gameCreateModel.Jerseys,
+                AdminId = adminId,
             };
 
             this.data.Games.Add(game);
@@ -136,6 +173,7 @@
             return View(query);
         }
 
+        [Authorize]
         public IActionResult Details(int id)
         {
             return View();
@@ -152,5 +190,10 @@
                     Name = x.Name,
                 }).ToList();
         }
+
+        private bool UserIsAdmin()
+            => this.data
+                .Admins
+                .Any(d => d.UserId == this.User.GetId());
     }
 }

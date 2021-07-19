@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    using static DataConstants;
+    using static DataConstants.Game;
 
     public class Game
     {
@@ -15,15 +15,23 @@
 
         public DateTime Date { get; set; }
 
-        [Range(PlaygroundMinNumberOfPlayers, PlaygroundMaxNumberOfPlayers)]
+        [Range(NumberOfPlayersMin, NumberOfPlayersMax)]
         public int NumberOfPlayers { get; set; }
 
         public bool WithGoalkeeper { get; set; }
+        
+        public bool Ball { get; set; }
+
+        public bool Jerseys { get; set; }
 
         [Required]
-        [MaxLength(DefaultMaxDescription)]
+        [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
-        // you can add Stars(Rate after the match), Number(of Owner), Ball, Shirts(which team what color to pick)
+        public int AdminId { get; set; }
+
+        public virtual Admin Admin { get; set; }
+
+        // you can add Stars(Rate) one hour after the match
     }
 }

@@ -10,7 +10,7 @@
     public class HomeController : Controller
     {
         private readonly MessiFinderDbContext data;
-
+        
         public HomeController(MessiFinderDbContext data)
             => this.data = data;
 
@@ -36,7 +36,7 @@
                 Games = games,
                 TotalGames = totalGames,
                 TotalPlaygrounds = totalPlaygrounds,
-                TotalUsers = 0,
+                TotalUsers = this.data.Users.Count(),
             });
         }
 
