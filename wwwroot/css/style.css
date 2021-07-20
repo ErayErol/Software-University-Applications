@@ -362,7 +362,7 @@ summary {
 }
 
 @font-face {
-    font-family: 'LatoWeb';
+    font-family: 'Montserrat';
     src: url("/font/Lato/fonts/Lato-Regular.ttf") format("truetype");
 }
 
@@ -412,6 +412,7 @@ h1,
     font-weight: bold;
     line-height: 44px;
     font-size: 36px;
+    color: #16ff00;
 }
 
 h2,
@@ -420,6 +421,7 @@ h2,
     font-weight: bold;
     font-style: normal;
     line-height: 30px;
+    color: #16ff00;
 }
 
 h3,
@@ -445,7 +447,6 @@ h5,
     font-style: normal;
     font-weight: bold;
     line-height: 22px;
-    font-family: "LatoWeb";
 }
 
 h6,
@@ -454,7 +455,6 @@ h6,
     font-weight: 500;
     font-size: 14px;
     line-height: 16px;
-    font-family: "LatoWeb";
 }
 
 select {
@@ -1193,7 +1193,7 @@ input {
     border: 1px solid rgba(0,0,0,.125);
     border-radius: .25rem;
     color: #fff;
-    font-family: "Monse"
+    font-family: "Montserrat";
 }
 
 @media (max-width: 969px) {
@@ -1232,7 +1232,7 @@ input {
 
 .card-title {
     text-align: center;
-    font-family: 'Montserrat';
+    font-family: monospace;
 }
 
 .card__label {
@@ -1884,7 +1884,7 @@ label {
 
 .c-blog-card__title {
     color: #16ff00;
-    font-family: 'Lato';
+    font-family: 'Montserrat';
     font-size: 18px;
     line-height: 22px;
 }
@@ -1918,7 +1918,7 @@ label {
 }
 
 .c-award__name {
-    font-family: 'Lato';
+    font-family: 'Montserrat';
     font-weight: bold;
     font-style: normal;
     font-size: 18px;
@@ -1928,7 +1928,7 @@ label {
 }
 
 .c-award__issuer {
-    font-family: 'Lato';
+    font-family: 'Montserrat';
     font-size: 14px;
     line-height: 17px;
     font-weight: 500;
@@ -3518,8 +3518,32 @@ label {
 .c-contact-us-main__buses h3 {
     color: #41BEAD;
 }
+
 /*# sourceMappingURL=styles.css.map */
 
 .nav-link {
-    color: #fff!important;
+    color: #fff !important;
+}
+
+p {
+    color: #16ff00;
+}
+
+body > div > main > div > div > div.col-md-9 > h4,
+body > div > main > div > div > div.col-md-9 > h5,
+body > div > main > div > h4,
+body > div > main > div > div.col-md-6.col-md-offset-2 > section > h4,
+#account > h4,
+#registerForm > h4 {
+    color: #16ff00;
+}
+
+body > div {
+    margin-bottom: 20px !important;
+}
+
+input.btn {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin-top: 6px;
 }
