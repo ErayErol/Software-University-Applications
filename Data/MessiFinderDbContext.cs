@@ -30,13 +30,6 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Entity<Game>()
-                .HasOne(g => g.Playground)
-                .WithMany(p => p.Games)
-                .HasForeignKey(g => g.PlaygroundId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder
                 .Entity<Playground>()
                 .HasOne(p => p.Admin)
                 .WithMany(a => a.Playgrounds)

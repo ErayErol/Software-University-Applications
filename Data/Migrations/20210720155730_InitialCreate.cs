@@ -58,7 +58,6 @@ namespace MessiFinder.Data.Migrations
                     ChangingRoom = table.Column<bool>(type: "bit", nullable: false),
                     Cafe = table.Column<bool>(type: "bit", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    GameId = table.Column<int>(type: "int", nullable: false),
                     AdminId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

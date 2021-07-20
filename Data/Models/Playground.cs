@@ -45,10 +45,6 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
-        public int GameId { get; init; }
-
-        public virtual IEnumerable<Game> Games { get; init; } = new HashSet<Game>();
-
         public int AdminId { get; set; }
 
         public virtual Admin Admin { get; init; }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MessiFinder.Data.Migrations
 {
     [DbContext(typeof(MessiFinderDbContext))]
-    [Migration("20210719155632_InitialCreate")]
+    [Migration("20210720155730_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,9 +139,6 @@ namespace MessiFinder.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("GameId")
-                        .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
