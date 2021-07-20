@@ -10,12 +10,13 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Messi Finder</a>
+                <a style="color: #16ff00;" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Messi Finder</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,18 +24,18 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Games" asp-action="All">Games</a>
+                            <a class="nav-link" asp-area="" asp-controller="Games" asp-action="All">Games</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Playgrounds" asp-action="All">Playgrounds</a>
+                            <a class="nav-link" asp-area="" asp-controller="Playgrounds" asp-action="All">Playgrounds</a>
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Games" asp-action="CountryListing">Create Game</a>
+                                <a class="nav-link" asp-area="" asp-controller="Games" asp-action="CountryListing">Create Game</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Playgrounds" asp-action="Create">Create Playground</a>
+                                <a class="nav-link" asp-area="" asp-controller="Playgrounds" asp-action="Create">Create Playground</a>
                             </li>
                         }
                     </ul>

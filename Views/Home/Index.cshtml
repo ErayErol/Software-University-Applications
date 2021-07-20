@@ -4,25 +4,21 @@
     ViewBag.Title = "Welcome to Messi Finder";
 }
 
-@if (Model.Games.Any() == false)
-{
-    <div class="jumbotron">
-        <div class="row">
-            <h3 class="col-md-4 text-center">
-                @Model.TotalGames Games
-            </h3>
-            <h3 class="col-md-4 text-center">
-                @Model.TotalPlaygrounds Playgrounds
-            </h3>
-            <h3 class="col-md-4 text-center">
-                @Model.TotalUsers Users
-            </h3>
+<div class="row mt-4 ml-0">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <h5 class="card-title text-center">@Model.TotalGames Games</h5>
+                <h5 class="card-title text-center">@Model.TotalPlaygrounds Playgrounds</h5>
+                <h5 class="card-title text-center">@Model.TotalUsers Users</h5>
+            </div>
         </div>
     </div>
-}
-else
+</div>
+
+@if (Model.Games.Any())
 {
-    <div class="mb-5"></div>
+    <div class="mb-4"></div>
 
     <div id="carouselExampleControls" class="carousel slide col-md-9" data-ride="carousel">
         <div class="carousel-inner">
@@ -34,7 +30,7 @@ else
                     <img class="d-block w-100" src="@game.Playground.ImageUrl" alt="First slide">
                     <div class="carousel-caption d-none d-md-block">
                         <div class="text-center">
-                            <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn btn-primary">@game.Playground.Name - @game.Date.ToString("D") @game.Date.ToString("t")</a>
+                            <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn">@game.Playground.Name - @game.Date.ToString("D") @game.Date.ToString("t")</a>
                         </div>
                     </div>
                 </div>
@@ -49,21 +45,5 @@ else
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
-
-        <div class="mb-5"></div>
-
-        <div class="jumbotron">
-            <div class="row">
-                <h3 class="col-md-4 text-center">
-                    @Model.TotalGames Games
-                </h3>
-                <h3 class="col-md-4 text-center">
-                    @Model.TotalPlaygrounds Playgrounds
-                </h3>
-                <h3 class="col-md-4 text-center">
-                    @Model.TotalUsers Users
-                </h3>
-            </div>
-        </div>
     </div>
 }

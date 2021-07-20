@@ -7,7 +7,7 @@
             <input asp-for="SearchTerm" type="text" placeholder="Search by name..." class="form-control">
         </div>
 
-        <div class="form-group mr-5">
+        <div class="form-group">
             <div class="form-group">
                 <select asp-for="Town" class="form-control">
                     <option value="" disabled selected>Search by town</option>
@@ -20,10 +20,10 @@
         </div>
 
         <div class="form-group mr-5">
-            <input type="submit" class="btn btn-primary" value="Search" />
+            <input type="submit" class="btn" value="Search" />
         </div>
 
-        <div class="row mr-3">
+        <div class="row ml-0">
             <div class="form-group">
                 <div class="form-group">
                     <select asp-for="Sorting" class="form-control">
@@ -36,7 +36,7 @@
         </div>
 
         <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Sort" />
+            <input type="submit" class="btn" value="Sort" />
         </div>
 
     </div>
@@ -50,12 +50,13 @@
     }
 
     var maxPage = Math.Ceiling((double)Model.TotalGames / GameAllQueryModel.GamesPerPage);
-    maxPage = maxPage == 0 ? 1 : maxPage;
+    //maxPage = maxPage == 0 ? 1 : maxPage;
+    var shouldButtonBeDisabled = Model.CurrentPage == maxPage || Model.Games.Any() == false;
 }
 
-<div class="row mb-5">
+<div class="row mb-5" style="flex-wrap: nowrap">
     <div class="col-md-6">
-        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+        <a class="btn @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
            asp-controller="Games"
            asp-action="All"
            asp-route-currentPage="@previousPage"
@@ -64,7 +65,7 @@
            asp-route-sorting="@((int)Model.Sorting)"><<</a>
     </div>
     <div class="col-md-6">
-        <a class="btn btn-primary float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)"
+        <a class="btn float-right @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
            asp-controller="Games"
            asp-action="All"
            asp-route-currentPage="@(Model.CurrentPage + 1)"
@@ -84,12 +85,12 @@
                     <img class="card-img-top" src="@game.Playground.ImageUrl" alt="@game.Playground.Name @game.Playground.Country - @game.Playground.Town">
                     <div class="card-body">
                         <div class="text-center mb-4">
-                            <h4 class="card-title text-primary">@game.Playground.Name</h4>
+                            <h4 class="card-title">@game.Playground.Name</h4>
                         </div>
                         <h6 class="card-title">Place : @game.Playground.Country, @game.Playground.Town</h6>
                         <h6 class="card-title">Date : @game.Date.ToString("g")</h6>
                         <div class="text-center mt-4">
-                            <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn btn-primary">View More</a>
+                            <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn">View More</a>
                         </div>
                     </div>
                 </div>
@@ -103,7 +104,7 @@
                 <img class="card-img-top" src="https://thumbs.dreamstime.com/b/comic-boom-oops-icon-simple-black-style-illustration-web-122999699.jpg" alt="Just oops image">
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">There are no games</h5>
-                    <a href="/Games/CountryListing" class="btn btn-success">Create Game</a>
+                    <a href="/Games/CountryListing" class="btn">Create Game</a>
                 </div>
             </div>
         </div>
