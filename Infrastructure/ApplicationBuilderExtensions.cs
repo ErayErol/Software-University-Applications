@@ -1,12 +1,14 @@
 ﻿namespace MessiFinder.Infrastructure
 {
-    using System.Linq;
+    using System;
     using Data;
     using Data.Models;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using System.Linq;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
     public static class ApplicationBuilderExtensions
     {
@@ -15,24 +17,57 @@
             using var scopeService = app.ApplicationServices.CreateScope();
 
             var data = scopeService.ServiceProvider.GetService<MessiFinderDbContext>();
+            var passwordHasher = scopeService.ServiceProvider.GetService<IPasswordHasher<IdentityUser>>();
 
             data?.Database.Migrate();
 
-            Seeds(data);
+            Seeds(data, passwordHasher);
 
             return app;
         }
 
-        private static void Seeds(MessiFinderDbContext data)
+        private static void Seeds(MessiFinderDbContext data, IPasswordHasher<IdentityUser> passwordHasher)
         {
-            if (data.Playgrounds.Any())
+            if (data.Users.Any() == false)
             {
-                return;
+                for (var i = 1; i <= 3; i++)
+                {
+                    var applicationUser = new IdentityUser
+                    {
+                        UserName = $"zwp{i}@gmail.com",
+                        Email = $"zwp{i}@gmail.com",
+                        NormalizedUserName = $"zwp{i}@gmail.com"
+                    };
+
+                    data.Users.Add(applicationUser);
+
+                    var hashedPassword = passwordHasher.HashPassword(applicationUser, $"zwp{i}@gmail.com");
+                    applicationUser.SecurityStamp = Guid.NewGuid().ToString();
+                    applicationUser.PasswordHash = hashedPassword;
+
+                    data.SaveChanges();
+                }
             }
 
-            data.Playgrounds.AddRange(new[]
+            if (data.Admins.Any() == false)
             {
-                new Playground
+                var user = data.Users.FirstOrDefault(x => x.UserName == "zwp1@gmail.com");
+
+                data.Admins.Add(new Admin()
+                {
+                    PhoneNumber = "0886911492",
+                    Name = "zwpAdmin",
+                    UserId = user?.Id,
+                });
+
+                data.SaveChanges();
+            }
+
+            if (data.Playgrounds.Any() == false)
+            {
+                var admin = data.Admins.FirstOrDefault(x => x.Name == "zwpAdmin");
+
+                data.Playgrounds.AddRange(new Playground
                 {
                     Name = "Avenue",
                     Country = "Bulgaria",
@@ -45,9 +80,8 @@
                     Parking = true,
                     Shower = true,
                     PhoneNumber = "0888888889",
-                    AdminId = 1,
-                },
-                new Playground
+                    AdminId = admin.Id,
+                }, new Playground
                 {
                     Name = "Kortove",
                     Country = "Bulgaria",
@@ -60,9 +94,8 @@
                     Parking = true,
                     Shower = true,
                     PhoneNumber = "0888888888",
-                    AdminId = 1,
-                },
-                new Playground
+                    AdminId = admin.Id,
+                }, new Playground
                 {
                     Name = "Yildizlar",
                     Country = "Turkey",
@@ -75,9 +108,8 @@
                     Parking = true,
                     Shower = true,
                     PhoneNumber = "0888888887",
-                    AdminId = 1,
-                },
-                new Playground
+                    AdminId = admin.Id,
+                }, new Playground
                 {
                     Name = "Optimum",
                     Country = "Bulgaria",
@@ -90,9 +122,8 @@
                     Parking = true,
                     Shower = true,
                     PhoneNumber = "0888888886",
-                    AdminId = 1,
-                },
-                new Playground
+                    AdminId = admin.Id,
+                }, new Playground
                 {
                     Name = "Avangard Fitness",
                     Country = "Bulgaria",
@@ -105,9 +136,9 @@
                     Parking = true,
                     Shower = true,
                     PhoneNumber = "0888888885",
-                    AdminId = 1,
-                },
-            });
+                    AdminId = admin.Id,
+                });
+            }
 
             data.SaveChanges();
         }
