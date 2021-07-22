@@ -1,6 +1,5 @@
 ﻿namespace MessiFinder.Controllers
 {
-    using Data;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Models.Playgrounds;
@@ -16,7 +15,11 @@
         private readonly ICountryService countryService;
         private readonly IPlaygroundService playgroundService;
 
-        public PlaygroundsController(MessiFinderDbContext data, ICountryService countryService, IUserService userService, IAdminService adminService, IPlaygroundService playgroundService)
+        public PlaygroundsController(
+            ICountryService countryService, 
+            IUserService userService, 
+            IAdminService adminService, 
+            IPlaygroundService playgroundService)
         {
             this.countryService = countryService;
             this.userService = userService;

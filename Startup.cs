@@ -14,6 +14,7 @@ namespace MessiFinder
     using Microsoft.Extensions.Hosting;
     using Services.Admins;
     using Services.Countries;
+    using Services.Games;
     using Services.Homes;
     using Services.Playgrounds;
     using Services.Users;
@@ -65,6 +66,7 @@ namespace MessiFinder
                 options.GetService<IHttpContextAccessor>()?.HttpContext?.User);
 
             services
+                .AddTransient<IGameService, GameService>()
                 .AddTransient<IPlaygroundService, PlaygroundService>()
                 .AddTransient<IHomeService, HomeService>()
                 .AddTransient<ICountryService, CountryService>()
