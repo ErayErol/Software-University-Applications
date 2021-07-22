@@ -2,33 +2,34 @@
 {
     using Data;
     using Data.Models;
-    using Microsoft.AspNetCore.Mvc;
-    using Models.Games;
-    using System.Collections.Generic;
-    using System.Linq;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
-    using Utilities;
+    using Microsoft.AspNetCore.Mvc;
+    using Models.Games;
+    using Services.Countries;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Services.Users;
 
     public class GamesController : Controller
     {
+        private readonly ICountryService countryService;
         private readonly MessiFinderDbContext data;
+        private readonly IUserService userService;
 
-        public GamesController(MessiFinderDbContext data)
-            => this.data = data;
+        public GamesController(MessiFinderDbContext data, ICountryService countryService, IUserService userService)
+        {
+            this.data = data;
+            this.countryService = countryService;
+            this.userService = userService;
+        }
 
         [Authorize]
         public IActionResult CountryListing()
         {
-            if (this.UserIsAdmin() == false)
-            {
-                return View();
-            }
-
-            return View(new CountryListingFormModel
-            {
-                Countries = Countries.GetAll(),
-            });
+            return this.userService.UserIsAdmin() == false
+                ? View()
+                : View(new CreateGameFirstStepServiceModel { Countries = countryService.GetAll() });
         }
 
         [Authorize]
@@ -37,7 +38,7 @@
         {
             if (ModelState.IsValid == false)
             {
-                gameForm.Countries = Countries.GetAll();
+                gameForm.Countries = countryService.GetAll();
                 return View(gameForm);
             }
 
@@ -73,7 +74,7 @@
 
         public IActionResult Create(PlaygroundListingViewModel gameForm)
         {
-            if (this.UserIsAdmin() == false)
+            if (this.userService.UserIsAdmin() == false)
             {
                 return View();
             }
@@ -90,7 +91,7 @@
         {
             var adminId = this.data
                 .Admins
-                .Where(d => d.UserId == this.User.GetId())
+                .Where(d => d.UserId == this.userService.GetUser().GetId())
                 .Select(d => d.Id)
                 .FirstOrDefault();
 
@@ -190,10 +191,5 @@
                     Name = x.Name,
                 }).ToList();
         }
-
-        private bool UserIsAdmin()
-            => this.data
-                .Admins
-                .Any(d => d.UserId == this.User.GetId());
     }
 }

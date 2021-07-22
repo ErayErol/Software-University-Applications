@@ -1,18 +1,22 @@
 namespace MessiFinder
 {
-    using CloudinaryDotNet;
+    using System.Security.Claims;
     using Infrastructure;
     using MessiFinder.Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-
-    using static Data.DataConstants.Cloudinary;
+    using Services.Admins;
+    using Services.Countries;
+    using Services.Homes;
+    using Services.Playgrounds;
+    using Services.Users;
 
     public class Startup
     {
@@ -54,6 +58,18 @@ namespace MessiFinder
                 {
                     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
                 });
+
+
+            // If you don't have this, you cannot use ClaimsPrincipal in services
+            services.AddTransient<ClaimsPrincipal>(options =>
+                options.GetService<IHttpContextAccessor>()?.HttpContext?.User);
+
+            services
+                .AddTransient<IPlaygroundService, PlaygroundService>()
+                .AddTransient<IHomeService, HomeService>()
+                .AddTransient<ICountryService, CountryService>()
+                .AddTransient<IAdminService, AdminService>()
+                .AddTransient<IUserService, UserService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

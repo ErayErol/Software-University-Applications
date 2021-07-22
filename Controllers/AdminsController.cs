@@ -1,32 +1,34 @@
 ﻿namespace MessiFinder.Controllers
 {
-    using System.Linq;
-    using Data;
-    using Data.Models;
-    using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Models.Admins;
+    using Services.Admins;
+    using Services.Users;
 
     public class AdminsController : Controller
     {
-        private readonly MessiFinderDbContext data;
+        private readonly IUserService userService;
+        private readonly IAdminService adminService;
 
-        public AdminsController(MessiFinderDbContext data)
-            => this.data = data;
+        public AdminsController(IUserService userService, IAdminService adminService)
+        {
+            this.userService = userService;
+            this.adminService = adminService;
+        }
 
         [Authorize]
         public IActionResult Become()
         {
-            if (this.UserIsAdmin())
+            if (this.userService.UserIsAdmin() == false)
             {
-                return View();
+                return View(new BecomeAdminFormModel()
+                {
+                    Name = this.User.Identity?.Name
+                });
             }
 
-            return View(new BecomeAdminFormModel()
-            {
-                Name = this.User.Identity?.Name
-            });
+            return View();
         }
 
         [HttpPost]
@@ -38,24 +40,9 @@
                 return View(admin);
             }
 
-            var userId = this.User.GetId();
-
-            var adminData = new Admin
-            {
-                Name = admin.Name,
-                PhoneNumber = admin.PhoneNumber,
-                UserId = userId
-            };
-
-            this.data.Admins.Add(adminData);
-            this.data.SaveChanges();
+            this.adminService.Become(admin);
 
             return RedirectToAction("All", "Games");
         }
-
-        private bool UserIsAdmin()
-            => this.data
-                .Admins
-                .Any(d => d.UserId == this.User.GetId());
     }
 }

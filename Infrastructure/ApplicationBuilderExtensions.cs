@@ -1,14 +1,13 @@
 ﻿namespace MessiFinder.Infrastructure
 {
-    using System;
     using Data;
     using Data.Models;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using System;
     using System.Linq;
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
     public static class ApplicationBuilderExtensions
     {
