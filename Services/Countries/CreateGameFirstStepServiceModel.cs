@@ -8,6 +8,7 @@
 
     public class CreateGameFirstStepServiceModel
     {
+        [Display(Name = "Select Country:")]
         public string Country { get; set; }
 
         public IEnumerable<string> Countries { get; set; }

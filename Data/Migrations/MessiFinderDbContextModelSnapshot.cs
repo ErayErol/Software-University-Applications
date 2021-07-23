@@ -78,7 +78,7 @@ namespace MessiFinder.Data.Migrations
                     b.Property<int>("PlaygroundId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("WithGoalkeeper")
+                    b.Property<bool>("Goalkeeper")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");

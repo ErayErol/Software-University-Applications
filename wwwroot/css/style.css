@@ -3575,3 +3575,12 @@ input.btn {
 .green {
     color: #16ff00;
 }
+
+.createPlaygroundChechboxes {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+}
+
+.checkbox-down {
+    margin-top: 4px;
+}

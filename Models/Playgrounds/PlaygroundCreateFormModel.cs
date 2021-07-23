@@ -30,6 +30,7 @@
 
         [Required]
         [Url]
+        [Display(Name = "Image URL")]
         public string ImageUrl { get; set; }
 
         [Required]

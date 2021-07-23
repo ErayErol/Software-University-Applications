@@ -13,28 +13,30 @@
             <form method="post" class="form-group">
 
                 <div class="form-group">
-                    <label asp-for="Date">Date</label>
+                    <label asp-for="Date"></label>
                     <input asp-for="Date" type="datetime-local" placeholder="Click on calendar" class="form-control">
                     <span asp-validation-for="Date" class="small text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="NumberOfPlayers">Number of Players</label>
+                    <label asp-for="NumberOfPlayers"></label>
                     <input asp-for="NumberOfPlayers" min="8" max="22" type="number" class="form-control">
                     <span asp-validation-for="NumberOfPlayers" class="small text-danger"></span>
                 </div>
 
-                <input asp-for="WithGoalkeeper" type="checkbox">
-                <label asp-for="WithGoalkeeper">With Goalkeeper</label>
+                <div class="mt-4 mb-3 createPlaygroundChechboxes">
+                    <input class="checkbox-down" asp-for="Ball" type="checkbox">
+                    <label asp-for="Ball"></label>
 
-                <input asp-for="Ball" type="checkbox">
-                <label asp-for="Ball">Ball</label>
+                    <input class="checkbox-down" asp-for="Jerseys" type="checkbox">
+                    <label asp-for="Jerseys"></label>
 
-                <input asp-for="Jerseys" type="checkbox">
-                <label asp-for="Jerseys">Jerseys</label>
+                    <input class="checkbox-down" asp-for="Goalkeeper" type="checkbox">
+                    <label asp-for="Goalkeeper"></label>
+                </div>
 
                 <div class="mb-3">
-                    <label asp-for="Description">Description</label>
+                    <label asp-for="Description"></label>
                     <textarea asp-for="Description" class="form-control" rows="2"></textarea>
                     <span asp-validation-for="Description" class="small text-danger"></span>
                 </div>

@@ -16,7 +16,7 @@
         [StringLength(TownMaxLength, MinimumLength = TownMinLength, ErrorMessage = Range)]
         public string Town { get; set; }
 
-        [Display(Name = "Playground")]
+        [Display(Name = "Select playground:")]
         public int PlaygroundId { get; set; }
 
         public IEnumerable<PlaygroundListingViewModel> Playgrounds { get; set; }

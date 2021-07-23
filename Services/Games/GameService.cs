@@ -22,7 +22,7 @@
                 Description = gameCreateModel.Description,
                 Date = gameCreateModel.Date.Value,
                 NumberOfPlayers = gameCreateModel.NumberOfPlayers.Value,
-                WithGoalkeeper = gameCreateModel.WithGoalkeeper,
+                WithGoalkeeper = gameCreateModel.Goalkeeper,
                 Ball = gameCreateModel.Ball,
                 Jerseys = gameCreateModel.Jerseys,
                 AdminId = adminId,
