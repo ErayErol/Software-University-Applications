@@ -11,7 +11,7 @@
 
         bool CheckForSamePlayground(PlaygroundCreateFormModel playgroundModel);
 
-        IQueryable<PlaygroundAllViewModel> All();
+        public PlaygroundAllQueryModel All(PlaygroundAllQueryModel query);
 
         bool IsExist(PlaygroundListingViewModel gamePlaygroundModel);
 

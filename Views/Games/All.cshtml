@@ -51,8 +51,7 @@
         previousPage = 1;
     }
 
-    var maxPage = Math.Ceiling((double)Model.TotalGames / GameAllQueryModel.GamesPerPage);
-    //maxPage = maxPage == 0 ? 1 : maxPage;
+    var maxPage = Math.Ceiling((double)Model.TotalGames / PlaygroundAllQueryModel.GamesPerPage);
     var shouldButtonBeDisabled = Model.CurrentPage == maxPage || Model.Games.Any() == false;
 }
 

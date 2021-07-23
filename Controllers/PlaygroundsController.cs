@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Models.Games;
     using Models.Playgrounds;
     using Services.Admins;
     using Services.Countries;
@@ -62,7 +63,7 @@
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult All()
-            => View(this.playgroundService.All());
+        public IActionResult All(PlaygroundAllQueryModel query)
+            => View(this.playgroundService.All(query));
     }
 }

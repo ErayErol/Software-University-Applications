@@ -46,18 +46,59 @@
                     p.Town == playgroundModel.Town &&
                     p.Address == playgroundModel.Address);
 
-        public IQueryable<PlaygroundAllViewModel> All()
-            => this.data
-                .Playgrounds
+        public PlaygroundAllQueryModel All(PlaygroundAllQueryModel query)
+        {
+            var playgroundsQuery = this.data.Playgrounds.AsQueryable();
+
+            if (string.IsNullOrWhiteSpace(query.Town) == false)
+            {
+                playgroundsQuery = playgroundsQuery.Where(g => g.Town == query.Town);
+            }
+
+            if (string.IsNullOrWhiteSpace(query.SearchTerm) == false)
+            {
+                playgroundsQuery = playgroundsQuery
+                    .Where(g => g
+                        .Name
+                        .ToLower()
+                        .Contains(query.SearchTerm.ToLower()));
+            }
+
+            playgroundsQuery = query.Sorting switch
+            {
+                GameSorting.Town => playgroundsQuery.OrderBy(g => g.Town),
+                GameSorting.PlaygroundName => playgroundsQuery.OrderBy(g => g.Name),
+                GameSorting.DateCreated or _ => playgroundsQuery.OrderBy(g => g.Id)
+            };
+
+            var totalPlaygrounds = playgroundsQuery.Count();
+
+            var playgrounds = playgroundsQuery
+                .Skip((query.CurrentPage - 1) * PlaygroundAllQueryModel.GamesPerPage)
+                .Take(PlaygroundAllQueryModel.GamesPerPage)
                 .Select(p => new PlaygroundAllViewModel()
                 {
-                    Name = p.Name,
-                    Country = p.Country,
                     Town = p.Town,
-                    Address = p.Address,
+                    Country = p.Country,
+                    Name = p.Name,
                     ImageUrl = p.ImageUrl,
                     Description = p.Description,
-                });
+                    Address = p.Address,
+                }).AsEnumerable();
+
+            var towns = this.data
+                .Playgrounds
+                .Select(p => p.Town)
+                .Distinct()
+                .OrderBy(t => t)
+                .AsEnumerable();
+
+            query.TotalPlaygrounds = totalPlaygrounds;
+            query.Playgrounds = playgrounds;
+            query.Towns = towns;
+
+            return query;
+        }
 
         public bool IsExist(PlaygroundListingViewModel gamePlaygroundModel)
             => this.data.Playgrounds.Any(p => p.Id == gamePlaygroundModel.PlaygroundId);

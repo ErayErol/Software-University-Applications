@@ -1,9 +1,85 @@
-﻿@model IEnumerable<PlaygroundAllViewModel>
+﻿@model PlaygroundAllQueryModel
+
+<form method="get">
+    <div class="row p-3">
+
+        <div class="form-group mr-5">
+            <input asp-for="SearchTerm" type="text" placeholder="Search by name..." class="form-control">
+        </div>
+
+        <div class="row ml-0">
+            <div class="form-group">
+                <div class="form-group">
+                    <select asp-for="Town" class="form-control">
+                        <option value="" disabled selected>Search by town</option>
+                        @foreach (var town in Model.Towns)
+                        {
+                            <option value="@town">@town</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mr-5">
+            <input type="submit" class="btn" value="Search" />
+        </div>
+
+        <div class="row ml-0">
+            <div class="form-group">
+                <div class="form-group">
+                    <select asp-for="Sorting" class="form-control">
+                        <option value="0">Date Created</option>
+                        <option value="1">Town</option>
+                        <option value="2">Playground Name</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" class="btn" value="Sort" />
+        </div>
+
+    </div>
+</form>
+
+@{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    var maxPage = Math.Ceiling((double)Model.TotalPlaygrounds / PlaygroundAllQueryModel.GamesPerPage);
+    var shouldButtonBeDisabled = Model.CurrentPage == maxPage || Model.Playgrounds.Any() == false;
+}
+
+<div class="row mb-5" style="flex-wrap: nowrap">
+    <div class="col-md-6" style="max-width: 70px;">
+        <a class="btn @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="PLaygrounds"
+           asp-action="All"
+           asp-route-currentPage="@previousPage"
+           asp-route-town="@Model.Town"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@((int)Model.Sorting)"><<</a>
+    </div>
+    <div class="col-md-6" id="right-arrow">
+        <a class="btn float-right @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
+           asp-controller="PLaygrounds"
+           asp-action="All"
+           asp-route-currentPage="@(Model.CurrentPage + 1)"
+           asp-route-town="@Model.Town"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@((int)Model.Sorting)">>></a>
+    </div>
+</div>
 
 <div class="row">
-    @if (Model.Any())
+    @if (Model.Playgrounds.Any())
     {
-        @foreach (var playground in Model)
+        @foreach (var playground in Model.Playgrounds)
         {
             <div class="col-md-4">
                 <div class="card mb-3">
