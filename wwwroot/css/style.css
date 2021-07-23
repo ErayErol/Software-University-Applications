@@ -3547,3 +3547,27 @@ input.btn {
     padding-bottom: 6px;
     margin-top: 6px;
 }
+
+@media (min-width: 769px) and (max-width: 969px) {
+    #right-arrow {
+        margin-left: 40%;
+    }
+}
+
+@media (min-width: 969px) {
+    #right-arrow {
+        margin-left: 41%;
+    }
+}
+
+@media (min-width: 1099px) {
+    #right-arrow {
+        margin-left: 43%;
+    }
+}
+
+@media (min-width: 1299px) {
+    #right-arrow {
+        margin-left: 44%;
+    }
+}
