@@ -36,16 +36,16 @@
         {
             return this.userService.UserIsAdmin() == false
                 ? View()
-                : View(new CreateGameFirstStepServiceModel { Countries = countryService.GetAll() });
+                : View(new CreateGameFirstStepViewModel { Countries = countryService.All() });
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult CountryListing(CreateGameFirstStepServiceModel gameForm)
+        public IActionResult CountryListing(CreateGameFirstStepViewModel gameForm)
         {
             if (ModelState.IsValid == false)
             {
-                gameForm.Countries = countryService.GetAll();
+                gameForm.Countries = countryService.All();
                 return View(gameForm);
             }
 
@@ -54,7 +54,7 @@
         }
 
         [Authorize]
-        public IActionResult PlaygroundListing(CreateGameFirstStepServiceModel gameForm)
+        public IActionResult PlaygroundListing(CreateGameFirstStepViewModel gameForm)
         {
             gameForm.Town =
                 gameForm.Town[0].ToString().ToUpper()
@@ -62,7 +62,7 @@
 
             return View(new PlaygroundListingViewModel()
             {
-                Playgrounds = this.playgroundService.GetPlaygroundViewModels(gameForm.Town, gameForm.Country),
+                Playgrounds = this.playgroundService.PlaygroundViewModels(gameForm.Town, gameForm.Country),
                 Town = gameForm.Town,
                 Country = gameForm.Country,
             });

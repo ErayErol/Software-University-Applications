@@ -16,7 +16,7 @@
 
         public void Create(GameCreateFormModel gameCreateModel, int adminId)
         {
-            var game = new Game()
+            var game = new Game
             {
                 PlaygroundId = gameCreateModel.PlaygroundId,
                 Description = gameCreateModel.Description,
@@ -62,7 +62,7 @@
             var games = gamesQuery
                 .Skip((query.CurrentPage - 1) * GameAllQueryModel.GamesPerPage)
                 .Take(GameAllQueryModel.GamesPerPage)
-                .Select(p => new GameListingViewModel()
+                .Select(p => new GameListingViewModel
                 {
                     Id = p.Id,
                     Playground = p.Playground,
