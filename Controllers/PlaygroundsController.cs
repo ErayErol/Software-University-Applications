@@ -33,7 +33,7 @@
         {
             return this.userService.UserIsAdmin() == false
                 ? View()
-                : View(new PlaygroundCreateFormModel { Countries = countryService.GetAll(), });
+                : View(new PlaygroundCreateFormModel { Countries = countryService.All(), });
         }
 
         [Authorize]
@@ -49,7 +49,7 @@
 
             if (ModelState.IsValid == false)
             {
-                playgroundModel.Countries = this.countryService.GetAll();
+                playgroundModel.Countries = this.countryService.All();
                 return View(playgroundModel);
             }
 

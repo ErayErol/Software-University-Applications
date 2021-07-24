@@ -16,12 +16,12 @@
             this.user = user;
         }
 
-        public ClaimsPrincipal GetUser()
+        public ClaimsPrincipal User()
             => this.user;
 
         public bool UserIsAdmin()
             => this.data
                 .Admins
-                .Any(d => d.UserId == this.user.GetId());
+                .Any(d => d.UserId == this.user.Id());
     }
 }

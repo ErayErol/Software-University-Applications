@@ -5,7 +5,7 @@
 
     public class CountryService : ICountryService
     {
-        public IEnumerable<string> GetAll()
+        public IEnumerable<string> All()
         {
             var cultureList = new List<string>();
 

@@ -20,7 +20,7 @@
 
         public void Become(BecomeAdminFormModel admin)
         {
-            var userId = this.userService.GetUser().GetId();
+            var userId = this.userService.User().Id();
 
             var adminData = new Admin
             {
@@ -36,7 +36,7 @@
         public int GetId()
             => this.data
                 .Admins
-                .Where(d => d.UserId == this.userService.GetUser().GetId())
+                .Where(d => d.UserId == this.userService.User().Id())
                 .Select(d => d.Id)
                 .FirstOrDefault();
     }

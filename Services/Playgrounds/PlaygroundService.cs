@@ -103,7 +103,7 @@
         public bool IsExist(PlaygroundListingViewModel gamePlaygroundModel)
             => this.data.Playgrounds.Any(p => p.Id == gamePlaygroundModel.PlaygroundId);
 
-        public IEnumerable<PlaygroundListingViewModel> GetPlaygroundViewModels(string town, string country)
+        public IEnumerable<PlaygroundListingViewModel> PlaygroundViewModels(string town, string country)
             => this.data
                 .Playgrounds
                 .Where(x => x.Town == town && x.Country == country)

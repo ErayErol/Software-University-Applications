@@ -4,6 +4,6 @@
 
     public interface ICountryService
     {
-        IEnumerable<string> GetAll();
+        IEnumerable<string> All();
     }
 }
