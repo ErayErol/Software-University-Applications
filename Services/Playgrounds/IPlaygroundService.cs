@@ -1,9 +1,8 @@
 ﻿namespace MessiFinder.Services.Playgrounds
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using Models.Games;
     using Models.Playgrounds;
+    using System.Collections.Generic;
 
     public interface IPlaygroundService
     {
@@ -15,6 +14,6 @@
 
         bool IsExist(PlaygroundListingViewModel gamePlaygroundModel);
 
-        IEnumerable<PlaygroundListingViewModel> GetPlaygroundViewModels(string town, string country);
+        IEnumerable<PlaygroundListingViewModel> PlaygroundViewModels(string town, string country);
     }
 }

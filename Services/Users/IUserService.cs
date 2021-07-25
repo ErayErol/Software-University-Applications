@@ -4,7 +4,7 @@
 
     public interface IUserService
     {
-        ClaimsPrincipal GetUser();
+        ClaimsPrincipal User();
         
         bool UserIsAdmin();
     }
