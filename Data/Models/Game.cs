@@ -19,7 +19,7 @@
         public int NumberOfPlayers { get; set; }
 
         public bool WithGoalkeeper { get; set; }
-        
+
         public bool Ball { get; set; }
 
         public bool Jerseys { get; set; }

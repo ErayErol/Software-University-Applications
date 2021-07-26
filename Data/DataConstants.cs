@@ -9,17 +9,6 @@
             public const string Range = "Must be in range {2} and {1}";
         }
 
-        public class Cloudinary
-        {
-            public const string CloudName = "messi-finder";
-            
-            public const string ApiKey = "585982319676539";
-            
-            public const string ApiSecret = "Rv-7T5OK75aBH7ie-IpW7ibklSY";
-            
-            public const string APIEnvironmentVariable = "CLOUDINARY_URL=cloudinary://585982319676539.Rv-7T5OK75aBH7ie-IpW7ibklSY@messi-finder";
-        }
-
         public class Game
         {
             public const int NumberOfPlayersMin = 8;

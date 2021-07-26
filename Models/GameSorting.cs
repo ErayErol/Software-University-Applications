@@ -1,4 +1,4 @@
-﻿namespace MessiFinder.Models.Games
+﻿namespace MessiFinder.Models
 {
     public enum GameSorting
     {

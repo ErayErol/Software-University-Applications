@@ -1,6 +1,5 @@
 namespace MessiFinder
 {
-    using System.Security.Claims;
     using Infrastructure;
     using MessiFinder.Data;
     using Microsoft.AspNetCore.Builder;
@@ -12,12 +11,8 @@ namespace MessiFinder
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Services.Admins;
     using Services.Countries;
-    using Services.Games;
-    using Services.Homes;
-    using Services.Playgrounds;
-    using Services.Users;
+    using System.Security.Claims;
 
     public class Startup
     {
@@ -66,12 +61,12 @@ namespace MessiFinder
                 options.GetService<IHttpContextAccessor>()?.HttpContext?.User);
 
             services
-                .AddTransient<IGameService, GameService>()
-                .AddTransient<IPlaygroundService, PlaygroundService>()
-                .AddTransient<IHomeService, HomeService>()
-                .AddTransient<ICountryService, CountryService>()
-                .AddTransient<IAdminService, AdminService>()
-                .AddTransient<IUserService, UserService>();
+                //.AddTransient<IGameService, GameService>()
+                //.AddTransient<IPlaygroundService, PlaygroundService>()
+                //.AddTransient<IHomeService, HomeService>()
+                //.AddTransient<IAdminService, AdminService>()
+                //.AddTransient<IUserService, UserService>()
+                .AddTransient<ICountryService, CountryService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

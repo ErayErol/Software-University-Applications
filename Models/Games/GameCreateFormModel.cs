@@ -1,9 +1,8 @@
 ﻿namespace MessiFinder.Models.Games
 {
     using System.ComponentModel.DataAnnotations;
-
-    using static Data.DataConstants.Game;
     using static Data.DataConstants.ErrorMessages;
+    using static Data.DataConstants.Game;
 
     public class GameCreateFormModel
     {
@@ -19,7 +18,7 @@
         public int? NumberOfPlayers { get; set; }
 
         public bool Goalkeeper { get; set; }
-        
+
         public bool Ball { get; set; }
 
         public bool Jerseys { get; set; }

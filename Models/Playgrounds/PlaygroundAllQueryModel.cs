@@ -1,7 +1,6 @@
-﻿namespace MessiFinder.Models.Games
+﻿namespace MessiFinder.Models.Playgrounds
 {
     using System.Collections.Generic;
-    using Playgrounds;
 
     public class PlaygroundAllQueryModel
     {

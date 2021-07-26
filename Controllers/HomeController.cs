@@ -1,24 +1,43 @@
 ﻿namespace MessiFinder.Controllers
 {
+    using Data;
     using MessiFinder.Models;
     using Microsoft.AspNetCore.Mvc;
-    using Services.Homes;
+    using Models.Home;
     using System.Diagnostics;
+    using System.Linq;
 
     public class HomeController : Controller
     {
-        private readonly IHomeService homeService;
-
-        public HomeController(IHomeService homeService)
-        {
-            this.homeService = homeService;
-        }
+        private readonly MessiFinderDbContext data;
+        
+        public HomeController(MessiFinderDbContext data)
+            => this.data = data;
 
         public IActionResult Index()
         {
-            var indexModel = this.homeService.Index();
+            var games = this.data
+                .Games
+                .Select(p => new GameIndexViewModel()
+                {
+                    Id = p.Id,
+                    Playground = p.Playground,
+                    Date = p.Date,
+                })
+                .OrderByDescending(g => g.Id)
+                .Take(3)
+                .ToList();
 
-            return View(indexModel);
+            var totalGames = this.data.Games.Count();
+            var totalPlaygrounds = this.data.Playgrounds.Count();
+
+            return View(new IndexViewModel
+            {
+                Games = games,
+                TotalGames = totalGames,
+                TotalPlaygrounds = totalPlaygrounds,
+                TotalUsers = this.data.Users.Count(),
+            });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

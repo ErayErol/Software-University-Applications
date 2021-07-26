@@ -21,7 +21,7 @@
         public string UserId { get; set; }
 
         public virtual IEnumerable<Game> Games { get; init; } = new List<Game>();
-        
+
         public virtual IEnumerable<Playground> Playgrounds { get; init; } = new List<Playground>();
     }
 }
