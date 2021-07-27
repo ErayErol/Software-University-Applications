@@ -18,7 +18,7 @@
         [Range(NumberOfPlayersMin, NumberOfPlayersMax)]
         public int NumberOfPlayers { get; set; }
 
-        public bool WithGoalkeeper { get; set; }
+        public bool Goalkeeper { get; set; }
 
         public bool Ball { get; set; }
 

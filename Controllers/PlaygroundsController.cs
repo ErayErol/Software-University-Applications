@@ -88,7 +88,7 @@
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult All(PlaygroundAllQueryModel query)
+        public IActionResult All([FromQuery] PlaygroundAllQueryModel query)
         {
             var playgroundsQuery = this.data.Playgrounds.AsQueryable();
 

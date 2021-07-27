@@ -1,9 +1,9 @@
-﻿namespace MessiFinder.Models.Games
+﻿namespace MessiFinder.Services.Games
 {
     using Data.Models;
     using System;
 
-    public class GameListingViewModel
+    public class GameListingServiceModel
     {
         public int Id { get; set; }
 

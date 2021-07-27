@@ -80,7 +80,7 @@ namespace MessiFinder.Data.Migrations
                     PlaygroundId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NumberOfPlayers = table.Column<int>(type: "int", nullable: false),
-                    WithGoalkeeper = table.Column<bool>(type: "bit", nullable: false),
+                    Goalkeeper = table.Column<bool>(type: "bit", nullable: false),
                     Ball = table.Column<bool>(type: "bit", nullable: false),
                     Jerseys = table.Column<bool>(type: "bit", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
@@ -100,7 +100,7 @@ namespace MessiFinder.Data.Migrations
                         column: x => x.PlaygroundId,
                         principalTable: "Playgrounds",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using Services.Games;
 
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Playground;
@@ -19,6 +20,6 @@
         [Display(Name = "Select playground:")]
         public int PlaygroundId { get; set; }
 
-        public IEnumerable<PlaygroundListingViewModel> Playgrounds { get; set; }
+        public IEnumerable<PlaygroundListingServiceModel> Playgrounds { get; set; }
     }
 }

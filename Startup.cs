@@ -13,6 +13,7 @@ namespace MessiFinder
     using Microsoft.Extensions.Hosting;
     using Services.Countries;
     using System.Security.Claims;
+    using Services.Games;
     using Services.Statistics;
 
     public class Startup
@@ -62,7 +63,7 @@ namespace MessiFinder
                 options.GetService<IHttpContextAccessor>()?.HttpContext?.User);
 
             services
-                //.AddTransient<IGameService, GameService>()
+                .AddTransient<IGameService, GameService>()
                 //.AddTransient<IPlaygroundService, PlaygroundService>()
                 //.AddTransient<IHomeService, HomeService>()
                 //.AddTransient<IAdminService, AdminService>()

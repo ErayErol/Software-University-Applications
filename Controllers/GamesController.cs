@@ -1,25 +1,25 @@
 ﻿namespace MessiFinder.Controllers
 {
     using Data;
-    using Data.Models;
-    using Microsoft.AspNetCore.Mvc;
-    using Models.Games;
-    using System.Collections.Generic;
-    using System.Linq;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
-    using Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Models.Games;
     using Services.Countries;
+    using Services.Games;
+    using System.Linq;
 
     public class GamesController : Controller
     {
         private readonly MessiFinderDbContext data;
         private readonly ICountryService country;
+        private readonly IGameService games;
 
-        public GamesController(MessiFinderDbContext data, ICountryService country)
+        public GamesController(MessiFinderDbContext data, ICountryService country, IGameService games)
         {
             this.data = data;
             this.country = country;
+            this.games = games;
         }
 
         [Authorize]
@@ -56,9 +56,9 @@
                 gameForm.Town[0].ToString().ToUpper()
                 + gameForm.Town.Substring(1, gameForm.Town.Length - 1).ToLower();
 
-            return View(new PlaygroundListingViewModel()
+            return View(new PlaygroundListingViewModel
             {
-                Playgrounds = this.GetPlaygroundViewModels(gameForm.Town, gameForm.Country),
+                Playgrounds = this.games.PlaygroundsListing(gameForm.Town, gameForm.Country),
                 Town = gameForm.Town,
                 Country = gameForm.Country,
             });
@@ -68,7 +68,7 @@
         [HttpPost]
         public IActionResult PlaygroundListing(PlaygroundListingViewModel gamePlaygroundModel)
         {
-            if (this.data.Playgrounds.Any(p => p.Id == gamePlaygroundModel.PlaygroundId) == false)
+            if (this.games.PlaygroundExist(gamePlaygroundModel.PlaygroundId) == false)
             {
                 this.ModelState.AddModelError(nameof(gamePlaygroundModel.PlaygroundId), "Playground does not exist!");
             }
@@ -109,70 +109,32 @@
                 return View(gameCreateModel);
             }
 
-            var game = new Game
-            {
-                PlaygroundId = gameCreateModel.PlaygroundId,
-                Description = gameCreateModel.Description,
-                Date = gameCreateModel.Date.Value,
-                NumberOfPlayers = gameCreateModel.NumberOfPlayers.Value,
-                WithGoalkeeper = gameCreateModel.Goalkeeper,
-                Ball = gameCreateModel.Ball,
-                Jerseys = gameCreateModel.Jerseys,
-                AdminId = adminId,
-            };
-
-            this.data.Games.Add(game);
-            this.data.SaveChanges();
+            this.games.Create(
+                gameCreateModel.PlaygroundId,
+                gameCreateModel.Description,
+                gameCreateModel.Date.Value,
+                gameCreateModel.NumberOfPlayers.Value,
+                gameCreateModel.Goalkeeper,
+                gameCreateModel.Ball,
+                gameCreateModel.Jerseys,
+                adminId);
 
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult All(GameAllQueryModel query)
+        public IActionResult All([FromQuery] GameAllQueryModel query)
         {
-            var gamesQuery = this.data.Games.AsQueryable();
+            var queryResult = this.games.All(
+                query.Town,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                query.GamesPerPage);
 
-            if (string.IsNullOrWhiteSpace(query.Town) == false)
-            {
-                gamesQuery = gamesQuery.Where(g => g.Playground.Town == query.Town);
-            }
+            var towns = this.games.Towns();
 
-            if (string.IsNullOrWhiteSpace(query.SearchTerm) == false)
-            {
-                gamesQuery = gamesQuery
-                    .Where(g => g.Playground
-                        .Name
-                        .ToLower()
-                        .Contains(query.SearchTerm.ToLower()));
-            }
-
-            gamesQuery = query.Sorting switch
-            {
-                GameSorting.Town => gamesQuery.OrderBy(g => g.Playground.Town),
-                GameSorting.PlaygroundName => gamesQuery.OrderBy(g => g.Playground.Name),
-                GameSorting.DateCreated or _ => gamesQuery.OrderBy(g => g.Id)
-            };
-
-            var totalGames = gamesQuery.Count();
-
-            var games = gamesQuery
-                .Skip((query.CurrentPage - 1) * GameAllQueryModel.GamesPerPage)
-                .Take(GameAllQueryModel.GamesPerPage)
-                .Select(p => new GameListingViewModel
-                {
-                    Id = p.Id,
-                    Playground = p.Playground,
-                    Date = p.Date,
-                }).AsEnumerable();
-
-            var towns = this.data
-                .Playgrounds
-                .Select(p => p.Town)
-                .Distinct()
-                .OrderBy(t => t)
-                .AsEnumerable();
-
-            query.TotalGames = totalGames;
-            query.Games = games;
+            query.TotalGames = queryResult.TotalGames;
+            query.Games = queryResult.Games;
             query.Towns = towns;
 
             return View(query);
@@ -182,18 +144,6 @@
         public IActionResult Details(int id)
         {
             return View();
-        }
-
-        private IEnumerable<PlaygroundListingViewModel> GetPlaygroundViewModels(string town, string country)
-        {
-            return this.data
-                .Playgrounds
-                .Where(x => x.Town == town && x.Country == country)
-                .Select(x => new PlaygroundListingViewModel
-                {
-                    PlaygroundId = x.Id,
-                    Name = x.Name,
-                }).ToList();
         }
 
         private bool UserIsAdmin()

@@ -69,6 +69,9 @@ namespace MessiFinder.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<bool>("Goalkeeper")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Jerseys")
                         .HasColumnType("bit");
 
@@ -77,9 +80,6 @@ namespace MessiFinder.Data.Migrations
 
                     b.Property<int>("PlaygroundId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("WithGoalkeeper")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -388,9 +388,9 @@ namespace MessiFinder.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("MessiFinder.Data.Models.Playground", "Playground")
-                        .WithMany("Games")
+                        .WithMany()
                         .HasForeignKey("PlaygroundId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Admin");
@@ -465,11 +465,6 @@ namespace MessiFinder.Data.Migrations
                     b.Navigation("Games");
 
                     b.Navigation("Playgrounds");
-                });
-
-            modelBuilder.Entity("MessiFinder.Data.Models.Playground", b =>
-                {
-                    b.Navigation("Games");
                 });
 #pragma warning restore 612, 618
         }
