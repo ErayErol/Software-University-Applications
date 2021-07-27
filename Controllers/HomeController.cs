@@ -1,24 +1,29 @@
 ﻿namespace MessiFinder.Controllers
 {
     using Data;
-    using MessiFinder.Models;
     using Microsoft.AspNetCore.Mvc;
     using Models.Home;
-    using System.Diagnostics;
+    using Services.Statistics;
     using System.Linq;
 
     public class HomeController : Controller
     {
         private readonly MessiFinderDbContext data;
-        
-        public HomeController(MessiFinderDbContext data)
-            => this.data = data;
+        private readonly IStatisticsService statistics;
+
+        public HomeController(
+            MessiFinderDbContext data, 
+            IStatisticsService statistics)
+        {
+            this.data = data;
+            this.statistics = statistics;
+        }
 
         public IActionResult Index()
         {
             var games = this.data
                 .Games
-                .Select(p => new GameIndexViewModel()
+                .Select(p => new GameIndexViewModel
                 {
                     Id = p.Id,
                     Playground = p.Playground,
@@ -28,19 +33,17 @@
                 .Take(3)
                 .ToList();
 
-            var totalGames = this.data.Games.Count();
-            var totalPlaygrounds = this.data.Playgrounds.Count();
+            var totalStatistics = this.statistics.Total();
 
             return View(new IndexViewModel
             {
                 Games = games,
-                TotalGames = totalGames,
-                TotalPlaygrounds = totalPlaygrounds,
-                TotalUsers = this.data.Users.Count(),
+                TotalGames = totalStatistics.TotalGames,
+                TotalPlaygrounds = totalStatistics.TotalPlaygrounds,
+                TotalUsers = totalStatistics.TotalUsers,
             });
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public IActionResult Error() => View();
     }
 }
