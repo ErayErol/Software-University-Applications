@@ -27,7 +27,8 @@
 
             if (string.IsNullOrWhiteSpace(town) == false)
             {
-                gamesQuery = gamesQuery.Where(g => g.Playground.Town == town);
+                gamesQuery = gamesQuery
+                    .Where(g => g.Playground.Town == town);
             }
 
             if (string.IsNullOrWhiteSpace(searchTerm) == false)
@@ -94,26 +95,5 @@
 
             return game.Id;
         }
-
-        public IEnumerable<string> Towns()
-        => this.data
-            .Playgrounds
-            .Select(p => p.Town)
-            .Distinct()
-            .OrderBy(t => t)
-            .AsEnumerable();
-
-        public IEnumerable<PlaygroundListingServiceModel> PlaygroundsListing(string town, string country)
-            => this.data
-                .Playgrounds
-                .Where(x => x.Town == town && x.Country == country)
-                .Select(x => new PlaygroundListingServiceModel
-                {
-                    PlaygroundId = x.Id,
-                    Name = x.Name,
-                }).ToList();
-
-        public bool PlaygroundExist(int playgroundId)
-            => this.data.Playgrounds.Any(p => p.Id == playgroundId);
     }
 }

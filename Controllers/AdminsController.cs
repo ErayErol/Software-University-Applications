@@ -1,7 +1,6 @@
 ﻿namespace MessiFinder.Controllers
 {
     using Data;
-    using Data.Models;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -44,15 +43,7 @@
 
             var userId = this.User.Id();
 
-            var adminData = new Admin
-            {
-                Name = admin.Name,
-                PhoneNumber = admin.PhoneNumber,
-                UserId = userId
-            };
-
-            this.data.Admins.Add(adminData);
-            this.data.SaveChanges();
+            this.admin.Become(admin.Name, admin.PhoneNumber, userId);
 
             return RedirectToAction("All", "Games");
         }

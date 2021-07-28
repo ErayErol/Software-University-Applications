@@ -8,21 +8,24 @@
     using Services.Games;
     using System.Linq;
     using Services.Admins;
+    using Services.Playgrounds;
 
     public class GamesController : Controller
     {
         private readonly ICountryService country;
         private readonly IGameService games;
         private readonly IAdminService admin;
+        private readonly IPlaygroundService playground;
 
         public GamesController(
             ICountryService country, 
             IGameService games, 
-            IAdminService admin)
+            IAdminService admin, IPlaygroundService playground)
         {
             this.country = country;
             this.games = games;
             this.admin = admin;
+            this.playground = playground;
         }
 
         [Authorize]
@@ -62,7 +65,7 @@
 
             return View(new PlaygroundListingViewModel
             {
-                Playgrounds = this.games.PlaygroundsListing(gameForm.Town, gameForm.Country),
+                Playgrounds = this.playground.PlaygroundsListing(gameForm.Town, gameForm.Country),
                 Town = gameForm.Town,
                 Country = gameForm.Country,
             });
@@ -72,7 +75,7 @@
         [HttpPost]
         public IActionResult PlaygroundListing(PlaygroundListingViewModel gamePlaygroundModel)
         {
-            if (this.games.PlaygroundExist(gamePlaygroundModel.PlaygroundId) == false)
+            if (this.playground.PlaygroundExist(gamePlaygroundModel.PlaygroundId) == false)
             {
                 this.ModelState.AddModelError(nameof(gamePlaygroundModel.PlaygroundId), "Playground does not exist!");
             }
@@ -133,7 +136,7 @@
                 query.CurrentPage,
                 query.GamesPerPage);
 
-            var towns = this.games.Towns();
+            var towns = this.playground.Towns();
 
             query.TotalGames = queryResult.TotalGames;
             query.Games = queryResult.Games;

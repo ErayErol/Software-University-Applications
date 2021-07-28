@@ -1,12 +1,13 @@
 ﻿namespace MessiFinder.Models.Playgrounds
 {
     using System.Collections.Generic;
+    using Services.Playgrounds;
 
     public class PlaygroundAllQueryModel
     {
-        public const int GamesPerPage = 3;
+        public int PlaygroundsPerPage = 3;
 
-        public int CurrentPage { get; init; } = 1;
+        public int CurrentPage { get; set; } = 1;
 
         public string Town { get; set; }
 
@@ -18,6 +19,6 @@
 
         public IEnumerable<string> Towns { get; set; }
 
-        public IEnumerable<PlaygroundAllViewModel> Playgrounds { get; set; }
+        public IEnumerable<PlaygroundServiceModel> Playgrounds { get; set; }
     }
 }

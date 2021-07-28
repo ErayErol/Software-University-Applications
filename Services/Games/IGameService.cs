@@ -1,8 +1,7 @@
 ﻿namespace MessiFinder.Services.Games
 {
-    using System;
-    using System.Collections.Generic;
     using Models;
+    using System;
 
     public interface IGameService
     {
@@ -22,11 +21,5 @@
             bool ball,
             bool jerseys,
             int adminId);
-
-        IEnumerable<string> Towns();
-
-        IEnumerable<PlaygroundListingServiceModel> PlaygroundsListing(string town, string country);
-
-        bool PlaygroundExist(int playgroundId);
     }
 }

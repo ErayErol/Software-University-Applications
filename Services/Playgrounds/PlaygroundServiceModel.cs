@@ -1,6 +1,6 @@
-﻿namespace MessiFinder.Models.Playgrounds
+﻿namespace MessiFinder.Services.Playgrounds
 {
-    public class PlaygroundAllViewModel
+    public class PlaygroundServiceModel
     {
         public string Name { get; set; }
 

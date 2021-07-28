@@ -15,6 +15,7 @@ namespace MessiFinder
     using System.Security.Claims;
     using Services.Admins;
     using Services.Games;
+    using Services.Playgrounds;
     using Services.Statistics;
 
     public class Startup
@@ -65,7 +66,7 @@ namespace MessiFinder
 
             services
                 .AddTransient<IGameService, GameService>()
-                //.AddTransient<IPlaygroundService, PlaygroundService>()
+                .AddTransient<IPlaygroundService, PlaygroundService>()
                 //.AddTransient<IHomeService, HomeService>()
                 .AddTransient<IAdminService, AdminService>()
                 //.AddTransient<IUserService, UserService>()

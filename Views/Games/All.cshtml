@@ -51,7 +51,7 @@
         previousPage = 1;
     }
 
-    var maxPage = Math.Ceiling((double)Model.TotalGames / PlaygroundAllQueryModel.GamesPerPage);
+    var maxPage = Math.Ceiling((double)Model.TotalGames / Model.GamesPerPage);
     var shouldButtonBeDisabled = Model.CurrentPage == maxPage || Model.Games.Any() == false;
 }
 

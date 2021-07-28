@@ -1,28 +1,28 @@
 ﻿namespace MessiFinder.Controllers
 {
-    using Data;
-    using Data.Models;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Models.Playgrounds;
-    using System.Linq;
-    using Models;
     using Services.Admins;
     using Services.Countries;
+    using Services.Playgrounds;
 
     public class PlaygroundsController : Controller
     {
-        private readonly MessiFinderDbContext data;
         private readonly ICountryService country;
         private readonly IAdminService admin;
+        private readonly IPlaygroundService playground;
 
 
-        public PlaygroundsController(MessiFinderDbContext data, ICountryService country, IAdminService admin)
+        public PlaygroundsController(
+            ICountryService country,
+            IAdminService admin,
+            IPlaygroundService playground)
         {
-            this.data = data;
             this.country = country;
             this.admin = admin;
+            this.playground = playground;
         }
 
         [Authorize]
@@ -56,87 +56,46 @@
                 return View(playgroundModel);
             }
 
-            if (this.data.Playgrounds.Any(p =>
-                p.Name == playgroundModel.Name &&
-                p.Country == playgroundModel.Country &&
-                p.Town == playgroundModel.Town &&
-                p.Address == playgroundModel.Address))
+            if (this.playground.IsSame(
+                    playgroundModel.Name,
+                    playgroundModel.Country,
+                    playgroundModel.Town,
+                    playgroundModel.Address))
             {
-                // there are already exist playground with this name, country, town, address
+                // TODO: There are already exist playground with this name, country, town, address (render in page)
                 return View(playgroundModel);
             }
 
-            var playground = new Playground
-            {
-                Name = playgroundModel.Name,
-                Country = playgroundModel.Country,
-                Town = playgroundModel.Town,
-                Address = playgroundModel.Address,
-                ImageUrl = playgroundModel.ImageUrl,
-                PhoneNumber = playgroundModel.PhoneNumber,
-                Parking = playgroundModel.Parking,
-                Cafe = playgroundModel.Cafe,
-                Shower = playgroundModel.Shower,
-                ChangingRoom = playgroundModel.ChangingRoom,
-                Description = playgroundModel.Description,
-                AdminId = adminId
-            };
-
-            this.data.Playgrounds.Add(playground);
-            this.data.SaveChanges();
+            this.playground.Create(
+                playgroundModel.Name,
+                playgroundModel.Country,
+                playgroundModel.Town,
+                playgroundModel.Address,
+                playgroundModel.ImageUrl,
+                playgroundModel.PhoneNumber,
+                playgroundModel.Parking,
+                playgroundModel.Cafe,
+                playgroundModel.Shower,
+                playgroundModel.ChangingRoom,
+                playgroundModel.Description,
+                adminId);
 
             return RedirectToAction(nameof(All));
         }
 
         public IActionResult All([FromQuery] PlaygroundAllQueryModel query)
         {
-            var playgroundsQuery = this.data.Playgrounds.AsQueryable();
+            var queryResult = this.playground.All(
+                query.Town,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                query.PlaygroundsPerPage);
 
-            if (string.IsNullOrWhiteSpace(query.Town) == false)
-            {
-                playgroundsQuery = playgroundsQuery.Where(g => g.Town == query.Town);
-            }
+            var towns = this.playground.Towns();
 
-            if (string.IsNullOrWhiteSpace(query.SearchTerm) == false)
-            {
-                playgroundsQuery = playgroundsQuery
-                    .Where(g => g
-                        .Name
-                        .ToLower()
-                        .Contains(query.SearchTerm.ToLower()));
-            }
-
-            playgroundsQuery = query.Sorting switch
-            {
-                GameSorting.Town => playgroundsQuery.OrderBy(g => g.Town),
-                GameSorting.PlaygroundName => playgroundsQuery.OrderBy(g => g.Name),
-                GameSorting.DateCreated or _ => playgroundsQuery.OrderBy(g => g.Id)
-            };
-
-            var totalPlaygrounds = playgroundsQuery.Count();
-
-            var playgrounds = playgroundsQuery
-                .Skip((query.CurrentPage - 1) * PlaygroundAllQueryModel.GamesPerPage)
-                .Take(PlaygroundAllQueryModel.GamesPerPage)
-                .Select(p => new PlaygroundAllViewModel
-                {
-                    Town = p.Town,
-                    Country = p.Country,
-                    Name = p.Name,
-                    ImageUrl = p.ImageUrl,
-                    Description = p.Description,
-                    Address = p.Address,
-                }).AsEnumerable();
-
-            var towns = this.data
-                .Playgrounds
-                .Select(p => p.Town)
-                .Distinct()
-                .OrderBy(t => t)
-                .AsEnumerable();
-
-            query.TotalPlaygrounds = totalPlaygrounds;
-            query.Playgrounds = playgrounds;
+            query.TotalPlaygrounds = queryResult.TotalPlaygrounds;
+            query.Playgrounds = queryResult.Playgrounds;
             query.Towns = towns;
 
             return View(query);
