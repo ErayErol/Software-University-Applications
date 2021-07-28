@@ -146,6 +146,14 @@
         }
 
         [Authorize]
+        public IActionResult Mine()
+        {
+            var myGames = this.games.ByUser(this.User.Id());
+
+            return View(myGames);
+        }
+
+        [Authorize]
         public IActionResult Details(int id)
         {
             return View();

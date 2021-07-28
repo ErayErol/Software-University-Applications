@@ -1,10 +1,22 @@
 ﻿@using Microsoft.AspNetCore.Identity
+
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject IAdminService Admins
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        var userId = User.Id();
+        var userIsAdmin = Admins.IsAdmin(userId);
+        //var userIsAdmin = User.IsAdmin();
+
+        if (userIsAdmin)
+        {
+            <li class="nav-item">
+                <a class="nav-link btn btn-link" asp-area="" asp-controller="Games" asp-action="Mine">My Games</a>
+            </li>
+        }
         <li class="nav-item">
             <a class="nav-link btn btn-link" asp-area="" asp-controller="Admins" asp-action="Become">Become Admin</a>
         </li>

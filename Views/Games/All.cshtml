@@ -79,24 +79,7 @@
 <div class="row">
     @if (Model.Games.Any())
     {
-        @foreach (var game in Model.Games)
-        {
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <img class="card-img-top" src="@game.Playground.ImageUrl" alt="@game.Playground.Name @game.Playground.Country - @game.Playground.Town">
-                    <div class="card-body">
-                        <div class="text-center mb-4">
-                            <div class="card-title h4-like">@game.Playground.Name</div>
-                        </div>
-                        <h6 class="card-title">Place : @game.Playground.Country, @game.Playground.Town</h6>
-                        <h6 class="card-title">Date : @game.Date.ToString("g")</h6>
-                        <div class="text-center mt-4">
-                            <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn">View More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+        <partial name="_GamesPartial" model="@Model.Games" />
     }
     else
     {

@@ -49,15 +49,9 @@
 
             var totalGames = gamesQuery.Count();
 
-            var games = gamesQuery
+            var games = GetGames(gamesQuery
                 .Skip((currentPage - 1) * gamesPerPage)
-                .Take(gamesPerPage)
-                .Select(g => new GameListingServiceModel
-                {
-                    Id = g.Id,
-                    Playground = g.Playground,
-                    Date = g.Date,
-                });
+                .Take(gamesPerPage));
 
             return new GameQueryServiceModel
             {
@@ -95,5 +89,20 @@
 
             return game.Id;
         }
+
+        public IEnumerable<GameListingServiceModel> ByUser(string userId)
+            => GetGames(this.data
+                .Games
+                .Where(g => g.Admin.UserId == userId));
+
+        private static IEnumerable<GameListingServiceModel> GetGames(IQueryable<Game> gameQuery)
+            => gameQuery
+                .Select(g => new GameListingServiceModel
+                {
+                    Id = g.Id,
+                    Playground = g.Playground,
+                    Date = g.Date,
+                })
+                .ToList();
     }
 }

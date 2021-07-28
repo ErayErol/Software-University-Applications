@@ -2,6 +2,7 @@
 {
     using Models;
     using System;
+    using System.Collections.Generic;
 
     public interface IGameService
     {
@@ -21,5 +22,7 @@
             bool ball,
             bool jerseys,
             int adminId);
+
+        IEnumerable<GameListingServiceModel> ByUser(string userId);
     }
 }
