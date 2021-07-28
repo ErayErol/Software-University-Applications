@@ -1,24 +1,28 @@
 ﻿namespace MessiFinder.Controllers
 {
-    using System.Linq;
     using Data;
     using Data.Models;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Models.Admins;
+    using Services.Admins;
 
     public class AdminsController : Controller
     {
         private readonly MessiFinderDbContext data;
+        private readonly IAdminService admin;
 
-        public AdminsController(MessiFinderDbContext data)
-            => this.data = data;
+        public AdminsController(MessiFinderDbContext data, IAdminService admin)
+        {
+            this.data = data;
+            this.admin = admin;
+        }
 
         [Authorize]
         public IActionResult Become()
         {
-            if (this.UserIsAdmin())
+            if (this.admin.IsAdmin(this.User.Id()))
             {
                 return View();
             }
@@ -52,10 +56,5 @@
 
             return RedirectToAction("All", "Games");
         }
-
-        private bool UserIsAdmin()
-            => this.data
-                .Admins
-                .Any(d => d.UserId == this.User.Id());
     }
 }

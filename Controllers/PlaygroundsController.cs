@@ -8,23 +8,27 @@
     using Models.Playgrounds;
     using System.Linq;
     using Models;
+    using Services.Admins;
     using Services.Countries;
 
     public class PlaygroundsController : Controller
     {
         private readonly MessiFinderDbContext data;
         private readonly ICountryService country;
+        private readonly IAdminService admin;
 
-        public PlaygroundsController(MessiFinderDbContext data, ICountryService country)
+
+        public PlaygroundsController(MessiFinderDbContext data, ICountryService country, IAdminService admin)
         {
             this.data = data;
             this.country = country;
+            this.admin = admin;
         }
 
         [Authorize]
         public IActionResult Create()
         {
-            if (this.UserIsAdmin() == false)
+            if (this.admin.IsAdmin(this.User.Id()) == false)
             {
                 return View();
             }
@@ -39,11 +43,7 @@
         [HttpPost]
         public IActionResult Create(PlaygroundCreateFormModel playgroundModel)
         {
-            var adminId = this.data
-                .Admins
-                .Where(d => d.UserId == this.User.Id())
-                .Select(d => d.Id)
-                .FirstOrDefault();
+            var adminId = this.admin.IdByUser(this.User.Id());
 
             if (adminId == 0)
             {
@@ -141,10 +141,5 @@
 
             return View(query);
         }
-
-        private bool UserIsAdmin()
-            => this.data
-                .Admins
-                .Any(d => d.UserId == this.User.Id());
     }
 }

@@ -1,6 +1,5 @@
 ﻿namespace MessiFinder.Controllers
 {
-    using Data;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -8,24 +7,28 @@
     using Services.Countries;
     using Services.Games;
     using System.Linq;
+    using Services.Admins;
 
     public class GamesController : Controller
     {
-        private readonly MessiFinderDbContext data;
         private readonly ICountryService country;
         private readonly IGameService games;
+        private readonly IAdminService admin;
 
-        public GamesController(MessiFinderDbContext data, ICountryService country, IGameService games)
+        public GamesController(
+            ICountryService country, 
+            IGameService games, 
+            IAdminService admin)
         {
-            this.data = data;
             this.country = country;
             this.games = games;
+            this.admin = admin;
         }
 
         [Authorize]
         public IActionResult CountryListing()
         {
-            if (this.UserIsAdmin() == false)
+            if (this.admin.IsAdmin(this.User.Id()) == false)
             {
                 return View();
             }
@@ -52,6 +55,7 @@
         [Authorize]
         public IActionResult PlaygroundListing(CreateGameFirstStepViewModel gameForm)
         {
+            // TODO : Do this for all
             gameForm.Town =
                 gameForm.Town[0].ToString().ToUpper()
                 + gameForm.Town.Substring(1, gameForm.Town.Length - 1).ToLower();
@@ -78,7 +82,7 @@
 
         public IActionResult Create(PlaygroundListingViewModel gameForm)
         {
-            if (this.UserIsAdmin() == false)
+            if (this.admin.IsAdmin(this.User.Id()) == false)
             {
                 return View();
             }
@@ -93,11 +97,7 @@
         [HttpPost]
         public IActionResult Create(GameCreateFormModel gameCreateModel)
         {
-            var adminId = this.data
-                .Admins
-                .Where(d => d.UserId == this.User.Id())
-                .Select(d => d.Id)
-                .FirstOrDefault();
+            var adminId = this.admin.IdByUser(this.User.Id());
 
             if (adminId == 0)
             {
@@ -108,6 +108,8 @@
             {
                 return View(gameCreateModel);
             }
+
+            // TODO: There is already exist game in this playground in this date
 
             this.games.Create(
                 gameCreateModel.PlaygroundId,
@@ -145,10 +147,5 @@
         {
             return View();
         }
-
-        private bool UserIsAdmin()
-            => this.data
-                .Admins
-                .Any(d => d.UserId == this.User.Id());
     }
 }
