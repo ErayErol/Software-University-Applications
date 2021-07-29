@@ -16,7 +16,7 @@
             using var scopeService = app.ApplicationServices.CreateScope();
 
             var data = scopeService.ServiceProvider.GetService<MessiFinderDbContext>();
-            var passwordHasher = scopeService.ServiceProvider.GetService<IPasswordHasher<IdentityUser>>();
+            var passwordHasher = scopeService.ServiceProvider.GetService<IPasswordHasher<User>>();
 
             data?.Database.Migrate();
 
@@ -25,13 +25,13 @@
             return app;
         }
 
-        private static void Seeds(MessiFinderDbContext data, IPasswordHasher<IdentityUser> passwordHasher)
+        private static void Seeds(MessiFinderDbContext data, IPasswordHasher<User> passwordHasher)
         {
             if (data.Users.Any() == false)
             {
                 for (var i = 1; i <= 3; i++)
                 {
-                    var applicationUser = new IdentityUser
+                    var applicationUser = new User
                     {
                         UserName = $"zwp{i}@gmail.com",
                         Email = $"zwp{i}@gmail.com",
@@ -52,7 +52,7 @@
             {
                 var user = data.Users.FirstOrDefault(x => x.UserName == "zwp1@gmail.com");
 
-                data.Admins.Add(new Admin()
+                data.Admins.Add(new Admin
                 {
                     PhoneNumber = "0886911492",
                     Name = "zwpAdmin",

@@ -1,22 +1,23 @@
 namespace MessiFinder
 {
+    using Data.Models;
     using Infrastructure;
     using MessiFinder.Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Services.Countries;
-    using System.Security.Claims;
     using Services.Admins;
+    using Services.Countries;
     using Services.Games;
     using Services.Playgrounds;
     using Services.Statistics;
+    using System.Security.Claims;
+    using Microsoft.AspNetCore.Identity;
 
     public class Startup
     {
@@ -37,13 +38,14 @@ namespace MessiFinder
                 .AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDefaultIdentity<IdentityUser>(options =>
+                .AddDefaultIdentity<User>(options =>
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
                 })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MessiFinderDbContext>();
 
             // Cloudinary Setup

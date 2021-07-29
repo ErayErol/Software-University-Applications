@@ -5,7 +5,7 @@
     using Microsoft.EntityFrameworkCore;
     using Models;
 
-    public class MessiFinderDbContext : IdentityDbContext
+    public class MessiFinderDbContext : IdentityDbContext<User>
     {
         public MessiFinderDbContext(DbContextOptions<MessiFinderDbContext> options)
             : base(options)
@@ -38,7 +38,7 @@
 
             builder
                 .Entity<Admin>()
-                .HasOne<IdentityUser>()
+                .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Admin>(a => a.UserId)
                 .OnDelete(DeleteBehavior.Restrict);

@@ -136,8 +136,6 @@
                 return false;
             }
 
-
-
             // TODO: maybe date and int have to be nullable
 
             game.Date = date.Value;
@@ -146,7 +144,6 @@
             game.Jerseys = jerseys;
             game.Goalkeeper = goalkeeper;
             game.Description = description;
-            //game.PlaygroundId = playgroundId;
 
             this.data.SaveChanges();
 
