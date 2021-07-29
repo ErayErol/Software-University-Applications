@@ -24,5 +24,18 @@
             int adminId);
 
         IEnumerable<GameListingServiceModel> ByUser(string userId);
+
+        GameDetailsServiceModel Details(int id);
+
+        bool IsByAdmin(int id, int adminId);
+
+        bool Edit(
+            int id,
+            DateTime? date,
+            int? numberOfPlayers,
+            bool ball,
+            bool jerseys,
+            bool goalkeeper,
+            string description);
     }
 }

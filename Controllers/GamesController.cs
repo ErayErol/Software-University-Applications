@@ -4,41 +4,40 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Models.Games;
+    using Services.Admins;
     using Services.Countries;
     using Services.Games;
-    using System.Linq;
-    using Services.Admins;
     using Services.Playgrounds;
 
     public class GamesController : Controller
     {
-        private readonly ICountryService country;
+        private readonly ICountryService countries;
         private readonly IGameService games;
-        private readonly IAdminService admin;
-        private readonly IPlaygroundService playground;
+        private readonly IAdminService admins;
+        private readonly IPlaygroundService playgrounds;
 
         public GamesController(
-            ICountryService country, 
+            ICountryService countries, 
             IGameService games, 
-            IAdminService admin, IPlaygroundService playground)
+            IAdminService admins, IPlaygroundService playgrounds)
         {
-            this.country = country;
+            this.countries = countries;
             this.games = games;
-            this.admin = admin;
-            this.playground = playground;
+            this.admins = admins;
+            this.playgrounds = playgrounds;
         }
 
         [Authorize]
         public IActionResult CountryListing()
         {
-            if (this.admin.IsAdmin(this.User.Id()) == false)
+            if (this.admins.IsAdmin(this.User.Id()) == false)
             {
                 return View();
             }
 
             return View(new CreateGameFirstStepViewModel
             {
-                Countries = this.country.All(),
+                Countries = this.countries.All(),
             });
         }
 
@@ -48,7 +47,7 @@
         {
             if (ModelState.IsValid == false)
             {
-                gameForm.Countries = this.country.All();
+                gameForm.Countries = this.countries.All();
                 return View(gameForm);
             }
 
@@ -65,7 +64,7 @@
 
             return View(new PlaygroundListingViewModel
             {
-                Playgrounds = this.playground.PlaygroundsListing(gameForm.Town, gameForm.Country),
+                Playgrounds = this.playgrounds.PlaygroundsListing(gameForm.Town, gameForm.Country),
                 Town = gameForm.Town,
                 Country = gameForm.Country,
             });
@@ -75,7 +74,7 @@
         [HttpPost]
         public IActionResult PlaygroundListing(PlaygroundListingViewModel gamePlaygroundModel)
         {
-            if (this.playground.PlaygroundExist(gamePlaygroundModel.PlaygroundId) == false)
+            if (this.playgrounds.PlaygroundExist(gamePlaygroundModel.PlaygroundId) == false)
             {
                 this.ModelState.AddModelError(nameof(gamePlaygroundModel.PlaygroundId), "Playground does not exist!");
             }
@@ -85,12 +84,12 @@
 
         public IActionResult Create(PlaygroundListingViewModel gameForm)
         {
-            if (this.admin.IsAdmin(this.User.Id()) == false)
+            if (this.admins.IsAdmin(this.User.Id()) == false)
             {
                 return View();
             }
 
-            return View(new GameCreateFormModel
+            return View(new GameFormModel
             {
                 PlaygroundId = gameForm.PlaygroundId,
             });
@@ -98,9 +97,9 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(GameCreateFormModel gameCreateModel)
+        public IActionResult Create(GameFormModel gameCreateModel)
         {
-            var adminId = this.admin.IdByUser(this.User.Id());
+            var adminId = this.admins.IdByUser(this.User.Id());
 
             if (adminId == 0)
             {
@@ -112,7 +111,7 @@
                 return View(gameCreateModel);
             }
 
-            // TODO: There is already exist game in this playground in this date
+            // TODO: There is already exist game in this playgrounds in this date
 
             this.games.Create(
                 gameCreateModel.PlaygroundId,
@@ -136,7 +135,7 @@
                 query.CurrentPage,
                 query.GamesPerPage);
 
-            var towns = this.playground.Towns();
+            var towns = this.playgrounds.Towns();
 
             query.TotalGames = queryResult.TotalGames;
             query.Games = queryResult.Games;
@@ -154,9 +153,74 @@
         }
 
         [Authorize]
-        public IActionResult Details(int id)
+        public IActionResult Edit(int id)
         {
-            return View();
+            // TODO: This edit only Game, but playground is same 
+            // When we are in edit page, add button for edit playground
+            // and then return RedirectToAction(nameof(EditPlayground));
+            var userId = this.User.Id();
+
+            if (!this.admins.IsAdmin(userId))
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
+            var game = this.games.Details(id);
+
+            if (game.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            return View(new GameFormModel
+            {
+                PlaygroundId = game.Playground.Id,
+                Description = game.Description,
+                Ball = game.Ball,
+                Date = game.Date,
+                Goalkeeper = game.Goalkeeper,
+                Jerseys = game.Jerseys,
+                NumberOfPlayers = game.NumberOfPlayers,
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int id, GameFormModel game)
+        {
+            var adminId = this.admins.IdByUser(this.User.Id());
+
+            if (adminId == 0)
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
+            // TODO: Do this check for EditPlayground
+            //if (this.playgrounds.PlaygroundExist(game.PlaygroundId) == false)
+            //{
+            //    this.ModelState.AddModelError(nameof(game.PlaygroundId), "Playground does not exist.");
+            //}
+
+            if (!ModelState.IsValid)
+            {
+                return View(game);
+            }
+
+            if (this.games.IsByAdmin(id, adminId) == false)
+            {
+                return BadRequest();
+            }
+
+            this.games.Edit(
+                id,
+                game.Date,
+                game.NumberOfPlayers,
+                game.Ball,
+                game.Jerseys,
+                game.Goalkeeper,
+                game.Description);
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

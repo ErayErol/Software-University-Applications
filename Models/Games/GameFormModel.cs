@@ -1,10 +1,11 @@
 ﻿namespace MessiFinder.Models.Games
 {
     using System.ComponentModel.DataAnnotations;
+
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Game;
 
-    public class GameCreateFormModel
+    public class GameFormModel
     {
         [Display(Name = "Playground")]
         public int PlaygroundId { get; set; }

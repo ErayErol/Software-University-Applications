@@ -95,6 +95,64 @@
                 .Games
                 .Where(g => g.Admin.UserId == userId));
 
+        public GameDetailsServiceModel Details(int id)
+            => this.data
+                .Games
+                .Where(g => g.Id == id)
+                .Select(g => new GameDetailsServiceModel
+                {
+                    Id = g.Id,
+                    Playground = g.Playground,
+                    Date = g.Date,
+                    Description = g.Description,
+                    AdminId = g.AdminId,
+                    AdminName = g.Admin.Name,
+                    Ball = g.Ball,
+                    Goalkeeper = g.Goalkeeper,
+                    Jerseys = g.Jerseys,
+                    NumberOfPlayers = g.NumberOfPlayers,
+                    UserId = g.Admin.UserId,
+
+                }).FirstOrDefault();
+
+        public bool IsByAdmin(int id, int adminId)
+            => this.data
+                .Games
+                .Any(c => c.Id == id && c.AdminId == adminId);
+
+        public bool Edit(
+            int id,
+            DateTime? date,
+            int? numberOfPlayers,
+            bool ball,
+            bool jerseys,
+            bool goalkeeper,
+            string description)
+        {
+            var game = this.data.Games.Find(id);
+
+            if (game == null)
+            {
+                return false;
+            }
+
+
+
+            // TODO: maybe date and int have to be nullable
+
+            game.Date = date.Value;
+            game.NumberOfPlayers = numberOfPlayers.Value;
+            game.Ball = ball;
+            game.Jerseys = jerseys;
+            game.Goalkeeper = goalkeeper;
+            game.Description = description;
+            //game.PlaygroundId = playgroundId;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
         private static IEnumerable<GameListingServiceModel> GetGames(IQueryable<Game> gameQuery)
             => gameQuery
                 .Select(g => new GameListingServiceModel
