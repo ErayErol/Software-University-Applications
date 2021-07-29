@@ -30,7 +30,7 @@
         [Authorize]
         public IActionResult CountryListing()
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false)
+            if (this.admins.IsAdmin(this.User.Id()) == false && this.User.IsManager() == false)
             {
                 return View();
             }
@@ -84,7 +84,7 @@
 
         public IActionResult Create(PlaygroundListingViewModel gameForm)
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false)
+            if (this.admins.IsAdmin(this.User.Id()) == false && this.User.IsManager() == false)
             {
                 return View();
             }
@@ -101,7 +101,7 @@
         {
             var adminId = this.admins.IdByUser(this.User.Id());
 
-            if (adminId == 0)
+            if (adminId == 0 && this.User.IsManager() == false)
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
@@ -160,14 +160,14 @@
             // and then return RedirectToAction(nameof(EditPlayground));
             var userId = this.User.Id();
 
-            if (!this.admins.IsAdmin(userId))
+            if (this.admins.IsAdmin(userId) == false && this.User.IsManager() == false)
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
             var game = this.games.Details(id);
 
-            if (game.UserId != userId)
+            if (game.UserId != userId && this.User.IsManager() == false)
             {
                 return Unauthorized();
             }
@@ -190,7 +190,7 @@
         {
             var adminId = this.admins.IdByUser(this.User.Id());
 
-            if (adminId == 0)
+            if (adminId == 0 && this.User.IsManager() == false)
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
@@ -206,7 +206,7 @@
                 return View(game);
             }
 
-            if (this.games.IsByAdmin(id, adminId) == false)
+            if (this.games.IsByAdmin(id, adminId) == false && this.User.IsManager() == false)
             {
                 return BadRequest();
             }

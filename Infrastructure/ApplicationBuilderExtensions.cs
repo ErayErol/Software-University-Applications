@@ -8,21 +8,69 @@
     using Microsoft.Extensions.DependencyInjection;
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
+
+    using static Areas.Manager.ManagerConstants;
 
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
         {
-            using var scopeService = app.ApplicationServices.CreateScope();
+            using var serviceScope = app.ApplicationServices.CreateScope();
 
-            var data = scopeService.ServiceProvider.GetService<MessiFinderDbContext>();
-            var passwordHasher = scopeService.ServiceProvider.GetService<IPasswordHasher<User>>();
+            var services = serviceScope.ServiceProvider;
 
-            data?.Database.Migrate();
+            var data = serviceScope.ServiceProvider.GetService<MessiFinderDbContext>();
+            var passwordHasher = serviceScope.ServiceProvider.GetService<IPasswordHasher<User>>();
+
+            MigrateDatabase(services);
 
             Seeds(data, passwordHasher);
+            SeedManager(services);
 
             return app;
+        }
+
+        private static void MigrateDatabase(IServiceProvider services)
+        {
+            var data = services.GetRequiredService<MessiFinderDbContext>();
+
+            data.Database.Migrate();
+        }
+
+        private static void SeedManager(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            Task
+                .Run(async () =>
+                {
+                    if (await roleManager.RoleExistsAsync(ManagerRoleName))
+                    {
+                        return;
+                    }
+
+                    var role = new IdentityRole { Name = ManagerRoleName };
+
+                    await roleManager.CreateAsync(role);
+
+                    const string adminEmail = "admin@msf.com";
+                    const string adminPassword = "admin@msf.com";
+
+                    var user = new User
+                    {
+                        Email = adminEmail,
+                        UserName = adminEmail,
+                        FullName = AreaName
+                    };
+
+                    await userManager.CreateAsync(user, adminPassword);
+
+                    await userManager.AddToRoleAsync(user, role.Name);
+                })
+                .GetAwaiter()
+                .GetResult();
         }
 
         private static void Seeds(MessiFinderDbContext data, IPasswordHasher<User> passwordHasher)

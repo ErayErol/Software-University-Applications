@@ -17,8 +17,7 @@
             bool cafe,
             bool shower,
             bool changingRoom,
-            string description,
-            int adminId);
+            string description);
 
         bool IsSame(
             string name,

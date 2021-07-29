@@ -28,8 +28,7 @@
             bool cafe,
             bool shower,
             bool changingRoom,
-            string description,
-            int adminId)
+            string description)
         {
             var playground = new Playground
             {
@@ -44,7 +43,6 @@
                 Shower = shower,
                 ChangingRoom = changingRoom,
                 Description = description,
-                AdminId = adminId
             };
 
             this.data.Playgrounds.Add(playground);

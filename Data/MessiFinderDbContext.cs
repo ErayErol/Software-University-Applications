@@ -1,6 +1,5 @@
 ﻿namespace MessiFinder.Data
 {
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using Models;
@@ -19,6 +18,8 @@
         public virtual DbSet<Playground> Playgrounds { get; init; }
 
         public virtual DbSet<Admin> Admins { get; init; }
+        
+        public virtual DbSet<User> Users { get; init; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

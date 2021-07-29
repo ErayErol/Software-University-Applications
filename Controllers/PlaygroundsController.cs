@@ -28,7 +28,7 @@
         [Authorize]
         public IActionResult Create()
         {
-            if (this.admin.IsAdmin(this.User.Id()) == false)
+            if (this.User.IsManager() == false)
             {
                 return View();
             }
@@ -43,9 +43,7 @@
         [HttpPost]
         public IActionResult Create(PlaygroundCreateFormModel playgroundModel)
         {
-            var adminId = this.admin.IdByUser(this.User.Id());
-
-            if (adminId == 0)
+            if (this.User.IsManager() == false)
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
@@ -77,8 +75,7 @@
                 playgroundModel.Cafe,
                 playgroundModel.Shower,
                 playgroundModel.ChangingRoom,
-                playgroundModel.Description,
-                adminId);
+                playgroundModel.Description);
 
             return RedirectToAction(nameof(All));
         }

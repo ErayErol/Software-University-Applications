@@ -1,5 +1,6 @@
 ﻿@using MessiFinder.Data.Models
 @using Microsoft.AspNetCore.Identity
+@using MessiFinder.Areas.Manager
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -10,17 +11,20 @@
     {
         var userId = User.Id();
         var userIsAdmin = Admins.IsAdmin(userId);
-        //var userIsAdmin = User.IsAdmin();
+        var userIsManager = User.IsManager();
 
-        if (userIsAdmin)
+        if (userIsAdmin && userIsManager == false)
         {
             <li class="nav-item">
                 <a class="nav-link btn btn-link" asp-area="" asp-controller="Games" asp-action="Mine">My Games</a>
             </li>
         }
-        <li class="nav-item">
-            <a class="nav-link btn btn-link" asp-area="" asp-controller="Admins" asp-action="Become">Become Admin</a>
-        </li>
+        else if (userIsManager == false)
+        {
+            <li class="nav-item">
+                <a class="nav-link btn btn-link" asp-area="" asp-controller="Admins" asp-action="Become">Become Admin</a>
+            </li>
+        }
         <li class="nav-item">
             <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account</a>
         </li>

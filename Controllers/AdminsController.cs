@@ -1,6 +1,5 @@
 ﻿namespace MessiFinder.Controllers
 {
-    using Data;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -9,12 +8,10 @@
 
     public class AdminsController : Controller
     {
-        private readonly MessiFinderDbContext data;
         private readonly IAdminService admin;
 
-        public AdminsController(MessiFinderDbContext data, IAdminService admin)
+        public AdminsController(IAdminService admin)
         {
-            this.data = data;
             this.admin = admin;
         }
 
