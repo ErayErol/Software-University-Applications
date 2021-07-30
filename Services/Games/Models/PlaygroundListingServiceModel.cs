@@ -1,4 +1,4 @@
-﻿namespace MessiFinder.Services.Games
+﻿namespace MessiFinder.Services.Games.Models
 {
     public class PlaygroundListingServiceModel
     {

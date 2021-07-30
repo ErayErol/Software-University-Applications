@@ -3,6 +3,7 @@
     using Models;
     using System;
     using System.Collections.Generic;
+    using MessiFinder.Models;
 
     public interface IGameService
     {

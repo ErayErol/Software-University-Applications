@@ -1,5 +1,6 @@
 ﻿namespace MessiFinder.Controllers
 {
+    using AutoMapper;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -15,16 +16,20 @@
         private readonly IGameService games;
         private readonly IAdminService admins;
         private readonly IPlaygroundService playgrounds;
+        private readonly IMapper mapper;
 
         public GamesController(
-            ICountryService countries, 
-            IGameService games, 
-            IAdminService admins, IPlaygroundService playgrounds)
+            ICountryService countries,
+            IGameService games,
+            IAdminService admins,
+            IPlaygroundService playgrounds,
+            IMapper mapper)
         {
             this.countries = countries;
             this.games = games;
             this.admins = admins;
             this.playgrounds = playgrounds;
+            this.mapper = mapper;
         }
 
         [Authorize]
@@ -172,16 +177,10 @@
                 return Unauthorized();
             }
 
-            return View(new GameFormModel
-            {
-                PlaygroundId = game.Playground.Id,
-                Description = game.Description,
-                Ball = game.Ball,
-                Date = game.Date,
-                Goalkeeper = game.Goalkeeper,
-                Jerseys = game.Jerseys,
-                NumberOfPlayers = game.NumberOfPlayers,
-            });
+            var gameForm = this.mapper.Map<GameFormModel>(game);
+            //PlaygroundId = game.Playground.Id,
+
+            return View(gameForm);
         }
 
         [HttpPost]

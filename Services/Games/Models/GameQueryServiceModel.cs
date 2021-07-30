@@ -1,4 +1,4 @@
-﻿namespace MessiFinder.Services.Games
+﻿namespace MessiFinder.Services.Games.Models
 {
     using System.Collections.Generic;
 

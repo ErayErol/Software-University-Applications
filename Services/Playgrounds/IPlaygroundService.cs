@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Games;
+    using Games.Models;
     using Models;
 
     public interface IPlaygroundService

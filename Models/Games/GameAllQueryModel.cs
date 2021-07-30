@@ -1,7 +1,7 @@
 ﻿namespace MessiFinder.Models.Games
 {
+    using Services.Games.Models;
     using System.Collections.Generic;
-    using Services.Games;
 
     public class GameAllQueryModel
     {

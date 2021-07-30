@@ -6,14 +6,19 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
+    using MessiFinder.Models;
 
     public class GameService : IGameService
     {
         private readonly MessiFinderDbContext data;
+        private readonly IMapper mapper;
 
-        public GameService(MessiFinderDbContext data)
+        public GameService(MessiFinderDbContext data, IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper;
         }
 
         public GameQueryServiceModel All(
@@ -99,21 +104,8 @@
             => this.data
                 .Games
                 .Where(g => g.Id == id)
-                .Select(g => new GameDetailsServiceModel
-                {
-                    Id = g.Id,
-                    Playground = g.Playground,
-                    Date = g.Date,
-                    Description = g.Description,
-                    AdminId = g.AdminId,
-                    AdminName = g.Admin.Name,
-                    Ball = g.Ball,
-                    Goalkeeper = g.Goalkeeper,
-                    Jerseys = g.Jerseys,
-                    NumberOfPlayers = g.NumberOfPlayers,
-                    UserId = g.Admin.UserId,
-
-                }).FirstOrDefault();
+                .ProjectTo<GameDetailsServiceModel>(this.mapper.ConfigurationProvider)
+                .FirstOrDefault();
 
         public bool IsByAdmin(int id, int adminId)
             => this.data

@@ -5,30 +5,30 @@
     using Models.Home;
     using Services.Statistics;
     using System.Linq;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
 
     public class HomeController : Controller
     {
         private readonly MessiFinderDbContext data;
         private readonly IStatisticsService statistics;
+        private readonly IMapper mapper;
 
         public HomeController(
             MessiFinderDbContext data, 
-            IStatisticsService statistics)
+            IStatisticsService statistics,
+            IMapper mapper)
         {
             this.data = data;
             this.statistics = statistics;
+            this.mapper = mapper;
         }
 
         public IActionResult Index()
         {
             var games = this.data
                 .Games
-                .Select(p => new GameIndexViewModel
-                {
-                    Id = p.Id,
-                    Playground = p.Playground,
-                    Date = p.Date,
-                })
+                .ProjectTo<GameIndexViewModel>(this.mapper.ConfigurationProvider)
                 .OrderByDescending(g => g.Id)
                 .Take(3)
                 .ToList();

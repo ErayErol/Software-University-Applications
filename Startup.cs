@@ -48,6 +48,8 @@ namespace MessiFinder
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MessiFinderDbContext>();
 
+            services.AddAutoMapper(typeof(Startup));
+
             // Cloudinary Setup
             //Cloudinary cloudinary = new Cloudinary(new Account(
             //    CloudName, // this.configuration["Cloudinary:CloudName"],
