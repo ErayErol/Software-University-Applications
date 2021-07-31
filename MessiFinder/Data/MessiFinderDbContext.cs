@@ -19,8 +19,6 @@
 
         public virtual DbSet<Admin> Admins { get; init; }
         
-        public virtual DbSet<User> Users { get; init; }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
