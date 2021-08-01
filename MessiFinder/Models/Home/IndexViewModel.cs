@@ -1,6 +1,7 @@
 ﻿namespace MessiFinder.Models.Home
 {
     using System.Collections.Generic;
+    using Services.Games.Models;
 
     public class IndexViewModel
     {
@@ -10,6 +11,6 @@
         
         public int TotalUsers { get; set; }
 
-        public List<GameIndexViewModel> Games { get; set; }
+        public List<GameListingServiceModel> Games { get; set; }
     }
 }

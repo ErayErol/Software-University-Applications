@@ -25,6 +25,8 @@
             int adminId);
 
         IEnumerable<GameListingServiceModel> ByUser(string userId);
+        
+        List<GameListingServiceModel> Latest();
 
         GameDetailsServiceModel Details(int id);
 

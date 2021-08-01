@@ -13,12 +13,12 @@
     public class GameService : IGameService
     {
         private readonly MessiFinderDbContext data;
-        private readonly IMapper mapper;
+        private readonly IConfigurationProvider mapper;
 
         public GameService(MessiFinderDbContext data, IMapper mapper)
         {
             this.data = data;
-            this.mapper = mapper;
+            this.mapper = mapper.ConfigurationProvider;
         }
 
         public GameQueryServiceModel All(
@@ -100,11 +100,19 @@
                 .Games
                 .Where(g => g.Admin.UserId == userId));
 
+        public List<GameListingServiceModel> Latest()
+            => this.data
+                .Games
+                .OrderByDescending(g => g.Id)
+                .ProjectTo<GameListingServiceModel>(this.mapper)
+                .Take(3)
+                .ToList();
+
         public GameDetailsServiceModel Details(int id)
             => this.data
                 .Games
                 .Where(g => g.Id == id)
-                .ProjectTo<GameDetailsServiceModel>(this.mapper.ConfigurationProvider)
+                .ProjectTo<GameDetailsServiceModel>(this.mapper)
                 .FirstOrDefault();
 
         public bool IsByAdmin(int id, int adminId)

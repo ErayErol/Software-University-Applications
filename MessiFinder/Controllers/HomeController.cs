@@ -1,37 +1,32 @@
 ﻿namespace MessiFinder.Controllers
 {
-    using Data;
+    using System.Linq;
     using Microsoft.AspNetCore.Mvc;
     using Models.Home;
+    using Services.Games;
     using Services.Statistics;
-    using System.Linq;
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
 
     public class HomeController : Controller
     {
-        private readonly MessiFinderDbContext data;
+        private readonly IGameService game;
         private readonly IStatisticsService statistics;
-        private readonly IMapper mapper;
 
         public HomeController(
-            MessiFinderDbContext data, 
-            IStatisticsService statistics,
-            IMapper mapper)
+            IGameService game,
+            IStatisticsService statistics)
         {
-            this.data = data;
+            this.game = game;
             this.statistics = statistics;
-            this.mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var games = this.data
-                .Games
-                .ProjectTo<GameIndexViewModel>(this.mapper.ConfigurationProvider)
-                .OrderByDescending(g => g.Id)
-                .Take(3)
+            var games = this.game
+                .Latest()
                 .ToList();
+
+            var details = this.game
+                .Details(1);
 
             var totalStatistics = this.statistics.Total();
 

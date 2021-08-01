@@ -178,7 +178,6 @@
             }
 
             var gameForm = this.mapper.Map<GameFormModel>(game);
-            //PlaygroundId = game.Playground.Id,
 
             return View(gameForm);
         }
