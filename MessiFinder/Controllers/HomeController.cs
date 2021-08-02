@@ -25,9 +25,6 @@
                 .Latest()
                 .ToList();
 
-            var details = this.game
-                .Details(1);
-
             var totalStatistics = this.statistics.Total();
 
             return View(new IndexViewModel

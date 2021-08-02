@@ -1,6 +1,5 @@
 ﻿namespace MessiFinder.Test.Controllers
 {
-    using System.Linq;
     using Data.Models;
     using FluentAssertions;
     using MessiFinder.Controllers;
@@ -9,7 +8,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Mocks;
     using Models.Home;
-    using MyTested.AspNetCore.Mvc;
+    using System.Linq;
     using Xunit;
 
     public class HomeControllerTest
@@ -36,7 +35,10 @@
 
             var games = Enumerable
                 .Range(0, 10)
-                .Select(i => new Game())
+                .Select(i => new Game
+                {
+                    Playground = new Playground()
+                })
                 .ToList();
 
             data.Games.AddRange(games);
@@ -75,7 +77,7 @@
                 .As<IndexViewModel>()
                 .Invoking(model =>
                 {
-                    model.Games.Should().HaveCount(0);
+                    model.Games.Should().HaveCount(3);
                     model.TotalGames.Should().Be(10);
                     model.TotalUsers.Should().Be(1);
                 })

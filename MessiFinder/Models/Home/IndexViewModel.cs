@@ -11,6 +11,6 @@
         
         public int TotalUsers { get; set; }
 
-        public List<GameListingServiceModel> Games { get; set; }
+        public IList<GameListingServiceModel> Games { get; set; }
     }
 }

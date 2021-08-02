@@ -100,13 +100,20 @@
                 .Games
                 .Where(g => g.Admin.UserId == userId));
 
-        public List<GameListingServiceModel> Latest()
-            => this.data
-                .Games
-                .OrderByDescending(g => g.Id)
-                .ProjectTo<GameListingServiceModel>(this.mapper)
-                .Take(3)
-                .ToList();
+        public IEnumerable<GameListingServiceModel> Latest()
+        {
+            var games = this.data.Games;
+
+            var orderGames = games.OrderByDescending(g => g.Id);
+
+            var mappingGame = orderGames.ProjectTo<GameListingServiceModel>(this.mapper);
+
+            var takeLatestGame = mappingGame.Take(3);
+
+            var toList = takeLatestGame.ToList();
+
+            return toList;
+        }
 
         public GameDetailsServiceModel Details(int id)
             => this.data

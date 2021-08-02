@@ -9,11 +9,11 @@
     {
         public MappingProfile()
         {
-            this.CreateMap<GameDetailsServiceModel, GameFormModel>();
             this.CreateMap<Game, GameListingServiceModel>();
+            this.CreateMap<GameDetailsServiceModel, GameFormModel>();
 
             this.CreateMap<Game, GameDetailsServiceModel>()
-                .ForMember(c => c.UserId, cfg => cfg.MapFrom(c => c.Admin.UserId));
+                .ForMember(gDSM => gDSM.UserId, cfg => cfg.MapFrom(g => g.Admin.UserId));
         }
     }
 }

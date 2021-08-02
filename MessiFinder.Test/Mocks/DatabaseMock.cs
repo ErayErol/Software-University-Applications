@@ -11,7 +11,7 @@
             get
             {
                 var options = new DbContextOptionsBuilder<MessiFinderDbContext>()
-                    .UseInMemoryDatabase(Guid.NewGuid().ToString()) // Give a Unique name to the DB
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options;
 
                 return new MessiFinderDbContext(options);

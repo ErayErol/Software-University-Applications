@@ -26,7 +26,7 @@
 
         IEnumerable<GameListingServiceModel> ByUser(string userId);
         
-        List<GameListingServiceModel> Latest();
+        IEnumerable<GameListingServiceModel> Latest();
 
         GameDetailsServiceModel Details(int id);
 

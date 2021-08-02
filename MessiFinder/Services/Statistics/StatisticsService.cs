@@ -7,11 +7,8 @@
     {
         private readonly MessiFinderDbContext data;
 
-        public StatisticsService(MessiFinderDbContext data)
-        {
-            this.data = data;
-        }
-
+        public StatisticsService(MessiFinderDbContext data) 
+            => this.data = data;
 
         public StatisticsServiceModel Total()
         {
