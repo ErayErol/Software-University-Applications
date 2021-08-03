@@ -8,23 +8,25 @@
     using Microsoft.AspNetCore.Mvc;
     using Mocks;
     using Models.Home;
+    using MyTested.AspNetCore.Mvc;
+    using System.Collections.Generic;
     using System.Linq;
     using Xunit;
 
     public class HomeControllerTest
     {
-        //[Fact]
-        //public void IndexShouldReturnViewWithCorrectModelAndData()
-        //    => MyMvc
-        //        .Pipeline()
-        //        .ShouldMap("/")
-        //        .To<HomeController>(c => c.Index())
-        //        .Which(controller => controller
-        //            .WithData(GetGame()))
-        //        .ShouldReturn()
-        //        .View(view => view
-        //            .WithModelOfType<IndexViewModel>()
-        //            .Passing(m => m.Games.Should().HaveCount(3)));
+        [Fact]
+        public void IndexShouldReturnViewWithCorrectModelAndData()
+            => MyMvc
+                .Pipeline()
+                .ShouldMap("/")
+                .To<HomeController>(c => c.Index())
+                .Which(controller => controller
+                    .WithData(GetGames()))
+                .ShouldReturn()
+                .View(view => view
+                    .WithModelOfType<IndexViewModel>()
+                    .Passing(m => m.Games.Should().HaveCount(3)));
 
         [Fact]
         public void IndexShouldReturnViewWithCorrectModel()
@@ -33,12 +35,7 @@
             var data = DatabaseMock.Instance;
             var mapper = MapperMock.Instance;
 
-            var games = Enumerable
-                .Range(0, 10)
-                .Select(i => new Game
-                {
-                    Playground = new Playground()
-                })
+            var games = GetGames()
                 .ToList();
 
             data.Games.AddRange(games);
@@ -84,7 +81,6 @@
                 .Invoke();
         }
 
-
         [Fact]
         public void ErrorShouldReturnView()
         {
@@ -98,5 +94,13 @@
             Assert.NotNull(result);
             Assert.IsType<ViewResult>(result);
         }
+
+        private static IEnumerable<Game> GetGames()
+            => Enumerable
+                .Range(0, 10)
+                .Select(i => new Game
+                {
+                    Playground = new Playground()
+                });
     }
 }
