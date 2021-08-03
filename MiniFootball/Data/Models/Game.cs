@@ -10,8 +10,8 @@
         [Key]
         public int Id { get; set; }
 
-        public int PlaygroundId { get; set; }
-        public virtual Playground Playground { get; set; }
+        public int FieldId { get; set; }
+        public virtual Field Field { get; set; }
 
         public DateTime Date { get; set; }
 

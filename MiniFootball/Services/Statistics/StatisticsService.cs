@@ -13,13 +13,13 @@
         public StatisticsServiceModel Total()
         {
             var totalGames = this.data.Games.Count();
-            var totalPlaygrounds = this.data.Playgrounds.Count();
+            var totalPlaygrounds = this.data.Fields.Count();
             var totalUsers = this.data.Users.Count();
 
             return new StatisticsServiceModel
             {
                 TotalGames = totalGames,
-                TotalPlaygrounds = totalPlaygrounds,
+                TotalFields = totalPlaygrounds,
                 TotalUsers = totalUsers,
             };
         }

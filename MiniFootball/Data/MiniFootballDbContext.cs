@@ -15,7 +15,7 @@
 
         public virtual DbSet<Player> Players { get; init; }
 
-        public virtual DbSet<Playground> Playgrounds { get; init; }
+        public virtual DbSet<Field> Fields { get; init; }
 
         public virtual DbSet<Admin> Admins { get; init; }
         
@@ -29,9 +29,9 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Entity<Playground>()
+                .Entity<Field>()
                 .HasOne(p => p.Admin)
-                .WithMany(a => a.Playgrounds)
+                .WithMany(a => a.Fields)
                 .HasForeignKey(p => p.AdminId)
                 .OnDelete(DeleteBehavior.Restrict);
 

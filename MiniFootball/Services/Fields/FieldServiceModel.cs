@@ -1,6 +1,6 @@
-﻿namespace MiniFootball.Services.Playgrounds
+﻿namespace MiniFootball.Services.Fields
 {
-    public class PlaygroundServiceModel
+    public class FieldServiceModel
     {
         public string Name { get; set; }
 

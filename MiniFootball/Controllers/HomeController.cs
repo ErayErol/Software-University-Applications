@@ -33,7 +33,7 @@
             {
                 Games = lastGames,
                 TotalGames = totalStatistics.TotalGames,
-                TotalPlaygrounds = totalStatistics.TotalPlaygrounds,
+                TotalFields = totalStatistics.TotalFields,
                 TotalUsers = totalStatistics.TotalUsers,
             });
         }

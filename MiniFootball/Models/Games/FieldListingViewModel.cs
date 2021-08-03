@@ -5,9 +5,9 @@
     using Services.Games.Models;
 
     using static Data.DataConstants.ErrorMessages;
-    using static Data.DataConstants.Playground;
+    using static Data.DataConstants.Field;
 
-    public class PlaygroundListingViewModel
+    public class FieldListingViewModel
     {
         public string Name { get; set; }
 
@@ -18,8 +18,8 @@
         public string Town { get; set; }
 
         [Display(Name = "Select playground:")]
-        public int PlaygroundId { get; set; }
+        public int FieldId { get; set; }
 
-        public IEnumerable<PlaygroundListingServiceModel> Playgrounds { get; set; }
+        public IEnumerable<FieldListingServiceModel> Fields { get; set; }
     }
 }

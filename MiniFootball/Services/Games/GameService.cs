@@ -33,13 +33,13 @@
             if (string.IsNullOrWhiteSpace(town) == false)
             {
                 gamesQuery = gamesQuery
-                    .Where(g => g.Playground.Town == town);
+                    .Where(g => g.Field.Town == town);
             }
 
             if (string.IsNullOrWhiteSpace(searchTerm) == false)
             {
                 gamesQuery = gamesQuery
-                    .Where(g => g.Playground
+                    .Where(g => g.Field
                         .Name
                         .ToLower()
                         .Contains(searchTerm.ToLower()));
@@ -47,8 +47,8 @@
 
             gamesQuery = sorting switch
             {
-                GameSorting.Town => gamesQuery.OrderBy(g => g.Playground.Town),
-                GameSorting.PlaygroundName => gamesQuery.OrderBy(g => g.Playground.Name),
+                GameSorting.Town => gamesQuery.OrderBy(g => g.Field.Town),
+                GameSorting.PlaygroundName => gamesQuery.OrderBy(g => g.Field.Name),
                 GameSorting.DateCreated or _ => gamesQuery.OrderBy(g => g.Id)
             };
 
@@ -80,7 +80,7 @@
             // TODO: Only admins can create (not managers, not users)
             var game = new Game
             {
-                PlaygroundId = playgroundId,
+                FieldId = playgroundId,
                 Description = description,
                 Date = date,
                 NumberOfPlayers = numberOfPlayers,

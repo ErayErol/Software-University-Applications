@@ -2,9 +2,9 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using static DataConstants.Playground;
+    using static DataConstants.Field;
 
-    public class Playground
+    public class Field
     {
         [Key]
         public int Id { get; set; }

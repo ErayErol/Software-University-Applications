@@ -13,6 +13,7 @@
     public class LoginModel : PageModel
     {
         private readonly SignInManager<User> signInManager;
+        //TODO: When login inputs are incorrect render beauty message
 
         public LoginModel(SignInManager<User> signInManager)
             => this.signInManager = signInManager;

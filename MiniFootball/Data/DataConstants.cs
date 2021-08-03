@@ -26,7 +26,7 @@
             public const int DescriptionMaxLength = 200;
         }
 
-        public class Playground
+        public class Field
         {
             public const int NameMinLength = 2;
             public const int NameMaxLength = 26;

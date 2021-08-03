@@ -1,31 +1,31 @@
-﻿@model PlaygroundListingViewModel
+﻿@model FieldListingViewModel
 
 <div class="container">
     <div class="row">
         <div class="offset-1 offset-sm-1 offset-md-2 offset-lg-3 offset-xl-3 col-10 col-sm-9 col-md-8 col-lg-6 col-xl-5">
-            @if (@Model.Country == null || @Model.Town == null || @Model.Playgrounds.Any() == false)
+            @if (@Model.Country == null || @Model.Town == null || @Model.Fields.Any() == false)
             {
                 <div class="col-md-9 offset-sm-1 offset-md-1 offset-lg-2 offset-xl-2">
                     <div class="card">
                         <img class="card-img-top" src="https://thumbs.dreamstime.com/b/comic-boom-oops-icon-simple-black-style-illustration-web-122999699.jpg" alt="Just oops image">
                         <div class="card-body text-center">
                             <h5 class="card-title text-center">There are no playgroundss in this town</h5>
-                            <a href="/Playgrounds/Create" class="btn">Create Playground</a>
+                            <a href="/Fields/Create" class="btn">Create Field</a>
                         </div>
                     </div>
                 </div>
             }
             else
             {
-                <h5 class="mt-3 mb-3 green">Playgrounds in @Model.Country - @Model.Town</h5>
+                <h5 class="mt-3 mb-3 green">Fields in @Model.Country - @Model.Town</h5>
 
                 <form method="post">
                     <div class="form-group">
-                        <label asp-for="PlaygroundId"></label>
-                        <select asp-for="PlaygroundId" class="form-control">
-                            @foreach (var playground in Model.Playgrounds)
+                        <label asp-for="FieldId"></label>
+                        <select asp-for="FieldId" class="form-control">
+                            @foreach (var playground in Model.Fields)
                             {
-                                <option value="@playground.PlaygroundId">@playground.Name</option>
+                                <option value="@playground.FieldId">@playground.Name</option>
                             }
                         </select>
                     </div>

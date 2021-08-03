@@ -9,7 +9,7 @@
         <div class="card">
             <div class="card-body text-center">
                 <h5 class="card-title text-center">@Model.TotalGames Games</h5>
-                <h5 class="card-title text-center">@Model.TotalPlaygrounds Playgrounds</h5>
+                <h5 class="card-title text-center">@Model.TotalFields Fields</h5>
                 <h5 class="card-title text-center">@Model.TotalUsers Users</h5>
             </div>
         </div>
@@ -27,10 +27,10 @@
                 var game = Model.Games[i];
 
                 <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
-                    <img class="d-block w-100" src="@game.Playground.ImageUrl" alt="First slide">
+                    <img class="d-block w-100" src="@game.Field.ImageUrl" alt="First slide">
                     <div class="carousel-caption d-none d-md-block">
                         <div class="text-center">
-                            <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn">@game.Playground.Name - @game.Date.ToString("D") @game.Date.ToString("t")</a>
+                            <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn">@game.Field.Name - @game.Date.ToString("D") @game.Date.ToString("t")</a>
                         </div>
                     </div>
                 </div>

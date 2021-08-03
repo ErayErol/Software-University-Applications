@@ -14,7 +14,7 @@ namespace MiniFootball
     using Services.Admins;
     using Services.Countries;
     using Services.Games;
-    using Services.Playgrounds;
+    using Services.Fields;
     using Services.Statistics;
     using System.Security.Claims;
     using Microsoft.AspNetCore.Identity;
@@ -69,7 +69,7 @@ namespace MiniFootball
 
             services
                 .AddTransient<IGameService, GameService>()
-                .AddTransient<IPlaygroundService, PlaygroundService>()
+                .AddTransient<IFieldService, FieldService>()
                 .AddTransient<IAdminService, AdminService>()
                 .AddTransient<IStatisticsService, StatisticsService>()
                 .AddTransient<ICountryService, CountryService>();

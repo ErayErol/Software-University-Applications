@@ -1,19 +1,17 @@
-﻿namespace MiniFootball.Services.Playgrounds
+﻿namespace MiniFootball.Services.Fields
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using Data;
     using Data.Models;
-    using Games;
     using Games.Models;
     using Models;
-    using Models.Playgrounds;
+    using System.Collections.Generic;
+    using System.Linq;
 
-    public class PlaygroundService : IPlaygroundService
+    public class FieldService : IFieldService
     {
         private readonly MiniFootballDbContext data;
 
-        public PlaygroundService(MiniFootballDbContext data)
+        public FieldService(MiniFootballDbContext data)
         {
             this.data = data;
         }
@@ -31,7 +29,7 @@
             bool changingRoom,
             string description)
         {
-            var playground = new Playground
+            var playground = new Field
             {
                 Name = name,
                 Country = country,
@@ -46,7 +44,7 @@
                 Description = description,
             };
 
-            this.data.Playgrounds.Add(playground);
+            this.data.Fields.Add(playground);
             this.data.SaveChanges();
 
             return playground.Id;
@@ -54,7 +52,7 @@
 
         public bool IsSame(string name, string country, string town, string address)
             => this.data
-                .Playgrounds
+                .Fields
                 .Any(p => p.Name == name &&
                           p.Country == country &&
                           p.Town == town &&
@@ -62,33 +60,33 @@
 
         public IEnumerable<string> Towns()
             => this.data
-                .Playgrounds
+                .Fields
                 .Select(p => p.Town)
                 .Distinct()
                 .OrderBy(t => t)
                 .AsEnumerable();
 
-        public IEnumerable<PlaygroundListingServiceModel> PlaygroundsListing(string town, string country)
+        public IEnumerable<FieldListingServiceModel> PlaygroundsListing(string town, string country)
             => this.data
-                .Playgrounds
+                .Fields
                 .Where(x => x.Town == town && x.Country == country)
-                .Select(x => new PlaygroundListingServiceModel
+                .Select(x => new FieldListingServiceModel
                 {
-                    PlaygroundId = x.Id,
+                    FieldId = x.Id,
                     Name = x.Name,
                 }).ToList();
 
         public bool PlaygroundExist(int playgroundId)
-            => this.data.Playgrounds.Any(p => p.Id == playgroundId);
+            => this.data.Fields.Any(p => p.Id == playgroundId);
 
-        public PlaygroundQueryServiceModel All(
+        public FieldQueryServiceModel All(
             string town, 
             string searchTerm, 
             GameSorting sorting, 
             int currentPage,
             int playgroundsPerPage)
         {
-            var playgroundsQuery = this.data.Playgrounds.AsQueryable();
+            var playgroundsQuery = this.data.Fields.AsQueryable();
 
             if (string.IsNullOrWhiteSpace(town) == false)
             {
@@ -116,7 +114,7 @@
             var playgrounds = playgroundsQuery
                 .Skip((currentPage - 1) * playgroundsPerPage)
                 .Take(playgroundsPerPage)
-                .Select(p => new PlaygroundServiceModel
+                .Select(p => new FieldServiceModel
                 {
                     Town = p.Town,
                     Country = p.Country,
@@ -126,10 +124,10 @@
                     Address = p.Address,
                 }).AsEnumerable();
 
-            return new PlaygroundQueryServiceModel
+            return new FieldQueryServiceModel
             {
-                Playgrounds = playgrounds,
-                TotalPlaygrounds = totalPlaygrounds
+                Fields = playgrounds,
+                TotalFields = totalPlaygrounds
             };
         }
     }

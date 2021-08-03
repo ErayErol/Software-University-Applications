@@ -7,8 +7,8 @@
 
     public class GameFormModel
     {
-        [Display(Name = "Playground")]
-        public int PlaygroundId { get; set; }
+        [Display(Name = "Field")]
+        public int FieldId { get; set; }
 
         [Required(ErrorMessage = Empty)]
         public System.DateTime? Date { get; set; }

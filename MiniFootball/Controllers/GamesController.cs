@@ -8,21 +8,21 @@
     using Services.Admins;
     using Services.Countries;
     using Services.Games;
-    using Services.Playgrounds;
+    using Services.Fields;
 
     public class GamesController : Controller
     {
         private readonly ICountryService countries;
         private readonly IGameService games;
         private readonly IAdminService admins;
-        private readonly IPlaygroundService playgrounds;
+        private readonly IFieldService playgrounds;
         private readonly IMapper mapper;
 
         public GamesController(
             ICountryService countries,
             IGameService games,
             IAdminService admins,
-            IPlaygroundService playgrounds,
+            IFieldService playgrounds,
             IMapper mapper)
         {
             this.countries = countries;
@@ -71,9 +71,9 @@
                 gameForm.Town[0].ToString().ToUpper()
                 + gameForm.Town.Substring(1, gameForm.Town.Length - 1).ToLower();
 
-            return View(new PlaygroundListingViewModel
+            return View(new FieldListingViewModel
             {
-                Playgrounds = this.playgrounds.PlaygroundsListing(gameForm.Town, gameForm.Country),
+                Fields = this.playgrounds.PlaygroundsListing(gameForm.Town, gameForm.Country),
                 Town = gameForm.Town,
                 Country = gameForm.Country,
             });
@@ -81,18 +81,18 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult PlaygroundListing(PlaygroundListingViewModel gamePlaygroundModel)
+        public IActionResult PlaygroundListing(FieldListingViewModel gamePlaygroundModel)
         {
-            if (this.playgrounds.PlaygroundExist(gamePlaygroundModel.PlaygroundId) == false)
+            if (this.playgrounds.PlaygroundExist(gamePlaygroundModel.FieldId) == false)
             {
-                this.ModelState.AddModelError(nameof(gamePlaygroundModel.PlaygroundId), "Playground does not exist!");
+                this.ModelState.AddModelError(nameof(gamePlaygroundModel.FieldId), "Field does not exist!");
             }
 
             return RedirectToAction("Create", "Games", gamePlaygroundModel);
         }
 
         [Authorize]
-        public IActionResult Create(PlaygroundListingViewModel gameForm)
+        public IActionResult Create(FieldListingViewModel gameForm)
         {
             if (this.admins.IsAdmin(this.User.Id()) == false)
             {
@@ -101,7 +101,7 @@
 
             return View(new GameFormModel
             {
-                PlaygroundId = gameForm.PlaygroundId,
+                FieldId = gameForm.FieldId,
             });
         }
 
@@ -124,7 +124,7 @@
             // TODO: There is already exist game in this playgrounds in this date
 
             this.games.Create(
-                gameCreateModel.PlaygroundId,
+                gameCreateModel.FieldId,
                 gameCreateModel.Description,
                 gameCreateModel.Date.Value,
                 gameCreateModel.NumberOfPlayers.Value,
@@ -199,9 +199,9 @@
             }
 
             // TODO: Do this check for EditPlayground
-            //if (this.playgrounds.PlaygroundExist(game.PlaygroundId) == false)
+            //if (this.playgrounds.PlaygroundExist(game.FieldId) == false)
             //{
-            //    this.ModelState.AddModelError(nameof(game.PlaygroundId), "Playground does not exist.");
+            //    this.ModelState.AddModelError(nameof(game.FieldId), "Field does not exist.");
             //}
 
             if (!ModelState.IsValid)

@@ -4,7 +4,7 @@
     {
         public int TotalGames { get; set; }
 
-        public int TotalPlaygrounds { get; set; }
+        public int TotalFields { get; set; }
 
         public int TotalUsers { get; set; }
     }

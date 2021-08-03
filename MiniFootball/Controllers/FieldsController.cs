@@ -3,22 +3,22 @@
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Models.Playgrounds;
+    using Models.Fields;
     using Services.Admins;
     using Services.Countries;
-    using Services.Playgrounds;
+    using Services.Fields;
 
-    public class PlaygroundsController : Controller
+    public class FieldsController : Controller
     {
         private readonly ICountryService country;
         private readonly IAdminService admin;
-        private readonly IPlaygroundService playground;
+        private readonly IFieldService playground;
 
 
-        public PlaygroundsController(
+        public FieldsController(
             ICountryService country,
             IAdminService admin,
-            IPlaygroundService playground)
+            IFieldService playground)
         {
             this.country = country;
             this.admin = admin;
@@ -33,7 +33,7 @@
                 return View();
             }
 
-            return View(new PlaygroundCreateFormModel
+            return View(new FieldCreateFormModel
             {
                 Countries = this.country.All(),
             });
@@ -41,7 +41,7 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(PlaygroundCreateFormModel playgroundModel)
+        public IActionResult Create(FieldCreateFormModel playgroundModel)
         {
             if (this.User.IsManager() == false)
             {
@@ -80,7 +80,7 @@
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult All([FromQuery] PlaygroundAllQueryModel query)
+        public IActionResult All([FromQuery] FieldAllQueryModel query)
         {
             var queryResult = this.playground.All(
                 query.Town,
@@ -91,8 +91,8 @@
 
             var towns = this.playground.Towns();
 
-            query.TotalPlaygrounds = queryResult.TotalPlaygrounds;
-            query.Playgrounds = queryResult.Playgrounds;
+            query.TotalFields = queryResult.TotalFields;
+            query.Fields = queryResult.Fields;
             query.Towns = towns;
 
             return View(query);

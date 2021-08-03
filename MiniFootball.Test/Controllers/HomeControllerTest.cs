@@ -100,7 +100,7 @@
                 .Range(0, 10)
                 .Select(i => new Game
                 {
-                    Playground = new Playground()
+                    Field = new Field()
                 });
     }
 }

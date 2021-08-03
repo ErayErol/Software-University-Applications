@@ -1,9 +1,9 @@
-﻿namespace MiniFootball.Models.Playgrounds
+﻿namespace MiniFootball.Models.Fields
 {
     using System.Collections.Generic;
-    using Services.Playgrounds;
+    using Services.Fields;
 
-    public class PlaygroundAllQueryModel
+    public class FieldAllQueryModel
     {
         public int PlaygroundsPerPage = 3;
 
@@ -13,12 +13,12 @@
 
         public string SearchTerm { get; set; }
 
-        public int TotalPlaygrounds { get; set; }
+        public int TotalFields { get; set; }
 
         public GameSorting Sorting { get; set; }
 
         public IEnumerable<string> Towns { get; set; }
 
-        public IEnumerable<PlaygroundServiceModel> Playgrounds { get; set; }
+        public IEnumerable<FieldServiceModel> Fields { get; set; }
     }
 }

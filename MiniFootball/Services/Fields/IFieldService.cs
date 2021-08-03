@@ -1,11 +1,10 @@
-﻿namespace MiniFootball.Services.Playgrounds
+﻿namespace MiniFootball.Services.Fields
 {
-    using System.Collections.Generic;
-    using Games;
     using Games.Models;
     using Models;
+    using System.Collections.Generic;
 
-    public interface IPlaygroundService
+    public interface IFieldService
     {
         int Create(
             string name,
@@ -28,11 +27,11 @@
 
         IEnumerable<string> Towns();
 
-        IEnumerable<PlaygroundListingServiceModel> PlaygroundsListing(string town, string country);
+        IEnumerable<FieldListingServiceModel> PlaygroundsListing(string town, string country);
 
         bool PlaygroundExist(int playgroundId);
 
-        PlaygroundQueryServiceModel All(
+        FieldQueryServiceModel All(
             string town,
             string searchTerm,
             GameSorting sorting,

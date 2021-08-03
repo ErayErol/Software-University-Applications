@@ -110,11 +110,11 @@
                 data.SaveChanges();
             }
 
-            if (data.Playgrounds.Any() == false)
+            if (data.Fields.Any() == false)
             {
                 var admin = data.Admins.FirstOrDefault(x => x.Name == "zwpAdmin");
 
-                data.Playgrounds.AddRange(new Playground
+                data.Fields.AddRange(new Field
                 {
                     Name = "Avenue",
                     Country = "Bulgaria",
@@ -128,7 +128,7 @@
                     Shower = true,
                     PhoneNumber = "0888888889",
                     AdminId = admin.Id,
-                }, new Playground
+                }, new Field
                 {
                     Name = "Kortove",
                     Country = "Bulgaria",
@@ -142,7 +142,7 @@
                     Shower = true,
                     PhoneNumber = "0888888888",
                     AdminId = admin.Id,
-                }, new Playground
+                }, new Field
                 {
                     Name = "Yildizlar",
                     Country = "Turkey",
@@ -156,7 +156,7 @@
                     Shower = true,
                     PhoneNumber = "0888888887",
                     AdminId = admin.Id,
-                }, new Playground
+                }, new Field
                 {
                     Name = "Optimum",
                     Country = "Bulgaria",
@@ -170,7 +170,7 @@
                     Shower = true,
                     PhoneNumber = "0888888886",
                     AdminId = admin.Id,
-                }, new Playground
+                }, new Field
                 {
                     Name = "Avangard Fitness",
                     Country = "Bulgaria",

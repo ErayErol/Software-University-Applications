@@ -6,15 +6,15 @@
 
     public static class DatabaseMock
     {
-        public static MessiFinderDbContext Instance
+        public static MiniFootballDbContext Instance
         {
             get
             {
-                var options = new DbContextOptionsBuilder<MessiFinderDbContext>()
+                var options = new DbContextOptionsBuilder<MiniFootballDbContext>()
                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options;
 
-                return new MessiFinderDbContext(options);
+                return new MiniFootballDbContext(options);
             }
         }
 

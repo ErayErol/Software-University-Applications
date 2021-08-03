@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using static Data.DataConstants.ErrorMessages;
-    using static Data.DataConstants.Playground;
+    using static Data.DataConstants.Field;
 
     public class CreateGameFirstStepViewModel
     {
