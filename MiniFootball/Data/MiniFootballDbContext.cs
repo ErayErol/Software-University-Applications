@@ -32,13 +32,6 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Entity<Field>()
-                .HasOne(p => p.Admin)
-                .WithMany(a => a.Fields)
-                .HasForeignKey(p => p.AdminId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder
                 .Entity<Admin>()
                 .HasOne<User>()
                 .WithOne()

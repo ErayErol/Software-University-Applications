@@ -31,7 +31,6 @@
   <ItemGroup>
     <Folder Include="Areas\Manager\Controller\" />
     <Folder Include="Areas\Manager\View\" />
-    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
 </Project>
