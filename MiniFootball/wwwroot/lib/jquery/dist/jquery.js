@@ -574,7 +574,7 @@ var i,
 	push = arr.push,
 	slice = arr.slice,
 
-	// Use a stripped-down indexOf as it's faster than native
+	// Use a sgameped-down indexOf as it's faster than native
 	// https://jsperf.com/thor-indexof-vs-for/5
 	indexOf = function( list, elem ) {
 		var i = 0,
@@ -673,7 +673,7 @@ var i,
 
 		return nonHex ?
 
-			// Strip the backslash prefix from a non-hex escape sequence
+			// Sgame the backslash prefix from a non-hex escape sequence
 			nonHex :
 
 			// Replace a hexadecimal escape sequence with the encoded Unicode code point
@@ -1833,7 +1833,7 @@ Expr = Sizzle.selectors = {
 			if ( match[ 3 ] ) {
 				match[ 2 ] = match[ 4 ] || match[ 5 ] || "";
 
-			// Strip excess characters from unquoted arguments
+			// Sgame excess characters from unquoted arguments
 			} else if ( unquoted && rpseudo.test( unquoted ) &&
 
 				// Get excess from tokenize (recursively)
@@ -8243,9 +8243,9 @@ jQuery.each( [
 
 
 
-	// Strip and collapse whitespace according to HTML spec
-	// https://infra.spec.whatwg.org/#strip-and-collapse-ascii-whitespace
-	function stripAndCollapse( value ) {
+	// Sgame and collapse whitespace according to HTML spec
+	// https://infra.spec.whatwg.org/#sgame-and-collapse-ascii-whitespace
+	function sgameAndCollapse( value ) {
 		var tokens = value.match( rnothtmlwhite ) || [];
 		return tokens.join( " " );
 	}
@@ -8281,7 +8281,7 @@ jQuery.fn.extend( {
 		if ( classes.length ) {
 			while ( ( elem = this[ i++ ] ) ) {
 				curValue = getClass( elem );
-				cur = elem.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
+				cur = elem.nodeType === 1 && ( " " + sgameAndCollapse( curValue ) + " " );
 
 				if ( cur ) {
 					j = 0;
@@ -8292,7 +8292,7 @@ jQuery.fn.extend( {
 					}
 
 					// Only assign if different to avoid unneeded rendering.
-					finalValue = stripAndCollapse( cur );
+					finalValue = sgameAndCollapse( cur );
 					if ( curValue !== finalValue ) {
 						elem.setAttribute( "class", finalValue );
 					}
@@ -8324,7 +8324,7 @@ jQuery.fn.extend( {
 				curValue = getClass( elem );
 
 				// This expression is here for better compressibility (see addClass)
-				cur = elem.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
+				cur = elem.nodeType === 1 && ( " " + sgameAndCollapse( curValue ) + " " );
 
 				if ( cur ) {
 					j = 0;
@@ -8337,7 +8337,7 @@ jQuery.fn.extend( {
 					}
 
 					// Only assign if different to avoid unneeded rendering.
-					finalValue = stripAndCollapse( cur );
+					finalValue = sgameAndCollapse( cur );
 					if ( curValue !== finalValue ) {
 						elem.setAttribute( "class", finalValue );
 					}
@@ -8416,7 +8416,7 @@ jQuery.fn.extend( {
 		className = " " + selector + " ";
 		while ( ( elem = this[ i++ ] ) ) {
 			if ( elem.nodeType === 1 &&
-				( " " + stripAndCollapse( getClass( elem ) ) + " " ).indexOf( className ) > -1 ) {
+				( " " + sgameAndCollapse( getClass( elem ) ) + " " ).indexOf( className ) > -1 ) {
 					return true;
 			}
 		}
@@ -8510,9 +8510,9 @@ jQuery.extend( {
 
 					// Support: IE <=10 - 11 only
 					// option.text throws exceptions (#14686, #14858)
-					// Strip and collapse whitespace
-					// https://html.spec.whatwg.org/#strip-and-collapse-whitespace
-					stripAndCollapse( jQuery.text( elem ) );
+					// Sgame and collapse whitespace
+					// https://html.spec.whatwg.org/#sgame-and-collapse-whitespace
+					sgameAndCollapse( jQuery.text( elem ) );
 			}
 		},
 		select: {
@@ -10353,7 +10353,7 @@ jQuery.fn.load = function( url, params, callback ) {
 		off = url.indexOf( " " );
 
 	if ( off > -1 ) {
-		selector = stripAndCollapse( url.slice( off ) );
+		selector = sgameAndCollapse( url.slice( off ) );
 		url = url.slice( 0, off );
 	}
 

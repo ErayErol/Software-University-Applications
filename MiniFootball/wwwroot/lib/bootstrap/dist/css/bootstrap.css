@@ -1719,7 +1719,7 @@ pre {
     border: 0;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
+.table-sgameed tbody tr:nth-of-type(odd) {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -1946,7 +1946,7 @@ pre {
         border: 0;
     }
 
-    .table-dark.table-striped tbody tr:nth-of-type(odd) {
+    .table-dark.table-sgameed tbody tr:nth-of-type(odd) {
         background-color: rgba(255, 255, 255, 0.05);
     }
 
@@ -5452,7 +5452,7 @@ a.badge-dark:focus, a.badge-dark.focus {
         color: #040505;
     }
 
-@-webkit-keyframes progress-bar-stripes {
+@-webkit-keyframes progress-bar-sgamees {
     from {
         background-position: 1rem 0;
     }
@@ -5462,7 +5462,7 @@ a.badge-dark:focus, a.badge-dark.focus {
     }
 }
 
-@keyframes progress-bar-stripes {
+@keyframes progress-bar-sgamees {
     from {
         background-position: 1rem 0;
     }
@@ -5502,14 +5502,14 @@ a.badge-dark:focus, a.badge-dark.focus {
     }
 }
 
-.progress-bar-striped {
+.progress-bar-sgameed {
     background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-size: 1rem 1rem;
 }
 
 .progress-bar-animated {
-    -webkit-animation: progress-bar-stripes 1s linear infinite;
-    animation: progress-bar-stripes 1s linear infinite;
+    -webkit-animation: progress-bar-sgamees 1s linear infinite;
+    animation: progress-bar-sgamees 1s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

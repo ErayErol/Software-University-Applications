@@ -21,6 +21,7 @@
             this.mapper = mapper.ConfigurationProvider;
         }
 
+        // TODO: Maybe without image is better and add count of free places
         public GameQueryServiceModel All(
             string town,
             string searchTerm,
@@ -48,7 +49,7 @@
             gamesQuery = sorting switch
             {
                 GameSorting.Town => gamesQuery.OrderBy(g => g.Field.Town),
-                GameSorting.PlaygroundName => gamesQuery.OrderBy(g => g.Field.Name),
+                GameSorting.FieldName => gamesQuery.OrderBy(g => g.Field.Name),
                 GameSorting.DateCreated or _ => gamesQuery.OrderBy(g => g.Id)
             };
 
@@ -67,26 +68,30 @@
             };
         }
 
-        public int Create(
-            int playgroundId,
+        public string Create(
+            int fieldId,
             string description,
             DateTime date,
             int numberOfPlayers,
             bool goalkeeper,
             bool ball,
             bool jerseys,
+            int places,
+            bool hasPlaces,
             int adminId)
         {
             // TODO: Only admins can create (not managers, not users)
             var game = new Game
             {
-                FieldId = playgroundId,
+                FieldId = fieldId,
                 Description = description,
                 Date = date,
                 NumberOfPlayers = numberOfPlayers,
                 Goalkeeper = goalkeeper,
                 Ball = ball,
                 Jerseys = jerseys,
+                Places = places,
+                HasPlaces = hasPlaces,
                 AdminId = adminId,
             };
 
@@ -96,35 +101,8 @@
             return game.Id;
         }
 
-        public IEnumerable<GameListingServiceModel> ByUser(string userId)
-            => GetGames(
-                this.data
-                    .Games
-                    .Where(g => g.Admin.UserId == userId),
-                this.mapper);
-
-        public IEnumerable<GameListingServiceModel> Latest()
-            => this.data
-                .Games
-                .OrderByDescending(g => g.Id)
-                .ProjectTo<GameListingServiceModel>(this.mapper)
-                .Take(3)
-                .ToList();
-
-        public GameDetailsServiceModel Details(int id)
-            => this.data
-                .Games
-                .Where(g => g.Id == id)
-                .ProjectTo<GameDetailsServiceModel>(this.mapper)
-                .FirstOrDefault();
-
-        public bool IsByAdmin(int id, int adminId)
-            => this.data
-                .Games
-                .Any(c => c.Id == id && c.AdminId == adminId);
-
         public bool Edit(
-            int id,
+            string id,
             DateTime? date,
             int? numberOfPlayers,
             bool ball,
@@ -152,6 +130,64 @@
 
             return true;
         }
+
+        public bool AddUserToGame(string id, string userId)
+        {
+            // TODO: If all people are joined then replace JOIN button with No needed player or something like this..
+
+            var game = this.data
+                .Games
+                .FirstOrDefault(c => c.Id == id);
+
+            if (game == null)
+            {
+                return false;
+            }
+
+            if (game.HasPlaces)
+            {
+                game.Places--;
+            }
+
+            var userGame = new UserGame
+            {
+                GameId = game.Id,
+                UserId = userId
+            };
+
+            this.data.UserGames.Add(userGame);
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public IEnumerable<GameListingServiceModel> ByUser(string userId)
+            => GetGames(
+                this.data
+                    .Games
+                    .Where(g => g.Admin.UserId == userId),
+                this.mapper);
+
+        public IEnumerable<GameListingServiceModel> Latest()
+            => this.data
+                .Games
+                .OrderByDescending(g => g.Id)
+                .ProjectTo<GameListingServiceModel>(this.mapper)
+                .Take(3)
+                .ToList();
+
+        public GameDetailsServiceModel Details(string id)
+            => this.data
+                .Games
+                .Where(g => g.Id == id)
+                .ProjectTo<GameDetailsServiceModel>(this.mapper)
+                .FirstOrDefault();
+
+        public bool IsByAdmin(string id, int adminId)
+            => this.data
+                .Games
+                .Any(c => c.Id == id && c.AdminId == adminId);
 
         private static IEnumerable<GameListingServiceModel> GetGames(
             IQueryable<Game> gameQuery, 

@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Internal;
     using Models;
 
     public class MiniFootballDbContext : IdentityDbContext<User>
@@ -19,6 +20,8 @@
 
         public virtual DbSet<Admin> Admins { get; init; }
         
+        public virtual DbSet<UserGame> UserGames { get; init; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -41,6 +44,8 @@
                 .WithOne()
                 .HasForeignKey<Admin>(a => a.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<UserGame>().HasKey(table => new { table.UserId, table.GameId });
 
             base.OnModelCreating(builder);
         }

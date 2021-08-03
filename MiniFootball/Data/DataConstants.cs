@@ -24,6 +24,9 @@
 
             public const int DescriptionMinLength = 10;
             public const int DescriptionMaxLength = 200;
+
+            public const int PlacesMin = 8;
+            public const int PlacesMax = 22;
         }
 
         public class Field

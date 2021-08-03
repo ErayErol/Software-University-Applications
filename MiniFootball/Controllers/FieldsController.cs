@@ -11,18 +11,15 @@
     public class FieldsController : Controller
     {
         private readonly ICountryService country;
-        private readonly IAdminService admin;
-        private readonly IFieldService playground;
+        private readonly IFieldService field;
 
 
         public FieldsController(
             ICountryService country,
-            IAdminService admin,
-            IFieldService playground)
+            IFieldService field)
         {
             this.country = country;
-            this.admin = admin;
-            this.playground = playground;
+            this.field = field;
         }
 
         [Authorize]
@@ -41,7 +38,7 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(FieldCreateFormModel playgroundModel)
+        public IActionResult Create(FieldCreateFormModel fieldModel)
         {
             if (this.User.IsManager() == false)
             {
@@ -50,46 +47,46 @@
 
             if (ModelState.IsValid == false)
             {
-                playgroundModel.Countries = this.country.All();
-                return View(playgroundModel);
+                fieldModel.Countries = this.country.All();
+                return View(fieldModel);
             }
 
-            if (this.playground.IsSame(
-                    playgroundModel.Name,
-                    playgroundModel.Country,
-                    playgroundModel.Town,
-                    playgroundModel.Address))
+            if (this.field.IsSame(
+                    fieldModel.Name,
+                    fieldModel.Country,
+                    fieldModel.Town,
+                    fieldModel.Address))
             {
-                // TODO: There are already exist playground with this name, country, town, address (render in page)
-                return View(playgroundModel);
+                // TODO: There are already exist field with this name, country, town, address (render in page)
+                return View(fieldModel);
             }
 
-            this.playground.Create(
-                playgroundModel.Name,
-                playgroundModel.Country,
-                playgroundModel.Town,
-                playgroundModel.Address,
-                playgroundModel.ImageUrl,
-                playgroundModel.PhoneNumber,
-                playgroundModel.Parking,
-                playgroundModel.Cafe,
-                playgroundModel.Shower,
-                playgroundModel.ChangingRoom,
-                playgroundModel.Description);
+            this.field.Create(
+                fieldModel.Name,
+                fieldModel.Country,
+                fieldModel.Town,
+                fieldModel.Address,
+                fieldModel.ImageUrl,
+                fieldModel.PhoneNumber,
+                fieldModel.Parking,
+                fieldModel.Cafe,
+                fieldModel.Shower,
+                fieldModel.ChangingRoom,
+                fieldModel.Description);
 
             return RedirectToAction(nameof(All));
         }
 
         public IActionResult All([FromQuery] FieldAllQueryModel query)
         {
-            var queryResult = this.playground.All(
+            var queryResult = this.field.All(
                 query.Town,
                 query.SearchTerm,
                 query.Sorting,
                 query.CurrentPage,
                 query.PlaygroundsPerPage);
 
-            var towns = this.playground.Towns();
+            var towns = this.field.Towns();
 
             query.TotalFields = queryResult.TotalFields;
             query.Fields = queryResult.Fields;

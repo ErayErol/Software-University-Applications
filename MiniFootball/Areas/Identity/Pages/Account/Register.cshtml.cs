@@ -16,6 +16,8 @@
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
 
+        // TODO: After successful register redirect to Login
+
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager)

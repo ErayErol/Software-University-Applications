@@ -7,28 +7,28 @@
     using Models.Games;
     using Services.Admins;
     using Services.Countries;
-    using Services.Games;
     using Services.Fields;
+    using Services.Games;
 
     public class GamesController : Controller
     {
         private readonly ICountryService countries;
         private readonly IGameService games;
         private readonly IAdminService admins;
-        private readonly IFieldService playgrounds;
+        private readonly IFieldService fields;
         private readonly IMapper mapper;
 
         public GamesController(
             ICountryService countries,
             IGameService games,
             IAdminService admins,
-            IFieldService playgrounds,
+            IFieldService fields,
             IMapper mapper)
         {
             this.countries = countries;
             this.games = games;
             this.admins = admins;
-            this.playgrounds = playgrounds;
+            this.fields = fields;
             this.mapper = mapper;
         }
 
@@ -56,11 +56,11 @@
                 return View(gameForm);
             }
 
-            return RedirectToAction("PlaygroundListing", "Games", gameForm);
+            return RedirectToAction("FieldListing", "Games", gameForm);
         }
 
         [Authorize]
-        public IActionResult PlaygroundListing(CreateGameFirstStepViewModel gameForm)
+        public IActionResult FieldListing(CreateGameFirstStepViewModel gameForm)
         {
             if (this.admins.IsAdmin(this.User.Id()) == false)
             {
@@ -73,7 +73,7 @@
 
             return View(new FieldListingViewModel
             {
-                Fields = this.playgrounds.PlaygroundsListing(gameForm.Town, gameForm.Country),
+                Fields = this.fields.PlaygroundsListing(gameForm.Town, gameForm.Country),
                 Town = gameForm.Town,
                 Country = gameForm.Country,
             });
@@ -81,9 +81,9 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult PlaygroundListing(FieldListingViewModel gamePlaygroundModel)
+        public IActionResult FieldListing(FieldListingViewModel gamePlaygroundModel)
         {
-            if (this.playgrounds.PlaygroundExist(gamePlaygroundModel.FieldId) == false)
+            if (this.fields.PlaygroundExist(gamePlaygroundModel.FieldId) == false)
             {
                 this.ModelState.AddModelError(nameof(gamePlaygroundModel.FieldId), "Field does not exist!");
             }
@@ -121,7 +121,7 @@
                 return View(gameCreateModel);
             }
 
-            // TODO: There is already exist game in this playgrounds in this date
+            // TODO: There is already exist game in this fields in this date
 
             this.games.Create(
                 gameCreateModel.FieldId,
@@ -131,6 +131,8 @@
                 gameCreateModel.Goalkeeper,
                 gameCreateModel.Ball,
                 gameCreateModel.Jerseys,
+                gameCreateModel.NumberOfPlayers.Value,
+                true,
                 adminId);
 
             return RedirectToAction(nameof(All));
@@ -138,6 +140,7 @@
 
         public IActionResult All([FromQuery] GameAllQueryModel query)
         {
+            //
             var queryResult = this.games.All(
                 query.Town,
                 query.SearchTerm,
@@ -145,7 +148,7 @@
                 query.CurrentPage,
                 query.GamesPerPage);
 
-            var towns = this.playgrounds.Towns();
+            var towns = this.fields.Towns();
 
             query.TotalGames = queryResult.TotalGames;
             query.Games = queryResult.Games;
@@ -163,11 +166,13 @@
         }
 
         [Authorize]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(string id)
         {
-            // TODO: This edit only Game, but playground is same 
-            // When we are in edit page, add button for edit playground
+            // TODO: This edit only Game, but field is same 
+            // When we are in edit page, add button for edit field
             // and then return RedirectToAction(nameof(EditPlayground));
+
+            // TODO: Add Free places too
             var userId = this.User.Id();
 
             if (this.admins.IsAdmin(userId) == false && this.User.IsManager() == false)
@@ -189,7 +194,7 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult Edit(int id, GameFormModel game)
+        public IActionResult Edit(string id, GameFormModel game)
         {
             var adminId = this.admins.IdByUser(this.User.Id());
 
@@ -199,12 +204,12 @@
             }
 
             // TODO: Do this check for EditPlayground
-            //if (this.playgrounds.PlaygroundExist(game.FieldId) == false)
+            //if (this.fields.PlaygroundExist(game.FieldId) == false)
             //{
             //    this.ModelState.AddModelError(nameof(game.FieldId), "Field does not exist.");
             //}
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid == false)
             {
                 return View(game);
             }
@@ -222,6 +227,36 @@
                 game.Jerseys,
                 game.Goalkeeper,
                 game.Description);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [Authorize]
+        public IActionResult Details(string id)
+        {
+            // TODO: Add validation and image and all joined users
+
+            var game = this.games.Details(id);
+
+            var gameForm = this.mapper.Map<GameFormModel>(game);
+
+            return View(gameForm);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult AddUserToGame(string id)
+        {
+            if (ModelState.IsValid == false)
+            {
+                return RedirectToAction(nameof(Details));
+            }
+
+            if (this.games.AddUserToGame(id, this.User.Id()) == false)
+            {
+                // user is already join this game
+                return BadRequest();
+            }
 
             return RedirectToAction(nameof(All));
         }

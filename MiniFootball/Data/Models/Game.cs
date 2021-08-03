@@ -1,6 +1,7 @@
 ﻿namespace MiniFootball.Data.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using static DataConstants.Game;
@@ -8,7 +9,7 @@
     public class Game
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; init; } = Guid.NewGuid().ToString();
 
         public int FieldId { get; set; }
         public virtual Field Field { get; set; }
@@ -24,6 +25,11 @@
 
         public bool Jerseys { get; set; }
 
+        [Range(NumberOfPlayersMin, NumberOfPlayersMax)]
+        public int Places { get; set; }
+
+        public bool HasPlaces { get; set; }
+
         [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
@@ -32,6 +38,8 @@
 
         public virtual Admin Admin { get; set; }
 
-        // you can add Stars(Rate) one hour after the match
+        public virtual IEnumerable<UserGame> UserGames { get; init; } = new HashSet<UserGame>();
+
+        // you can add Stars(Rate) a hour after the match
     }
 }

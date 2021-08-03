@@ -14,31 +14,35 @@
             int currentPage,
             int gamesPerPage);
 
-        int Create(
-            int playgroundId,
+        string Create(
+            int fieldId,
             string description,
             DateTime date,
             int numberOfPlayers,
             bool goalkeeper,
             bool ball,
             bool jerseys,
+            int places,
+            bool hasPlaces,
             int adminId);
 
         IEnumerable<GameListingServiceModel> ByUser(string userId);
         
         IEnumerable<GameListingServiceModel> Latest();
 
-        GameDetailsServiceModel Details(int id);
+        GameDetailsServiceModel Details(string id);
 
-        bool IsByAdmin(int id, int adminId);
+        bool IsByAdmin(string id, int adminId);
 
         bool Edit(
-            int id,
+            string id,
             DateTime? date,
             int? numberOfPlayers,
             bool ball,
             bool jerseys,
             bool goalkeeper,
             string description);
+
+        bool AddUserToGame(string id, string userId);
     }
 }

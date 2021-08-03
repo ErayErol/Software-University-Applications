@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniFootball.Data;
 
-namespace MiniFootball.Data.Migrations
+namespace MiniFootball.Migrations
 {
     [DbContext(typeof(MiniFootballDbContext))]
-    [Migration("20210803095850_InitialCreate")]
-    partial class InitialCreate
+    partial class MiniFootballDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,10 +248,8 @@ namespace MiniFootball.Data.Migrations
 
             modelBuilder.Entity("MiniFootball.Data.Models.Game", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AdminId")
                         .HasColumnType("int");
@@ -275,10 +271,16 @@ namespace MiniFootball.Data.Migrations
                     b.Property<bool>("Goalkeeper")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("HasPlaces")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Jerseys")
                         .HasColumnType("bit");
 
                     b.Property<int>("NumberOfPlayers")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Places")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -376,6 +378,21 @@ namespace MiniFootball.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("MiniFootball.Data.Models.UserGame", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("GameId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "GameId");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("UserGames");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -466,11 +483,40 @@ namespace MiniFootball.Data.Migrations
                     b.Navigation("Field");
                 });
 
+            modelBuilder.Entity("MiniFootball.Data.Models.UserGame", b =>
+                {
+                    b.HasOne("MiniFootball.Data.Models.Game", "Game")
+                        .WithMany("UserGames")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MiniFootball.Data.Models.User", "User")
+                        .WithMany("UserGames")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MiniFootball.Data.Models.Admin", b =>
                 {
                     b.Navigation("Fields");
 
                     b.Navigation("Games");
+                });
+
+            modelBuilder.Entity("MiniFootball.Data.Models.Game", b =>
+                {
+                    b.Navigation("UserGames");
+                });
+
+            modelBuilder.Entity("MiniFootball.Data.Models.User", b =>
+                {
+                    b.Navigation("UserGames");
                 });
 #pragma warning restore 612, 618
         }

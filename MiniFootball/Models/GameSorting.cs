@@ -2,9 +2,9 @@
 {
     public enum GameSorting
     {
-        // TODO: change name only sorting or create for playground too!
+        // TODO: change name only sorting or create for field too!
         DateCreated = 0,
         Town = 1,
-        PlaygroundName = 2,
+        FieldName = 2,
     }
 }

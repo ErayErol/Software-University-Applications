@@ -29,13 +29,13 @@
 
         IEnumerable<FieldListingServiceModel> PlaygroundsListing(string town, string country);
 
-        bool PlaygroundExist(int playgroundId);
+        bool PlaygroundExist(int fieldId);
 
         FieldQueryServiceModel All(
             string town,
             string searchTerm,
             GameSorting sorting,
             int currentPage,
-            int playgroundsPerPage);
+            int fieldsPerPage);
     }
 }

@@ -16,6 +16,59 @@
             this.data = data;
         }
 
+        // TODO: In All Add button Info 
+        public FieldQueryServiceModel All(
+            string town,
+            string searchTerm,
+            GameSorting sorting,
+            int currentPage,
+            int fieldsPerPage)
+        {
+            var fieldsQuery = this.data.Fields.AsQueryable();
+
+            if (string.IsNullOrWhiteSpace(town) == false)
+            {
+                fieldsQuery = fieldsQuery.Where(g => g.Town == town);
+            }
+
+            if (string.IsNullOrWhiteSpace(searchTerm) == false)
+            {
+                fieldsQuery = fieldsQuery
+                    .Where(g => g
+                        .Name
+                        .ToLower()
+                        .Contains(searchTerm.ToLower()));
+            }
+
+            fieldsQuery = sorting switch
+            {
+                GameSorting.Town => fieldsQuery.OrderBy(g => g.Town),
+                GameSorting.FieldName => fieldsQuery.OrderBy(g => g.Name),
+                GameSorting.DateCreated or _ => fieldsQuery.OrderBy(g => g.Id)
+            };
+
+            var totalPlaygrounds = fieldsQuery.Count();
+
+            var fields = fieldsQuery
+                .Skip((currentPage - 1) * fieldsPerPage)
+                .Take(fieldsPerPage)
+                .Select(p => new FieldServiceModel
+                {
+                    Town = p.Town,
+                    Country = p.Country,
+                    Name = p.Name,
+                    ImageUrl = p.ImageUrl,
+                    Description = p.Description,
+                    Address = p.Address,
+                }).AsEnumerable();
+
+            return new FieldQueryServiceModel
+            {
+                Fields = fields,
+                TotalFields = totalPlaygrounds
+            };
+        }
+
         public int Create(
             string name,
             string country,
@@ -29,7 +82,7 @@
             bool changingRoom,
             string description)
         {
-            var playground = new Field
+            var field = new Field
             {
                 Name = name,
                 Country = country,
@@ -44,10 +97,10 @@
                 Description = description,
             };
 
-            this.data.Fields.Add(playground);
+            this.data.Fields.Add(field);
             this.data.SaveChanges();
 
-            return playground.Id;
+            return field.Id;
         }
 
         public bool IsSame(string name, string country, string town, string address)
@@ -76,59 +129,7 @@
                     Name = x.Name,
                 }).ToList();
 
-        public bool PlaygroundExist(int playgroundId)
-            => this.data.Fields.Any(p => p.Id == playgroundId);
-
-        public FieldQueryServiceModel All(
-            string town, 
-            string searchTerm, 
-            GameSorting sorting, 
-            int currentPage,
-            int playgroundsPerPage)
-        {
-            var playgroundsQuery = this.data.Fields.AsQueryable();
-
-            if (string.IsNullOrWhiteSpace(town) == false)
-            {
-                playgroundsQuery = playgroundsQuery.Where(g => g.Town == town);
-            }
-
-            if (string.IsNullOrWhiteSpace(searchTerm) == false)
-            {
-                playgroundsQuery = playgroundsQuery
-                    .Where(g => g
-                        .Name
-                        .ToLower()
-                        .Contains(searchTerm.ToLower()));
-            }
-
-            playgroundsQuery = sorting switch
-            {
-                GameSorting.Town => playgroundsQuery.OrderBy(g => g.Town),
-                GameSorting.PlaygroundName => playgroundsQuery.OrderBy(g => g.Name),
-                GameSorting.DateCreated or _ => playgroundsQuery.OrderBy(g => g.Id)
-            };
-
-            var totalPlaygrounds = playgroundsQuery.Count();
-
-            var playgrounds = playgroundsQuery
-                .Skip((currentPage - 1) * playgroundsPerPage)
-                .Take(playgroundsPerPage)
-                .Select(p => new FieldServiceModel
-                {
-                    Town = p.Town,
-                    Country = p.Country,
-                    Name = p.Name,
-                    ImageUrl = p.ImageUrl,
-                    Description = p.Description,
-                    Address = p.Address,
-                }).AsEnumerable();
-
-            return new FieldQueryServiceModel
-            {
-                Fields = playgrounds,
-                TotalFields = totalPlaygrounds
-            };
-        }
+        public bool PlaygroundExist(int fieldId)
+            => this.data.Fields.Any(p => p.Id == fieldId);
     }
 }

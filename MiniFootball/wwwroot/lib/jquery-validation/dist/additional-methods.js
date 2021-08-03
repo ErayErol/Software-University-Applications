@@ -18,7 +18,7 @@
 
 ( function() {
 
-	function stripHtml( value ) {
+	function sgameHtml( value ) {
 
 		// Remove html tags and space chars
 		return value.replace( /<.[^<>]*?>/g, " " ).replace( /&nbsp;|&#160;/gi, " " )
@@ -28,17 +28,17 @@
 	}
 
 	$.validator.addMethod( "maxWords", function( value, element, params ) {
-		return this.optional( element ) || stripHtml( value ).match( /\b\w+\b/g ).length <= params;
+		return this.optional( element ) || sgameHtml( value ).match( /\b\w+\b/g ).length <= params;
 	}, $.validator.format( "Please enter {0} words or less." ) );
 
 	$.validator.addMethod( "minWords", function( value, element, params ) {
-		return this.optional( element ) || stripHtml( value ).match( /\b\w+\b/g ).length >= params;
+		return this.optional( element ) || sgameHtml( value ).match( /\b\w+\b/g ).length >= params;
 	}, $.validator.format( "Please enter at least {0} words." ) );
 
 	$.validator.addMethod( "rangeWords", function( value, element, params ) {
-		var valueStripped = stripHtml( value ),
+		var valueSgameped = sgameHtml( value ),
 			regex = /\b\w+\b/g;
-		return this.optional( element ) || valueStripped.match( regex ).length >= params[ 0 ] && valueStripped.match( regex ).length <= params[ 1 ];
+		return this.optional( element ) || valueSgameped.match( regex ).length >= params[ 0 ] && valueSgameped.match( regex ).length <= params[ 1 ];
 	}, $.validator.format( "Please enter between {0} and {1} words." ) );
 
 }() );
@@ -1074,8 +1074,8 @@ $.validator.addMethod( "stateUS", function( value, element, options ) {
 	return this.optional( element ) || regex.test( value );
 }, "Please specify a valid state" );
 
-// TODO check if value starts with <, otherwise don't try stripping anything
-$.validator.addMethod( "strippedminlength", function( value, element, param ) {
+// TODO check if value starts with <, otherwise don't try sgameping anything
+$.validator.addMethod( "sgamepedminlength", function( value, element, param ) {
 	return $( value ).text().length >= param;
 }, $.validator.format( "Please enter at least {0} characters" ) );
 

@@ -12,6 +12,10 @@
 
         public bool Jerseys { get; set; }
 
+        public int Places { get; set; }
+
+        public bool HasPlaces { get; set; }
+
         public int AdminId { get; set; }
 
         public string AdminName { get; set; }

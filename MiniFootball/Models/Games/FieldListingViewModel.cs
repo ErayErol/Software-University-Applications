@@ -17,7 +17,7 @@
         [StringLength(TownMaxLength, MinimumLength = TownMinLength, ErrorMessage = Range)]
         public string Town { get; set; }
 
-        [Display(Name = "Select playground:")]
+        [Display(Name = "Select field:")]
         public int FieldId { get; set; }
 
         public IEnumerable<FieldListingServiceModel> Fields { get; set; }
