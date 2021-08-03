@@ -56,7 +56,7 @@
 
             var games = GetGames(gamesQuery
                 .Skip((currentPage - 1) * gamesPerPage)
-                .Take(gamesPerPage));
+                .Take(gamesPerPage), this.mapper);
 
             return new GameQueryServiceModel
             {
@@ -77,6 +77,7 @@
             bool jerseys,
             int adminId)
         {
+            // TODO: Only admins can create (not managers, not users)
             var game = new Game
             {
                 PlaygroundId = playgroundId,
@@ -96,24 +97,19 @@
         }
 
         public IEnumerable<GameListingServiceModel> ByUser(string userId)
-            => GetGames(this.data
-                .Games
-                .Where(g => g.Admin.UserId == userId));
+            => GetGames(
+                this.data
+                    .Games
+                    .Where(g => g.Admin.UserId == userId),
+                this.mapper);
 
         public IEnumerable<GameListingServiceModel> Latest()
-        {
-            var games = this.data.Games;
-
-            var orderGames = games.OrderByDescending(g => g.Id);
-
-            var mappingGame = orderGames.ProjectTo<GameListingServiceModel>(this.mapper);
-
-            var takeLatestGame = mappingGame.Take(3);
-
-            var toList = takeLatestGame.ToList();
-
-            return toList;
-        }
+            => this.data
+                .Games
+                .OrderByDescending(g => g.Id)
+                .ProjectTo<GameListingServiceModel>(this.mapper)
+                .Take(3)
+                .ToList();
 
         public GameDetailsServiceModel Details(int id)
             => this.data
@@ -157,14 +153,11 @@
             return true;
         }
 
-        private static IEnumerable<GameListingServiceModel> GetGames(IQueryable<Game> gameQuery)
-            => gameQuery
-                .Select(g => new GameListingServiceModel
-                {
-                    Id = g.Id,
-                    Playground = g.Playground,
-                    Date = g.Date,
-                })
-                .ToList();
+        private static IEnumerable<GameListingServiceModel> GetGames(
+            IQueryable<Game> gameQuery, 
+            IConfigurationProvider mapper)
+                => gameQuery
+                    .ProjectTo<GameListingServiceModel>(mapper)
+                    .ToList();
     }
 }
