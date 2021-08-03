@@ -44,10 +44,6 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
-        public int AdminId { get; set; }
-
-        public virtual Admin Admin { get; init; }
-
         // you can add Stars(Rate) only user that played here,
     }
 }

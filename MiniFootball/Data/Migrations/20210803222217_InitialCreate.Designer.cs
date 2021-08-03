@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniFootball.Data;
 
-namespace MiniFootball.Migrations
+namespace MiniFootball.Data.Migrations
 {
     [DbContext(typeof(MiniFootballDbContext))]
-    [Migration("20210803205146_InitialCreate")]
+    [Migration("20210803222217_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -197,7 +197,7 @@ namespace MiniFootball.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("AdminId")
+                    b.Property<int?>("AdminId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Cafe")
@@ -457,13 +457,9 @@ namespace MiniFootball.Migrations
 
             modelBuilder.Entity("MiniFootball.Data.Models.Field", b =>
                 {
-                    b.HasOne("MiniFootball.Data.Models.Admin", "Admin")
+                    b.HasOne("MiniFootball.Data.Models.Admin", null)
                         .WithMany("Fields")
-                        .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Admin");
+                        .HasForeignKey("AdminId");
                 });
 
             modelBuilder.Entity("MiniFootball.Data.Models.Game", b =>

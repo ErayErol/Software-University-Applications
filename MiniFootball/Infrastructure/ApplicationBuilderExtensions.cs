@@ -7,6 +7,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -114,6 +115,8 @@
             {
                 var admin = data.Admins.FirstOrDefault(x => x.Name == "zwpAdmin");
 
+                // TODO: Edit for fields (only manager can edit it)
+
                 data.Fields.AddRange(new Field
                 {
                     Name = "Avenue",
@@ -127,7 +130,6 @@
                     Parking = true,
                     Shower = true,
                     PhoneNumber = "0888888889",
-                    AdminId = admin.Id,
                 }, new Field
                 {
                     Name = "Kortove",
@@ -141,7 +143,6 @@
                     Parking = true,
                     Shower = true,
                     PhoneNumber = "0888888888",
-                    AdminId = admin.Id,
                 }, new Field
                 {
                     Name = "Yildizlar",
@@ -155,7 +156,6 @@
                     Parking = true,
                     Shower = true,
                     PhoneNumber = "0888888887",
-                    AdminId = admin.Id,
                 }, new Field
                 {
                     Name = "Optimum",
@@ -169,7 +169,6 @@
                     Parking = true,
                     Shower = true,
                     PhoneNumber = "0888888886",
-                    AdminId = admin.Id,
                 }, new Field
                 {
                     Name = "Avangard Fitness",
@@ -183,7 +182,21 @@
                     Parking = true,
                     Shower = true,
                     PhoneNumber = "0888888885",
-                    AdminId = admin.Id,
+                });
+
+                data.SaveChanges();
+            }
+
+            if (data.Games.Any() == false)
+            {
+                data.Games.Add(new Game
+                {
+                    AdminId = 1,
+                    Ball = true,
+                    Description = "adasdasdadsadasdasdasdaasda",
+                    FieldId = 1,
+                    NumberOfPlayers = 12,
+                    Date = DateTime.ParseExact("04/08/2021 21:00", "g", CultureInfo.InvariantCulture)
                 });
             }
 

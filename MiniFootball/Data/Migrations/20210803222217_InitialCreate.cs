@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MiniFootball.Migrations
+namespace MiniFootball.Data.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -204,7 +204,7 @@ namespace MiniFootball.Migrations
                     ChangingRoom = table.Column<bool>(type: "bit", nullable: false),
                     Cafe = table.Column<bool>(type: "bit", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    AdminId = table.Column<int>(type: "int", nullable: false)
+                    AdminId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
