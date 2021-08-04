@@ -1,5 +1,6 @@
 ﻿namespace MiniFootball.Controllers
 {
+    using System.Linq;
     using AutoMapper;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@
     using Services.Countries;
     using Services.Fields;
     using Services.Games;
+    using Services.Games.Models;
 
     public class GamesController : Controller
     {
@@ -66,6 +68,7 @@
             {
                 return View();
             }
+
             // TODO : Do this for all
             gameForm.Town =
                 gameForm.Town[0].ToString().ToUpper()
@@ -97,7 +100,7 @@
 
             var fieldName = this.fields.FieldName(fieldId);
             gamePlaygroundModel.Name = fieldName;
-            
+
             return RedirectToAction("Create", "Games", gamePlaygroundModel);
         }
 
@@ -142,6 +145,7 @@
             }
 
             // TODO: There is already exist game in this fields in this date
+            // TODO: Add appointment like beautybooking with only times like 20:00, 21:00 and the user can pick up time... do it more beautiful when create game, cause date is a little bit ugly
 
             this.games.Create(
                 gameCreateModel.FieldId,
@@ -179,7 +183,9 @@
         [Authorize]
         public IActionResult Mine()
         {
-            var myGames = this.games.ByUser(this.User.Id());
+            var myGames = this.games
+                .ByUser(this.User.Id())
+                .OrderByDescending(g => g.Date.Date);
 
             return View(myGames);
         }
@@ -222,7 +228,7 @@
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            // TODO: Do this check for EditPlayground
+            // TODO: Do this check for Edit Fields also only manager can edit fields
             //if (this.fields.FieldExist(game.FieldId) == false)
             //{
             //    this.ModelState.AddModelError(nameof(game.FieldId), "Field does not exist.");
@@ -253,7 +259,7 @@
         [Authorize]
         public IActionResult Details(string id)
         {
-            // TODO: Add validation and image and all joined users
+            // TODO: Add validation and telephoneNumbers for contact
 
             var game = this.games.GetDetails(id);
 
@@ -297,6 +303,52 @@
             }
 
             return View(playersName);
+        }
+
+        [Authorize]
+        public IActionResult Delete(string id)
+        {
+            var userId = this.User.Id();
+
+            if (this.admins.IsAdmin(userId) == false && this.User.IsManager() == false)
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
+            // TODO : Create Model and do not use GameDetailsServiceModel, cause you take so much info, you only need Id and UserId
+            var game = this.games.GetDetails(id);
+
+            if (game.UserId != userId && this.User.IsManager() == false)
+            {
+                return Unauthorized();
+            }
+
+            return View(game);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Delete(GameDetailsServiceModel gameDetails)
+        {
+            // TODO: I code it fast! Look at, maybe you can refactor it, but maybe Im not sure....
+            var adminId = this.admins.IdByUser(this.User.Id());
+
+            if (adminId == 0 && this.User.IsManager() == false)
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
+            if (this.games.IsByAdmin(gameDetails.Id, adminId) == false && this.User.IsManager() == false)
+            {
+                return BadRequest();
+            }
+
+            if (this.games.Delete(gameDetails.Id) == false)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

@@ -50,6 +50,8 @@ namespace MiniFootball
 
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddMemoryCache();
+
             // Cloudinary Setup
             //Cloudinary cloudinary = new Cloudinary(new Account(
             //    CloudName, // this.configuration["Cloudinary:CloudName"],

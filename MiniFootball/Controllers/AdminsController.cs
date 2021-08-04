@@ -18,12 +18,12 @@
         [Authorize]
         public IActionResult Become()
         {
-            if (this.admins.IsAdmin(this.User.Id()))
+            if (this.admins.IsAdmin(this.User.Id()) || this.User.IsManager())
             {
                 return View();
             }
 
-            return View(new BecomeAdminFormModel()
+            return View(new BecomeAdminFormModel
             {
                 Name = this.User.Identity?.Name
             });

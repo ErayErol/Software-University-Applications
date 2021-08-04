@@ -49,5 +49,7 @@
         bool IsUserIsJoinGame(string id, string userId);
 
         IQueryable<string> SeePlayers(string id);
+        
+        bool Delete(string id);
     }
 }

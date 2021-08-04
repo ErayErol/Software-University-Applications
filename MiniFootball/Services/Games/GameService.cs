@@ -21,7 +21,6 @@
             this.mapper = mapper.ConfigurationProvider;
         }
 
-        // TODO: Maybe without image is better and add count of free places
         public GameQueryServiceModel All(
             string town,
             string searchTerm,
@@ -46,11 +45,18 @@
                         .Contains(searchTerm.ToLower()));
             }
 
+            // TODO: You can add searching by time too
             gamesQuery = sorting switch
             {
-                GameSorting.Town => gamesQuery.OrderBy(g => g.Field.Town),
-                GameSorting.FieldName => gamesQuery.OrderBy(g => g.Field.Name),
-                GameSorting.DateCreated or _ => gamesQuery.OrderByDescending(g => g.Id)
+                GameSorting.Town
+                    => gamesQuery
+                        .OrderBy(g => g.Field.Town),
+                GameSorting.FieldName
+                    => gamesQuery
+                        .OrderBy(g => g.Field.Name),
+                GameSorting.DateCreated or _
+                    => gamesQuery
+                        .OrderByDescending(g => g.Date.Date)
             };
 
             var totalGames = gamesQuery.Count();
@@ -80,7 +86,6 @@
             bool hasPlaces,
             int adminId)
         {
-            // TODO: Only admins can create (not managers, not users)
             var game = new Game
             {
                 FieldId = fieldId,
@@ -133,8 +138,6 @@
 
         public bool AddUserToGame(string id, string userId)
         {
-            // TODO: If all people are joined then replace JOIN button with No needed player or something like this..
-
             var game = this.data
                 .Games
                 .FirstOrDefault(c => c.Id == id);
@@ -167,11 +170,27 @@
                 .Any(c => c.GameId == id && c.UserId == userId);
 
         public IQueryable<string> SeePlayers(string id)
-        => this.data
+            => this.data
                 .UserGames
                 .Where(g => g.GameId == id)
                 .Select(u => u.User.UserName);
 
+        public bool Delete(string id)
+        {
+            var game = this.data
+                .Games
+                .FirstOrDefault(g => g.Id == id);
+
+            if (game == null)
+            {
+                return false;
+            }
+
+            this.data.Remove(game);
+            this.data.SaveChanges();
+
+            return true;
+        }
 
         public IEnumerable<GameListingServiceModel> ByUser(string userId)
             => GetGames(
@@ -183,7 +202,7 @@
         public IEnumerable<GameListingServiceModel> Latest()
             => this.data
                 .Games
-                .OrderByDescending(g => g.Id)
+                .OrderByDescending(g => g.Date.Date)
                 .ProjectTo<GameListingServiceModel>(this.mapper)
                 .Take(3)
                 .ToList();
