@@ -285,11 +285,11 @@
         }
 
         [Authorize]
-        public IActionResult ViewPlayers(string id)
+        public IActionResult SeePlayers(string id)
         {
             // TODO : Add validation
 
-            var playersName = this.games.ViewPlayers(id);
+            var playersName = this.games.SeePlayers(id);
 
             if (ModelState.IsValid == false)
             {

@@ -166,7 +166,7 @@
             => this.data.UserGames
                 .Any(c => c.GameId == id && c.UserId == userId);
 
-        public IQueryable<string> ViewPlayers(string id)
+        public IQueryable<string> SeePlayers(string id)
         => this.data
                 .UserGames
                 .Where(g => g.GameId == id)

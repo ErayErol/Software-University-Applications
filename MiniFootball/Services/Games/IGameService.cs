@@ -48,6 +48,6 @@
         
         bool IsUserIsJoinGame(string id, string userId);
 
-        IQueryable<string> ViewPlayers(string id);
+        IQueryable<string> SeePlayers(string id);
     }
 }
