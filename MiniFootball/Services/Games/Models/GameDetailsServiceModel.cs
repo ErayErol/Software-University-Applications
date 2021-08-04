@@ -14,12 +14,16 @@
 
         public int Places { get; set; }
 
-        public bool HasPlaces { get; set; }
+        public bool HasPlaces
+            => IsHasPlaces;
 
         public int AdminId { get; set; }
 
         public string AdminName { get; set; }
 
         public string UserId { get; set; }
+
+        private bool IsHasPlaces
+            => this.Places > 0;
     }
 }

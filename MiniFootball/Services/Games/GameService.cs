@@ -162,6 +162,10 @@
             return true;
         }
 
+        public bool IsUserIsJoinGame(string id, string userId)
+            => this.data.UserGames
+                .Any(c => c.GameId == id && c.UserId == userId);
+
         public IEnumerable<GameListingServiceModel> ByUser(string userId)
             => GetGames(
                 this.data
@@ -177,7 +181,7 @@
                 .Take(3)
                 .ToList();
 
-        public GameDetailsServiceModel Details(string id)
+        public GameDetailsServiceModel GetDetails(string id)
             => this.data
                 .Games
                 .Where(g => g.Id == id)
@@ -190,7 +194,7 @@
                 .Any(c => c.Id == id && c.AdminId == adminId);
 
         private static IEnumerable<GameListingServiceModel> GetGames(
-            IQueryable<Game> gameQuery, 
+            IQueryable<Game> gameQuery,
             IConfigurationProvider mapper)
                 => gameQuery
                     .ProjectTo<GameListingServiceModel>(mapper)

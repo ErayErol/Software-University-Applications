@@ -69,6 +69,17 @@
             };
         }
 
+        public bool IsCorrectCountryAndTown(int fieldId, string name, string country, string town)
+        {
+            var field = this.data.Fields.FirstOrDefault(f => f.Id == fieldId);
+
+            return 
+                field != null && 
+                field.Name.ToLower() == name.ToLower() && 
+                field.Country.ToLower() == country.ToLower() && 
+                field.Town.ToLower() == town.ToLower();
+        }
+
         public int Create(
             string name,
             string country,
@@ -119,7 +130,7 @@
                 .OrderBy(t => t)
                 .AsEnumerable();
 
-        public IEnumerable<FieldListingServiceModel> PlaygroundsListing(string town, string country)
+        public IEnumerable<FieldListingServiceModel> FieldsListing(string town, string country)
             => this.data
                 .Fields
                 .Where(x => x.Town == town && x.Country == country)
@@ -129,7 +140,16 @@
                     Name = x.Name,
                 }).ToList();
 
-        public bool PlaygroundExist(int fieldId)
-            => this.data.Fields.Any(p => p.Id == fieldId);
+        public bool FieldExist(int fieldId)
+            => this.data
+                .Fields
+                .Any(p => p.Id == fieldId);
+
+        public string FieldName(int fieldId)
+            => this.data
+                .Fields
+                .Where(f => f.Id == fieldId)
+                .Select(f => f.Name)
+                .FirstOrDefault();
     }
 }

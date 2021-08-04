@@ -25,7 +25,7 @@
 
         public bool Jerseys { get; set; }
 
-        [Range(NumberOfPlayersMin, NumberOfPlayersMax)]
+        [Range(PlacesMin, PlacesMax)]
         public int Places { get; set; }
 
         public bool HasPlaces { get; set; }

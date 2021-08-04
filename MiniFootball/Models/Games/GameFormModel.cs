@@ -30,10 +30,16 @@
         [Display(Name = "Free places")]
         public int Places { get; set; }
 
-        public bool HasPlaces { get; set; }
+        public bool HasPlaces
+            => this.IsHasPlaces;
+
+        public bool IsUserAlreadyJoin { get; set; }
 
         [Required(ErrorMessage = Empty)]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = Range)]
         public string Description { get; set; }
+
+        private bool IsHasPlaces
+            => this.Places > 0;
     }
 }

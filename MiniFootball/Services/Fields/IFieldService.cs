@@ -27,9 +27,9 @@
 
         IEnumerable<string> Towns();
 
-        IEnumerable<FieldListingServiceModel> PlaygroundsListing(string town, string country);
+        IEnumerable<FieldListingServiceModel> FieldsListing(string town, string country);
 
-        bool PlaygroundExist(int fieldId);
+        bool FieldExist(int fieldId);
 
         FieldQueryServiceModel All(
             string town,
@@ -37,5 +37,9 @@
             GameSorting sorting,
             int currentPage,
             int fieldsPerPage);
+
+        bool IsCorrectCountryAndTown(int fieldId, string name, string country, string town);
+
+        string FieldName(int fieldId);
     }
 }

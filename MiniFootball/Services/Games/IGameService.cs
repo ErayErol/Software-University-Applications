@@ -30,7 +30,7 @@
         
         IEnumerable<GameListingServiceModel> Latest();
 
-        GameDetailsServiceModel Details(string id);
+        GameDetailsServiceModel GetDetails(string id);
 
         bool IsByAdmin(string id, int adminId);
 
@@ -44,5 +44,7 @@
             string description);
 
         bool AddUserToGame(string id, string userId);
+        
+        bool IsUserIsJoinGame(string id, string userId);
     }
 }

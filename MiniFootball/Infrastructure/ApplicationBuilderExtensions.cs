@@ -192,11 +192,14 @@
                 data.Games.Add(new Game
                 {
                     AdminId = 1,
-                    Ball = true,
-                    Description = "adasdasdadsadasdasdasdaasda",
                     FieldId = 1,
+                    Date = DateTime.ParseExact("04/08/2021 21:00", "g", CultureInfo.InvariantCulture),
+                    Ball = true,
+                    Jerseys = true,
+                    Description = "adasdasdadsadasdasdasdaasda",
                     NumberOfPlayers = 12,
-                    Date = DateTime.ParseExact("04/08/2021 21:00", "g", CultureInfo.InvariantCulture)
+                    Places = 12,
+                    HasPlaces = true,
                 });
             }
 
