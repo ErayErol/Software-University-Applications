@@ -14,7 +14,7 @@
                     @if (Model.IsUserAlreadyJoin)
                     {
                         <h3 class="text-center mb-4 mt-5">You already join to this game</h3>
-                        <a href="/Games/Players/All" class="btn btn-primary btn-block text-uppercase mb-3">View list of players</a>
+                        <a href="/Games/ViewPlayers?id=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3">View list of players</a>
                     }
                     else
                     {
@@ -34,6 +34,8 @@
                     <h3 class="text-center mb-4 mt-5">There are no places</h3>
                     <a href="/Games/ViewPlayers?id=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3">View list of players</a>
                 }
+                
+                @*<img class="card-img-top mt-5 mb-5" src="@Model.Field.ImageUrl" alt="@Model.Field.Name @Model.Field.Country - @Model.Field.Town">*@
 
                 <div class="form-group">
                     <label asp-for="Date"></label>

@@ -4,7 +4,10 @@
 {
     <div class="col-md-4">
         <div class="card mb-4">
-            <img class="card-img-top" src="@game.Field.ImageUrl" alt="@game.Field.Name @game.Field.Country - @game.Field.Town">
+            @if (ViewBag.AllowImage == true)
+            {
+                <img class="card-img-top" src="@game.Field.ImageUrl" alt="@game.Field.Name @game.Field.Country - @game.Field.Town">
+            }
             <div class="card-body">
                 <div class="text-center mb-4">
                     <div class="card-title h4-like">@game.Field.Name</div>

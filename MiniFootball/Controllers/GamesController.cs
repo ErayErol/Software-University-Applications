@@ -109,6 +109,7 @@
                 return View();
             }
 
+            // TODO: Do this to game too
             if (this.fields.IsCorrectCountryAndTown(
                 gameForm.FieldId,
                 gameForm.Name,
@@ -159,7 +160,6 @@
 
         public IActionResult All([FromQuery] GameAllQueryModel query)
         {
-            //
             var queryResult = this.games.All(
                 query.Town,
                 query.SearchTerm,
@@ -257,6 +257,7 @@
 
             var game = this.games.GetDetails(id);
 
+            // TODO: Create GameInfoModel not use GameFormModel for details
             var gameForm = this.mapper.Map<GameFormModel>(game);
 
             if (this.games.IsUserIsJoinGame(id, this.User.Id()))
@@ -286,14 +287,16 @@
         [Authorize]
         public IActionResult ViewPlayers(string id)
         {
-            var game = this.games.GetDetails(id);
+            // TODO : Add validation
+
+            var playersName = this.games.ViewPlayers(id);
 
             if (ModelState.IsValid == false)
             {
                 return RedirectToAction(nameof(Details));
             }
 
-            return RedirectToAction(nameof(All));
+            return View(playersName);
         }
     }
 }

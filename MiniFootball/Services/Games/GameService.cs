@@ -50,7 +50,7 @@
             {
                 GameSorting.Town => gamesQuery.OrderBy(g => g.Field.Town),
                 GameSorting.FieldName => gamesQuery.OrderBy(g => g.Field.Name),
-                GameSorting.DateCreated or _ => gamesQuery.OrderBy(g => g.Id)
+                GameSorting.DateCreated or _ => gamesQuery.OrderByDescending(g => g.Id)
             };
 
             var totalGames = gamesQuery.Count();
@@ -165,6 +165,13 @@
         public bool IsUserIsJoinGame(string id, string userId)
             => this.data.UserGames
                 .Any(c => c.GameId == id && c.UserId == userId);
+
+        public IQueryable<string> ViewPlayers(string id)
+        => this.data
+                .UserGames
+                .Where(g => g.GameId == id)
+                .Select(u => u.User.UserName);
+
 
         public IEnumerable<GameListingServiceModel> ByUser(string userId)
             => GetGames(

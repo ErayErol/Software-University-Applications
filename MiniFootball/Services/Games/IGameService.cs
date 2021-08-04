@@ -3,6 +3,7 @@
     using Models;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using MiniFootball.Models;
 
     public interface IGameService
@@ -46,5 +47,7 @@
         bool AddUserToGame(string id, string userId);
         
         bool IsUserIsJoinGame(string id, string userId);
+
+        IQueryable<string> ViewPlayers(string id);
     }
 }

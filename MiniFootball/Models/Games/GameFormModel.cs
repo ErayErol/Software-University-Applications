@@ -1,7 +1,7 @@
 ﻿namespace MiniFootball.Models.Games
 {
     using System.ComponentModel.DataAnnotations;
-
+    using Data.Models;
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Game;
 
@@ -12,6 +12,7 @@
 
         [Display(Name = "Field")]
         public int FieldId { get; set; }
+        public Field Field { get; set; }
 
         [Required(ErrorMessage = Empty)]
         public System.DateTime? Date { get; set; }
