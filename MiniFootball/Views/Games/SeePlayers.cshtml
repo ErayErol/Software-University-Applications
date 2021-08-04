@@ -1,0 +1,10 @@
+﻿@model IQueryable<string>
+
+@{
+    ViewBag.Title = "All Players For Game";
+}
+
+@foreach (var playerName in Model)
+{
+    <h3>@playerName</h3>
+}
