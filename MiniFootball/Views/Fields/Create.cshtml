@@ -4,18 +4,7 @@
     ViewBag.Title = "Create Field";
 }
 
-@if (@Model == null)
-{
-    <div class="col-md-4">
-        <div class="card">
-            <img class="card-img-top" src="https://thumbs.dreamstime.com/b/comic-boom-oops-icon-simple-black-style-illustration-web-122999699.jpg" alt="Just oops image">
-            <div class="card-body text-center">
-                <h5 class="card-title text-center">Only managers can create fields</h5>
-            </div>
-        </div>
-    </div>
-}
-else
+@if (@Model != null)
 {
     <div class="container">
         <div class="row">

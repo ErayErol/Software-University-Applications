@@ -8,6 +8,8 @@
     using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
 
+    using static WebConstants;
+
     using static Data.DataConstants.User;
 
     [AllowAnonymous]
@@ -15,8 +17,6 @@
     {
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
-
-        // TODO: After successful register redirect to Login
 
         public RegisterModel(
             UserManager<User> userManager,
@@ -74,12 +74,16 @@
 
                 if (result.Succeeded)
                 {
-                    await this.signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+                    //await this.signInManager.SignInAsync(user, isPersistent: false);
+                    //return LocalRedirect(returnUrl);
+
+                    return Redirect("Login");
                 }
 
                 foreach (var error in result.Errors)
                 {
+                    TempData[GlobalMessageKey] = "There is already a user with this email address!";
+
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }

@@ -7,10 +7,10 @@
 //    using MiniFootball.Services.Statistics;
 //    using Microsoft.AspNetCore.Mvc;
 //    using Mocks;
-//    using Models.Home;
 //    using MyTested.AspNetCore.Mvc;
 //    using System.Collections.Generic;
 //    using System.Linq;
+//    using MiniFootball.Services.Games.Models;
 //    using Xunit;
 
 //    public class HomeControllerTest
@@ -25,8 +25,8 @@
 //                    .WithData(GetGames()))
 //                .ShouldReturn()
 //                .View(view => view
-//                    .WithModelOfType<IndexViewModel>()
-//                    .Passing(m => m.Games.Should().HaveCount(3)));
+//                    .WithModelOfType<List<GameListingServiceModel>>()
+//                    .Passing(m => m.Should().HaveCount(3)));
 
 //        [Fact]
 //        public void IndexShouldReturnViewWithCorrectModel()
@@ -71,10 +71,10 @@
 //                .BeAssignableTo<ViewResult>()
 //                .Which
 //                .Model
-//                .As<IndexViewModel>()
+//                .As<List<GameListingServiceModel>>()
 //                .Invoking(model =>
 //                {
-//                    model.Games.Should().HaveCount(3);
+//                    model.Should().HaveCount(3);
 //                    model.TotalGames.Should().Be(10);
 //                    model.TotalUsers.Should().Be(1);
 //                })

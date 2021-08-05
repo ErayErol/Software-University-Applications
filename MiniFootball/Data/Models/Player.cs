@@ -13,6 +13,6 @@
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
-        // TODO : You can add search for Players by City, Name, Country, Age...... Add Picture, Skills Rating from 0 to 10
+        // TODO: You can add search for Players by City, Name, Country, Age...... Add Picture, Skills Rating from 0 to 10
     }
 }

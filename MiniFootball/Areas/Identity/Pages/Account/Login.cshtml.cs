@@ -9,11 +9,12 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
 
+    using static WebConstants;
+
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
         private readonly SignInManager<User> signInManager;
-        //TODO: When login inputs are incorrect render beauty message
 
         public LoginModel(SignInManager<User> signInManager)
             => this.signInManager = signInManager;
@@ -64,6 +65,7 @@
 
                 if (result.Succeeded)
                 {
+                    TempData[GlobalMessageKey] = "Welcome to Mini Football!";
                     return LocalRedirect(returnUrl);
                 }
 
@@ -73,7 +75,7 @@
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    TempData[GlobalMessageKey] = "Invalid email or password!";
 
                     return Page();
                 }

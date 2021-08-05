@@ -5,7 +5,7 @@
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Game;
 
-    // TODO : For create game and details I use this class, just create one class too
+    // TODO: For create game and details I use this class, just create one class too
     public class GameFormModel
     {
         public string Id { get; set; }

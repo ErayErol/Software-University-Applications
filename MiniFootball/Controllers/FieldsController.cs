@@ -27,6 +27,7 @@
         {
             if (this.User.IsManager() == false)
             {
+                TempData[GlobalMessageKey] = "Only Manager can create fields!";
                 return View();
             }
 

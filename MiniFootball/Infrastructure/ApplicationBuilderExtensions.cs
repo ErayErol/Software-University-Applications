@@ -115,7 +115,7 @@
             {
                 var admin = data.Admins.FirstOrDefault(x => x.Name == "zwpAdmin");
 
-                // TODO: Edit for fields (only manager can edit it)
+                // TODO: Add Players and Teams
 
                 data.Fields.AddRange(new Field
                 {

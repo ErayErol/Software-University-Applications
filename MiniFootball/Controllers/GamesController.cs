@@ -69,7 +69,7 @@
                 return View();
             }
 
-            // TODO : Do this for all
+            // TODO: Do this for all
             gameForm.Town =
                 gameForm.Town[0].ToString().ToUpper()
                 + gameForm.Town.Substring(1, gameForm.Town.Length - 1).ToLower();
@@ -198,7 +198,6 @@
             // When we are in edit page, add button for edit field
             // and then return RedirectToAction(nameof(EditPlayground));
 
-            // TODO: Add Free places too
             var userId = this.User.Id();
 
             if (this.admins.IsAdmin(userId) == false && this.User.IsManager() == false)
@@ -267,6 +266,8 @@
             // TODO: Create GameInfoModel not use GameFormModel for details
             var gameForm = this.mapper.Map<GameFormModel>(game);
 
+            // TODO: Creator of game can add player to game
+
             if (this.games.IsUserIsJoinGame(id, this.User.Id()))
             {
                 gameForm.IsUserAlreadyJoin = true;
@@ -294,7 +295,7 @@
         [Authorize]
         public IActionResult SeePlayers(string id)
         {
-            // TODO : Add validation and manager have to see all players without join
+            // TODO: Add validation and manager have to see all players without join
 
             var playersName = this.games.SeePlayers(id);
 
@@ -316,7 +317,7 @@
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            // TODO : Create Model and do not use GameDetailsServiceModel, cause you take so much info, you only need Id and UserId
+            // TODO: Create Model and do not use GameDetailsServiceModel, cause you take so much info, you only need Id and UserId
             var game = this.games.GetDetails(id);
 
             if (game.UserId != userId && this.User.IsManager() == false)

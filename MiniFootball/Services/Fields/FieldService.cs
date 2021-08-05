@@ -117,9 +117,7 @@
         public bool IsSame(string name, string country, string town)
             => this.data
                 .Fields
-                .Any(p => p.Name == name &&
-                          p.Country == country &&
-                          p.Town == town);
+                .Any(p => p.Name == name && p.Country == country && p.Town == town);
 
         public IEnumerable<string> Towns()
             => this.data
