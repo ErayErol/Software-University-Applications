@@ -86,7 +86,11 @@
                     <img class="card-img-top" src="@field.ImageUrl" alt="@field.Name @field.Country - @field.Town">
                     <div class="card-body text-center">
                         <div class="card-title text-center h5-like">@field.Name - @field.Country @field.Town</div>
-                        @*<a asp-controller="Cars" asp-action="Details" asp-route-id="@fields.Id" class="btn btn-primary">View More</a>*@
+                        <div class="text-center mt-4">
+                            <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" class="btn mb-3">Info</a>
+                            <a asp-controller="Fields" asp-action="Edit" asp-route-id="@field.Id" class="btn btn-warning mb-3">Edit</a>
+                            <a asp-controller="Fields" asp-action="Delete" asp-route-id="@field.Id" class="btn btn-danger mb-4">Delete</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -98,7 +102,7 @@
             <div class="card">
                 <img class="card-img-top" src="https://thumbs.dreamstime.com/b/comic-boom-oops-icon-simple-black-style-illustration-web-122999699.jpg" alt="Just oops image">
                 <div class="card-body text-center">
-                    <div class="card-title text-center h5-like">There are no fieldss</div>
+                    <div class="card-title text-center h5-like">There are no fields</div>
                     <a href="/Fields/Create" class="btn btn-success">Create Field</a>
                 </div>
             </div>

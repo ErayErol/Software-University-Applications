@@ -7,11 +7,12 @@
     using Services.Countries;
     using Services.Fields;
 
+    using static WebConstants;
+
     public class FieldsController : Controller
     {
         private readonly ICountryService country;
         private readonly IFieldService field;
-
 
         public FieldsController(
             ICountryService country,
@@ -53,10 +54,10 @@
             if (this.field.IsSame(
                     fieldModel.Name,
                     fieldModel.Country,
-                    fieldModel.Town,
-                    fieldModel.Address))
+                    fieldModel.Town))
             {
-                // TODO: There are already exist field with this name, country, town, address (render in page)
+                fieldModel.Countries = this.country.All();
+                TempData[GlobalMessageKey] = "There are already exist field with this Name, Country and Town";
                 return View(fieldModel);
             }
 

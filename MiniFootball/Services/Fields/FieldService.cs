@@ -16,11 +16,11 @@
             this.data = data;
         }
 
-        // TODO: In All Add button Info 
+        // TODO: Add AutoMapper 
         public FieldQueryServiceModel All(
             string town,
             string searchTerm,
-            GameSorting sorting,
+            Sorting sorting,
             int currentPage,
             int fieldsPerPage)
         {
@@ -42,9 +42,9 @@
 
             fieldsQuery = sorting switch
             {
-                GameSorting.Town => fieldsQuery.OrderBy(g => g.Town),
-                GameSorting.FieldName => fieldsQuery.OrderBy(g => g.Name),
-                GameSorting.DateCreated or _ => fieldsQuery.OrderBy(g => g.Id)
+                Sorting.Town => fieldsQuery.OrderBy(g => g.Town),
+                Sorting.FieldName => fieldsQuery.OrderBy(g => g.Name),
+                Sorting.DateCreated or _ => fieldsQuery.OrderBy(g => g.Id)
             };
 
             var totalPlaygrounds = fieldsQuery.Count();
@@ -114,13 +114,12 @@
             return field.Id;
         }
 
-        public bool IsSame(string name, string country, string town, string address)
+        public bool IsSame(string name, string country, string town)
             => this.data
                 .Fields
                 .Any(p => p.Name == name &&
                           p.Country == country &&
-                          p.Town == town &&
-                          p.Address == address);
+                          p.Town == town);
 
         public IEnumerable<string> Towns()
             => this.data

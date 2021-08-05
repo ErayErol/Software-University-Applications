@@ -164,12 +164,13 @@
 
         public IActionResult All([FromQuery] GameAllQueryModel query)
         {
-            var queryResult = this.games.All(
-                query.Town,
-                query.SearchTerm,
-                query.Sorting,
-                query.CurrentPage,
-                query.GamesPerPage);
+            var queryResult = this.games
+                .All(
+                    query.Town,
+                    query.SearchTerm,
+                    query.Sorting,
+                    query.CurrentPage,
+                    query.GamesPerPage);
 
             var towns = this.fields.Towns();
 

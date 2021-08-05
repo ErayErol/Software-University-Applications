@@ -4,10 +4,11 @@
     using Microsoft.Extensions.Caching.Memory;
     using Services.Games;
     using Services.Games.Models;
-    using Services.Statistics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using static WebConstants;
 
     public class HomeController : Controller
     {
@@ -38,9 +39,12 @@
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
 
                 this.cache.Set(latestGamesCacheKey, lastGames, cacheOptions);
+                
+                TempData[GlobalMessageKey] = "Added cache";
             }
 
             // TODO: Add CSS Number Counter in Statistics
+
 
             return View(lastGames);
         }

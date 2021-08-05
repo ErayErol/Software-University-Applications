@@ -22,8 +22,7 @@
         bool IsSame(
             string name,
             string country,
-            string town,
-            string address);
+            string town);
 
         IEnumerable<string> Towns();
 
@@ -34,7 +33,7 @@
         FieldQueryServiceModel All(
             string town,
             string searchTerm,
-            GameSorting sorting,
+            Sorting sorting,
             int currentPage,
             int fieldsPerPage);
 

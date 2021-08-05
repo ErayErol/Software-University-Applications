@@ -11,7 +11,7 @@
         GameQueryServiceModel All(
             string town,
             string searchTerm,
-            GameSorting sorting,
+            Sorting sorting,
             int currentPage,
             int gamesPerPage);
 

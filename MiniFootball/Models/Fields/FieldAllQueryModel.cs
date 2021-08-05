@@ -15,7 +15,7 @@
 
         public int TotalFields { get; set; }
 
-        public GameSorting Sorting { get; set; }
+        public Sorting Sorting { get; set; }
 
         public IEnumerable<string> Towns { get; set; }
 

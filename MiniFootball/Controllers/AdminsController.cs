@@ -6,6 +6,8 @@
     using Models.Admins;
     using Services.Admins;
 
+    using static WebConstants;
+
     public class AdminsController : Controller
     {
         private readonly IAdminService admins;
@@ -38,9 +40,9 @@
                 return View(admin);
             }
 
-            var userId = this.User.Id();
+            this.admins.Become(admin.Name, admin.PhoneNumber, this.User.Id());
 
-            this.admins.Become(admin.Name, admin.PhoneNumber, userId);
+            TempData[GlobalMessageKey] = "You have become an admin!";
 
             return RedirectToAction("All", "Games");
         }

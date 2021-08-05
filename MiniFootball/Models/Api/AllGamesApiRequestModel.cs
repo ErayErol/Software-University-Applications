@@ -6,7 +6,7 @@
 
         public string SearchTerm { get; init; }
 
-        public GameSorting Sorting { get; init; }
+        public Sorting Sorting { get; init; }
 
         public int GamesPerPage { get; init; } = 10;
 

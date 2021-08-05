@@ -24,7 +24,7 @@
         public GameQueryServiceModel All(
             string town,
             string searchTerm,
-            GameSorting sorting,
+            Sorting sorting,
             int currentPage,
             int gamesPerPage)
         {
@@ -48,13 +48,13 @@
             // TODO: You can add searching by time too
             gamesQuery = sorting switch
             {
-                GameSorting.Town
+                Sorting.Town
                     => gamesQuery
                         .OrderBy(g => g.Field.Town),
-                GameSorting.FieldName
+                Sorting.FieldName
                     => gamesQuery
                         .OrderBy(g => g.Field.Name),
-                GameSorting.DateCreated or _
+                Sorting.DateCreated or _
                     => gamesQuery
                         .OrderByDescending(g => g.Date.Date)
             };
