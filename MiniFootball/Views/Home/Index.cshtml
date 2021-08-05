@@ -1,4 +1,4 @@
-﻿@model IndexViewModel
+﻿@model List<GameListingServiceModel>
 
 @{
     ViewBag.Title = "Welcome to Mini Football";
@@ -8,23 +8,23 @@
     <div class="col-md-5 pl-5 pr-5">
         <div class="card">
             <div class="card-body text-center">
-                <h5 class="card-title text-center">@Model.TotalGames Games</h5>
-                <h5 class="card-title text-center">@Model.TotalFields Fields</h5>
-                <h5 class="card-title text-center">@Model.TotalUsers Users</h5>
+                <h5 class="card-title text-center" id="total-games"></h5>
+                <h5 class="card-title text-center" id="total-fields"></h5>
+                <h5 class="card-title text-center" id="total-users"></h5>
             </div>
         </div>
     </div>
 </div>
 
-@if (Model.Games.Any())
+@if (Model.Any())
 {
     <div class="mb-4"></div>
 
     <div id="carouselExampleControls" class="carousel slide col-md-9" data-ride="carousel">
         <div class="carousel-inner">
-            @for (int i = 0; i < Model.Games.Count; i++)
+            @for (int i = 0; i < Model.Count; i++)
             {
-                var game = Model.Games[i];
+                var game = Model[i];
 
                 <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
                     <img class="d-block w-100" src="@game.Field.ImageUrl" alt="First slide">
@@ -46,4 +46,14 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
+}
+
+@section Scripts {
+    <script>
+        $.get('/api/statistics', (data) => {
+            $('#total-games').text(data.totalGames + " Games");
+            $('#total-fields').text(data.totalFields + " Fields");
+            $('#total-users').text(data.totalUsers + " Users");
+        });
+    </script>
 }

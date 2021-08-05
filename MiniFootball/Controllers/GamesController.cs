@@ -293,7 +293,7 @@
         [Authorize]
         public IActionResult SeePlayers(string id)
         {
-            // TODO : Add validation
+            // TODO : Add validation and manager have to see all players without join
 
             var playersName = this.games.SeePlayers(id);
 
