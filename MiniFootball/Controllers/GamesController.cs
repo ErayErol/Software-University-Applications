@@ -12,6 +12,8 @@
     using Services.Games;
     using Services.Games.Models;
 
+    using static MyWebCase;
+
     public class GamesController : Controller
     {
         private readonly ICountryService countries;
@@ -69,10 +71,7 @@
                 return View();
             }
 
-            // TODO: Do this for all
-            gameForm.Town =
-                gameForm.Town[0].ToString().ToUpper()
-                + gameForm.Town.Substring(1, gameForm.Town.Length - 1).ToLower();
+            gameForm.Town = FirstLetterUpperThenLower(gameForm.Town);
 
             return View(new FieldListingViewModel
             {
@@ -149,12 +148,14 @@
 
             this.games.Create(
                 gameCreateModel.FieldId,
-                gameCreateModel.Description,
                 gameCreateModel.Date.Value,
                 gameCreateModel.NumberOfPlayers.Value,
-                gameCreateModel.Goalkeeper,
+                gameCreateModel.TelephoneNumber,
+                gameCreateModel.FacebookUrl,
                 gameCreateModel.Ball,
                 gameCreateModel.Jerseys,
+                gameCreateModel.Goalkeeper,
+                gameCreateModel.Description,
                 gameCreateModel.NumberOfPlayers.Value,
                 true,
                 adminId);
@@ -184,6 +185,11 @@
         [Authorize]
         public IActionResult Mine()
         {
+            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
             var myGames = this.games
                 .ByUser(this.User.Id())
                 .OrderByDescending(g => g.Date.Date);
@@ -194,10 +200,6 @@
         [Authorize]
         public IActionResult Edit(string id)
         {
-            // TODO: This edit only Game, but field is same 
-            // When we are in edit page, add button for edit field
-            // and then return RedirectToAction(nameof(EditPlayground));
-
             var userId = this.User.Id();
 
             if (this.admins.IsAdmin(userId) == false && this.User.IsManager() == false)
@@ -228,7 +230,7 @@
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            // TODO: Do this check for Edit Fields also only manager can edit fields
+            // TODO: Delete this and do it in edit fields
             //if (this.fields.FieldExist(game.FieldId) == false)
             //{
             //    this.ModelState.AddModelError(nameof(game.FieldId), "Field does not exist.");
@@ -244,14 +246,21 @@
                 return BadRequest();
             }
 
-            this.games.Edit(
+            var isEdit = this.games.Edit(
                 id,
                 game.Date,
                 game.NumberOfPlayers,
+                game.TelephoneNumber,
+                game.FacebookUrl,
                 game.Ball,
                 game.Jerseys,
                 game.Goalkeeper,
                 game.Description);
+
+            if (isEdit == false)
+            {
+                return BadRequest();
+            }
 
             return RedirectToAction(nameof(All));
         }
@@ -259,11 +268,8 @@
         [Authorize]
         public IActionResult Details(string id)
         {
-            // TODO: Add validation and telephoneNumbers for contact
-
             var game = this.games.GetDetails(id);
 
-            // TODO: Create GameInfoModel not use GameFormModel for details
             var gameForm = this.mapper.Map<GameFormModel>(game);
 
             // TODO: Creator of game can add player to game
@@ -296,6 +302,7 @@
         public IActionResult SeePlayers(string id)
         {
             // TODO: Add validation and manager have to see all players without join
+            // TODO: After JOIN you can see All players and one button to cancel join
 
             var playersName = this.games.SeePlayers(id);
 
@@ -317,8 +324,7 @@
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            // TODO: Create Model and do not use GameDetailsServiceModel, cause you take so much info, you only need Id and UserId
-            var game = this.games.GetDetails(id);
+            var game = this.games.DeleteDetails(id);
 
             if (game.UserId != userId && this.User.IsManager() == false)
             {
@@ -330,9 +336,8 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult Delete(GameDetailsServiceModel gameDetails)
+        public IActionResult Delete(GameDeleteServiceModel gameDetails)
         {
-            // TODO: I code it fast! Look at, maybe you can refactor it, but maybe Im not sure....
             var adminId = this.admins.IdByUser(this.User.Id());
 
             if (adminId == 0 && this.User.IsManager() == false)

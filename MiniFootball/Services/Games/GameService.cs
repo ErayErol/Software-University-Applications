@@ -1,14 +1,14 @@
 ﻿namespace MiniFootball.Services.Games
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Data;
     using Data.Models;
+    using MiniFootball.Models;
     using Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
-    using MiniFootball.Models;
 
     public class GameService : IGameService
     {
@@ -76,12 +76,14 @@
 
         public string Create(
             int fieldId,
-            string description,
             DateTime date,
             int numberOfPlayers,
-            bool goalkeeper,
+            string telephoneNumber,
+            string facebookUrl,
             bool ball,
             bool jerseys,
+            bool goalkeeper,
+            string description,
             int places,
             bool hasPlaces,
             int adminId)
@@ -89,12 +91,14 @@
             var game = new Game
             {
                 FieldId = fieldId,
-                Description = description,
                 Date = date,
                 NumberOfPlayers = numberOfPlayers,
-                Goalkeeper = goalkeeper,
+                TelephoneNumber = telephoneNumber,
+                FacebookUrl = facebookUrl,
                 Ball = ball,
                 Jerseys = jerseys,
+                Goalkeeper = goalkeeper,
+                Description = description,
                 Places = places,
                 HasPlaces = hasPlaces,
                 AdminId = adminId,
@@ -110,6 +114,8 @@
             string id,
             DateTime? date,
             int? numberOfPlayers,
+            string telephoneNumber,
+            string facebookUrl,
             bool ball,
             bool jerseys,
             bool goalkeeper,
@@ -122,10 +128,10 @@
                 return false;
             }
 
-            // TODO: maybe date and int have to be nullable
-
             game.Date = date.Value;
             game.NumberOfPlayers = numberOfPlayers.Value;
+            game.TelephoneNumber = telephoneNumber;
+            game.FacebookUrl = facebookUrl;
             game.Ball = ball;
             game.Jerseys = jerseys;
             game.Goalkeeper = goalkeeper;
@@ -191,6 +197,13 @@
 
             return true;
         }
+
+        public GameDeleteServiceModel DeleteDetails(string id)
+            => this.data
+                .Games
+                .Where(g => g.Id == id)
+                .ProjectTo<GameDeleteServiceModel>(this.mapper)
+                .FirstOrDefault();
 
         public IEnumerable<GameListingServiceModel> ByUser(string userId)
             => GetGames(

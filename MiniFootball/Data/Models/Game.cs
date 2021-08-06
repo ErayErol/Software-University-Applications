@@ -31,6 +31,12 @@
         public bool HasPlaces { get; set; }
 
         [Required]
+        public string TelephoneNumber { get; set; }
+
+        [Required]
+        public string FacebookUrl { get; set; }
+
+        [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 

@@ -200,6 +200,8 @@
                     NumberOfPlayers = 12,
                     Places = 12,
                     HasPlaces = true,
+                    TelephoneNumber = "0886911492",
+                    FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
                 });
             }
 

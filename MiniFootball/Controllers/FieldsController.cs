@@ -8,6 +8,7 @@
     using Services.Fields;
 
     using static WebConstants;
+    using static MyWebCase;
 
     public class FieldsController : Controller
     {
@@ -61,6 +62,12 @@
                 TempData[GlobalMessageKey] = "There are already exist field with this Name, Country and Town";
                 return View(fieldModel);
             }
+
+            fieldModel.Name = FirstLetterUpperThenLower(fieldModel.Name);
+            fieldModel.Country = FirstLetterUpperThenLower(fieldModel.Country);
+            fieldModel.Town = FirstLetterUpperThenLower(fieldModel.Town);
+            fieldModel.Address = FirstLetterUpperThenLower(fieldModel.Address);
+            fieldModel.Description = FirstLetterUpperThenLower(fieldModel.Description);
 
             this.field.Create(
                 fieldModel.Name,

@@ -18,6 +18,18 @@
                     <input asp-for="NumberOfPlayers" min="8" max="22" type="number" class="form-control">
                     <span asp-validation-for="NumberOfPlayers" class="small text-danger"></span>
                 </div>
+                
+                <div class="form-group">
+                    <label asp-for="TelephoneNumber"></label>
+                    <input asp-for="TelephoneNumber" type="text" class="form-control">
+                    <span asp-validation-for="TelephoneNumber" class="small text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="FacebookUrl"></label>
+                    <input asp-for="FacebookUrl" class="form-control">
+                    <span asp-validation-for="FacebookUrl" class="small text-danger"></span>
+                </div>
 
                 <div class="mt-4 mb-3 createPlaygroundChechboxes">
                     <input class="checkbox-down" asp-for="Ball" type="checkbox">

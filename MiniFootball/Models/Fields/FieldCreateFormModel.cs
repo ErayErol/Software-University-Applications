@@ -29,8 +29,8 @@
         public string Address { get; set; }
 
         [Required]
-        [Url]
         [Display(Name = "Image URL")]
+        [Url]
         public string ImageUrl { get; set; }
 
         [Required]

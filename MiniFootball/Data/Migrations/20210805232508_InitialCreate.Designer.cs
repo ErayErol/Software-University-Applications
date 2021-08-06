@@ -10,7 +10,7 @@ using MiniFootball.Data;
 namespace MiniFootball.Data.Migrations
 {
     [DbContext(typeof(MiniFootballDbContext))]
-    [Migration("20210804062320_InitialCreate")]
+    [Migration("20210805232508_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -267,6 +267,10 @@ namespace MiniFootball.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("FacebookUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("FieldId")
                         .HasColumnType("int");
 
@@ -284,6 +288,10 @@ namespace MiniFootball.Data.Migrations
 
                     b.Property<int>("Places")
                         .HasColumnType("int");
+
+                    b.Property<string>("TelephoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

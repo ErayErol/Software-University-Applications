@@ -230,6 +230,8 @@ namespace MiniFootball.Data.Migrations
                     Jerseys = table.Column<bool>(type: "bit", nullable: false),
                     Places = table.Column<int>(type: "int", nullable: false),
                     HasPlaces = table.Column<bool>(type: "bit", nullable: false),
+                    TelephoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FacebookUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     AdminId = table.Column<int>(type: "int", nullable: false)
                 },

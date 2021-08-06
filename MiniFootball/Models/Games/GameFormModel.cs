@@ -5,7 +5,6 @@
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Game;
 
-    // TODO: For create game and details I use this class, just create one class too
     public class GameFormModel
     {
         public string Id { get; set; }
@@ -21,6 +20,15 @@
         [Range(NumberOfPlayersMin, NumberOfPlayersMax)]
         [Display(Name = "Number of players")]
         public int? NumberOfPlayers { get; set; }
+        
+        [Display(Name = "Telephone Number")]
+        [Required(ErrorMessage = Empty)]
+        public string TelephoneNumber { get; set; }
+
+        [Display(Name = "Facebook URL")]
+        [Required(ErrorMessage = Empty)]
+        [Url]
+        public string FacebookUrl { get; set; }
 
         public bool Goalkeeper { get; set; }
 

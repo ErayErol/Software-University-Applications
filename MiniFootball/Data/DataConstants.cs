@@ -27,6 +27,9 @@
 
             public const int PlacesMin = 8;
             public const int PlacesMax = 22;
+
+            public const int PhoneNumberMinLength = 8;
+            public const int PhoneNumberMaxLength = 15;
         }
 
         public class Field

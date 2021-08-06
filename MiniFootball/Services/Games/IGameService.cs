@@ -17,12 +17,14 @@
 
         string Create(
             int fieldId,
-            string description,
             DateTime date,
             int numberOfPlayers,
-            bool goalkeeper,
+            string telephoneNumber,
+            string facebookUrl,
             bool ball,
             bool jerseys,
+            bool goalkeeper,
+            string description,
             int places,
             bool hasPlaces,
             int adminId);
@@ -39,6 +41,8 @@
             string id,
             DateTime? date,
             int? numberOfPlayers,
+            string telephoneNumber,
+            string facebookUrl,
             bool ball,
             bool jerseys,
             bool goalkeeper,
@@ -51,5 +55,7 @@
         IQueryable<string> SeePlayers(string id);
         
         bool Delete(string id);
+        
+        GameDeleteServiceModel DeleteDetails(string id);
     }
 }

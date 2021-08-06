@@ -4,6 +4,10 @@
     {
         public string Description { get; set; }
 
+        public string TelephoneNumber { get; set; }
+
+        public string FacebookUrl { get; set; }
+
         public int? NumberOfPlayers { get; set; }
 
         public bool Goalkeeper { get; set; }

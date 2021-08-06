@@ -265,6 +265,10 @@ namespace MiniFootball.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("FacebookUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("FieldId")
                         .HasColumnType("int");
 
@@ -282,6 +286,10 @@ namespace MiniFootball.Data.Migrations
 
                     b.Property<int>("Places")
                         .HasColumnType("int");
+
+                    b.Property<string>("TelephoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
