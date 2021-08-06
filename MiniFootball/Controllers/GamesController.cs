@@ -138,6 +138,8 @@
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
+            // TODO: When facebook url or image url is invalid, the messages is ugly
+            
             if (ModelState.IsValid == false)
             {
                 return View(gameCreateModel);
@@ -231,9 +233,9 @@
             }
 
             // TODO: Delete this and do it in edit fields
-            //if (this.fields.FieldExist(game.FieldId) == false)
+            //if (this.fields.FieldExist(game.Id) == false)
             //{
-            //    this.ModelState.AddModelError(nameof(game.FieldId), "Field does not exist.");
+            //    this.ModelState.AddModelError(nameof(game.Id), "Field does not exist.");
             //}
 
             if (ModelState.IsValid == false)
@@ -317,6 +319,7 @@
         [Authorize]
         public IActionResult Delete(string id)
         {
+            // TODO: Change some button color and size
             var userId = this.User.Id();
 
             if (this.admins.IsAdmin(userId) == false && this.User.IsManager() == false)

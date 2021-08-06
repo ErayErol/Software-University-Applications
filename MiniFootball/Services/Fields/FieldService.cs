@@ -1,5 +1,7 @@
 ﻿namespace MiniFootball.Services.Fields
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Data;
     using Data.Models;
     using Games.Models;
@@ -10,13 +12,16 @@
     public class FieldService : IFieldService
     {
         private readonly MiniFootballDbContext data;
+        private readonly IConfigurationProvider mapper;
 
-        public FieldService(MiniFootballDbContext data)
+        public FieldService(
+            MiniFootballDbContext data,
+            IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper.ConfigurationProvider;
         }
 
-        // TODO: Add AutoMapper 
         public FieldQueryServiceModel All(
             string town,
             string searchTerm,
@@ -49,18 +54,9 @@
 
             var totalPlaygrounds = fieldsQuery.Count();
 
-            var fields = fieldsQuery
+            var fields = GetFields(fieldsQuery
                 .Skip((currentPage - 1) * fieldsPerPage)
-                .Take(fieldsPerPage)
-                .Select(p => new FieldServiceModel
-                {
-                    Town = p.Town,
-                    Country = p.Country,
-                    Name = p.Name,
-                    ImageUrl = p.ImageUrl,
-                    Description = p.Description,
-                    Address = p.Address,
-                }).AsEnumerable();
+                .Take(fieldsPerPage), this.mapper);
 
             return new FieldQueryServiceModel
             {
@@ -73,10 +69,10 @@
         {
             var field = this.data.Fields.FirstOrDefault(f => f.Id == fieldId);
 
-            return 
-                field != null && 
-                field.Name.ToLower() == name.ToLower() && 
-                field.Country.ToLower() == country.ToLower() && 
+            return
+                field != null &&
+                field.Name.ToLower() == name.ToLower() &&
+                field.Country.ToLower() == country.ToLower() &&
                 field.Town.ToLower() == town.ToLower();
         }
 
@@ -131,11 +127,8 @@
             => this.data
                 .Fields
                 .Where(x => x.Town == town && x.Country == country)
-                .Select(x => new FieldListingServiceModel
-                {
-                    FieldId = x.Id,
-                    Name = x.Name,
-                }).ToList();
+                .ProjectTo<FieldListingServiceModel>(mapper)
+                .ToList();
 
         public bool FieldExist(int fieldId)
             => this.data
@@ -148,5 +141,12 @@
                 .Where(f => f.Id == fieldId)
                 .Select(f => f.Name)
                 .FirstOrDefault();
+
+        private static IEnumerable<FieldServiceModel> GetFields(
+            IQueryable<Field> fieldQuery,
+            IConfigurationProvider mapper)
+            => fieldQuery
+                .ProjectTo<FieldServiceModel>(mapper)
+                .ToList();
     }
 }

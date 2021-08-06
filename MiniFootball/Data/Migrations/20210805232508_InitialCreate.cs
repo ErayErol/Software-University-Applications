@@ -334,7 +334,7 @@ namespace MiniFootball.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Games_FieldId",
                 table: "Games",
-                column: "FieldId");
+                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserGames_GameId",

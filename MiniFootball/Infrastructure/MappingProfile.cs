@@ -3,6 +3,7 @@
     using AutoMapper;
     using Data.Models;
     using Models.Games;
+    using Services.Fields;
     using Services.Games.Models;
 
     public class MappingProfile : Profile
@@ -18,6 +19,9 @@
 
             this.CreateMap<Game, GameDeleteServiceModel>()
                 .ForMember(gDSM => gDSM.UserId, cfg => cfg.MapFrom(g => g.Admin.UserId));
+
+            this.CreateMap<Field, FieldServiceModel>();
+            this.CreateMap<Field, FieldListingServiceModel>();
         }
     }
 }

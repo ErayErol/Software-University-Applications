@@ -15,7 +15,9 @@
         private readonly MiniFootballDbContext data;
         private readonly IConfigurationProvider mapper;
 
-        public GameService(MiniFootballDbContext data, IMapper mapper)
+        public GameService(
+            MiniFootballDbContext data, 
+            IMapper mapper)
         {
             this.data = data;
             this.mapper = mapper.ConfigurationProvider;

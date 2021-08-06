@@ -269,7 +269,7 @@ namespace MiniFootball.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FieldId")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<bool>("Goalkeeper")
@@ -295,7 +295,7 @@ namespace MiniFootball.Data.Migrations
 
                     b.HasIndex("AdminId");
 
-                    b.HasIndex("FieldId");
+                    b.HasIndex("Id");
 
                     b.ToTable("Games");
                 });
@@ -478,7 +478,7 @@ namespace MiniFootball.Data.Migrations
 
                     b.HasOne("MiniFootball.Data.Models.Field", "Field")
                         .WithMany()
-                        .HasForeignKey("FieldId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

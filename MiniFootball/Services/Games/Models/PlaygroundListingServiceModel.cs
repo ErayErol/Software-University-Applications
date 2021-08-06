@@ -2,8 +2,8 @@
 {
     public class FieldListingServiceModel
     {
-        public string Name { get; set; }
+        public int Id { get; set; }
 
-        public int FieldId { get; set; }
+        public string Name { get; set; }
     }
 }
