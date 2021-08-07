@@ -26,6 +26,7 @@
 
             MigrateDatabase(services);
 
+            // TODO: Refactor this
             Seeds(data, passwordHasher);
             SeedManager(services);
 
@@ -63,7 +64,12 @@
                     {
                         Email = adminEmail,
                         UserName = adminEmail,
-                        FullName = AreaName
+                        FirstName = adminEmail,
+                        LastName = adminEmail,
+                        NickName = AreaName,
+                        PhoneNumber = "0886911492",
+                        ImageUrl = "https://thumbs.dreamstime.com/b/manager-38039871.jpg",
+                        Birthdate = DateTime.ParseExact("2019-05-08 14:40:52,531", "yyyy-MM-dd HH:mm:ss,fff", CultureInfo.InvariantCulture),
                     };
 
                     await userManager.CreateAsync(user, adminPassword);
@@ -84,8 +90,27 @@
                     {
                         UserName = $"zwp{i}@gmail.com",
                         Email = $"zwp{i}@gmail.com",
-                        NormalizedUserName = $"zwp{i}@gmail.com"
+                        NormalizedUserName = $"zwp{i}@gmail.com",
+                        FirstName = $"zwp{i}@gmail.com",
+                        LastName = $"zwp{i}@gmail.com",
+                        NickName = $"zwp{i}@gmail.com",
+                        PhoneNumber = $"zwp{i}@gmail.com",
+                        Birthdate = DateTime.ParseExact("2009-05-08 14:40:52,531", "yyyy-MM-dd HH:mm:ss,fff", CultureInfo.InvariantCulture),
                     };
+
+                    if (i == 1)
+                    {
+                        applicationUser.ImageUrl =
+                            "https://thumbs.dreamstime.com/b/admin-sign-laptop-icon-stock-vector-166205404.jpg";
+                    }
+                    else if (i == 2)
+                    {
+                        applicationUser.ImageUrl = "https://www.seekpng.com/png/full/356-3562377_personal-user.png";
+                    }
+                    else if (i == 3)
+                    {
+                        applicationUser.ImageUrl = "https://www.pngfind.com/pngs/m/470-4703547_icon-user-icon-hd-png-download.png";
+                    }
 
                     data.Users.Add(applicationUser);
 
@@ -103,7 +128,6 @@
 
                 data.Admins.Add(new Admin
                 {
-                    PhoneNumber = "0886911492",
                     Name = "zwpAdmin",
                     UserId = user?.Id,
                 });
@@ -200,7 +224,7 @@
                     NumberOfPlayers = 12,
                     Places = 12,
                     HasPlaces = true,
-                    TelephoneNumber = "0886911492",
+                    PhoneNumber = "0886911492",
                     FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
                 });
             }

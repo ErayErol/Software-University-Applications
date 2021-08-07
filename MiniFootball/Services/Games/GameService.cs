@@ -16,7 +16,7 @@
         private readonly IConfigurationProvider mapper;
 
         public GameService(
-            MiniFootballDbContext data, 
+            MiniFootballDbContext data,
             IMapper mapper)
         {
             this.data = data;
@@ -95,7 +95,7 @@
                 FieldId = fieldId,
                 Date = date,
                 NumberOfPlayers = numberOfPlayers,
-                TelephoneNumber = telephoneNumber,
+                PhoneNumber = telephoneNumber,
                 FacebookUrl = facebookUrl,
                 Ball = ball,
                 Jerseys = jerseys,
@@ -130,9 +130,17 @@
                 return false;
             }
 
+            if (game.NumberOfPlayers != numberOfPlayers.Value)
+            {
+                game.Places = numberOfPlayers.Value;
+                
+                var joinedPlayers = SeePlayers(game.Id).Count();
+                game.Places -= joinedPlayers; 
+            }
+
             game.Date = date.Value;
             game.NumberOfPlayers = numberOfPlayers.Value;
-            game.TelephoneNumber = telephoneNumber;
+            game.PhoneNumber = telephoneNumber;
             game.FacebookUrl = facebookUrl;
             game.Ball = ball;
             game.Jerseys = jerseys;
@@ -177,11 +185,19 @@
             => this.data.UserGames
                 .Any(c => c.GameId == id && c.UserId == userId);
 
-        public IQueryable<string> SeePlayers(string id)
-            => this.data
+        public IQueryable<User> SeePlayers(string id)
+        {
+            return this.data
                 .UserGames
                 .Where(g => g.GameId == id)
-                .Select(u => u.User.UserName);
+                .Select(g => new User
+                {
+                    Id = g.User.Id,
+                    ImageUrl = g.User.ImageUrl,
+                    FirstName = g.User.FirstName,
+                    LastName = g.User.LastName,
+                });
+        }
 
         public bool Delete(string id)
         {

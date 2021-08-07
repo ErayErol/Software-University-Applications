@@ -14,10 +14,6 @@
         public string Name { get; set; }
 
         [Required]
-        [MaxLength(PhoneNumberMaxLength)]
-        public string PhoneNumber { get; set; }
-
-        [Required]
         public string UserId { get; set; }
 
         public virtual IEnumerable<Game> Games { get; init; } = new List<Game>();

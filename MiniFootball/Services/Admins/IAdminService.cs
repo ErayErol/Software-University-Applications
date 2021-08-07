@@ -6,6 +6,6 @@
 
         public int IdByUser(string userId);
         
-        int Become(string name, string phoneNumber, string userId);
+        int Become(string name, string userId);
     }
 }

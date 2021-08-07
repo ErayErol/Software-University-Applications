@@ -4,7 +4,7 @@
     {
         public string Description { get; set; }
 
-        public string TelephoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         public string FacebookUrl { get; set; }
 

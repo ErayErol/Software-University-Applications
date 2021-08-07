@@ -40,7 +40,7 @@
                 return View(admin);
             }
 
-            this.admins.Become(admin.Name, admin.PhoneNumber, this.User.Id());
+            this.admins.Become(admin.Name, this.User.Id());
 
             TempData[GlobalMessageKey] = "You have become an admin!";
 

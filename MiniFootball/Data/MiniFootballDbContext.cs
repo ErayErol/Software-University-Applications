@@ -2,7 +2,6 @@
 {
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Internal;
     using Models;
 
     public class MiniFootballDbContext : IdentityDbContext<User>
@@ -14,12 +13,10 @@
 
         public virtual DbSet<Game> Games { get; init; }
 
-        public virtual DbSet<Player> Players { get; init; }
-
         public virtual DbSet<Field> Fields { get; init; }
 
         public virtual DbSet<Admin> Admins { get; init; }
-        
+
         public virtual DbSet<UserGame> UserGames { get; init; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -32,13 +29,36 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
+                .Entity<Game>()
+                .HasOne(g => g.Field)
+                .WithMany(f => f.Games)
+                .HasForeignKey(g => g.FieldId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
                 .Entity<Admin>()
                 .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Admin>(a => a.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<UserGame>().HasKey(table => new { table.UserId, table.GameId });
+            //builder
+            //    .Entity<UserGame>()
+            //    .HasOne(ug => ug.User)
+            //    .WithMany(u => u.UserGames)
+            //    .HasForeignKey(ug => ug.UserId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            //builder
+            //    .Entity<UserGame>()
+            //    .HasOne(ug => ug.Game)
+            //    .WithMany(g => g.UserGames)
+            //    .HasForeignKey(ug => ug.GameId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<UserGame>()
+                .HasKey(table => new { table.UserId, table.GameId });
 
             base.OnModelCreating(builder);
         }

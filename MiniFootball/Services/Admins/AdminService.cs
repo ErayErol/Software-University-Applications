@@ -25,12 +25,11 @@
                 .Select(d => d.Id)
                 .FirstOrDefault();
 
-        public int Become(string name, string phoneNumber, string userId)
+        public int Become(string name, string userId)
         {
             var admin = new Admin
             {
                 Name = name,
-                PhoneNumber = phoneNumber,
                 UserId = userId
             };
 

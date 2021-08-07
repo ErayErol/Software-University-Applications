@@ -152,7 +152,7 @@
                 gameCreateModel.FieldId,
                 gameCreateModel.Date.Value,
                 gameCreateModel.NumberOfPlayers.Value,
-                gameCreateModel.TelephoneNumber,
+                gameCreateModel.PhoneNumber,
                 gameCreateModel.FacebookUrl,
                 gameCreateModel.Ball,
                 gameCreateModel.Jerseys,
@@ -252,7 +252,7 @@
                 id,
                 game.Date,
                 game.NumberOfPlayers,
-                game.TelephoneNumber,
+                game.PhoneNumber,
                 game.FacebookUrl,
                 game.Ball,
                 game.Jerseys,
@@ -306,14 +306,14 @@
             // TODO: Add validation and manager have to see all players without join
             // TODO: After JOIN you can see All players and one button to cancel join
 
-            var playersName = this.games.SeePlayers(id);
+            var players = this.games.SeePlayers(id);
 
             if (ModelState.IsValid == false)
             {
                 return RedirectToAction(nameof(Details));
             }
 
-            return View(playersName);
+            return View(players);
         }
 
         [Authorize]

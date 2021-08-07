@@ -18,6 +18,7 @@ namespace MiniFootball
     using Services.Statistics;
     using System.Security.Claims;
     using Microsoft.AspNetCore.Identity;
+    using Services;
 
     public class Startup
     {
@@ -48,16 +49,17 @@ namespace MiniFootball
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MiniFootballDbContext>();
 
+            services
+                .AddIdentityCore<User>()
+                .AddRoles<IdentityRole>()
+                .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<User, IdentityRole>>()
+                .AddEntityFrameworkStores<MiniFootballDbContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
+
             services.AddAutoMapper(typeof(Startup));
 
             services.AddMemoryCache();
-
-            // Cloudinary Setup
-            //Cloudinary cloudinary = new Cloudinary(new Account(
-            //    CloudName, // this.configuration["Cloudinary:CloudName"],
-            //    ApiKey, //this.configuration["Cloudinary:ApiKey"],
-            //    ApiSecret)); //this.configuration["Cloudinary:ApiSecret"]));
-            //services.AddSingleton(cloudinary);
 
             services
                 .AddControllersWithViews(options =>
@@ -75,6 +77,13 @@ namespace MiniFootball
                 .AddTransient<IAdminService, AdminService>()
                 .AddTransient<IStatisticsService, StatisticsService>()
                 .AddTransient<ICountryService, CountryService>();
+
+            // Cloudinary Setup
+            //Cloudinary cloudinary = new Cloudinary(new Account(
+            //    CloudName, // this.configuration["Cloudinary:CloudName"],
+            //    ApiKey, //this.configuration["Cloudinary:ApiKey"],
+            //    ApiSecret)); //this.configuration["Cloudinary:ApiSecret"]));
+            //services.AddSingleton(cloudinary);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

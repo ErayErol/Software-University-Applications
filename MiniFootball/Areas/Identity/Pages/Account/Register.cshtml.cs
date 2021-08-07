@@ -1,29 +1,28 @@
 ﻿namespace MiniFootball.Areas.Identity.Pages.Account
 {
-    using MiniFootball.Data.Models;
+    using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
+    using MiniFootball.Data.Models;
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
-
-    using static WebConstants;
-
+    
     using static Data.DataConstants.User;
+    using static WebConstants;
 
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
 
         public RegisterModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            UserManager<User> userManager)
         {
             this.userManager = userManager;
-            this.signInManager = signInManager;
         }
 
         [BindProperty]
@@ -37,9 +36,31 @@
             [EmailAddress]
             public string Email { get; set; }
 
-            [Display(Name = "Full Name")]
+            [Required]
+            [Display(Name = "First Name")]
             [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
-            public string FullName { get; set; }
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)] 
+            public string LastName { get; set; }
+
+            [Display(Name = "Nick Name")]
+            [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
+            public string NickName { get; set; }
+
+            [Required]
+            public DateTime? BirthDate { get; set; }
+
+            [Required]
+            [Display(Name = "Image URL")]
+            [Url]
+            public string ImageUrl { get; set; }
+
+            [Required]
+            [Display(Name = "Phone Number")]
+            public string PhoneNumber { get; set; }
 
             [Required]
             [StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength)]
@@ -59,24 +80,24 @@
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
-
             if (ModelState.IsValid)
             {
                 var user = new User
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
-                    FullName = Input.FullName
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    NickName = Input.NickName,
+                    Birthdate = Input.BirthDate,
+                    ImageUrl = Input.ImageUrl,
+                    PhoneNumber = Input.PhoneNumber,
                 };
 
                 var result = await this.userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    //await this.signInManager.SignInAsync(user, isPersistent: false);
-                    //return LocalRedirect(returnUrl);
-
                     return Redirect("Login");
                 }
 

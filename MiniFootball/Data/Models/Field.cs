@@ -1,5 +1,7 @@
 ﻿namespace MiniFootball.Data.Models
 {
+    using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using static DataConstants.Field;
@@ -43,6 +45,8 @@
         [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
+
+        public virtual ICollection<Game> Games { get; init; } = new HashSet<Game>();
 
         // you can add Stars(Rate) only user that played here,
     }

@@ -2,5 +2,7 @@
 {
     public class Team
     {
+        // TODO: Team have many players
+        // TODO: Create,edit,put,delete team
     }
 }

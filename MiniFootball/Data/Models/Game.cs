@@ -31,7 +31,7 @@
         public bool HasPlaces { get; set; }
 
         [Required]
-        public string TelephoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         [Required]
         public string FacebookUrl { get; set; }

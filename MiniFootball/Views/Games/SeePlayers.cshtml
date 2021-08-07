@@ -1,10 +1,31 @@
-﻿@model IQueryable<string>
+﻿@model IQueryable<MiniFootball.Data.Models.User>
 
 @{
     ViewBag.Title = "All Players For Game";
 }
 
-@foreach (var playerName in Model)
-{
-    <h3>@playerName</h3>
-}
+<div class="row">
+    @foreach (var user in Model)
+    {
+        <div class="col-md-2">
+            <div class="card mb-4">
+                <img class="card-img-top" src="@user.ImageUrl" alt="@user.FirstName">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="card-title h6-like">@user.FirstName</div>
+                    </div>
+                    <h6 class="card-title">@user.LastName</h6>
+                    <div class="text-center mt-4">
+                        <a asp-controller="Games" asp-action="Details" asp-route-id="@user.Id" class="btn mb-3">Info</a>
+                    </div>
+                    @if (User.Id() == user.Id)
+                    {
+                        <div class="text-center mt-4">
+                            <a asp-controller="Games" asp-action="Details" asp-route-id="@user.Id" class="btn mb-3">Cancel Game</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

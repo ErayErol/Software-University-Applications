@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Data.Models;
     using MiniFootball.Models;
 
     public interface IGameService
@@ -52,7 +53,7 @@
         
         bool IsUserIsJoinGame(string id, string userId);
 
-        IQueryable<string> SeePlayers(string id);
+        IQueryable<User> SeePlayers(string id);
         
         bool Delete(string id);
         

@@ -21,9 +21,9 @@
         [Display(Name = "Number of players")]
         public int? NumberOfPlayers { get; set; }
         
-        [Display(Name = "Telephone Number")]
+        [Display(Name = "Phone Number")]
         [Required(ErrorMessage = Empty)]
-        public string TelephoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         [Display(Name = "Facebook URL")]
         [Required(ErrorMessage = Empty)]
