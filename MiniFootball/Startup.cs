@@ -19,6 +19,7 @@ namespace MiniFootball
     using System.Security.Claims;
     using Microsoft.AspNetCore.Identity;
     using Services;
+    using Services.Users;
 
     public class Startup
     {
@@ -72,6 +73,7 @@ namespace MiniFootball
                 options.GetService<IHttpContextAccessor>()?.HttpContext?.User);
 
             services
+                .AddTransient<IUserService, UserService>()
                 .AddTransient<IGameService, GameService>()
                 .AddTransient<IFieldService, FieldService>()
                 .AddTransient<IAdminService, AdminService>()

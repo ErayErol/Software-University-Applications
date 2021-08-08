@@ -11,12 +11,13 @@
     using Services.Fields;
     using Services.Games;
     using Services.Games.Models;
-
+    using Services.Users;
     using static MyWebCase;
     using static WebConstants;
 
     public class GamesController : Controller
     {
+        private readonly IUserService users;
         private readonly ICountryService countries;
         private readonly IGameService games;
         private readonly IAdminService admins;
@@ -28,13 +29,15 @@
             IGameService games,
             IAdminService admins,
             IFieldService fields,
-            IMapper mapper)
+            IMapper mapper, 
+            IUserService users)
         {
             this.countries = countries;
             this.games = games;
             this.admins = admins;
             this.fields = fields;
             this.mapper = mapper;
+            this.users = users;
         }
 
         [Authorize]
@@ -153,7 +156,6 @@
                 gameCreateModel.FieldId,
                 gameCreateModel.Date.Value,
                 gameCreateModel.NumberOfPlayers.Value,
-                gameCreateModel.PhoneNumber,
                 gameCreateModel.FacebookUrl,
                 gameCreateModel.Ball,
                 gameCreateModel.Jerseys,
@@ -253,7 +255,6 @@
                 id,
                 game.Date,
                 game.NumberOfPlayers,
-                game.PhoneNumber,
                 game.FacebookUrl,
                 game.Ball,
                 game.Jerseys,
@@ -275,7 +276,9 @@
 
             var gameForm = this.mapper.Map<GameFormModel>(game);
 
-            // TODO: Creator of game can add player to game
+            gameForm.PhoneNumber = this.users.UserInfo(this.User.Id()).PhoneNumber;
+
+            // TODO: Admin and moderator can see all users
 
             if (this.games.IsUserIsJoinGame(id, this.User.Id()))
             {

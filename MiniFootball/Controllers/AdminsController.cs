@@ -14,7 +14,7 @@
 
         public AdminsController(IAdminService admins)
         {
-            this.admins= admins;
+            this.admins = admins;
         }
 
         [Authorize]
@@ -22,6 +22,7 @@
         {
             if (this.admins.IsAdmin(this.User.Id()) || this.User.IsManager())
             {
+                TempData[GlobalMessageKey] = "You can not become an admin!";
                 return View();
             }
 

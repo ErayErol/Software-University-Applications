@@ -3584,3 +3584,28 @@ input.btn {
 .checkbox-down {
     margin-top: 4px;
 }
+
+.btn-logout {
+    border: none;
+    background: none;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+    .btn-logout:hover {
+        color: red !important;
+    }
+
+.user-img-navbar {
+    width: 50px;
+    height: auto;
+    border-radius: 10%;
+    /*border: 5px solid #000000;*/
+    margin-top: -4px;
+    margin-left: 10px;
+}
+
+.user-img-navbar {
+    width: 30px;
+    height: auto;
+}

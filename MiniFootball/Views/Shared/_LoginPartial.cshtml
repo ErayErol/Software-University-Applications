@@ -1,9 +1,10 @@
 ﻿@using MiniFootball.Data.Models
 @using Microsoft.AspNetCore.Identity
-@using MiniFootball.Areas.Manager
+@using MiniFootball.Services.Users
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@inject IUserService AppUser
 @inject IAdminService Admins
 
 <ul class="navbar-nav">
@@ -12,6 +13,7 @@
         var userId = User.Id();
         var userIsAdmin = Admins.IsAdmin(userId);
         var userIsManager = User.IsManager();
+        var userImg = this.AppUser.UserInfo(userId).ImageUrl;
 
         if (userIsAdmin && userIsManager == false)
         {
@@ -26,21 +28,23 @@
             </li>
         }
         <li class="nav-item">
-            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account</a>
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn-logout">Logout</button>
+            </form>
         </li>
         <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link">Logout</button>
-            </form>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Account">
+                <img src=@userImg class="user-img-navbar" />
+            </a>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="nav-link btn btn-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link btn btn-link mr-2" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link btn btn-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link btn btn-link mr-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
 </ul>

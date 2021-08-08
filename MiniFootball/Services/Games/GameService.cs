@@ -80,7 +80,6 @@
             int fieldId,
             DateTime date,
             int numberOfPlayers,
-            string telephoneNumber,
             string facebookUrl,
             bool ball,
             bool jerseys,
@@ -95,7 +94,6 @@
                 FieldId = fieldId,
                 Date = date,
                 NumberOfPlayers = numberOfPlayers,
-                PhoneNumber = telephoneNumber,
                 FacebookUrl = facebookUrl,
                 Ball = ball,
                 Jerseys = jerseys,
@@ -116,7 +114,6 @@
             string id,
             DateTime? date,
             int? numberOfPlayers,
-            string telephoneNumber,
             string facebookUrl,
             bool ball,
             bool jerseys,
@@ -140,7 +137,6 @@
 
             game.Date = date.Value;
             game.NumberOfPlayers = numberOfPlayers.Value;
-            game.PhoneNumber = telephoneNumber;
             game.FacebookUrl = facebookUrl;
             game.Ball = ball;
             game.Jerseys = jerseys;
@@ -195,6 +191,8 @@
                     ImageUrl = g.User.ImageUrl,
                     FirstName = g.User.FirstName,
                     LastName = g.User.LastName,
+                    NickName = g.User.NickName,
+                    PhoneNumber = g.User.PhoneNumber,
                     IsCreator = this.GameIdUserId(id).UserId == g.UserId,
                 });
 

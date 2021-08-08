@@ -1,7 +1,6 @@
 ﻿namespace MiniFootball.Infrastructure
 {
     using System.Security.Claims;
-
     using static Areas.Manager.ManagerConstants;
 
     public static class ClaimsPrincipalExtensions

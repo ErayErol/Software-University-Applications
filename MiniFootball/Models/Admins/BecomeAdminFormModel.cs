@@ -10,10 +10,5 @@
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = Range)]
         public string Name { get; set; }
-
-        [Required]
-        [StringLength(PhoneNumberMaxLength, MinimumLength = PhoneNumberMinLength)]
-        [Display(Name = "Phone Number")]
-        public string PhoneNumber { get; set; }
     }
 }
