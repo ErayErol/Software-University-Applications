@@ -13,6 +13,7 @@
     using Services.Games.Models;
 
     using static MyWebCase;
+    using static WebConstants;
 
     public class GamesController : Controller
     {
@@ -139,7 +140,7 @@
             }
 
             // TODO: When facebook url or image url is invalid, the messages is ugly
-            
+
             if (ModelState.IsValid == false)
             {
                 return View(gameCreateModel);
@@ -303,15 +304,20 @@
         [Authorize]
         public IActionResult SeePlayers(string id)
         {
-            // TODO: Add validation and manager have to see all players without join
-            // TODO: After JOIN you can see All players and one button to cancel join
+            var userId = this.User.Id();
+
+            var game = this.games.GameIdUserId(id);
+
+            if (this.games.IsUserIsJoinGame(id, userId) == false && this.User.IsManager() == false)
+            {
+                if (game.UserId != userId)
+                {
+                    TempData[GlobalMessageKey] = "Only joined players can view the list of players";
+                    return RedirectToAction(nameof(All));
+                }
+            }
 
             var players = this.games.SeePlayers(id);
-
-            if (ModelState.IsValid == false)
-            {
-                return RedirectToAction(nameof(Details));
-            }
 
             return View(players);
         }
@@ -327,7 +333,7 @@
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            var game = this.games.DeleteDetails(id);
+            var game = this.games.GameIdUserId(id);
 
             if (game.UserId != userId && this.User.IsManager() == false)
             {
@@ -339,7 +345,7 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult Delete(GameDeleteServiceModel gameDetails)
+        public IActionResult Delete(GameIdUserIdServiceModel gameDetails)
         {
             var adminId = this.admins.IdByUser(this.User.Id());
 

@@ -11,9 +11,16 @@
 
                 @if (Model.HasPlaces)
                 {
-                    @if (Model.IsUserAlreadyJoin)
+                    @if (Model.IsUserAlreadyJoin || Model.UserId == User.Id() || User.IsManager())
                     {
-                        <h3 class="text-center mb-4 mt-5">You already join to this game</h3>
+                        @if (Model.IsUserAlreadyJoin)
+                        {
+                            <h3 class="text-center mb-4 mt-5">You already join to this game</h3>
+                        }
+                        else
+                        {
+                            <a href="/Games/AddUserToGame?id=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3">Join Game</a>
+                        }
                         <a href="/Games/SeePlayers?id=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3">See the list of players</a>
                     }
                     else
@@ -48,7 +55,7 @@
                     <label asp-for="FacebookUrl"></label>
                     <input asp-for="FacebookUrl" readonly="readonly" type="tel" class="form-control" value="@Model.FacebookUrl">
                 </div>
-                
+
                 <h3 class="text-center mb-1 mt-5">Details:</h3>
 
                 <div class="form-group">

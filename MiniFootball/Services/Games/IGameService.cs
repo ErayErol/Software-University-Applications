@@ -53,10 +53,10 @@
         
         bool IsUserIsJoinGame(string id, string userId);
 
-        IQueryable<User> SeePlayers(string id);
+        IQueryable<GameSeePlayersServiceModel> SeePlayers(string id);
         
         bool Delete(string id);
         
-        GameDeleteServiceModel DeleteDetails(string id);
+        GameIdUserIdServiceModel GameIdUserId(string id);
     }
 }

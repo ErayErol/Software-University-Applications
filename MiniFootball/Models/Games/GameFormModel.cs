@@ -25,6 +25,8 @@
         [Required(ErrorMessage = Empty)]
         public string PhoneNumber { get; set; }
 
+        public string UserId { get; set; }
+
         [Display(Name = "Facebook URL")]
         [Required(ErrorMessage = Empty)]
         [Url]

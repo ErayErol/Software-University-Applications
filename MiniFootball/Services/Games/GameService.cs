@@ -133,9 +133,9 @@
             if (game.NumberOfPlayers != numberOfPlayers.Value)
             {
                 game.Places = numberOfPlayers.Value;
-                
+
                 var joinedPlayers = SeePlayers(game.Id).Count();
-                game.Places -= joinedPlayers; 
+                game.Places -= joinedPlayers;
             }
 
             game.Date = date.Value;
@@ -185,19 +185,19 @@
             => this.data.UserGames
                 .Any(c => c.GameId == id && c.UserId == userId);
 
-        public IQueryable<User> SeePlayers(string id)
-        {
-            return this.data
+        public IQueryable<GameSeePlayersServiceModel> SeePlayers(string id)
+            => this.data
                 .UserGames
                 .Where(g => g.GameId == id)
-                .Select(g => new User
+                .Select(g => new GameSeePlayersServiceModel
                 {
-                    Id = g.User.Id,
+                    UserId = g.User.Id,
                     ImageUrl = g.User.ImageUrl,
                     FirstName = g.User.FirstName,
                     LastName = g.User.LastName,
+                    IsCreator = this.GameIdUserId(id).UserId == g.UserId,
                 });
-        }
+
 
         public bool Delete(string id)
         {
@@ -216,11 +216,11 @@
             return true;
         }
 
-        public GameDeleteServiceModel DeleteDetails(string id)
+        public GameIdUserIdServiceModel GameIdUserId(string id)
             => this.data
                 .Games
                 .Where(g => g.Id == id)
-                .ProjectTo<GameDeleteServiceModel>(this.mapper)
+                .ProjectTo<GameIdUserIdServiceModel>(this.mapper)
                 .FirstOrDefault();
 
         public IEnumerable<GameListingServiceModel> ByUser(string userId)
