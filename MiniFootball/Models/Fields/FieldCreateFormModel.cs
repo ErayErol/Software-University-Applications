@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
+    using Data.Models;
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Field;
 
@@ -16,13 +16,13 @@
 
         [Required]
         [StringLength(CountryMaxLength, MinimumLength = CountryMinLength, ErrorMessage = Range)]
-        public string Country { get; set; }
+        public Country Country { get; set; }
 
         public IEnumerable<string> Countries { get; set; }
 
         [Required]
-        [StringLength(TownMaxLength, MinimumLength = TownMinLength, ErrorMessage = Range)]
-        public string Town { get; set; }
+        [StringLength(CityMaxLength, MinimumLength = CityMinLength, ErrorMessage = Range)]
+        public City City { get; set; }
 
         [Required]
         [StringLength(AddressMaxLength, MinimumLength = AddressMinLength, ErrorMessage = Range)]

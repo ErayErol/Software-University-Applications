@@ -1,6 +1,5 @@
 ﻿namespace MiniFootball.Data.Models
 {
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -17,11 +16,13 @@
 
         [Required]
         [MaxLength(CountryMaxLength)]
-        public string Country { get; set; }
+        public int CountryId { get; set; }
+        public virtual Country Country { get; set; }
 
         [Required]
-        [MaxLength(TownMaxLength)]
-        public string Town { get; set; }
+        [MaxLength(CityMaxLength)]
+        public int CityId { get; set; }
+        public virtual City City { get; set; }
 
         [Required]
         [MaxLength(AddressMaxLength)]

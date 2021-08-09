@@ -2,24 +2,23 @@ namespace MiniFootball
 {
     using Data.Models;
     using Infrastructure;
-    using MiniFootball.Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using MiniFootball.Data;
     using Services.Admins;
     using Services.Countries;
-    using Services.Games;
     using Services.Fields;
+    using Services.Games;
     using Services.Statistics;
-    using System.Security.Claims;
-    using Microsoft.AspNetCore.Identity;
-    using Services;
     using Services.Users;
+    using System.Security.Claims;
 
     public class Startup
     {

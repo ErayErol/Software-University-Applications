@@ -10,7 +10,7 @@ using MiniFootball.Data;
 namespace MiniFootball.Data.Migrations
 {
     [DbContext(typeof(MiniFootballDbContext))]
-    [Migration("20210808064449_InitialCreate")]
+    [Migration("20210808140240_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -180,6 +180,41 @@ namespace MiniFootball.Data.Migrations
                     b.ToTable("Admins");
                 });
 
+            modelBuilder.Entity("MiniFootball.Data.Models.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("MiniFootball.Data.Models.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
+
             modelBuilder.Entity("MiniFootball.Data.Models.Field", b =>
                 {
                     b.Property<int>("Id")
@@ -201,10 +236,13 @@ namespace MiniFootball.Data.Migrations
                     b.Property<bool>("ChangingRoom")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
+                    b.Property<int>("CityId")
+                        .HasMaxLength(85)
+                        .HasColumnType("int");
+
+                    b.Property<int>("CountryId")
                         .HasMaxLength(56)
-                        .HasColumnType("nvarchar(56)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -231,14 +269,13 @@ namespace MiniFootball.Data.Migrations
                     b.Property<bool>("Shower")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Town")
-                        .IsRequired()
-                        .HasMaxLength(85)
-                        .HasColumnType("nvarchar(85)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AdminId");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("CountryId");
 
                     b.ToTable("Fields");
                 });
@@ -454,11 +491,38 @@ namespace MiniFootball.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MiniFootball.Data.Models.City", b =>
+                {
+                    b.HasOne("MiniFootball.Data.Models.Country", "Country")
+                        .WithMany("Cities")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Country");
+                });
+
             modelBuilder.Entity("MiniFootball.Data.Models.Field", b =>
                 {
                     b.HasOne("MiniFootball.Data.Models.Admin", null)
                         .WithMany("Fields")
                         .HasForeignKey("AdminId");
+
+                    b.HasOne("MiniFootball.Data.Models.City", "City")
+                        .WithMany("Fields")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MiniFootball.Data.Models.Country", "Country")
+                        .WithMany("Fields")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("MiniFootball.Data.Models.Game", b =>
@@ -504,6 +568,18 @@ namespace MiniFootball.Data.Migrations
                     b.Navigation("Fields");
 
                     b.Navigation("Games");
+                });
+
+            modelBuilder.Entity("MiniFootball.Data.Models.City", b =>
+                {
+                    b.Navigation("Fields");
+                });
+
+            modelBuilder.Entity("MiniFootball.Data.Models.Country", b =>
+                {
+                    b.Navigation("Cities");
+
+                    b.Navigation("Fields");
                 });
 
             modelBuilder.Entity("MiniFootball.Data.Models.Field", b =>

@@ -2,19 +2,19 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
+    using Data.Models;
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Field;
 
     public class CreateGameFirstStepViewModel
     {
         [Display(Name = "Select Country:")]
-        public string Country { get; set; }
+        public string CountryName { get; set; }
 
         public IEnumerable<string> Countries { get; set; }
 
         [Required]
-        [StringLength(TownMaxLength, MinimumLength = TownMinLength, ErrorMessage = Range)]
-        public string Town { get; set; }
+        [StringLength(CityMaxLength, MinimumLength = CityMinLength, ErrorMessage = Range)]
+        public string CityName { get; set; }
     }
 }

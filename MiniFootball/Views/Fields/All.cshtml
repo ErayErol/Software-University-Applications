@@ -10,11 +10,11 @@
         <div class="row ml-0">
             <div class="form-group">
                 <div class="form-group">
-                    <select asp-for="Town" class="form-control">
-                        <option value="" disabled selected>Search by town</option>
-                        @foreach (var town in Model.Towns)
+                    <select asp-for="City" class="form-control">
+                        <option value="" disabled selected>Search by city</option>
+                        @foreach (var city in Model.Cities)
                         {
-                            <option value="@town">@town</option>
+                            <option value="@city">@city</option>
                         }
                     </select>
                 </div>
@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <select asp-for="Sorting" class="form-control">
                         <option value="0">Date Created</option>
-                        <option value="1">Town</option>
+                        <option value="1">City</option>
                         <option value="2">Field Name</option>
                     </select>
                 </div>
@@ -61,7 +61,7 @@
            asp-controller="Fields"
            asp-action="All"
            asp-route-currentPage="@previousPage"
-           asp-route-town="@Model.Town"
+           asp-route-city="@Model.City"
            asp-route-searchTerm="@Model.SearchTerm"
            asp-route-sorting="@((int)Model.Sorting)"><<</a>
     </div>
@@ -70,7 +70,7 @@
            asp-controller="Fields"
            asp-action="All"
            asp-route-currentPage="@(Model.CurrentPage + 1)"
-           asp-route-town="@Model.Town"
+           asp-route-city="@Model.City"
            asp-route-searchTerm="@Model.SearchTerm"
            asp-route-sorting="@((int)Model.Sorting)">>></a>
     </div>
@@ -83,9 +83,9 @@
         {
             <div class="col-md-4">
                 <div class="card mb-3">
-                    <img class="card-img-top" src="@field.ImageUrl" alt="@field.Name @field.Country - @field.Town">
+                    <img class="card-img-top" src="@field.ImageUrl" alt="@field.Name @field.Country - @field.City">
                     <div class="card-body text-center">
-                        <div class="card-title text-center h5-like">@field.Name - @field.Country @field.Town</div>
+                        <div class="card-title text-center h5-like">@field.Name - @field.Country.Name @field.City.Name</div>
                         <div class="text-center mt-4">
                             <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" class="btn mb-3">Info</a>
                             @if (User.IsManager())

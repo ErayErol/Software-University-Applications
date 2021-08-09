@@ -55,24 +55,24 @@
 
             if (this.field.IsSame(
                     fieldModel.Name,
-                    fieldModel.Country,
-                    fieldModel.Town))
+                    fieldModel.Country.Id,
+                    fieldModel.City.Id))
             {
                 fieldModel.Countries = this.country.All();
-                TempData[GlobalMessageKey] = "There are already exist field with this Name, Country and Town";
+                TempData[GlobalMessageKey] = "There are already exist field with this Name, Country and City";
                 return View(fieldModel);
             }
 
             fieldModel.Name = FirstLetterUpperThenLower(fieldModel.Name);
-            fieldModel.Country = FirstLetterUpperThenLower(fieldModel.Country);
-            fieldModel.Town = FirstLetterUpperThenLower(fieldModel.Town);
+            fieldModel.Country.Name = FirstLetterUpperThenLower(fieldModel.Country.Name);
+            fieldModel.City.Name = FirstLetterUpperThenLower(fieldModel.City.Name);
             fieldModel.Address = FirstLetterUpperThenLower(fieldModel.Address);
             fieldModel.Description = FirstLetterUpperThenLower(fieldModel.Description);
 
             this.field.Create(
                 fieldModel.Name,
-                fieldModel.Country,
-                fieldModel.Town,
+                fieldModel.Country.Id,
+                fieldModel.City.Id,
                 fieldModel.Address,
                 fieldModel.ImageUrl,
                 fieldModel.PhoneNumber,
@@ -88,17 +88,17 @@
         public IActionResult All([FromQuery] FieldAllQueryModel query)
         {
             var queryResult = this.field.All(
-                query.Town,
+                query.City,
                 query.SearchTerm,
                 query.Sorting,
                 query.CurrentPage,
                 query.PlaygroundsPerPage);
 
-            var towns = this.field.Towns();
+            var cities = this.field.Cities();
 
             query.TotalFields = queryResult.TotalFields;
             query.Fields = queryResult.Fields;
-            query.Towns = towns;
+            query.Cities = cities;
 
             return View(query);
         }

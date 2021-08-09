@@ -2,7 +2,7 @@
 {
     public class AllGamesApiRequestModel
     {
-        public string Town { get; init; }
+        public string City { get; init; }
 
         public string SearchTerm { get; init; }
 

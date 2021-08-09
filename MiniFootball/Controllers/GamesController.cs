@@ -75,13 +75,13 @@
                 return View();
             }
 
-            gameForm.Town = FirstLetterUpperThenLower(gameForm.Town);
+            gameForm.CityName = FirstLetterUpperThenLower(gameForm.CityName);
 
             return View(new FieldListingViewModel
             {
-                Fields = this.fields.FieldsListing(gameForm.Town, gameForm.Country),
-                Town = gameForm.Town,
-                Country = gameForm.Country,
+                Fields = this.fields.FieldsListing(gameForm.CityName, gameForm.CountryName),
+                CityName = gameForm.CityName,
+                CountryName = gameForm.CountryName,
             });
         }
 
@@ -116,11 +116,11 @@
             }
 
             // TODO: Do this to game too
-            if (this.fields.IsCorrectCountryAndTown(
+            if (this.fields.IsCorrectCountryAndCity(
                 gameForm.FieldId,
                 gameForm.Name,
-                gameForm.Country,
-                gameForm.Town) == false)
+                gameForm.CountryName,
+                gameForm.CityName) == false)
             {
                 return BadRequest();
             }
@@ -172,17 +172,17 @@
         {
             var queryResult = this.games
                 .All(
-                    query.Town,
+                    query.City,
                     query.SearchTerm,
                     query.Sorting,
                     query.CurrentPage,
                     query.GamesPerPage);
 
-            var towns = this.fields.Towns();
+            var cities = this.fields.Cities();
 
             query.TotalGames = queryResult.TotalGames;
             query.Games = queryResult.Games;
-            query.Towns = towns;
+            query.Cities = cities;
 
             return View(query);
         }

@@ -5,5 +5,7 @@
     public interface ICountryService
     {
         IEnumerable<string> All();
+
+        string Name(int id);
     }
 }

@@ -10,7 +10,7 @@
     public interface IGameService
     {
         GameQueryServiceModel All(
-            string town,
+            string cityName,
             string searchTerm,
             Sorting sorting,
             int currentPage,

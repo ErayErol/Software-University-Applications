@@ -9,33 +9,41 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Countries;
 
     public class GameService : IGameService
     {
         private readonly MiniFootballDbContext data;
         private readonly IConfigurationProvider mapper;
+        private readonly ICountryService countries;
 
         public GameService(
             MiniFootballDbContext data,
-            IMapper mapper)
+            IMapper mapper,
+            ICountryService countries)
         {
             this.data = data;
+            this.countries = countries;
             this.mapper = mapper.ConfigurationProvider;
         }
 
         public GameQueryServiceModel All(
-            string town,
+            string cityName,
             string searchTerm,
             Sorting sorting,
             int currentPage,
             int gamesPerPage)
         {
+            var city = this.data
+                .Cities
+                .FirstOrDefault(c => c.Name == cityName);
+
             var gamesQuery = this.data.Games.AsQueryable();
 
-            if (string.IsNullOrWhiteSpace(town) == false)
+            if (string.IsNullOrWhiteSpace(city?.Name) == false)
             {
                 gamesQuery = gamesQuery
-                    .Where(g => g.Field.Town == town);
+                    .Where(g => g.Field.City.Name == city.Name);
             }
 
             if (string.IsNullOrWhiteSpace(searchTerm) == false)
@@ -50,9 +58,9 @@
             // TODO: You can add searching by time too
             gamesQuery = sorting switch
             {
-                Sorting.Town
+                Sorting.City
                     => gamesQuery
-                        .OrderBy(g => g.Field.Town),
+                        .OrderBy(g => g.Field.City),
                 Sorting.FieldName
                     => gamesQuery
                         .OrderBy(g => g.Field.Name),
@@ -65,7 +73,14 @@
 
             var games = GetGames(gamesQuery
                 .Skip((currentPage - 1) * gamesPerPage)
-                .Take(gamesPerPage), this.mapper);
+                .Take(gamesPerPage), this.mapper)
+                .ToList();
+
+            foreach (var gameListingServiceModel in games)
+            {
+                gameListingServiceModel.Field.Country = data.Countries.Find(gameListingServiceModel.Field.CountryId);
+                gameListingServiceModel.Field.City = data.Cities.Find(gameListingServiceModel.Field.CityId);
+            }
 
             return new GameQueryServiceModel
             {
@@ -222,11 +237,21 @@
                 .FirstOrDefault();
 
         public IEnumerable<GameListingServiceModel> ByUser(string userId)
-            => GetGames(
+        {
+            var games = GetGames(
                 this.data
                     .Games
                     .Where(g => g.Admin.UserId == userId),
                 this.mapper);
+
+            foreach (var gameListingServiceModel in games)
+            {
+                gameListingServiceModel.Field.Country = data.Countries.Find(gameListingServiceModel.Field.CountryId);
+                gameListingServiceModel.Field.City = data.Cities.Find(gameListingServiceModel.Field.CityId);
+            }
+
+            return games;
+        }
 
         public IEnumerable<GameListingServiceModel> Latest()
             => this.data

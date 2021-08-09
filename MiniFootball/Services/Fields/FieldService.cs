@@ -23,7 +23,7 @@
         }
 
         public FieldQueryServiceModel All(
-            string town,
+            string cityName,
             string searchTerm,
             Sorting sorting,
             int currentPage,
@@ -31,9 +31,13 @@
         {
             var fieldsQuery = this.data.Fields.AsQueryable();
 
-            if (string.IsNullOrWhiteSpace(town) == false)
+            var city = this.data
+                .Cities
+                .FirstOrDefault(c => c.Name == cityName);
+
+            if (string.IsNullOrWhiteSpace(city?.Name) == false)
             {
-                fieldsQuery = fieldsQuery.Where(g => g.Town == town);
+                fieldsQuery = fieldsQuery.Where(g => g.City.Name == city.Name);
             }
 
             if (string.IsNullOrWhiteSpace(searchTerm) == false)
@@ -47,7 +51,7 @@
 
             fieldsQuery = sorting switch
             {
-                Sorting.Town => fieldsQuery.OrderBy(g => g.Town),
+                Sorting.City => fieldsQuery.OrderBy(g => g.City.Name),
                 Sorting.FieldName => fieldsQuery.OrderBy(g => g.Name),
                 Sorting.DateCreated or _ => fieldsQuery.OrderBy(g => g.Id)
             };
@@ -56,7 +60,14 @@
 
             var fields = GetFields(fieldsQuery
                 .Skip((currentPage - 1) * fieldsPerPage)
-                .Take(fieldsPerPage), this.mapper);
+                .Take(fieldsPerPage), this.mapper)
+                .ToList();
+
+            //foreach (var fieldServiceModel in fields)
+            //{
+            //    fieldServiceModel.Country = data.Countries.Find(fieldServiceModel.CountryId);
+            //    fieldServiceModel.City = data.Cities.Find(fieldServiceModel.CityId);
+            //}
 
             return new FieldQueryServiceModel
             {
@@ -65,21 +76,21 @@
             };
         }
 
-        public bool IsCorrectCountryAndTown(int fieldId, string name, string country, string town)
+        public bool IsCorrectCountryAndCity(int fieldId, string name, string countryName, string cityName)
         {
             var field = this.data.Fields.FirstOrDefault(f => f.Id == fieldId);
 
             return
                 field != null &&
                 field.Name.ToLower() == name.ToLower() &&
-                field.Country.ToLower() == country.ToLower() &&
-                field.Town.ToLower() == town.ToLower();
+                field.Country.Name.ToLower() == countryName.ToLower() &&
+                field.City.Name.ToLower() == cityName.ToLower();
         }
 
         public int Create(
             string name,
-            string country,
-            string town,
+            int countryId,
+            int cityId,
             string address,
             string imageUrl,
             string phoneNumber,
@@ -89,11 +100,19 @@
             bool changingRoom,
             string description)
         {
+            var country = this.data
+                .Countries
+                .FirstOrDefault(c => c.Id == countryId);
+
+            var city = this.data
+                .Cities
+                .FirstOrDefault(c => c.Id == cityId);
+
             var field = new Field
             {
                 Name = name,
                 Country = country,
-                Town = town,
+                City = city,
                 Address = address,
                 ImageUrl = imageUrl,
                 PhoneNumber = phoneNumber,
@@ -110,23 +129,23 @@
             return field.Id;
         }
 
-        public bool IsSame(string name, string country, string town)
+        public bool IsSame(string name, int countryId, int cityId)
             => this.data
                 .Fields
-                .Any(p => p.Name == name && p.Country == country && p.Town == town);
+                .Any(p => p.Name == name && p.Country.Id == countryId && p.City.Id == cityId);
 
-        public IEnumerable<string> Towns()
+        public IEnumerable<string> Cities()
             => this.data
                 .Fields
-                .Select(p => p.Town)
+                .Select(p => p.City.Name)
                 .Distinct()
                 .OrderBy(t => t)
                 .AsEnumerable();
 
-        public IEnumerable<FieldListingServiceModel> FieldsListing(string town, string country)
+        public IEnumerable<FieldListingServiceModel> FieldsListing(string cityName, string countryName)
             => this.data
                 .Fields
-                .Where(x => x.Town == town && x.Country == country)
+                .Where(x => x.City.Name == cityName && x.Country.Name == countryName)
                 .ProjectTo<FieldListingServiceModel>(mapper)
                 .ToList();
 

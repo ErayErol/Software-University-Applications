@@ -25,8 +25,8 @@ else
 
                 <form method="post">
                     <div class="form-group">
-                        <label asp-for="Country"></label>
-                        <select asp-for="Country" class="form-control">
+                        <label asp-for="CountryName"></label>
+                        <select asp-for="CountryName" class="form-control">
                             @foreach (var country in Model.Countries)
                             {
                                 @if (country == "Bulgaria")
@@ -42,9 +42,9 @@ else
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="Town"></label>
-                        <input asp-for="Town" type="text" class="form-control alphaonly">
-                        <span asp-validation-for="Town" class="small text-danger"></span>
+                        <label asp-for="CityName"></label>
+                        <input asp-for="CityName" type="text" class="form-control alphaonly">
+                        <span asp-validation-for="CityName" class="small text-danger"></span>
                     </div>
 
                     <input class="btn float-right" type="submit" value="View Fields" />

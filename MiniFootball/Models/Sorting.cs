@@ -3,7 +3,7 @@
     public enum Sorting
     {
         DateCreated = 0,
-        Town = 1,
+        City = 1,
         FieldName = 2,
     }
 }

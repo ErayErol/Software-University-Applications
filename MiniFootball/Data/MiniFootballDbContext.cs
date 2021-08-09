@@ -14,11 +14,13 @@
         public virtual DbSet<Game> Games { get; init; }
 
         public virtual DbSet<Field> Fields { get; init; }
+        
+        public virtual DbSet<Country> Countries { get; init; }
+        
+        public virtual DbSet<City> Cities { get; init; }
 
         public virtual DbSet<Admin> Admins { get; init; }
 
-        public virtual DbSet<User> Users { get; init; }
-        
         public virtual DbSet<UserGame> UserGames { get; init; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -42,6 +44,13 @@
                 .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Admin>(a => a.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Field>()
+                .HasOne(f => f.Country)
+                .WithMany(c => c.Fields)
+                .HasForeignKey(g => g.CountryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             //builder

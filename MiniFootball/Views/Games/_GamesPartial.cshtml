@@ -6,13 +6,13 @@
         <div class="card mb-4">
             @if (ViewBag.AllowImage == true)
             {
-                <img class="card-img-top" src="@game.Field.ImageUrl" alt="@game.Field.Name @game.Field.Country - @game.Field.Town">
+                <img class="card-img-top" src="@game.Field.ImageUrl" alt="@game.Field.Name @game.Field.Country.Name - @game.Field.City.Name">
             }
             <div class="card-body">
                 <div class="text-center mb-4">
                     <div class="card-title h4-like">@game.Field.Name</div>
                 </div>
-                <h6 class="card-title">Place : @game.Field.Country, @game.Field.Town</h6>
+                <h6 class="card-title">Place : @game.Field.Country.Name, @game.Field.City.Name</h6>
                 <h6 class="card-title">Date : @game.Date.ToString("g")</h6>
                 <div class="text-center mt-4">
                     <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn mb-3">Info</a>

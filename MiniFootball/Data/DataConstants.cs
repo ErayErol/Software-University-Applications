@@ -40,8 +40,8 @@
             public const int CountryMinLength = 1;
             public const int CountryMaxLength = 56;
 
-            public const int TownMinLength = 1;
-            public const int TownMaxLength = 85;
+            public const int CityMinLength = 1;
+            public const int CityMaxLength = 85;
 
             public const int AddressMinLength = 1;
             public const int AddressMaxLength = 100;

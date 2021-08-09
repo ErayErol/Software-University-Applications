@@ -9,7 +9,7 @@
 
         public int CurrentPage { get; set; } = 1;
 
-        public string Town { get; set; }
+        public string City { get; set; }
 
         public string SearchTerm { get; set; }
 
@@ -17,7 +17,7 @@
 
         public Sorting Sorting { get; set; }
 
-        public IEnumerable<string> Towns { get; set; }
+        public IEnumerable<string> Cities { get; set; }
 
         public IEnumerable<FieldServiceModel> Fields { get; set; }
     }

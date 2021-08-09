@@ -22,7 +22,7 @@
         public int? NumberOfPlayers { get; set; }
         
         [Display(Name = "Phone Number")]
-        [Required(ErrorMessage = Empty)]
+        //[Required(ErrorMessage = Empty)]
         public string PhoneNumber { get; set; }
 
         public string UserId { get; set; }

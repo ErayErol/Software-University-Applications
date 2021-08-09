@@ -8,8 +8,8 @@
     {
         int Create(
             string name,
-            string country,
-            string town,
+            int countryId,
+            int cityId,
             string address,
             string imageUrl,
             string phoneNumber,
@@ -21,23 +21,23 @@
 
         bool IsSame(
             string name,
-            string country,
-            string town);
+            int countryId,
+            int cityId);
 
-        IEnumerable<string> Towns();
+        IEnumerable<string> Cities();
 
-        IEnumerable<FieldListingServiceModel> FieldsListing(string town, string country);
+        IEnumerable<FieldListingServiceModel> FieldsListing(string cityName, string countryName);
 
         bool FieldExist(int fieldId);
 
         FieldQueryServiceModel All(
-            string town,
+            string cityName,
             string searchTerm,
             Sorting sorting,
             int currentPage,
             int fieldsPerPage);
 
-        bool IsCorrectCountryAndTown(int fieldId, string name, string country, string town);
+        bool IsCorrectCountryAndCity(int fieldId, string name, string country, string city);
 
         string FieldName(int fieldId);
     }

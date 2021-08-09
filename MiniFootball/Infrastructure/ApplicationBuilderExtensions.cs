@@ -6,11 +6,11 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using Services.Countries;
     using System;
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
-
     using static Areas.Manager.ManagerConstants;
 
     public static class ApplicationBuilderExtensions
@@ -22,12 +22,13 @@
             var services = serviceScope.ServiceProvider;
 
             var data = serviceScope.ServiceProvider.GetService<MiniFootballDbContext>();
+            var countries = serviceScope.ServiceProvider.GetService<ICountryService>();
             var passwordHasher = serviceScope.ServiceProvider.GetService<IPasswordHasher<User>>();
 
             MigrateDatabase(services);
 
             // TODO: Refactor this
-            Seeds(data, passwordHasher);
+            Seeds(data, countries, passwordHasher);
             SeedManager(services);
 
             return app;
@@ -70,8 +71,8 @@
                         PhoneNumber = "0886911492",
                         ImageUrl = "https://thumbs.dreamstime.com/b/manager-38039871.jpg",
                         Birthdate = DateTime.ParseExact(
-                            "2019-05-08 14:40:52,531", 
-                            "yyyy-MM-dd HH:mm:ss,fff", 
+                            "2019-05-08 14:40:52,531",
+                            "yyyy-MM-dd HH:mm:ss,fff",
                             CultureInfo.InvariantCulture),
                     };
 
@@ -83,8 +84,16 @@
                 .GetResult();
         }
 
-        private static void Seeds(MiniFootballDbContext data, IPasswordHasher<User> passwordHasher)
+        private static void Seeds(
+            MiniFootballDbContext data,
+            ICountryService? countryService,
+            IPasswordHasher<User> passwordHasher)
         {
+            if (data.Countries.Any() == false)
+            {
+                countryService?.All();
+            }
+
             if (data.Users.Any() == false)
             {
                 for (var i = 1; i <= 3; i++)
@@ -99,8 +108,8 @@
                         NickName = $"NickName-zwp{i}",
                         PhoneNumber = $"088691149{i}",
                         Birthdate = DateTime.ParseExact(
-                            "2009-05-08 14:40:52,531", 
-                            "yyyy-MM-dd HH:mm:ss,fff", 
+                            "2009-05-08 14:40:52,531",
+                            "yyyy-MM-dd HH:mm:ss,fff",
                             CultureInfo.InvariantCulture),
                     };
 
@@ -137,76 +146,118 @@
 
             if (data.Fields.Any() == false)
             {
-                var admin = data.Admins.FirstOrDefault(x => x.Name == "zwpAdmin");
+                if (data.Cities.Any() == false)
+                {
+                    data.Cities.AddRange(
+                        new City
+                        {
+                            CountryId = data
+                                .Countries
+                                .Where(c => c.Name == "Bulgaria")
+                                .Select(c => c.Id)
+                                .FirstOrDefault(),
+                            Name = "Haskovo",
+                        },
+                        new City
+                        {
+                            CountryId = data
+                                .Countries
+                                .Where(c => c.Name == "Bulgaria")
+                                .Select(c => c.Id)
+                                .FirstOrDefault(),
+                            Name = "Plovdiv",
+                        },
+                        new City
+                        {
+                            CountryId = data
+                                .Countries
+                                .Where(c => c.Name == "Bulgaria")
+                                .Select(c => c.Id)
+                                .FirstOrDefault(),
+                            Name = "Sofia",
+                        }, new City
+                        {
+                            CountryId = data
+                                .Countries
+                                .Where(c => c.Name == "Turkey")
+                                .Select(c => c.Id)
+                                .FirstOrDefault(),
+                            Name = "Edirne",
+                        }
+                    );
+
+                    data.SaveChanges();
+                }
 
                 // TODO: Add Players and Teams
 
-                data.Fields.AddRange(new Field
-                {
-                    Name = "Avenue",
-                    Country = "Bulgaria",
-                    Town = "Haskovo",
-                    Description = "In the summer this place is number 1 to play mini football.",
-                    Address = "ул. Дунав 1 - в парка под супермаркет авеню",
-                    ImageUrl = "https://imgrabo.com/pics/businesses/b18e8a5e845a9317f4e301b3ffd58c14.jpeg",
-                    Cafe = true,
-                    ChangingRoom = true,
-                    Parking = true,
-                    Shower = true,
-                    PhoneNumber = "0888888889",
-                }, new Field
-                {
-                    Name = "Kortove",
-                    Country = "Bulgaria",
-                    Town = "Haskovo",
-                    Description = "In the winter this place is number 1 to play mini football, because the players play inside.",
-                    Address = "След Хотел Европа - до тенис кортовете",
-                    ImageUrl = "https://tennishaskovo.com/uploads/galerii/baza_kenana/44.jpg",
-                    Cafe = false,
-                    ChangingRoom = true,
-                    Parking = true,
-                    Shower = true,
-                    PhoneNumber = "0888888888",
-                }, new Field
-                {
-                    Name = "Yildizlar",
-                    Country = "Turkey",
-                    Town = "Edirne",
-                    Description = "In the summer this place is number 1 to play mini football in Edirne.",
-                    Address = "Ilk Okullun yaninda.",
-                    ImageUrl = "https://hotel-evrika.com/wp-content/uploads/2019/12/VIK_6225-1024x683.jpg",
-                    Cafe = false,
-                    ChangingRoom = true,
-                    Parking = true,
-                    Shower = true,
-                    PhoneNumber = "0888888887",
-                }, new Field
-                {
-                    Name = "Optimum",
-                    Country = "Bulgaria",
-                    Town = "Plovdiv",
-                    Description = "In summer and winter this place is number 1 to play mini football in Plovdiv.",
-                    Address = "бул. „Асеновградско шосе",
-                    ImageUrl = "https://imgrabo.com/pics/guide/900x600/20150901162641_20158.jpg",
-                    Cafe = false,
-                    ChangingRoom = true,
-                    Parking = true,
-                    Shower = true,
-                    PhoneNumber = "0888888886",
-                }, new Field
-                {
-                    Name = "Avangard Fitness",
-                    Country = "Bulgaria",
-                    Town = "Plovdiv",
-                    Description = "You can workout in fitness and then play football with friends.",
-                    Address = "жк. Тракия 96-Д, 4023 кв. Капитан Бураго",
-                    ImageUrl = "https://fitness-avantgarde.com/sites/default/files/img_8189.jpg",
-                    Cafe = false,
-                    ChangingRoom = true,
-                    Parking = true,
-                    Shower = true,
-                    PhoneNumber = "0888888885",
-                });
+                data.Fields.AddRange(
+                    new Field
+                    {
+                        Name = "Avenue",
+                        CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
+                        CityId = data.Cities.Where(c => c.Name == "Haskovo").Select(c => c.Id).FirstOrDefault(),
+                        Description = "In the summer this place is number 1 to play mini football.",
+                        Address = "ул. Дунав 1 - в парка под супермаркет авеню",
+                        ImageUrl = "https://imgrabo.com/pics/businesses/b18e8a5e845a9317f4e301b3ffd58c14.jpeg",
+                        Cafe = true,
+                        ChangingRoom = true,
+                        Parking = true,
+                        Shower = true,
+                        PhoneNumber = "0888888889",
+                    }, new Field
+                    {
+                        Name = "Kortove",
+                        CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
+                        CityId = data.Cities.Where(c => c.Name == "Haskovo").Select(c => c.Id).FirstOrDefault(),
+                        Description = "In the winter this place is number 1 to play mini football, because the players play inside.",
+                        Address = "След Хотел Европа - до тенис кортовете",
+                        ImageUrl = "https://tennishaskovo.com/uploads/galerii/baza_kenana/44.jpg",
+                        Cafe = false,
+                        ChangingRoom = true,
+                        Parking = true,
+                        Shower = true,
+                        PhoneNumber = "0888888888",
+                    }, new Field
+                    {
+                        Name = "Yildizlar",
+                        CountryId = data.Countries.Where(c => c.Name == "Turkey").Select(c => c.Id).FirstOrDefault(),
+                        CityId = data.Cities.Where(c => c.Name == "Edirne").Select(c => c.Id).FirstOrDefault(),
+                        Description = "In the summer this place is number 1 to play mini football in Edirne.",
+                        Address = "Ilk Okullun yaninda.",
+                        ImageUrl = "https://hotel-evrika.com/wp-content/uploads/2019/12/VIK_6225-1024x683.jpg",
+                        Cafe = false,
+                        ChangingRoom = true,
+                        Parking = true,
+                        Shower = true,
+                        PhoneNumber = "0888888887",
+                    }, new Field
+                    {
+                        Name = "Optimum",
+                        CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
+                        CityId = data.Cities.Where(c => c.Name == "Plovdiv").Select(c => c.Id).FirstOrDefault(),
+                        Description = "In summer and winter this place is number 1 to play mini football in Plovdiv.",
+                        Address = "бул. „Асеновградско шосе",
+                        ImageUrl = "https://imgrabo.com/pics/guide/900x600/20150901162641_20158.jpg",
+                        Cafe = false,
+                        ChangingRoom = true,
+                        Parking = true,
+                        Shower = true,
+                        PhoneNumber = "0888888886",
+                    }, new Field
+                    {
+                        Name = "Avangard Fitness",
+                        CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
+                        CityId = data.Cities.Where(c => c.Name == "Plovdiv").Select(c => c.Id).FirstOrDefault(),
+                        Description = "You can workout in fitness and then play football with friends.",
+                        Address = "жк. Тракия 96-Д, 4023 кв. Капитан Бураго",
+                        ImageUrl = "https://fitness-avantgarde.com/sites/default/files/img_8189.jpg",
+                        Cafe = false,
+                        ChangingRoom = true,
+                        Parking = true,
+                        Shower = true,
+                        PhoneNumber = "0888888885",
+                    });
 
                 data.SaveChanges();
             }
