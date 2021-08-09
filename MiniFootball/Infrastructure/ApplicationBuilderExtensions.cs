@@ -86,12 +86,12 @@
 
         private static void Seeds(
             MiniFootballDbContext data,
-            ICountryService? countryService,
+            ICountryService countryService,
             IPasswordHasher<User> passwordHasher)
         {
             if (data.Countries.Any() == false)
             {
-                countryService?.All();
+                countryService.SaveAll();
             }
 
             if (data.Users.Any() == false)

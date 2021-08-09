@@ -37,7 +37,8 @@
 
             if (string.IsNullOrWhiteSpace(city?.Name) == false)
             {
-                fieldsQuery = fieldsQuery.Where(g => g.City.Name == city.Name);
+                fieldsQuery = fieldsQuery
+                    .Where(g => g.City.Name == city.Name);
             }
 
             if (string.IsNullOrWhiteSpace(searchTerm) == false)
@@ -51,9 +52,15 @@
 
             fieldsQuery = sorting switch
             {
-                Sorting.City => fieldsQuery.OrderBy(g => g.City.Name),
-                Sorting.FieldName => fieldsQuery.OrderBy(g => g.Name),
-                Sorting.DateCreated or _ => fieldsQuery.OrderBy(g => g.Id)
+                Sorting.City
+                    => fieldsQuery
+                        .OrderBy(g => g.City.Name),
+                Sorting.FieldName
+                    => fieldsQuery
+                        .OrderBy(g => g.Name),
+                Sorting.DateCreated or _
+                    => fieldsQuery
+                        .OrderBy(g => g.Id)
             };
 
             var totalPlaygrounds = fieldsQuery.Count();
@@ -62,12 +69,6 @@
                 .Skip((currentPage - 1) * fieldsPerPage)
                 .Take(fieldsPerPage), this.mapper)
                 .ToList();
-
-            //foreach (var fieldServiceModel in fields)
-            //{
-            //    fieldServiceModel.Country = data.Countries.Find(fieldServiceModel.CountryId);
-            //    fieldServiceModel.City = data.Cities.Find(fieldServiceModel.CityId);
-            //}
 
             return new FieldQueryServiceModel
             {
@@ -79,6 +80,14 @@
         public bool IsCorrectCountryAndCity(int fieldId, string name, string countryName, string cityName)
         {
             var field = this.data.Fields.FirstOrDefault(f => f.Id == fieldId);
+
+            if (field == null)
+            {
+                return false;
+            }
+
+            field.Country = data.Countries.Find(field.CountryId);
+            field.City = data.Cities.Find(field.CityId);
 
             return
                 field != null &&

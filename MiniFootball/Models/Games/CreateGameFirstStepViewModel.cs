@@ -15,6 +15,7 @@
 
         [Required]
         [StringLength(CityMaxLength, MinimumLength = CityMinLength, ErrorMessage = Range)]
+        [Display(Name = "City")]
         public string CityName { get; set; }
     }
 }

@@ -29,7 +29,7 @@
             IGameService games,
             IAdminService admins,
             IFieldService fields,
-            IMapper mapper, 
+            IMapper mapper,
             IUserService users)
         {
             this.countries = countries;
@@ -96,11 +96,6 @@
                 return BadRequest();
             }
 
-            if (this.fields.FieldExist(fieldId) == false)
-            {
-                this.ModelState.AddModelError(nameof(fieldId), "Field does not exist!");
-            }
-
             var fieldName = this.fields.FieldName(fieldId);
             gamePlaygroundModel.Name = fieldName;
 
@@ -152,7 +147,7 @@
             // TODO: There is already exist game in this fields in this date
             // TODO: Add appointment like beautybooking with only times like 20:00, 21:00 and the user can pick up time... do it more beautiful when create game, cause date is a little bit ugly
 
-            this.games.Create(
+            var id = this.games.Create(
                 gameCreateModel.FieldId,
                 gameCreateModel.Date.Value,
                 gameCreateModel.NumberOfPlayers.Value,
@@ -165,7 +160,8 @@
                 true,
                 adminId);
 
-            return RedirectToAction(nameof(All));
+            TempData[GlobalMessageKey] = "You created game!";
+            return Redirect($"Details?id={id}");
         }
 
         public IActionResult All([FromQuery] GameAllQueryModel query)
@@ -266,7 +262,8 @@
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(All));
+            TempData[GlobalMessageKey] = "You edited game!";
+            return Redirect($"Details?id={id}");
         }
 
         [Authorize]
@@ -301,7 +298,8 @@
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(All));
+            TempData[GlobalMessageKey] = "You joined game!";
+            return Redirect($"SeePlayers?id={id}");
         }
 
         [Authorize]
@@ -315,7 +313,7 @@
             {
                 if (game.UserId != userId)
                 {
-                    TempData[GlobalMessageKey] = "Only joined players can view the list of players";
+                    TempData[GlobalMessageKey] = "Only joined players can view the list of players!";
                     return RedirectToAction(nameof(All));
                 }
             }

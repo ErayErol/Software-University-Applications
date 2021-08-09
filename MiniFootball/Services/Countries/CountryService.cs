@@ -1,22 +1,51 @@
 ﻿namespace MiniFootball.Services.Countries
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using Data;
     using Data.Models;
+    using Microsoft.Extensions.Caching.Memory;
+
+    using static WebConstants;
 
     public class CountryService : ICountryService
     {
-        private readonly MiniFootballDbContext data;
+        private const string latestGamesCacheKey = "AllCountriesCacheKey";
+        private List<string> allCountries;
 
-        public CountryService(MiniFootballDbContext data)
+        private readonly MiniFootballDbContext data;
+        private readonly IMemoryCache cache;
+
+        public CountryService(
+            MiniFootballDbContext data,
+            IMemoryCache cache)
         {
             this.data = data;
+            this.cache = cache;
+            this.allCountries = new List<string>();
         }
 
-        // TODO: Do it void
-        public IEnumerable<string> All()
+        public List<string> All()
+        {
+            this.allCountries = this.cache.Get<List<string>>(latestGamesCacheKey);
+
+            if (allCountries == null)
+            {
+                allCountries = this.data.Countries.Select(country => country.Name).ToList();
+                allCountries.Sort();
+
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromDays(365));
+
+                this.cache.Set(latestGamesCacheKey, allCountries, cacheOptions);
+            }
+
+            return allCountries;
+        }
+
+        public void SaveAll()
         {
             var cultureList = new List<string>();
 
@@ -33,9 +62,6 @@
                     this.data.SaveChanges();
                 }
             }
-
-            cultureList.Sort();
-            return cultureList;
         }
 
         public string Name(int id)

@@ -1,9 +1,8 @@
 ﻿namespace MiniFootball.Models.Games
 {
+    using Services.Games.Models;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using Data.Models;
-    using Services.Games.Models;
 
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Field;
@@ -16,6 +15,7 @@
 
         [Required]
         [StringLength(CityMaxLength, MinimumLength = CityMinLength, ErrorMessage = Range)]
+        [Display(Name = "City")]
         public string CityName { get; set; }
 
         [Display(Name = "Select field:")]

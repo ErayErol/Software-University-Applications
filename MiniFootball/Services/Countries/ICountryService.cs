@@ -4,7 +4,9 @@
 
     public interface ICountryService
     {
-        IEnumerable<string> All();
+        List<string> All();
+        
+        void SaveAll();
 
         string Name(int id);
     }
