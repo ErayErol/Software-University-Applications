@@ -1,26 +1,34 @@
 ﻿namespace MiniFootball.Controllers
 {
+    using AutoMapper;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Models.Fields;
+    using Services.Cities;
     using Services.Countries;
     using Services.Fields;
 
-    using static WebConstants;
     using static MyWebCase;
+    using static WebConstants;
 
     public class FieldsController : Controller
     {
-        private readonly ICountryService country;
-        private readonly IFieldService field;
+        private readonly ICountryService countries;
+        private readonly ICityService cities;
+        private readonly IFieldService fields;
+        private readonly IMapper mapper;
 
         public FieldsController(
-            ICountryService country,
-            IFieldService field)
+            ICountryService countries,
+            IFieldService fields, 
+            ICityService cities, 
+            IMapper mapper)
         {
-            this.country = country;
-            this.field = field;
+            this.countries = countries;
+            this.fields = fields;
+            this.cities = cities;
+            this.mapper = mapper;
         }
 
         [Authorize]
@@ -34,7 +42,7 @@
 
             return View(new FieldCreateFormModel
             {
-                Countries = this.country.All(),
+                Countries = this.countries.All(),
             });
         }
 
@@ -49,27 +57,35 @@
 
             if (ModelState.IsValid == false)
             {
-                fieldModel.Countries = this.country.All();
+                fieldModel.Countries = this.countries.All();
                 return View(fieldModel);
             }
 
-            if (this.field.IsSame(
+            fieldModel.Country = this.countries.Country(fieldModel.CountryName);
+            fieldModel.City = this.cities.City(fieldModel.CityName);
+
+            if (fieldModel.City == null)
+            {
+                RedirectToAction("Create", "Cities");
+            }
+
+            if (this.fields.IsExist(
                     fieldModel.Name,
                     fieldModel.Country.Id,
                     fieldModel.City.Id))
             {
-                fieldModel.Countries = this.country.All();
-                TempData[GlobalMessageKey] = "There are already exist field with this Name, Country and City";
+                fieldModel.Countries = this.countries.All();
+                TempData[GlobalMessageKey] = "There are already exist fields with this Name, Country and City";
                 return View(fieldModel);
             }
 
             fieldModel.Name = FirstLetterUpperThenLower(fieldModel.Name);
-            fieldModel.Country.Name = FirstLetterUpperThenLower(fieldModel.Country.Name);
-            fieldModel.City.Name = FirstLetterUpperThenLower(fieldModel.City.Name);
+            fieldModel.CountryName = FirstLetterUpperThenLower(fieldModel.CountryName);
+            fieldModel.CityName = FirstLetterUpperThenLower(fieldModel.CityName);
             fieldModel.Address = FirstLetterUpperThenLower(fieldModel.Address);
             fieldModel.Description = FirstLetterUpperThenLower(fieldModel.Description);
 
-            this.field.Create(
+            this.fields.Create(
                 fieldModel.Name,
                 fieldModel.Country.Id,
                 fieldModel.City.Id,
@@ -82,25 +98,40 @@
                 fieldModel.ChangingRoom,
                 fieldModel.Description);
 
+            //TempData[GlobalMessageKey] = "You created game!";
+            //return Redirect($"Details?id={id}");
             return RedirectToAction(nameof(All));
         }
 
         public IActionResult All([FromQuery] FieldAllQueryModel query)
         {
-            var queryResult = this.field.All(
+            var queryResult = this.fields.All(
                 query.City,
                 query.SearchTerm,
                 query.Sorting,
                 query.CurrentPage,
                 query.PlaygroundsPerPage);
 
-            var cities = this.field.Cities();
+            var queryCities = this.fields.Cities();
 
             query.TotalFields = queryResult.TotalFields;
             query.Fields = queryResult.Fields;
-            query.Cities = cities;
+            query.Cities = queryCities;
 
             return View(query);
+        }
+
+        [Authorize]
+        public IActionResult Details(int id)
+        {
+            var field = this.fields.GetDetails(id);
+
+            if (field == null)
+            {
+                return BadRequest();
+            }
+
+            return View(field);
         }
     }
 }

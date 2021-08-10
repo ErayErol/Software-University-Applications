@@ -45,6 +45,12 @@
                                 <a class="nav-link" asp-area="" asp-controller="Fields" asp-action="Create">Create Field</a>
                             </li>
                         }
+                        @if (User.IsManager() || SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Cities" asp-action="Create">Create City</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial"/>
                 </div>

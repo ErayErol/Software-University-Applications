@@ -19,6 +19,7 @@ namespace MiniFootball
     using Services.Statistics;
     using Services.Users;
     using System.Security.Claims;
+    using Services.Cities;
 
     public class Startup
     {
@@ -72,6 +73,7 @@ namespace MiniFootball
                 options.GetService<IHttpContextAccessor>()?.HttpContext?.User);
 
             services
+                .AddTransient<ICityService, CityService>()
                 .AddTransient<IUserService, UserService>()
                 .AddTransient<IGameService, GameService>()
                 .AddTransient<IFieldService, FieldService>()

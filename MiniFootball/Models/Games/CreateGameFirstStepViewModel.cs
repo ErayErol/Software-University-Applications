@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using Data.Models;
+
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Field;
 

@@ -1,6 +1,5 @@
 ﻿namespace MiniFootball.Controllers
 {
-    using System.Linq;
     using AutoMapper;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
@@ -12,6 +11,7 @@
     using Services.Games;
     using Services.Games.Models;
     using Services.Users;
+    using System.Linq;
     using static MyWebCase;
     using static WebConstants;
 
@@ -64,7 +64,25 @@
                 return View(gameForm);
             }
 
-            return RedirectToAction("FieldListing", "Games", gameForm);
+            gameForm.CityName = FirstLetterUpperThenLower(gameForm.CityName);
+
+            var isExist = this.countries
+                .Cities(gameForm.CountryName)?
+                .Any(c => c == gameForm.CityName);
+
+            if (isExist == false)
+            {
+                TempData[GlobalMessageKey] = 
+                    "This City does not exist in this Country. First you have to create City and then create Game!";
+                return RedirectToAction("Create", "Cities");
+            }
+
+            // TODO: Maybe you have to create view model that pass only cityName and countryName
+            return RedirectToAction("FieldListing", "Games", new CreateGameFirstStepViewModel
+            {
+                CityName = gameForm.CityName,
+                CountryName = gameForm.CountryName,
+            });
         }
 
         [Authorize]
@@ -74,8 +92,6 @@
             {
                 return View();
             }
-
-            gameForm.CityName = FirstLetterUpperThenLower(gameForm.CityName);
 
             return View(new FieldListingViewModel
             {
@@ -210,7 +226,7 @@
 
             var game = this.games.GetDetails(id);
 
-            if (game.UserId != userId && this.User.IsManager() == false)
+            if (game?.UserId != userId && this.User.IsManager() == false)
             {
                 return Unauthorized();
             }
@@ -222,7 +238,7 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult Edit(string id, GameFormModel game)
+        public IActionResult Edit(GameFormModel game)
         {
             var adminId = this.admins.IdByUser(this.User.Id());
 
@@ -231,24 +247,18 @@
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            // TODO: Delete this and do it in edit fields
-            //if (this.fields.FieldExist(game.Id) == false)
-            //{
-            //    this.ModelState.AddModelError(nameof(game.Id), "Field does not exist.");
-            //}
-
             if (ModelState.IsValid == false)
             {
                 return View(game);
             }
 
-            if (this.games.IsByAdmin(id, adminId) == false && this.User.IsManager() == false)
+            if (this.games.IsByAdmin(game.Id, adminId) == false && this.User.IsManager() == false)
             {
                 return BadRequest();
             }
 
             var isEdit = this.games.Edit(
-                id,
+                game.Id,
                 game.Date,
                 game.NumberOfPlayers,
                 game.FacebookUrl,
@@ -263,7 +273,7 @@
             }
 
             TempData[GlobalMessageKey] = "You edited game!";
-            return Redirect($"Details?id={id}");
+            return RedirectToAction(nameof(All));
         }
 
         [Authorize]
@@ -274,8 +284,6 @@
             var gameForm = this.mapper.Map<GameFormModel>(game);
 
             gameForm.PhoneNumber = this.users.UserInfo(this.User.Id()).PhoneNumber;
-
-            // TODO: Admin and moderator can see all users
 
             if (this.games.IsUserIsJoinGame(id, this.User.Id()))
             {
@@ -365,6 +373,7 @@
                 return BadRequest();
             }
 
+            TempData[GlobalMessageKey] = "You deleted game!";
             return RedirectToAction(nameof(All));
         }
     }

@@ -111,17 +111,21 @@
         {
             var country = this.data
                 .Countries
-                .FirstOrDefault(c => c.Id == countryId);
+                .Where(c => c.Id == countryId)
+                .Select(c => c.Id)
+                .FirstOrDefault();
 
             var city = this.data
                 .Cities
-                .FirstOrDefault(c => c.Id == cityId);
+                .Where(c => c.Id == cityId)
+                .Select(c => c.Id)
+                .FirstOrDefault();
 
             var field = new Field
             {
                 Name = name,
-                Country = country,
-                City = city,
+                CountryId = country,
+                CityId = city,
                 Address = address,
                 ImageUrl = imageUrl,
                 PhoneNumber = phoneNumber,
@@ -138,7 +142,7 @@
             return field.Id;
         }
 
-        public bool IsSame(string name, int countryId, int cityId)
+        public bool IsExist(string name, int countryId, int cityId)
             => this.data
                 .Fields
                 .Any(p => p.Name == name && p.Country.Id == countryId && p.City.Id == cityId);
@@ -169,6 +173,15 @@
                 .Where(f => f.Id == fieldId)
                 .Select(f => f.Name)
                 .FirstOrDefault();
+
+        public FieldDetailServiceModel GetDetails(int id)
+        {
+            return this.data
+                .Fields
+                .Where(f => f.Id == id)
+                .ProjectTo<FieldDetailServiceModel>(mapper)
+                .FirstOrDefault();
+        }
 
         private static IEnumerable<FieldServiceModel> GetFields(
             IQueryable<Field> fieldQuery,

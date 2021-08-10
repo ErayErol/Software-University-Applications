@@ -70,5 +70,18 @@
                 .Where(c => c.Id == id)
                 .Select(c => c.Name)
                 .FirstOrDefault();
+
+        public Country Country(string name)
+            => this.data
+                .Countries
+                .FirstOrDefault(c => c.Name == name);
+
+        public IEnumerable<string> Cities(string countryName)
+        {
+            return this.data
+                .Cities
+                .Where(c => c.Country.Name == countryName)
+                .Select(c => c.Name);
+        }
     }
 }

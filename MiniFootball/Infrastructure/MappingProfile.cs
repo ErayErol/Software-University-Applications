@@ -22,6 +22,7 @@
 
             this.CreateMap<Field, FieldServiceModel>();
             this.CreateMap<Field, FieldListingServiceModel>();
+            this.CreateMap<Field, FieldDetailServiceModel>();
         }
     }
 }

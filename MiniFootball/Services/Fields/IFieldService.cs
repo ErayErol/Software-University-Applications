@@ -1,5 +1,6 @@
 ﻿namespace MiniFootball.Services.Fields
 {
+    using System;
     using Games.Models;
     using Models;
     using System.Collections.Generic;
@@ -19,7 +20,7 @@
             bool changingRoom,
             string description);
 
-        bool IsSame(
+        bool IsExist(
             string name,
             int countryId,
             int cityId);
@@ -40,5 +41,7 @@
         bool IsCorrectCountryAndCity(int fieldId, string name, string country, string city);
 
         string FieldName(int fieldId);
+        
+        FieldDetailServiceModel GetDetails(int id);
     }
 }

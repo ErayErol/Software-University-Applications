@@ -9,21 +9,17 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Countries;
 
     public class GameService : IGameService
     {
         private readonly MiniFootballDbContext data;
         private readonly IConfigurationProvider mapper;
-        private readonly ICountryService countries;
 
         public GameService(
             MiniFootballDbContext data,
-            IMapper mapper,
-            ICountryService countries)
+            IMapper mapper)
         {
             this.data = data;
-            this.countries = countries;
             this.mapper = mapper.ConfigurationProvider;
         }
 
