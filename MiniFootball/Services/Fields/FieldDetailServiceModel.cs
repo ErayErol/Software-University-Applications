@@ -23,7 +23,7 @@
         public string ImageUrl { get; set; }
 
         [Display(Name = "Phone Number")]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } 
 
         public bool Parking { get; set; }
 

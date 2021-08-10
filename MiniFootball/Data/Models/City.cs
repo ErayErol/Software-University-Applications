@@ -11,7 +11,10 @@
         public int CountryId { get; set; }
         public virtual Country Country { get; set; }
 
-        public virtual ICollection<Field> Fields { get; init; } = new HashSet<Field>();
+        public int AdminId { get; set; }
 
+        public virtual Admin Admin { get; set; }
+
+        public virtual ICollection<Field> Fields { get; init; } = new HashSet<Field>();
     }
 }

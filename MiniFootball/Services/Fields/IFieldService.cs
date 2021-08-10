@@ -7,8 +7,7 @@
 
     public interface IFieldService
     {
-        int Create(
-            string name,
+        int Create(string name,
             int countryId,
             int cityId,
             string address,
@@ -18,7 +17,7 @@
             bool cafe,
             bool shower,
             bool changingRoom,
-            string description);
+            string description, int adminId);
 
         bool IsExist(
             string name,
@@ -41,7 +40,24 @@
         bool IsCorrectCountryAndCity(int fieldId, string name, string country, string city);
 
         string FieldName(int fieldId);
-        
+
         FieldDetailServiceModel GetDetails(int id);
+
+        bool Edit(
+            int id,
+            string name,
+            string address,
+            string imageUrl,
+            bool parking,
+            bool shower,
+            bool changingRoom,
+            bool cafe,
+            string description);
+
+        bool Delete(int id);
+
+        IEnumerable<FieldServiceModel> ByUser(string id);
+        
+        bool IsByAdmin(int id, int adminId);
     }
 }

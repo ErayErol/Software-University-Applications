@@ -1,0 +1,96 @@
+﻿@model FieldFormModel
+
+<div class="container">
+    <div class="row">
+        <div class="offset-1 offset-sm-1 offset-md-2 offset-lg-3 offset-xl-3 col-11 col-sm-9 col-md-8 col-lg-6 col-xl-5">
+            @if (ViewBag.Title == "Create Field")
+            {
+                <h3 class="mt-3 mb-3 text-center">Create Field</h3>
+            }
+
+        <form method="post" class="form-group">
+            <div class="form-group mb-3">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" type="text" class="form-control">
+                <span asp-validation-for="Name" class="small text-danger"></span>
+            </div>
+
+            @if (ViewBag.Title == "Create Field")
+            {
+                <div class="form-group">
+                    <label asp-for="CountryName">Select Country:</label>
+                    <select asp-for="CountryName" class="form-control">
+                        @foreach (var country in Model.Countries)
+                        {
+                            @if (country == "Bulgaria")
+                            {
+                                <option selected="selected" value="@country"> @country </option>
+                            }
+                            else
+                            {
+                                <option value="@country"> @country </option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CityName"></label>
+                    <input asp-for="CityName" type="text" class="form-control">
+                    <span asp-validation-for="CityName" class="small text-danger"></span>
+                </div>
+            }
+
+            <div class="form-group">
+                <label asp-for="Address"></label>
+                <input asp-for="Address" type="text" class="form-control">
+                <span asp-validation-for="Address" class="small text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ImageUrl"></label>
+                <input asp-for="ImageUrl" class="form-control">
+                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" type="text" class="form-control">
+                <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
+            </div>
+
+            <div class="mt-4 mb-3 createPlaygroundChechboxes">
+                <input class="checkbox-down" asp-for="Parking" type="checkbox">
+                <label asp-for="Parking">Parking</label>
+
+                <input class="checkbox-down" asp-for="Shower" type="checkbox">
+                <label asp-for="Shower">Shower</label>
+
+                <input class="checkbox-down" asp-for="ChangingRoom" type="checkbox">
+                <label asp-for="ChangingRoom">Changing Room</label>
+
+                <input class="checkbox-down" asp-for="Cafe" type="checkbox">
+                <label asp-for="Cafe">Cafe</label>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Description" class="small text-danger"></span>
+            </div>
+
+            @if (ViewBag.Title == "Create Field")
+            {
+                <input class="btn btn-success float-right" type="submit" value="Create" />
+            }
+            else
+            {
+                <input class="btn btn-success float-right" type="submit" value="Edit" />
+            }
+        </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -43,9 +43,10 @@
         [Authorize]
         public IActionResult CountryListing()
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false)
+            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
             {
-                return View();
+                TempData[GlobalMessageKey] = "Only Admins can create games!";
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
             return View(new CreateGameFirstStepViewModel
@@ -58,6 +59,12 @@
         [HttpPost]
         public IActionResult CountryListing(CreateGameFirstStepViewModel gameForm)
         {
+            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            {
+                TempData[GlobalMessageKey] = "Only Admins can create fields!";
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
             if (ModelState.IsValid == false)
             {
                 gameForm.Countries = this.countries.All();
@@ -88,7 +95,7 @@
         [Authorize]
         public IActionResult FieldListing(CreateGameFirstStepViewModel gameForm)
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false)
+            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
             {
                 return View();
             }
@@ -105,6 +112,11 @@
         [HttpPost]
         public IActionResult FieldListing(FieldListingViewModel gamePlaygroundModel)
         {
+            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            {
+                return BadRequest();
+            }
+
             var fieldId = gamePlaygroundModel.FieldId;
 
             if (this.fields.FieldExist(fieldId) == false)
@@ -121,7 +133,7 @@
         [Authorize]
         public IActionResult Create(FieldListingViewModel gameForm)
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false)
+            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
             {
                 return View();
             }
@@ -148,7 +160,7 @@
         {
             var adminId = this.admins.IdByUser(this.User.Id());
 
-            if (adminId == 0 && this.User.IsManager() == false)
+            if (adminId == 0 || this.User.IsManager())
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
@@ -226,7 +238,7 @@
 
             var game = this.games.GetDetails(id);
 
-            if (game?.UserId != userId && this.User.IsManager() == false)
+            if (game?.UserId != userId || this.User.IsManager())
             {
                 return Unauthorized();
             }
@@ -242,7 +254,7 @@
         {
             var adminId = this.admins.IdByUser(this.User.Id());
 
-            if (adminId == 0 && this.User.IsManager() == false)
+            if (adminId == 0 || this.User.IsManager())
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }

@@ -1,10 +1,12 @@
 ﻿namespace MiniFootball.Controllers
 {
+    using System.Linq;
     using AutoMapper;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Models.Fields;
+    using Services.Admins;
     using Services.Cities;
     using Services.Countries;
     using Services.Fields;
@@ -16,6 +18,7 @@
     {
         private readonly ICountryService countries;
         private readonly ICityService cities;
+        private readonly IAdminService admins;
         private readonly IFieldService fields;
         private readonly IMapper mapper;
 
@@ -23,24 +26,26 @@
             ICountryService countries,
             IFieldService fields, 
             ICityService cities, 
-            IMapper mapper)
+            IMapper mapper, 
+            IAdminService admins)
         {
             this.countries = countries;
             this.fields = fields;
             this.cities = cities;
             this.mapper = mapper;
+            this.admins = admins;
         }
 
         [Authorize]
         public IActionResult Create()
         {
-            if (this.User.IsManager() == false)
+            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
             {
-                TempData[GlobalMessageKey] = "Only Manager can create fields!";
-                return View();
+                TempData[GlobalMessageKey] = "Only Admins can create fields!";
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            return View(new FieldCreateFormModel
+            return View(new FieldFormModel
             {
                 Countries = this.countries.All(),
             });
@@ -48,10 +53,13 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(FieldCreateFormModel fieldModel)
+        public IActionResult Create(FieldFormModel fieldModel)
         {
-            if (this.User.IsManager() == false)
+            var adminId = this.admins.IdByUser(this.User.Id());
+
+            if (adminId == 0 || this.User.IsManager())
             {
+                TempData[GlobalMessageKey] = "Only Admins can create fields!";
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
@@ -96,7 +104,8 @@
                 fieldModel.Cafe,
                 fieldModel.Shower,
                 fieldModel.ChangingRoom,
-                fieldModel.Description);
+                fieldModel.Description,
+                adminId);
 
             //TempData[GlobalMessageKey] = "You created game!";
             //return Redirect($"Details?id={id}");
@@ -132,6 +141,125 @@
             }
 
             return View(field);
+        }
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.Id();
+
+            if (this.admins.IsAdmin(userId) == false && this.User.IsManager() == false)
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
+            var field = this.fields.GetDetails(id);
+
+            // TODO: Only creator of field can edit his own fields, not other fields, and others can not edit his fields
+            //if (field?.UserId != userId)
+            //{
+            //    return Unauthorized();
+            //}
+
+            var fieldForm = this.mapper.Map<FieldFormModel>(field);
+
+            return View(fieldForm);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(FieldFormModel fieldModel)
+        {
+            var adminId = this.admins.IdByUser(this.User.Id());
+
+            if (adminId == 0 && this.User.IsManager() == false)
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                return View(fieldModel);
+            }
+
+            if (this.fields.IsByAdmin(fieldModel.Id, adminId) == false && this.User.IsManager() == false)
+            {
+                return BadRequest();
+            }
+
+            var isEdit = this.fields.Edit(
+                fieldModel.Id,
+                fieldModel.Name,
+                fieldModel.Address,
+                fieldModel.ImageUrl,
+                fieldModel.Parking,
+                fieldModel.Shower,
+                fieldModel.ChangingRoom,
+                fieldModel.Cafe,
+                fieldModel.Description);
+
+            if (isEdit == false)
+            {
+                return BadRequest();
+            }
+
+            TempData[GlobalMessageKey] = "You edited field!";
+            return RedirectToAction(nameof(All));
+        }
+
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            var userId = this.User.Id();
+
+            if (this.admins.IsAdmin(userId) == false && this.User.IsManager() == false)
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
+            var field = this.fields.GetDetails(id);
+
+            if (field == null)
+            {
+                return BadRequest();
+            }
+
+            return View(field);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Delete(FieldDetailServiceModel fieldDetails)
+        {
+            var adminId = this.admins.IdByUser(this.User.Id());
+
+            if (adminId == 0 && this.User.IsManager() == false)
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
+            if (this.fields.Delete(fieldDetails.Id) == false)
+            {
+                return BadRequest();
+            }
+
+            TempData[GlobalMessageKey] = "You deleted field!";
+            return RedirectToAction(nameof(All));
+        }
+
+        [Authorize]
+        public IActionResult Mine(int id)
+        {
+            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
+            var myGames = this.fields
+                .ByUser(this.User.Id())
+                .OrderByDescending(f => f.Id);
+
+            return View(myGames);
         }
     }
 }

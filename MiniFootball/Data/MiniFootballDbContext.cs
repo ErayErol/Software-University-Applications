@@ -53,6 +53,14 @@
                 .HasForeignKey(g => g.CountryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder
+                .Entity<Field>()
+                .HasOne(f => f.City)
+                .WithMany(c => c.Fields)
+                .HasForeignKey(g => g.CityId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             //builder
             //    .Entity<UserGame>()
             //    .HasOne(ug => ug.User)

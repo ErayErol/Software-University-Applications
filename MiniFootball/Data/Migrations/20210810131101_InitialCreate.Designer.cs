@@ -10,7 +10,7 @@ using MiniFootball.Data;
 namespace MiniFootball.Data.Migrations
 {
     [DbContext(typeof(MiniFootballDbContext))]
-    [Migration("20210808140240_InitialCreate")]
+    [Migration("20210810131101_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -187,6 +187,9 @@ namespace MiniFootball.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
@@ -194,6 +197,8 @@ namespace MiniFootball.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
 
                     b.HasIndex("CountryId");
 
@@ -227,7 +232,7 @@ namespace MiniFootball.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("AdminId")
+                    b.Property<int>("AdminId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Cafe")
@@ -493,25 +498,35 @@ namespace MiniFootball.Data.Migrations
 
             modelBuilder.Entity("MiniFootball.Data.Models.City", b =>
                 {
+                    b.HasOne("MiniFootball.Data.Models.Admin", "Admin")
+                        .WithMany()
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MiniFootball.Data.Models.Country", "Country")
                         .WithMany("Cities")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Admin");
+
                     b.Navigation("Country");
                 });
 
             modelBuilder.Entity("MiniFootball.Data.Models.Field", b =>
                 {
-                    b.HasOne("MiniFootball.Data.Models.Admin", null)
+                    b.HasOne("MiniFootball.Data.Models.Admin", "Admin")
                         .WithMany("Fields")
-                        .HasForeignKey("AdminId");
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MiniFootball.Data.Models.City", "City")
                         .WithMany("Fields")
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("MiniFootball.Data.Models.Country", "Country")
@@ -519,6 +534,8 @@ namespace MiniFootball.Data.Migrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Admin");
 
                     b.Navigation("City");
 

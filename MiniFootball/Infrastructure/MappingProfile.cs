@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using Data.Models;
+    using Models.Fields;
     using Models.Games;
     using Services.Fields;
     using Services.Games.Models;
@@ -23,6 +24,7 @@
             this.CreateMap<Field, FieldServiceModel>();
             this.CreateMap<Field, FieldListingServiceModel>();
             this.CreateMap<Field, FieldDetailServiceModel>();
+            this.CreateMap<FieldDetailServiceModel, FieldFormModel>();
         }
     }
 }

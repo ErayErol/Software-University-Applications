@@ -96,8 +96,7 @@
                 field.City.Name.ToLower() == cityName.ToLower();
         }
 
-        public int Create(
-            string name,
+        public int Create(string name,
             int countryId,
             int cityId,
             string address,
@@ -107,7 +106,8 @@
             bool cafe,
             bool shower,
             bool changingRoom,
-            string description)
+            string description, 
+            int adminId)
         {
             var country = this.data
                 .Countries
@@ -134,6 +134,7 @@
                 Shower = shower,
                 ChangingRoom = changingRoom,
                 Description = description,
+                AdminId = adminId
             };
 
             this.data.Fields.Add(field);
@@ -182,6 +183,69 @@
                 .ProjectTo<FieldDetailServiceModel>(mapper)
                 .FirstOrDefault();
         }
+
+        public bool Edit(
+            int id,
+            string name,
+            string address,
+            string imageUrl,
+            bool parking,
+            bool shower,
+            bool changingRoom,
+            bool cafe,
+            string description)
+        {
+            var field = this.data.Fields.Find(id);
+
+            if (field == null)
+            {
+                return false;
+            }
+
+            field.Name = name;
+            field.Address = address;
+            field.ImageUrl = imageUrl;
+            field.Parking = parking;
+            field.Shower = shower;
+            field.ChangingRoom = changingRoom;
+            field.Cafe = cafe;
+            field.Description = description;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public bool Delete(int id)
+        {
+            var field = this.data.Fields.Find(id);
+
+            if (field == null)
+            {
+                return false;
+            }
+
+            this.data.Fields.Remove(field);
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public IEnumerable<FieldServiceModel> ByUser(string userId)
+        {
+            var games = GetFields(
+                this.data
+                    .Fields
+                    .Where(g => g.Admin.UserId == userId),
+                this.mapper);
+
+            return games;
+        }
+
+        public bool IsByAdmin(int id, int adminId)
+            => this.data
+                .Fields
+                .Any(c => c.Id == id && c.AdminId == adminId);
 
         private static IEnumerable<FieldServiceModel> GetFields(
             IQueryable<Field> fieldQuery,

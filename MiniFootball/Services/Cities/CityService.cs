@@ -23,7 +23,10 @@
                 .Cities
                 .FirstOrDefault(c => c.Name == name);
 
-        public int Create(string name, string countryName)
+        public int Create(
+            string name, 
+            string countryName, 
+            int adminId)
         {
             var city = this.City(name);
 
@@ -35,7 +38,8 @@
             city = new City
             {
                 Name = name,
-                Country= this.countries.Country(countryName)
+                Country= this.countries.Country(countryName),
+                AdminId = adminId,
             };
 
             this.data.Cities.Add(city);

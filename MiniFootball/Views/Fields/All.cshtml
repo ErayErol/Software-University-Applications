@@ -79,25 +79,7 @@
 <div class="row">
     @if (Model.Fields.Any())
     {
-        @foreach (var field in Model.Fields)
-        {
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <img class="card-img-top" src="@field.ImageUrl" alt="@field.Name @field.Country - @field.City">
-                    <div class="card-body text-center">
-                        <div class="card-title text-center h5-like">@field.Name - @field.Country.Name @field.City.Name</div>
-                        <div class="text-center mt-4">
-                            <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" class="btn mb-3">Info</a>
-                            @if (User.IsManager())
-                            {
-                                <a asp-controller="Fields" asp-action="Edit" asp-route-id="@field.Id" class="btn btn-warning mb-3">Edit</a>
-                                <a asp-controller="Fields" asp-action="Delete" asp-route-id="@field.Id" class="btn btn-danger mb-4">Delete</a>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+        <partial name="_FieldPartial" model="@Model.Fields" />
     }
     else
     {

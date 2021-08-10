@@ -30,9 +30,10 @@
         [Authorize]
         public IActionResult Create()
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false && this.User.IsManager() == false)
+            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "Only Admins can create city!";
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
             return View(new CityFormModel
@@ -45,6 +46,13 @@
         [HttpPost]
         public IActionResult Create(CityFormModel cityFormModel)
         {
+            var adminId = this.admins.IdByUser(this.User.Id());
+
+            if (adminId == 0 || this.User.IsManager())
+            {
+                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
             if (ModelState.IsValid == false)
             {
                 cityFormModel.Countries = this.countries.All();
@@ -54,7 +62,7 @@
             cityFormModel.CountryName = FirstLetterUpperThenLower(cityFormModel.CountryName);
             cityFormModel.Name = FirstLetterUpperThenLower(cityFormModel.Name);
 
-            var cityId = this.cities.Create(cityFormModel.Name, cityFormModel.CountryName);
+            var cityId = this.cities.Create(cityFormModel.Name, cityFormModel.CountryName, adminId);
 
             if (cityId == 0)
             {

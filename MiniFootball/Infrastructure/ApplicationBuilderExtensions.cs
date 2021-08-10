@@ -96,7 +96,7 @@
 
             if (data.Users.Any() == false)
             {
-                for (var i = 1; i <= 3; i++)
+                for (var i = 1; i <= 5; i++)
                 {
                     var applicationUser = new User
                     {
@@ -118,6 +118,8 @@
                         1 => "https://thumbs.dreamstime.com/b/admin-sign-laptop-icon-stock-vector-166205404.jpg",
                         2 => "https://www.seekpng.com/png/full/356-3562377_personal-user.png",
                         3 => "https://www.pngfind.com/pngs/m/470-4703547_icon-user-icon-hd-png-download.png",
+                        4 => "https://amzsummits.com/wp-content/uploads/2019/05/Ferry-Vermeulen.jpeg",
+                        5 => "https://www.shareicon.net/data/512x512/2016/09/15/829452_user_512x512.png",
                         _ => applicationUser.ImageUrl
                     };
 
@@ -133,15 +135,18 @@
 
             if (data.Admins.Any() == false)
             {
-                var user = data.Users.FirstOrDefault(x => x.UserName == "zwp2@gmail.com");
-
-                data.Admins.Add(new Admin
+                for (int i = 1; i <= 3; i++)
                 {
-                    Name = "zwpAdmin",
-                    UserId = user?.Id,
-                });
+                    var user = data.Users.FirstOrDefault(x => x.UserName == $"zwp{i}@gmail.com");
 
-                data.SaveChanges();
+                    data.Admins.Add(new Admin
+                    {
+                        Name = $"zwpAdmin{i}",
+                        UserId = user?.Id,
+                    });
+
+                    data.SaveChanges();
+                }
             }
 
             if (data.Fields.Any() == false)
@@ -157,6 +162,7 @@
                                 .Select(c => c.Id)
                                 .FirstOrDefault(),
                             Name = "Haskovo",
+                            AdminId = 1,
                         },
                         new City
                         {
@@ -166,6 +172,7 @@
                                 .Select(c => c.Id)
                                 .FirstOrDefault(),
                             Name = "Plovdiv",
+                            AdminId = 2,
                         },
                         new City
                         {
@@ -175,7 +182,9 @@
                                 .Select(c => c.Id)
                                 .FirstOrDefault(),
                             Name = "Sofia",
-                        }, new City
+                            AdminId = 1,
+                        },
+                        new City
                         {
                             CountryId = data
                                 .Countries
@@ -183,6 +192,7 @@
                                 .Select(c => c.Id)
                                 .FirstOrDefault(),
                             Name = "Edirne",
+                            AdminId = 3,
                         }
                     );
 
@@ -205,7 +215,9 @@
                         Parking = true,
                         Shower = true,
                         PhoneNumber = "0888888889",
-                    }, new Field
+                        AdminId = 1,
+                    },
+                    new Field
                     {
                         Name = "Kortove",
                         CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
@@ -218,7 +230,9 @@
                         Parking = true,
                         Shower = true,
                         PhoneNumber = "0888888888",
-                    }, new Field
+                        AdminId = 1,
+                    },
+                    new Field
                     {
                         Name = "Yildizlar",
                         CountryId = data.Countries.Where(c => c.Name == "Turkey").Select(c => c.Id).FirstOrDefault(),
@@ -231,7 +245,9 @@
                         Parking = true,
                         Shower = true,
                         PhoneNumber = "0888888887",
-                    }, new Field
+                        AdminId = 3,
+                    },
+                    new Field
                     {
                         Name = "Optimum",
                         CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
@@ -244,7 +260,9 @@
                         Parking = true,
                         Shower = true,
                         PhoneNumber = "0888888886",
-                    }, new Field
+                        AdminId = 2,
+                    },
+                    new Field
                     {
                         Name = "Avangard Fitness",
                         CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
@@ -257,6 +275,7 @@
                         Parking = true,
                         Shower = true,
                         PhoneNumber = "0888888885",
+                        AdminId = 2,
                     });
 
                 data.SaveChanges();
@@ -264,19 +283,33 @@
 
             if (data.Games.Any() == false)
             {
-                data.Games.Add(new Game
-                {
-                    AdminId = 1,
-                    FieldId = 1,
-                    Date = DateTime.ParseExact("04/08/2021 21:00", "g", CultureInfo.InvariantCulture),
-                    Ball = true,
-                    Jerseys = true,
-                    Description = "adasdasdadsadasdasdasdaasda",
-                    NumberOfPlayers = 12,
-                    Places = 12,
-                    HasPlaces = true,
-                    FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
-                });
+                data.Games.AddRange(
+                    new Game
+                    {
+                        AdminId = 1,
+                        FieldId = 1,
+                        Date = DateTime.ParseExact("04/08/2021 21:00", "g", CultureInfo.InvariantCulture),
+                        Ball = true,
+                        Jerseys = true,
+                        Description = "adasdasdadsadasdasdasdaasda",
+                        NumberOfPlayers = 12,
+                        Places = 12,
+                        HasPlaces = true,
+                        FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
+                    },
+                    new Game
+                    {
+                        AdminId = 2,
+                        FieldId = 4,
+                        Date = DateTime.ParseExact("05/08/2021 21:00", "g", CultureInfo.InvariantCulture),
+                        Ball = true,
+                        Jerseys = true,
+                        Description = "adasdasdadsadasdasdasdaasda",
+                        NumberOfPlayers = 8,
+                        Places = 8,
+                        HasPlaces = true,
+                        FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
+                    });
             }
 
             data.SaveChanges();

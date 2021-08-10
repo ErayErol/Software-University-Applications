@@ -7,7 +7,7 @@
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Field;
 
-    public class FieldCreateFormModel
+    public class FieldFormModel
     {
         public int Id { get; set; }
 
@@ -15,7 +15,7 @@
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = Range)]
         public string Name { get; set; }
 
-        [Required]
+        //[Required]
         [StringLength(CountryMaxLength, MinimumLength = CountryMinLength, ErrorMessage = Range)]
         [Display(Name = "Select Country:")]
         public string CountryName { get; set; }
@@ -23,7 +23,7 @@
 
         public IEnumerable<string> Countries { get; set; }
 
-        [Required]
+        //[Required]
         [StringLength(CityMaxLength, MinimumLength = CityMinLength, ErrorMessage = Range)]
         [Display(Name = "City")]
         public string CityName { get; set; }

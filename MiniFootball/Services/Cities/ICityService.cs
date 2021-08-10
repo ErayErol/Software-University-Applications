@@ -6,6 +6,9 @@
     {
         City City(string name);
         
-        int Create(string name, string countryName);
+        int Create(
+            string name, 
+            string countryName, 
+            int adminId);
     }
 }

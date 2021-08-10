@@ -47,6 +47,10 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
+        public int AdminId { get; set; }
+
+        public virtual Admin Admin { get; set; }
+
         public virtual ICollection<Game> Games { get; init; } = new HashSet<Game>();
 
         // you can add Stars(Rate) only user that played here,

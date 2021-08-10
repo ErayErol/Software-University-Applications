@@ -4,6 +4,10 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+@{
+    var userIsManager = User.IsManager();
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,26 +37,21 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Fields" asp-action="All">Fields</a>
                         </li>
-                        @if (SignInManager.IsSignedIn(User) && User.IsManager() == false)
+                        @if (SignInManager.IsSignedIn(User) && userIsManager == false)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Games" asp-action="CountryListing">Create Game</a>
                             </li>
-                        }
-                        @if (User.IsManager())
-                        {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Fields" asp-action="Create">Create Field</a>
                             </li>
-                        }
-                        @if (User.IsManager() || SignInManager.IsSignedIn(User))
-                        {
+
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Cities" asp-action="Create">Create City</a>
                             </li>
                         }
                     </ul>
-                    <partial name="_LoginPartial"/>
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
