@@ -238,6 +238,11 @@
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
+            if (this.fields.IsByAdmin(fieldDetails.Id, adminId) == false && this.User.IsManager() == false)
+            {
+                return BadRequest();
+            }
+
             if (this.fields.Delete(fieldDetails.Id) == false)
             {
                 return BadRequest();

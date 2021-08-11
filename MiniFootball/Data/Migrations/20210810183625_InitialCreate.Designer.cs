@@ -10,7 +10,7 @@ using MiniFootball.Data;
 namespace MiniFootball.Data.Migrations
 {
     [DbContext(typeof(MiniFootballDbContext))]
-    [Migration("20210810131101_InitialCreate")]
+    [Migration("20210810183625_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

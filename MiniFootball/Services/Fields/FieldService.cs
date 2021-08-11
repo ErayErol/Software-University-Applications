@@ -225,6 +225,13 @@
                 return false;
             }
 
+            var allGames = this.data
+                .Games
+                .Where(g => g.FieldId == field.Id);
+
+            this.data.Games.RemoveRange(allGames);
+            this.data.SaveChanges();
+
             this.data.Fields.Remove(field);
             this.data.SaveChanges();
 
@@ -243,9 +250,18 @@
         }
 
         public bool IsByAdmin(int id, int adminId)
-            => this.data
+        {
+            var fields = this.data
                 .Fields
-                .Any(c => c.Id == id && c.AdminId == adminId);
+                .FirstOrDefault(c => c.Id == id && c.AdminId == adminId);
+
+            if (fields == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
 
         private static IEnumerable<FieldServiceModel> GetFields(
             IQueryable<Field> fieldQuery,
