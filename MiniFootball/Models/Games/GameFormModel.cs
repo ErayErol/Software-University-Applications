@@ -13,8 +13,14 @@
         public int FieldId { get; set; }
         public Field Field { get; set; }
 
+        [Display(Name = "Select Date:")]
         [Required(ErrorMessage = Empty)]
         public System.DateTime? Date { get; set; }
+
+        [Required(ErrorMessage = Empty)]
+        [Range(TimeMin, TimeMax)]
+        [Display(Name = "Set time:")]
+        public int? Time { get; set; }
 
         [Required(ErrorMessage = Empty)]
         [Range(NumberOfPlayersMin, NumberOfPlayersMax)]

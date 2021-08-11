@@ -266,6 +266,7 @@ namespace MiniFootball.Data.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FieldId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Time = table.Column<int>(type: "int", nullable: false),
                     NumberOfPlayers = table.Column<int>(type: "int", nullable: false),
                     Goalkeeper = table.Column<bool>(type: "bit", nullable: false),
                     Ball = table.Column<bool>(type: "bit", nullable: false),

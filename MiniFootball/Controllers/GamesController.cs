@@ -1,5 +1,6 @@
 ﻿namespace MiniFootball.Controllers
 {
+    using System;
     using AutoMapper;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
@@ -79,7 +80,7 @@
 
             if (isExist == false)
             {
-                TempData[GlobalMessageKey] = 
+                TempData[GlobalMessageKey] =
                     "This City does not exist in this Country. First you have to create City and then create Game!";
                 return RedirectToAction("Create", "Cities");
             }
@@ -138,7 +139,6 @@
                 return View();
             }
 
-            // TODO: Do this to game too
             if (this.fields.IsCorrectCountryAndCity(
                 gameForm.FieldId,
                 gameForm.Name,
@@ -172,12 +172,25 @@
                 return View(gameCreateModel);
             }
 
-            // TODO: There is already exist game in this fields in this date
-            // TODO: Add appointment like beautybooking with only times like 20:00, 21:00 and the user can pick up time... do it more beautiful when create game, cause date is a little bit ugly
+            if (gameCreateModel.Date != null && gameCreateModel.Date.Value < DateTime.Today)
+            {
+                TempData[GlobalMessageKey] = "The date has to be today or after today!";
+                return View(gameCreateModel);
+            }
+
+            bool isExist = this.games
+                .IsExist(gameCreateModel.FieldId, gameCreateModel.Date.Value, gameCreateModel.Time.Value);
+
+            if (isExist)
+            {
+                TempData[GlobalMessageKey] = "There are already a game in this field in this date and time!";
+                return View(gameCreateModel);
+            }
 
             var id = this.games.Create(
                 gameCreateModel.FieldId,
                 gameCreateModel.Date.Value,
+                gameCreateModel.Time.Value,
                 gameCreateModel.NumberOfPlayers.Value,
                 gameCreateModel.FacebookUrl,
                 gameCreateModel.Ball,
@@ -272,6 +285,7 @@
             var isEdit = this.games.Edit(
                 game.Id,
                 game.Date,
+                game.Time,
                 game.NumberOfPlayers,
                 game.FacebookUrl,
                 game.Ball,

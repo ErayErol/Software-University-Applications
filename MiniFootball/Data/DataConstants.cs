@@ -30,6 +30,9 @@
 
             public const int PhoneNumberMinLength = 8;
             public const int PhoneNumberMaxLength = 15;
+
+            public const int TimeMin = 1;
+            public const int TimeMax = 24;
         }
 
         public class Field

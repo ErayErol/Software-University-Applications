@@ -16,9 +16,9 @@
             int currentPage,
             int gamesPerPage);
 
-        string Create(
-            int fieldId,
+        string Create(int fieldId,
             DateTime date,
+            int time,
             int numberOfPlayers,
             string facebookUrl,
             bool ball,
@@ -37,9 +37,9 @@
 
         bool IsByAdmin(string id, int adminId);
 
-        bool Edit(
-            string id,
+        bool Edit(string id,
             DateTime? date,
+            int? time,
             int? numberOfPlayers,
             string facebookUrl,
             bool ball,
@@ -56,5 +56,7 @@
         bool Delete(string id);
         
         GameIdUserIdServiceModel GameIdUserId(string id);
+
+        bool IsExist(int fieldId, DateTime date, int time);
     }
 }

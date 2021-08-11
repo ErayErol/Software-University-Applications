@@ -324,6 +324,9 @@ namespace MiniFootball.Data.Migrations
                     b.Property<int>("Places")
                         .HasColumnType("int");
 
+                    b.Property<int>("Time")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AdminId");

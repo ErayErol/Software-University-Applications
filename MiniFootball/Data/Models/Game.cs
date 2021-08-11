@@ -16,6 +16,9 @@
 
         public DateTime Date { get; set; }
 
+        [Range(TimeMin, TimeMax)]
+        public int Time { get; set; }
+
         [Range(NumberOfPlayersMin, NumberOfPlayersMax)]
         public int NumberOfPlayers { get; set; }
 
@@ -44,5 +47,6 @@
         public virtual IEnumerable<UserGame> UserGames { get; init; } = new HashSet<UserGame>();
 
         // you can add Stars(Rate) a hour after the match
+        // Enum of levels of game (amateur, pro...)
     }
 }

@@ -12,8 +12,14 @@
 
                 <div class="form-group">
                     <label asp-for="Date"></label>
-                    <input asp-for="Date" type="datetime-local" placeholder="Click on calendar" class="form-control">
+                    <input asp-for="Date" type="date" class="form-control datepicker">
                     <span asp-validation-for="Date" class="small text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Time"></label>
+                    <input asp-for="Time" min="1" max="24" type="number" placeholder="20:00" class="form-control">
+                    <span asp-validation-for="Time" class="small text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -22,14 +28,14 @@
                     <span asp-validation-for="NumberOfPlayers" class="small text-danger"></span>
                 </div>
 
-                @if (ViewBag.Title == "Details Game")
+                @*@if (ViewBag.Title == "Details Game")
                 {
                     <div class="form-group">
                         <label asp-for="PhoneNumber"></label>
                         <input asp-for="PhoneNumber" type="text" class="form-control">
                         <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
                     </div>
-                }
+                }*@
 
                 <div class="form-group">
                     <label asp-for="FacebookUrl"></label>

@@ -10,7 +10,7 @@ using MiniFootball.Data;
 namespace MiniFootball.Data.Migrations
 {
     [DbContext(typeof(MiniFootballDbContext))]
-    [Migration("20210810183625_InitialCreate")]
+    [Migration("20210811111712_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -324,6 +324,9 @@ namespace MiniFootball.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Places")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Time")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

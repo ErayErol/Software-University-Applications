@@ -283,15 +283,32 @@
 
             if (data.Games.Any() == false)
             {
+                var today = DateTime.Today;
+                var day = today.Day + 2;
+                var month = today.Month;
+                var year = today.Year;
+
+                if (today.Day > 24)
+                {
+                    day = 2;
+                    month += 1;
+                    if (month >= 12)
+                    {
+                        month = 1;
+                        year += 1;
+                    }
+                }
+
                 data.Games.AddRange(
                     new Game
                     {
                         AdminId = 1,
                         FieldId = 1,
-                        Date = DateTime.ParseExact("04/08/2021 21:00", "g", CultureInfo.InvariantCulture),
+                        Date = DateTime.ParseExact($"{month:D2}/{day:D2}/{year}", "d", CultureInfo.InvariantCulture),
+                        Time = 20,
                         Ball = true,
                         Jerseys = true,
-                        Description = "adasdasdadsadasdasdasdaasda",
+                        Description = "Just friendly game. It will be fun!",
                         NumberOfPlayers = 12,
                         Places = 12,
                         HasPlaces = true,
@@ -300,11 +317,12 @@
                     new Game
                     {
                         AdminId = 2,
-                        FieldId = 4,
-                        Date = DateTime.ParseExact("05/08/2021 21:00", "g", CultureInfo.InvariantCulture),
+                        FieldId = 5,
+                        Date = DateTime.ParseExact($"{month:D2}/{(day + 2):D2}/{year}", "d", CultureInfo.InvariantCulture),
+                        Time = 19,
                         Ball = true,
                         Jerseys = true,
-                        Description = "adasdasdadsadasdasdasdaasda",
+                        Description = "The level of the game will be one step more than the amateur.",
                         NumberOfPlayers = 8,
                         Places = 8,
                         HasPlaces = true,

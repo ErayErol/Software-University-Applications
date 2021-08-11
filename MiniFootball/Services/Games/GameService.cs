@@ -87,9 +87,9 @@
             };
         }
 
-        public string Create(
-            int fieldId,
+        public string Create(int fieldId,
             DateTime date,
+            int time,
             int numberOfPlayers,
             string facebookUrl,
             bool ball,
@@ -104,6 +104,7 @@
             {
                 FieldId = fieldId,
                 Date = date,
+                Time = time,
                 NumberOfPlayers = numberOfPlayers,
                 FacebookUrl = facebookUrl,
                 Ball = ball,
@@ -121,9 +122,9 @@
             return game.Id;
         }
 
-        public bool Edit(
-            string id,
+        public bool Edit(string id,
             DateTime? date,
+            int? time,
             int? numberOfPlayers,
             string facebookUrl,
             bool ball,
@@ -147,6 +148,7 @@
             }
 
             game.Date = date.Value;
+            game.Time = time.Value;
             game.NumberOfPlayers = numberOfPlayers.Value;
             game.FacebookUrl = facebookUrl;
             game.Ball = ball;
@@ -231,6 +233,14 @@
                 .Where(g => g.Id == id)
                 .ProjectTo<GameIdUserIdServiceModel>(this.mapper)
                 .FirstOrDefault();
+
+        public bool IsExist(int fieldId, DateTime date, int time)
+        {
+            var any = this.data.Games
+                .Any(g => g.FieldId.Equals(fieldId) && g.Date.Equals(date) && g.Time.Equals(time));
+
+            return any;
+        }
 
         public IEnumerable<GameListingServiceModel> ByUser(string userId)
         {

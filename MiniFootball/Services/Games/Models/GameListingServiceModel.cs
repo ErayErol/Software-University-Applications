@@ -10,5 +10,7 @@
         public Field Field { get; set; }
 
         public DateTime Date { get; set; }
+        
+        public int Time { get; set; }
     }
 }

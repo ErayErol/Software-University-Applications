@@ -59,8 +59,13 @@
                 <h3 class="text-center mb-1 mt-5">Details:</h3>
 
                 <div class="form-group">
-                    <label asp-for="Date"></label>
-                    <input asp-for="Date" type="datetime" readonly class="form-control" value="@Model.Date.Value.ToString("g")">
+                    <label asp-for="Date">Date</label>
+                    <input asp-for="Date" type="datetime" readonly class="form-control" value="@Model.Date.Value.ToString("d")">
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="Time">Time</label>
+                    <input asp-for="Time" readonly="readonly" type="text" class="form-control" value="@Model.Time.Value:00">
                 </div>
 
                 <div class="form-group">

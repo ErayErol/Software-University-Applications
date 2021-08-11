@@ -30,7 +30,7 @@
                     <img class="d-block w-100" src="@game.Field.ImageUrl" alt="First slide">
                     <div class="carousel-caption d-none d-md-block">
                         <div class="text-center">
-                            <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn">@game.Field.Name - @game.Date.ToString("D") @game.Date.ToString("t")</a>
+                            <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn">@game.Field.Name - @game.Date.ToString("D") @game.Time:00</a>
                         </div>
                     </div>
                 </div>
