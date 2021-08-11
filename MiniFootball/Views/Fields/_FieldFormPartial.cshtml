@@ -9,17 +9,23 @@
             }
 
         <form method="post" class="form-group">
-            <div class="form-group mb-3">
+            <div class="form-group mb-3 my-item-center">
                 <label asp-for="Name"></label>
-                <input asp-for="Name" type="text" class="form-control">
+                <input asp-for="Name" type="text" class="form-control text-center min-width-size">
                 <span asp-validation-for="Name" class="small text-danger"></span>
+            </div>
+
+            <div class="form-group my-item-center">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" type="text" class="form-control text-center min-width-size">
+                <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
             </div>
 
             @if (ViewBag.Title == "Create Field")
             {
-                <div class="form-group">
+                <div class="form-group my-item-center">
                     <label asp-for="CountryName">Select Country:</label>
-                    <select asp-for="CountryName" class="form-control">
+                    <select asp-for="CountryName" class="form-control my-selected-box-center min-width-size">
                         @foreach (var country in Model.Countries)
                         {
                             @if (country == "Bulgaria")
@@ -33,29 +39,29 @@
                         }
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group my-item-center">
                     <label asp-for="CityName"></label>
-                    <input asp-for="CityName" type="text" class="form-control">
+                    <input asp-for="CityName" type="text" class="form-control text-center min-width-size">
                     <span asp-validation-for="CityName" class="small text-danger"></span>
                 </div>
             }
 
-            <div class="form-group">
+            <div class="form-group my-item-center">
                 <label asp-for="Address"></label>
-                <input asp-for="Address" type="text" class="form-control">
+                <input asp-for="Address" type="text" class="form-control text-center">
                 <span asp-validation-for="Address" class="small text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-item-center">
                 <label asp-for="ImageUrl"></label>
-                <input asp-for="ImageUrl" class="form-control">
+                <input asp-for="ImageUrl" class="form-control text-center">
                 <span asp-validation-for="ImageUrl" class="small text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" type="text" class="form-control">
-                <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
+            <div class="mb-3 my-item-center">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control text-center" rows="3"></textarea>
+                <span asp-validation-for="Description" class="small text-danger"></span>
             </div>
 
             <div class="mt-4 mb-3 createPlaygroundChechboxes">
@@ -72,20 +78,17 @@
                 <label asp-for="Cafe">Cafe</label>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="Description"></label>
-                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="Description" class="small text-danger"></span>
-            </div>
+            <div class="my-item-center">
+                @if (ViewBag.Title == "Create Field")
+                {
+                    <input class="btn btn-success min-width-size-btn" type="submit" value="Create" />
+                }
+                else
+                {
+                    <input class="btn btn-success min-width-size-btn" type="submit" value="Edit" />
+                }
 
-            @if (ViewBag.Title == "Create Field")
-            {
-                <input class="btn btn-success float-right" type="submit" value="Create" />
-            }
-            else
-            {
-                <input class="btn btn-success float-right" type="submit" value="Edit" />
-            }
+            </div>
         </form>
         </div>
     </div>

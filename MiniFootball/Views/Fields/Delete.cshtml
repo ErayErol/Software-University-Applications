@@ -12,9 +12,13 @@
 
             <form method="post" class="form-group">
 
-                <a href="/Fields/Details?id=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3">No, my mistake!</a>
+                <div class="my-item-center">
+                    <a href="/Fields/Details?id=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">No, my mistake!</a>
+                </div>
 
-                <input class="btn-danger float-right" type="submit" value="Yes, delete!" />
+                <div class="my-item-center">
+                    <input class="btn-danger min-width-size btn text-uppercase" type="submit" value="Yes, delete!" />
+                </div>
 
             </form>
 

@@ -85,7 +85,6 @@
                 return RedirectToAction("Create", "Cities");
             }
 
-            // TODO: Maybe you have to create view model that pass only cityName and countryName
             return RedirectToAction("FieldListing", "Games", new CreateGameFirstStepViewModel
             {
                 CityName = gameForm.CityName,

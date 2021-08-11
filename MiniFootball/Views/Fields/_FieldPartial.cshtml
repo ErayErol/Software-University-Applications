@@ -4,7 +4,7 @@
 @foreach (var field in Model)
 {
     <div class="col-md-4">
-        <div class="card mb-3">
+        <div class="card mb-3 img-thumbnail">
             <img class="card-img-top" src="@field.ImageUrl" alt="@field.Name @field.Country - @field.City">
             <div class="card-body text-center">
                 <div class="card-title text-center h5-like">@field.Name - @field.Country.Name @field.City.Name</div>

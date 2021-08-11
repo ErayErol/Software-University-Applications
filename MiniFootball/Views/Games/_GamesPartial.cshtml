@@ -14,12 +14,12 @@
                 </div>
                 <h6 class="card-title">Place : @game.Field.Country.Name, @game.Field.City.Name</h6>
                 <h6 class="card-title">Date : @game.Date.ToString("d") @game.Time:00</h6>
-                <div class="text-center mt-4">
-                    <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn mb-3">Info</a>
+                <div class="text-center mt-4 my-item-center">
+                    <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn mb-3 min-width-size-btn">Info</a>
                     @if (ViewBag.AllowCarEdit == true || User.IsManager())
                     {
-                        <a asp-controller="Games" asp-action="Edit" asp-route-id="@game.Id" class="btn btn-warning mb-3">Edit</a>
-                        <a asp-controller="Games" asp-action="Delete" asp-route-id="@game.Id" class="btn btn-danger mb-4">Delete</a>
+                        <a asp-controller="Games" asp-action="Edit" asp-route-id="@game.Id" class="btn btn-warning mb-3 min-width-size-btn">Edit</a>
+                        <a asp-controller="Games" asp-action="Delete" asp-route-id="@game.Id" class="btn btn-danger mb-4 min-width-size-btn">Delete</a>
                     }
                 </div>
             </div>

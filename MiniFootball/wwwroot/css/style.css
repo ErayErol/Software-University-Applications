@@ -3608,3 +3608,22 @@ input.btn {
     width: 30px;
     height: auto;
 }
+
+.min-width-size {
+    min-width: 60%;
+    width: 40%;
+}
+
+.min-width-size-btn {
+    min-width: 30%;
+    width: 30%;
+}
+
+.my-item-center {
+    display: grid;
+    justify-items: center;
+}
+
+.my-selected-box-center {
+    text-align-last: center;
+}

@@ -39,8 +39,6 @@
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
 
                 this.cache.Set(latestGamesCacheKey, lastGames, cacheOptions);
-                
-                TempData[GlobalMessageKey] = "Added cache";
             }
 
             // TODO: Add CSS Number Counter in Statistics

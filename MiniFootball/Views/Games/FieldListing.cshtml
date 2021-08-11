@@ -17,20 +17,21 @@
             }
             else
             {
-                <h5 class="mt-3 mb-3 green">Fields in @Model.CountryName - @Model.CityName</h5>
+                <h5 class="mt-3 mb-3 green text-center">Fields in @Model.CountryName - @Model.CityName</h5>
 
                 <form method="post">
-                    <div class="form-group">
+                    <div class="form-group my-item-center">
                         <label asp-for="FieldId"></label>
-                        <select asp-for="FieldId" class="form-control">
+                        <select asp-for="FieldId" class="form-control min-width-size my-selected-box-center">
                             @foreach (var field in Model.Fields)
                             {
                                 <option value="@field.Id">@field.Name</option>
                             }
                         </select>
                     </div>
-
-                    <input class="btn float-right" type="submit" value="Next" />
+                    <div class="my-item-center">
+                        <input class="btn float-right min-width-size-btn" type="submit" value="Next" />
+                    </div>
                 </form>
             }
         </div>
