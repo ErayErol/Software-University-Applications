@@ -1,0 +1,59 @@
+﻿@model MiniFootball.Data.Models.User
+
+@{
+    ViewBag.Title = "Player Details";
+}
+
+@{
+    var age = DateTime.UtcNow.Year - @Model.Birthdate.Value.Date.Year;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="offset-1 offset-sm-1 offset-md-2 offset-lg-3 offset-xl-3 col-10 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+            <form class="form-group">
+
+                <img class="card-img-top img-thumbnail mt-5 mb-5" src="@Model.ImageUrl" alt="@Model.FirstName @Model.LastName">
+
+                <h3 class="text-center mb-3">Contacts:</h3>
+
+                <div class="form-group my-item-center">
+                    <label asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" readonly="readonly" type="tel" class="form-control text-center" value="@Model.PhoneNumber">
+                </div>
+
+                <div class="form-group my-item-center">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" readonly="readonly" type="tel" class="form-control text-center" value="@Model.Email">
+                </div>
+
+                <h3 class="text-center mb-3 mt-4">Details:</h3>
+
+                <div class="form-group my-item-center">
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName" readonly="readonly" type="tel" class="form-control text-center" value="@Model.UserName">
+                </div>
+
+                <div class="form-group my-item-center">
+                    <label asp-for="FirstName"></label>
+                    <input asp-for="FirstName" readonly="readonly" type="tel" class="form-control text-center" value="@Model.FirstName">
+                </div>
+
+                <div class="form-group my-item-center">
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" readonly="readonly" type="tel" class="form-control text-center" value="@Model.LastName">
+                </div>
+
+                <div class="form-group my-item-center">
+                    <label asp-for="NickName"></label>
+                    <input asp-for="NickName" readonly="readonly" type="tel" class="form-control text-center" value="@Model.NickName">
+                </div>
+
+                <div class="form-group my-item-center">
+                    <label>Age</label>
+                    <input readonly="readonly" type="tel" class="form-control text-center" value="@age">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

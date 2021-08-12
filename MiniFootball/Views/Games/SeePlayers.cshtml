@@ -20,12 +20,12 @@
                     </div>
                     <h6 class="card-title">@user.LastName</h6>
                     <div class="text-center mt-4">
-                        <a asp-controller="Games" asp-action="Details" asp-route-id="@user.UserId" class="btn mb-3">Info</a>
+                        <a asp-controller="Users" asp-action="Details" asp-route-id="@user.UserId" class="btn mb-3">Info</a>
                     </div>
                     @if (User.Id() == user.UserId || User.IsManager() || isCreator)
                     {
                         <div class="text-center mt-4">
-                            <a asp-controller="Games" asp-action="Details" asp-route-id="@user.UserId" class="btn mb-3">Cancel Game</a>
+                            <a asp-controller="Users" asp-action="ExitGame" asp-route-id="@user.GameId*@user.UserId" class="btn mb-3">Exit Game</a>
                         </div>
                     }
                 </div>

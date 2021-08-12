@@ -15,6 +15,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Content Remove="Views\Users\Details.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
 		<PackageReference Include="CloudinaryDotNet" Version="1.15.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.7" />
@@ -32,6 +36,10 @@
 	<ItemGroup>
 		<Folder Include="Areas\Manager\Controller\" />
 		<Folder Include="Areas\Manager\View\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Views\Users\Details.cshtml" />
 	</ItemGroup>
 
 </Project>

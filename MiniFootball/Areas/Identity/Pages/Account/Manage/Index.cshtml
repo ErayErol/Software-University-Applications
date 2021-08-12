@@ -30,7 +30,7 @@
             </div>
             <div class="form-group my-item-center">
                 <label asp-for="BirthDate"></label>
-                <input asp-for="BirthDate" type="date" class="form-control text-center min-width-size" disabled />
+                <input asp-for="BirthDate" value="@Model.BirthDate.Value.ToString("dd.MM.yyyy")" type="datetime" class="form-control text-center min-width-size" disabled />
             </div>
             <div class="form-group my-item-center">
                 <label asp-for="PhoneNumber"></label>

@@ -358,6 +358,12 @@
 
             var players = this.games.SeePlayers(id);
 
+            if (players.Any() == false)
+            {
+                TempData[GlobalMessageKey] = "Still there are no players for this game!";
+                return Redirect($"Details?id={id}");
+            }
+
             return View(players);
         }
 

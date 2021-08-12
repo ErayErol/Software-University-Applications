@@ -2,20 +2,18 @@
 {
     using System.Linq;
     using Data;
+    using Data.Models;
     using Games.Models;
 
     public class UserService : IUserService
     {
         private readonly MiniFootballDbContext data;
 
-        public UserService(MiniFootballDbContext data)
-        {
-            this.data = data;
-        }
+        public UserService(MiniFootballDbContext data) 
+            => this.data = data;
 
-        public GameUserInfoServiceModel UserInfo(string id)
-        {
-            var z = this.data
+        public GameUserInfoServiceModel UserInfo(string id) 
+            => this.data
                 .Users
                 .Where(x => x.Id == id)
                 .Select(x => new GameUserInfoServiceModel
@@ -29,7 +27,7 @@
                 })
                 .FirstOrDefault();
 
-            return z;
-        }
+        public User User(string id)
+            => this.data.Users.FirstOrDefault(u => u.Id == id);
     }
 }

@@ -195,11 +195,13 @@
                 .Any(c => c.GameId == id && c.UserId == userId);
 
         public IQueryable<GameSeePlayersServiceModel> SeePlayers(string id)
-            => this.data
+        {
+            var games =  this.data
                 .UserGames
                 .Where(g => g.GameId == id)
                 .Select(g => new GameSeePlayersServiceModel
                 {
+                    GameId = id,
                     UserId = g.User.Id,
                     ImageUrl = g.User.ImageUrl,
                     FirstName = g.User.FirstName,
@@ -208,6 +210,9 @@
                     PhoneNumber = g.User.PhoneNumber,
                     IsCreator = this.GameIdUserId(id).UserId == g.UserId,
                 });
+
+            return games;
+        }
 
 
         public bool Delete(string id)
@@ -248,7 +253,8 @@
                 this.data
                     .Games
                     .Where(g => g.Admin.UserId == userId),
-                this.mapper);
+                this.mapper)
+                .ToList();
 
             foreach (var gameListingServiceModel in games)
             {
@@ -268,11 +274,23 @@
                 .ToList();
 
         public GameDetailsServiceModel GetDetails(string id)
-            => this.data
+        {
+            var games = this.data
                 .Games
                 .Where(g => g.Id == id)
                 .ProjectTo<GameDetailsServiceModel>(this.mapper)
                 .FirstOrDefault();
+
+            var joinedPayers = this.SeePlayers(id).Count();
+
+            if (games.NumberOfPlayers.Value != games.Places)
+            {
+                games.Places = games.NumberOfPlayers.Value - joinedPayers;
+            }
+
+
+            return games;
+        }
 
         public bool IsByAdmin(string id, int adminId)
             => this.data

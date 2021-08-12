@@ -39,12 +39,12 @@
                 .HasForeignKey(g => g.FieldId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder
-                .Entity<Admin>()
-                .HasOne<User>()
-                .WithOne()
-                .HasForeignKey<Admin>(a => a.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder
+            //    .Entity<Admin>()
+            //    .HasOne<User>()
+            //    .WithOne()
+            //    .HasForeignKey<Admin>(a => a.UserId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Entity<Field>()
