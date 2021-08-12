@@ -3720,3 +3720,9 @@ input.btn {
         text-align: center !important;
     }
 }
+
+@media (max-width: 991px) {
+    .mobile-version-center-btns {
+        text-align: -webkit-center !important;
+    }
+}

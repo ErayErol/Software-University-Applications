@@ -7,7 +7,7 @@
 @inject IUserService AppUser
 @inject IAdminService Admins
 
-<ul class="navbar-nav">
+<ul class="navbar-nav mobile-version-center-btns">
     @if (SignInManager.IsSignedIn(User))
     {
         var userId = User.Id();
@@ -18,7 +18,7 @@
         if (userIsAdmin && userIsManager == false)
         {
             <li class="nav-item">
-                <a class="nav-link min-width-nav-size btn btn-link mr-3" asp-area="" asp-controller="Games" asp-action="Mine">My Games</a>
+                <a class="nav-link min-width-nav-size btn btn-link mr-xl-3 mr-lg-3" asp-area="" asp-controller="Games" asp-action="Mine">My Games</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link btn btn-link min-width-nav-size" asp-area="" asp-controller="Fields" asp-action="Mine">My Fields</a>
@@ -31,7 +31,7 @@
             </li>
         }
         <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <form class="form-inline mb-md-2 mb-2" style="justify-content: center" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" class="nav-link btn-logout">Logout</button>
             </form>
         </li>
