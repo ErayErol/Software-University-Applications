@@ -24,9 +24,9 @@
 
         public FieldsController(
             ICountryService countries,
-            IFieldService fields, 
-            ICityService cities, 
-            IMapper mapper, 
+            IFieldService fields,
+            ICityService cities,
+            IMapper mapper,
             IAdminService admins)
         {
             this.countries = countries;
@@ -260,11 +260,16 @@
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            var myGames = this.fields
+            var myFields = this.fields
                 .ByUser(this.User.Id())
                 .OrderByDescending(f => f.Id);
 
-            return View(myGames);
+            if (myFields.Any() == false)
+            {
+                TempData[GlobalMessageKey] = "Still you do not have fields, but you can create it!";
+            }
+
+            return View(myFields);
         }
     }
 }

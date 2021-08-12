@@ -8,14 +8,8 @@
 
 @if (Model.Any() == false)
 {
-    <div class="col-md-4">
-        <div class="card">
-            <img class="card-img-top" src="https://thumbs.dreamstime.com/b/comic-boom-oops-icon-simple-black-style-illustration-web-122999699.jpg" alt="Just oops image">
-            <div class="card-body text-center">
-                <h5 class="card-title text-center">You do not have games</h5>
-                <a href="/Games/CountryListing" class="btn">Create Game</a>
-            </div>
-        </div>
+    <div class="my-item-center mt-5">
+        <a href="/Games/CountryListing" class="btn min-width-size-btn">Create Game</a>
     </div>
 }
 else

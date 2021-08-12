@@ -235,6 +235,11 @@
                 .ByUser(this.User.Id())
                 .OrderByDescending(g => g.Date.Date);
 
+            if (myGames.Any() == false)
+            {
+                TempData[GlobalMessageKey] = "Still you do not have games, but you can create it!";
+            }
+
             return View(myGames);
         }
 
@@ -250,7 +255,7 @@
 
             var game = this.games.GetDetails(id);
 
-            if (game?.UserId != userId || this.User.IsManager())
+            if (game?.UserId != userId && this.User.IsManager() == false)
             {
                 return Unauthorized();
             }

@@ -18,16 +18,16 @@
         if (userIsAdmin && userIsManager == false)
         {
             <li class="nav-item">
-                <a class="nav-link btn btn-link mr-3" asp-area="" asp-controller="Games" asp-action="Mine">My Games</a>
+                <a class="nav-link min-width-nav-size btn btn-link mr-3" asp-area="" asp-controller="Games" asp-action="Mine">My Games</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link btn btn-link" asp-area="" asp-controller="Fields" asp-action="Mine">My Fields</a>
+                <a class="nav-link btn btn-link min-width-nav-size" asp-area="" asp-controller="Fields" asp-action="Mine">My Fields</a>
             </li>
         }
         else if (userIsManager == false)
         {
             <li class="nav-item">
-                <a class="nav-link btn btn-link" asp-area="" asp-controller="Admins" asp-action="Become">Become Admin</a>
+                <a class="nav-link btn btn-link min-width-nav-size" asp-area="" asp-controller="Admins" asp-action="Become">Become Admin</a>
             </li>
         }
         <li class="nav-item">
@@ -44,10 +44,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link btn btn-link mr-2" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link btn btn-link mr-2 min-width-nav-size" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link btn btn-link mr-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link btn btn-link mr-2 min-width-nav-size" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
 </ul>

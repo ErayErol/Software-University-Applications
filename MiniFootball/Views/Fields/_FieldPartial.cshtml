@@ -7,15 +7,24 @@
         <div class="card mb-3 img-thumbnail">
             <img class="card-img-top" src="@field.ImageUrl" alt="@field.Name @field.Country - @field.City">
             <div class="card-body text-center">
-                <div class="card-title text-center h5-like">@field.Name - @field.Country.Name @field.City.Name</div>
-                <div class="text-center mt-4">
-                    <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" class="btn mb-3">Info</a>
-                    @if (ViewBag.AllowCarEdit == true || User.IsManager())
-                    {
-                        <a asp-controller="Fields" asp-action="Edit" asp-route-id="@field.Id" class="btn btn-warning mb-3">Edit</a>
-                        <a asp-controller="Fields" asp-action="Delete" asp-route-id="@field.Id" class="btn btn-danger mb-4">Delete</a>
-                    }
-                </div>
+                @if (ViewBag.AllowCarEdit == true || User.IsManager())
+                {
+                    <div class="text-center">
+                        <div class="card-title h4-like">@field.Name - @field.City.Name</div>
+                    </div>
+
+                    <div class="text-center mt-4 my-item-center my-item-center-btns">
+                        <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" class="btn min-width-size">Info</a>
+                        <a asp-controller="Fields" asp-action="Edit" asp-route-id="@field.Id" class="btn btn-warning min-width-size">Edit</a>
+                        <a asp-controller="Fields" asp-action="Delete" asp-route-id="@field.Id" class="btn btn-danger min-width-size">Delete</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center my-item-center">
+                        <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" class="btn">@field.Name - @field.Country.Name @field.City.Name</a>
+                    </div>
+                }
             </div>
         </div>
     </div>

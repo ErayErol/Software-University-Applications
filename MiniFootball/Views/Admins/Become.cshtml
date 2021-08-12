@@ -1,4 +1,4 @@
-﻿@model MiniFootball.Models.Admins.BecomeAdminFormModel
+﻿@model BecomeAdminFormModel
 
 @{
     ViewBag.Title = "Become Admin";
@@ -19,15 +19,17 @@ else
 {
     <div class="row">
         <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-            <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+            <h2 class="heading-margin text-center mb-4">@ViewBag.Title</h2>
 
             <form method="post">
-                <div class="form-group">
+                <div class="form-group my-item-center">
                     <label asp-for="Name"></label>
-                    <input asp-for="Name" class="form-control" placeholder="@Model.Name">
+                    <input asp-for="Name" class="form-control text-center min-width-size" placeholder="@Model.Name">
                     <span asp-validation-for="Name" class="small text-danger"></span>
                 </div>
-                <input class="btn btn-primary mt-3" type="submit" value="Become" />
+                <div class="my-item-center">
+                    <input class="btn btn-primary mt-3 min-width-size-btn" type="submit" value="Become" />
+                </div>
             </form>
         </div>
     </div>

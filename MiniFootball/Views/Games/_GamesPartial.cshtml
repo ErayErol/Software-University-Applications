@@ -3,7 +3,7 @@
 @foreach (var game in Model)
 {
     <div class="col-md-4">
-        <div class="card mb-4">
+        <div class="card mb-4 img-thumbnail">
             @if (ViewBag.AllowImage == true)
             {
                 <img class="card-img-top" src="@game.Field.ImageUrl" alt="@game.Field.Name @game.Field.Country.Name - @game.Field.City.Name">
@@ -14,14 +14,20 @@
                 </div>
                 <h6 class="card-title">Place : @game.Field.Country.Name, @game.Field.City.Name</h6>
                 <h6 class="card-title">Date : @game.Date.ToString("d") @game.Time:00</h6>
-                <div class="text-center mt-4 my-item-center">
-                    <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn mb-3 min-width-size-btn">Info</a>
-                    @if (ViewBag.AllowCarEdit == true || User.IsManager())
-                    {
-                        <a asp-controller="Games" asp-action="Edit" asp-route-id="@game.Id" class="btn btn-warning mb-3 min-width-size-btn">Edit</a>
-                        <a asp-controller="Games" asp-action="Delete" asp-route-id="@game.Id" class="btn btn-danger mb-4 min-width-size-btn">Delete</a>
-                    }
-                </div>
+                @if (ViewBag.AllowCarEdit == true || User.IsManager())
+                {
+                    <div class="text-center mt-4 my-item-center my-item-center-btns">
+                        <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn min-width-size">Info</a>
+                        <a asp-controller="Games" asp-action="Edit" asp-route-id="@game.Id" class="btn btn-warning min-width-size">Edit</a>
+                        <a asp-controller="Games" asp-action="Delete" asp-route-id="@game.Id" class="btn btn-danger min-width-size">Delete</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center mt-4 my-item-center">
+                        <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn min-width-size-btn">Info</a>
+                    </div>
+                }
             </div>
         </div>
     </div>

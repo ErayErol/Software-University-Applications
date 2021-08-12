@@ -3610,7 +3610,7 @@ input.btn {
 }
 
 .min-width-size {
-    min-width: 60%;
+    min-width: 80%;
     width: 40%;
 }
 
@@ -3624,6 +3624,99 @@ input.btn {
     justify-items: center;
 }
 
+.my-item-center-btns {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
 .my-selected-box-center {
     text-align-last: center;
+}
+
+@media (max-width: 550px) {
+    .statistics-mobile-size {
+        font-size: x-large;
+        font-weight: bold
+    }
+}
+
+@media (max-width: 465px) {
+    .statistics-mobile-size {
+        font-size: large;
+        font-weight: bold
+    }
+}
+
+@media (max-width: 465px) {
+    .statistics-mobile-size {
+        font-size: medium;
+        font-weight: bold
+    }
+}
+
+@media (max-width: 325px) {
+    .statistics-mobile-size {
+        font-size: small;
+        font-weight: bold
+    }
+}
+
+@media (max-width: 767px) {
+    .home-button-size {
+        min-width: 100%;
+        position: absolute;
+        margin-top: 16px;
+    }
+}
+
+@media (max-width: 445px) {
+    .home-button-size {
+        font-size: x-small;
+    }
+}
+
+@media (max-width: 395px) {
+    .home-button-size {
+        font-size: xx-small;
+        position: absolute;
+        margin-top: 25px !important;
+    }
+}
+
+@media (max-width: 355px) {
+    .home-button-size {
+        position: absolute;
+        margin-top: 18px !important;
+    }
+}
+
+@media (max-width: 991px) {
+    .min-width-nav-size {
+        max-width: 20%;
+        margin-top: 8px;
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 550px) {
+    .min-width-nav-size {
+        min-width: 40%;
+    }
+}
+
+@media (max-width: 580px) {
+    .min-width-nav-size {
+        min-width: 50%;
+    }
+}
+
+@media (max-width: 350px) {
+    .min-width-nav-size {
+        min-width: 60%;
+    }
+}
+
+@media (max-width: 991px) {
+    .mobile-version-center {
+        text-align: center !important;
+    }
 }

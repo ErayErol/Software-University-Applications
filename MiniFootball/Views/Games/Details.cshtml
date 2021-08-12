@@ -20,7 +20,7 @@
                             }
                             else
                             {
-                                <h3 class="text-center mb-4 mt-5">You are lucky there are @Model.Places Free Places</h3>
+                                <h3 class="text-center mb-4 mt-5">@Model.Places Available Places</h3>
                                 <div class="my-item-center">
                                     <a href="/Games/AddUserToGame?id=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">Join Game</a>
                                 </div>
@@ -31,13 +31,13 @@
                         }
                         else
                         {
-                            @if (Model.Places < 5)
+                            @if (Model.Places < 3)
                             {
-                                <h3 class="text-center mb-4 mt-5">Hurry up! Only @Model.Places Free Places</h3>
+                                <h3 class="text-center mb-4 mt-5">Hurry up! Only @Model.Places Available Places</h3>
                             }
                             else
                             {
-                                <h3 class="text-center mb-4 mt-5">You are lucky there are @Model.Places Free Places</h3>
+                                <h3 class="text-center mb-4 mt-5">@Model.Places Available Places</h3>
                             }
                             <div class="my-item-center">
                                 <a href="/Games/AddUserToGame?id=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">Join Game</a>
@@ -46,12 +46,10 @@
                     }
                     else
                     {
-                        <h3 class="text-center mb-4 mt-5">There are no places</h3>
+                        <h3 class="text-center mb-4 mt-5">There are no available places</h3>
                         <a href="/Games/SeePlayers?id=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3">See the list of players</a>
                     }
                 </div>
-
-                @*<img class="card-img-top mt-5 mb-5" src="@Model.Field.ImageUrl" alt="@Model.Field.Name @Model.Field.Country - @Model.Field.City">*@
 
                 <h3 class="text-center mb-3 mt-3">Contacts:</h3>
 

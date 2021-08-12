@@ -44,7 +44,7 @@
 
         public bool Jerseys { get; set; }
 
-        [Display(Name = "Free places")]
+        [Display(Name = "Available places")]
         public int Places { get; set; }
 
         public bool HasPlaces
