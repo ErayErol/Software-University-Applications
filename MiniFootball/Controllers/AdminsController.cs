@@ -34,14 +34,14 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult Become(BecomeAdminFormModel admin)
+        public IActionResult Become(BecomeAdminFormModel adminModel)
         {
             if (ModelState.IsValid == false)
             {
-                return View(admin);
+                return View(adminModel);
             }
 
-            this.admins.Become(admin.Name, this.User.Id());
+            this.admins.Become(adminModel.Name, this.User.Id());
 
             TempData[GlobalMessageKey] = "You have become an admin!";
 

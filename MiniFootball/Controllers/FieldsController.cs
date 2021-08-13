@@ -77,10 +77,7 @@
                 RedirectToAction("Create", "Cities");
             }
 
-            if (this.fields.IsExist(
-                    fieldModel.Name,
-                    fieldModel.Country.Id,
-                    fieldModel.City.Id))
+            if (this.fields.IsExist(fieldModel.Name, fieldModel.Country.Id, fieldModel.City.Id))
             {
                 fieldModel.Countries = this.countries.All();
                 TempData[GlobalMessageKey] = "There are already exist fields with this Name, Country and City";
@@ -93,7 +90,7 @@
             fieldModel.Address = FirstLetterUpperThenLower(fieldModel.Address);
             fieldModel.Description = FirstLetterUpperThenLower(fieldModel.Description);
 
-            this.fields.Create(
+            var fieldId = this.fields.Create(
                 fieldModel.Name,
                 fieldModel.Country.Id,
                 fieldModel.City.Id,
@@ -107,8 +104,12 @@
                 fieldModel.Description,
                 adminId);
 
-            //TempData[GlobalMessageKey] = "You created game!";
-            //return Redirect($"Details?id={id}");
+            if (fieldId == 0)
+            {
+                return BadRequest();
+            }
+
+            TempData[GlobalMessageKey] = "You created field!";
             return RedirectToAction(nameof(All));
         }
 

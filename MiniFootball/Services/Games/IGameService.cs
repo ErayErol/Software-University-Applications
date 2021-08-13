@@ -58,5 +58,7 @@
         GameIdUserIdServiceModel GameIdUserId(string id);
 
         bool IsExist(int fieldId, DateTime date, int time);
+        
+        bool RemoveUserFromGame(string gameId, string userIdToDelete);
     }
 }

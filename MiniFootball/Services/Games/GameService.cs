@@ -247,6 +247,23 @@
             return any;
         }
 
+        public bool RemoveUserFromGame(string gameId, string userIdToDelete)
+        {
+            var userGame = this.data
+                .UserGames
+                .FirstOrDefault(ug => ug.GameId == gameId && ug.UserId == userIdToDelete);
+
+            if (userGame == null)
+            {
+                return false;
+            }
+
+            this.data.UserGames.Remove(userGame);
+            this.data.SaveChanges();
+
+            return true;
+        }
+
         public IEnumerable<GameListingServiceModel> ByUser(string userId)
         {
             var games = GetGames(

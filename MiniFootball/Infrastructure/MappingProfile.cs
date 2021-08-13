@@ -6,6 +6,7 @@
     using Models.Games;
     using Services.Fields;
     using Services.Games.Models;
+    using Services.Users;
 
     public class MappingProfile : Profile
     {
@@ -25,6 +26,8 @@
             this.CreateMap<Field, FieldListingServiceModel>();
             this.CreateMap<Field, FieldDetailServiceModel>();
             this.CreateMap<FieldDetailServiceModel, FieldFormModel>();
+
+            this.CreateMap<User, UserDetailsServiceModel>();
         }
     }
 }

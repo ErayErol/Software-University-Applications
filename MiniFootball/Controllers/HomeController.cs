@@ -8,8 +8,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using static WebConstants;
-
     public class HomeController : Controller
     {
         private readonly IGameService games;

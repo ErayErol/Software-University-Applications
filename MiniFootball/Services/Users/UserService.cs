@@ -1,18 +1,28 @@
 ﻿namespace MiniFootball.Services.Users
 {
-    using System.Linq;
+    using System;
     using Data;
-    using Data.Models;
     using Games.Models;
+    using System.Linq;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
 
     public class UserService : IUserService
     {
         private readonly MiniFootballDbContext data;
+        private readonly IConfigurationProvider mapper;
 
-        public UserService(MiniFootballDbContext data) 
-            => this.data = data;
 
-        public GameUserInfoServiceModel UserInfo(string id) 
+        public UserService(
+            MiniFootballDbContext
+                data, IMapper mapper)
+        {
+            this.data = data;
+            this.mapper = mapper.ConfigurationProvider;
+
+        }
+
+        public GameUserInfoServiceModel UserInfo(string id)
             => this.data
                 .Users
                 .Where(x => x.Id == id)
@@ -27,7 +37,35 @@
                 })
                 .FirstOrDefault();
 
-        public User User(string id)
-            => this.data.Users.FirstOrDefault(u => u.Id == id);
+        public UserDetailsServiceModel UserDetails(string id)
+        {
+            var user = this.data
+                .Users
+                .Where(u => u.Id == id)
+                .ProjectTo<UserDetailsServiceModel>(this.mapper)
+                .FirstOrDefault();
+
+            CorrectAge(user);
+
+            return user;
+        }
+
+        private static void CorrectAge(UserDetailsServiceModel userDetails)
+        {
+            var today = DateTime.Today;
+            userDetails.Age = (today.Year - userDetails.Birthdate.Date.Year) - 1;
+
+            if (today.Month > userDetails.Birthdate.Month)
+            {
+                userDetails.Age += 1;
+            }
+            else if (today.Month == userDetails.Birthdate.Month)
+            {
+                if (today.Day >= userDetails.Birthdate.Day)
+                {
+                    userDetails.Age += 1;
+                }
+            }
+        }
     }
 }

@@ -6,12 +6,14 @@
         {
             public const string Empty = "Cannot be empty!";
             
+            public const string Url = "URL is incorrect!";
+
             public const string Range = "Must be in range {2} and {1}";
         }
 
         public class User
         {
-            public const int FullNameMinLength = 5;
+            public const int FullNameMinLength = 2;
             public const int FullNameMaxLength = 40;
             public const int PasswordMinLength = 6;
             public const int PasswordMaxLength = 100;
@@ -63,12 +65,6 @@
 
             public const int PhoneNumberMinLength = 8;
             public const int PhoneNumberMaxLength = 15;
-        }
-
-        public class Player
-        {
-            public const int NameMinLength = 2;
-            public const int NameMaxLength = 26;
         }
     }
 }

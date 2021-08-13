@@ -1,8 +1,6 @@
 ﻿namespace MiniFootball.Areas.Identity.Pages.Account
 {
-    using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,8 +8,9 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
-    
+
     using static Data.DataConstants.User;
+
     using static WebConstants;
 
     [AllowAnonymous]
@@ -51,11 +50,11 @@
             public string NickName { get; set; }
 
             [Required]
-            public DateTime? BirthDate { get; set; }
+            public DateTime? Birthdate { get; set; }
 
             [Required]
             [Display(Name = "Image URL")]
-            [Url]
+            [Url(ErrorMessage = Data.DataConstants.ErrorMessages.Url)]
             public string ImageUrl { get; set; }
 
             [Required]
@@ -89,7 +88,7 @@
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     NickName = Input.NickName,
-                    Birthdate = Input.BirthDate,
+                    Birthdate = Input.Birthdate,
                     ImageUrl = Input.ImageUrl,
                     PhoneNumber = Input.PhoneNumber,
                 };

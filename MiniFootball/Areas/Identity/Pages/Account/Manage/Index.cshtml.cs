@@ -30,7 +30,7 @@
         [Display(Name = "Nick Name")]
         public string NickName { get; set; }
 
-        public DateTime? BirthDate { get; set; }
+        public DateTime? Birthdate { get; set; }
 
         [Display(Name = "Image")]
         public string ImageUrl { get; set; }
@@ -61,7 +61,7 @@
             LastName= user.LastName;
             NickName = user.NickName;
             PhoneNumber = user.PhoneNumber;
-            BirthDate = user.Birthdate.Value;
+            Birthdate = user.Birthdate.Value;
         }
 
         public async Task<IActionResult> OnGetAsync()

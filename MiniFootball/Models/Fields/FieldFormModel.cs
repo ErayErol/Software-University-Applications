@@ -35,7 +35,7 @@
 
         [Required]
         [Display(Name = "Image URL")]
-        [Url]
+        [Url(ErrorMessage = Url)]
         public string ImageUrl { get; set; }
 
         [Required]

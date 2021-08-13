@@ -35,7 +35,7 @@
 
         [Display(Name = "Facebook URL")]
         [Required(ErrorMessage = Empty)]
-        [Url]
+        [Url(ErrorMessage = Url)]
         public string FacebookUrl { get; set; }
 
         public bool Goalkeeper { get; set; }

@@ -44,7 +44,7 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(CityFormModel cityFormModel)
+        public IActionResult Create(CityFormModel cityModel)
         {
             var adminId = this.admins.IdByUser(this.User.Id());
 
@@ -55,21 +55,21 @@
 
             if (ModelState.IsValid == false)
             {
-                cityFormModel.Countries = this.countries.All();
-                return View(cityFormModel);
+                cityModel.Countries = this.countries.All();
+                return View(cityModel);
             }
 
-            cityFormModel.CountryName = FirstLetterUpperThenLower(cityFormModel.CountryName);
-            cityFormModel.Name = FirstLetterUpperThenLower(cityFormModel.Name);
+            cityModel.CountryName = FirstLetterUpperThenLower(cityModel.CountryName);
+            cityModel.Name = FirstLetterUpperThenLower(cityModel.Name);
 
-            var cityId = this.cities.Create(cityFormModel.Name, cityFormModel.CountryName, adminId);
+            var cityId = this.cities.Create(cityModel.Name, cityModel.CountryName, adminId);
 
             if (cityId == 0)
             {
-                cityFormModel.Countries = this.countries.All();
+                cityModel.Countries = this.countries.All();
 
                 TempData[GlobalMessageKey] = "There are already a City with this Name and Country!";
-                return View(cityFormModel);
+                return View(cityModel);
             }
 
             TempData[GlobalMessageKey] = "You created city!";

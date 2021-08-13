@@ -1,11 +1,7 @@
-﻿@model MiniFootball.Data.Models.User
+﻿@model UserDetailsServiceModel
 
 @{
     ViewBag.Title = "Player Details";
-}
-
-@{
-    var age = DateTime.UtcNow.Year - @Model.Birthdate.Value.Date.Year;
 }
 
 <div class="container">
@@ -50,8 +46,8 @@
                 </div>
 
                 <div class="form-group my-item-center">
-                    <label>Age</label>
-                    <input readonly="readonly" type="tel" class="form-control text-center" value="@age">
+                    <label asp-for="Age"></label>
+                    <input asp-for="Age" readonly="readonly" type="tel" class="form-control text-center" value="@Model.Age">
                 </div>
             </form>
         </div>
