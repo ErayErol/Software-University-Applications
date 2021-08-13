@@ -22,11 +22,11 @@
                             {
                                 <h3 class="text-center mb-4 mt-5">@Model.Places Available Places</h3>
                                 <div class="my-item-center">
-                                    <a href="/Games/AddUserToGame?gameId=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">Join Game</a>
+                                    <a href="/Games/AddUserToGame?gameId=@Model.GameId" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">Join Game</a>
                                 </div>
                             }
                             <div class="my-item-center">
-                                <a href="/Games/SeePlayers?gameId=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">See the list of players</a>
+                                <a href="/Games/SeePlayers?gameId=@Model.GameId" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">See the list of players</a>
                             </div>
                         }
                         else
@@ -40,14 +40,14 @@
                                 <h3 class="text-center mb-4 mt-5">@Model.Places Available Places</h3>
                             }
                             <div class="my-item-center">
-                                <a href="/Games/AddUserToGame?gameId=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">Join Game</a>
+                                <a href="/Games/AddUserToGame?gameId=@Model.GameId" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">Join Game</a>
                             </div>
                         }
                     }
                     else
                     {
                         <h3 class="text-center mb-4 mt-5">There are no available places</h3>
-                        <a href="/Games/SeePlayers?gameId=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3">See the list of players</a>
+                        <a href="/Games/SeePlayers?gameId=@Model.GameId" class="btn btn-primary btn-block text-uppercase mb-3">See the list of players</a>
                     }
                 </div>
 
@@ -67,7 +67,7 @@
 
                 <div class="form-group my-item-center">
                     <label asp-for="Date">Date</label>
-                    <input asp-for="Date" type="datetime" readonly class="form-control text-center" value="@Model.Date.ToString("d")">
+                    <input asp-for="Date" type="datetime" readonly class="form-control text-center" value="@Model.Date.Value.ToString("d")">
                 </div>
 
                 <div class="form-group my-item-center">

@@ -156,12 +156,6 @@
 
             var field = fields.GetDetails(id);
 
-            // TODO: Only creator of field can edit his own fields
-            //if (field?.UserId != userId)
-            //{
-            //    return Unauthorized();
-            //}
-
             var fieldForm = mapper.Map<FieldFormModel>(field);
 
             return View(fieldForm);

@@ -141,6 +141,7 @@
                 return false;
             }
 
+            // TODO: Maybe this is not necessary, add it in GameEditServiceModel
             if (game.NumberOfPlayers != numberOfPlayers.Value)
             {
                 game.Places = numberOfPlayers.Value;
@@ -293,12 +294,13 @@
             }
 
             var joinedPayers = SeePlayers(id).Count();
-            var availablePlaces = gameDetails.NumberOfPlayers.Value - joinedPayers;
+            gameDetails.JoinedPlayersCount = joinedPayers;
+            //var availablePlaces = gameDetails.NumberOfPlayers.Value - joinedPayers;
 
-            if (gameDetails.Places != availablePlaces)
-            {
-                gameDetails.Places = availablePlaces;
-            }
+            //if (gameDetails.Places != availablePlaces)
+            //{
+            //    gameDetails.Places = availablePlaces;
+            //}
 
             return gameDetails;
         }

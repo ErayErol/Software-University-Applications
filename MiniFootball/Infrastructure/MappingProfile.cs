@@ -15,19 +15,18 @@
             CreateMap<Game, GameListingServiceModel>();
             CreateMap<Game, GameIdUserIdServiceModel>();
 
-            //CreateMap<GameDetailsServiceModel, GameFormModel>();
-
-            CreateMap<GameDetailsServiceModel, GameEditServiceModel>()
-                .ForMember(gE => gE.GameId, cfg => cfg.MapFrom(gD => gD.Id));
-
-            CreateMap<CreateGameSecondStepViewModel, CreateGameLastStepViewModel>();
-
             CreateMap<Game, GameDetailsServiceModel>()
-                .ForMember(gDSM => gDSM.UserId, cfg => cfg.MapFrom(g => g.Admin.UserId));
+                .ForMember(gDSM => gDSM.UserId, cfg => cfg.MapFrom(g => g.Admin.UserId))
+                .ForMember(gDSM => gDSM.GameId, cfg => cfg.MapFrom(g => g.Id));
 
             CreateMap<Game, GameIdUserIdServiceModel>()
                 .ForMember(gDSM => gDSM.UserId, cfg => cfg.MapFrom(g => g.Admin.UserId))
                 .ForMember(gDSM => gDSM.GameId, cfg => cfg.MapFrom(g => g.Id));
+
+            CreateMap<GameDetailsServiceModel, GameEditServiceModel>()
+                .ForMember(gE => gE.GameId, cfg => cfg.MapFrom(gD => gD.GameId));
+
+            CreateMap<CreateGameSecondStepViewModel, CreateGameLastStepViewModel>();
 
             CreateMap<Field, FieldServiceModel>();
             CreateMap<Field, FieldListingServiceModel>();

@@ -1,24 +1,7 @@
 ﻿namespace MiniFootball.Services.Games.Models
 {
-    public class GameDetailsServiceModel : GameListingServiceModel
+    public class GameDetailsServiceModel : CreateGameFormModel
     {
-        public string Description { get; set; }
-
-        public string FacebookUrl { get; set; }
-
-        public int? NumberOfPlayers { get; set; }
-
-        public bool Goalkeeper { get; set; }
-
-        public bool Ball { get; set; }
-
-        public bool Jerseys { get; set; }
-
-        public int Places { get; set; }
-
-        public bool HasPlaces
-            => IsHasPlaces;
-
         public int AdminId { get; set; }
 
         public string AdminName { get; set; }
@@ -29,7 +12,14 @@
 
         public bool IsUserAlreadyJoin { get; set; }
 
-        private bool IsHasPlaces
-            => Places > 0;
+        // TODO: Maybe this 3 props can go to GameEditServiceModel
+
+        public virtual int Places 
+            => this.AvailablePlaces;
+
+        public int JoinedPlayersCount { get; set; }
+
+        private int AvailablePlaces
+            => NumberOfPlayers.Value - JoinedPlayersCount;
     }
 }
