@@ -40,6 +40,8 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
+        public string PhoneNumber { get; set; }
+
         public int AdminId { get; set; }
 
         public virtual Admin Admin { get; set; }

@@ -25,6 +25,10 @@
 
         public string UserId { get; set; }
 
+        public string PhoneNumber { get; set; }
+
+        public bool IsUserAlreadyJoin { get; set; }
+
         private bool IsHasPlaces
             => this.Places > 0;
     }

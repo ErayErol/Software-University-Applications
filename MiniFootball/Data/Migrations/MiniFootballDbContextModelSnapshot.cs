@@ -318,6 +318,9 @@ namespace MiniFootball.Data.Migrations
                     b.Property<int>("NumberOfPlayers")
                         .HasColumnType("int");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Places")
                         .HasColumnType("int");
 

@@ -98,7 +98,8 @@
             string description,
             int places,
             bool hasPlaces,
-            int adminId)
+            int adminId, 
+            string phoneNumber)
         {
             var game = new Game
             {
@@ -114,6 +115,7 @@
                 Places = places,
                 HasPlaces = hasPlaces,
                 AdminId = adminId,
+                PhoneNumber = phoneNumber,
             };
 
             this.data.Games.Add(game);
@@ -239,13 +241,9 @@
                 .ProjectTo<GameIdUserIdServiceModel>(this.mapper)
                 .FirstOrDefault();
 
-        public bool IsExist(int fieldId, DateTime date, int time)
-        {
-            var any = this.data.Games
+        public bool IsAlreadyReserved(int fieldId, DateTime date, int time) 
+            => this.data.Games
                 .Any(g => g.FieldId.Equals(fieldId) && g.Date.Equals(date) && g.Time.Equals(time));
-
-            return any;
-        }
 
         public bool RemoveUserFromGame(string gameId, string userIdToDelete)
         {
@@ -282,14 +280,6 @@
             return games;
         }
 
-        public IEnumerable<GameListingServiceModel> Latest()
-            => this.data
-                .Games
-                .OrderByDescending(g => g.Date.Date)
-                .ProjectTo<GameListingServiceModel>(this.mapper)
-                .Take(3)
-                .ToList();
-
         public GameDetailsServiceModel GetDetails(string id)
         {
             var games = this.data
@@ -305,14 +295,24 @@
                 games.Places = games.NumberOfPlayers.Value - joinedPayers;
             }
 
-
             return games;
         }
+
+        public IEnumerable<GameListingServiceModel> Latest()
+            => this.data
+                .Games
+                .OrderByDescending(g => g.Date.Date)
+                .ProjectTo<GameListingServiceModel>(this.mapper)
+                .Take(3)
+                .ToList();
 
         public bool IsByAdmin(string id, int adminId)
             => this.data
                 .Games
                 .Any(c => c.Id == id && c.AdminId == adminId);
+
+        public bool IsExist(string id)
+            => this.data.Games.Any(g => g.Id == id);
 
         private static IEnumerable<GameListingServiceModel> GetGames(
             IQueryable<Game> gameQuery,

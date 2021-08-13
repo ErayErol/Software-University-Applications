@@ -1,0 +1,82 @@
+﻿@model CreateGameFormModel
+
+@{
+    ViewBag.Title = "Create Game";
+}
+
+@if (Model != null)
+{
+    @*<partial name="_GameFormPartial" model="@Model" />*@
+    <div class="container">
+        <div class="row">
+            <div class="offset-1 offset-sm-1 offset-md-2 offset-lg-3 offset-xl-3 col-10 col-sm-9 col-md-8 col-lg-6 col-xl-5">
+
+                <h3 class="mt-3 mb-3 text-center">Last step to Create Game</h3>
+
+                <form method="post" class="form-group">
+
+                    <div class="form-group my-item-center">
+                        <label asp-for="Date"></label>
+                        <input asp-for="Date" type="date" class="form-control min-width-size text-center">
+                        <span asp-validation-for="Date" class="small text-danger"></span>
+                    </div>
+
+                    <div class="form-group my-item-center">
+                        <label asp-for="Time"></label>
+                        <input asp-for="Time" min="1" max="24" type="number" placeholder="20:00" class="form-control min-width-size text-center">
+                        <span asp-validation-for="Time" class="small text-danger"></span>
+                    </div>
+
+                    <div class="form-group my-item-center">
+                        <label asp-for="NumberOfPlayers"></label>
+                        <input asp-for="NumberOfPlayers" min="8" max="22" type="number" class="form-control min-width-size text-center">
+                        <span asp-validation-for="NumberOfPlayers" class="small text-danger"></span>
+                    </div>
+
+                    <div class="form-group my-item-center">
+                        <label asp-for="FacebookUrl"></label>
+                        <input asp-for="FacebookUrl" class="form-control text-center">
+                        <span asp-validation-for="FacebookUrl" class="small text-danger"></span>
+                    </div>
+
+                    <div class="mb-3 my-item-center">
+                        <label asp-for="Description"></label>
+                        <textarea asp-for="Description" class="form-control text-center" rows="2"></textarea>
+                        <span asp-validation-for="Description" class="small text-danger"></span>
+                    </div>
+
+                    <div class="mt-4 mb-3 createPlaygroundChechboxes">
+                        <input class="checkbox-down" asp-for="Ball" type="checkbox">
+                        <label asp-for="Ball"></label>
+
+                        <input class="checkbox-down" asp-for="Jerseys" type="checkbox">
+                        <label asp-for="Jerseys"></label>
+
+                        <input class="checkbox-down" asp-for="Goalkeeper" type="checkbox">
+                        <label asp-for="Goalkeeper"></label>
+                    </div>
+
+                    <div class="my-item-center">
+                        <input class="btn float-right min-width-size-btn" type="submit" value="Create" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-md-4">
+        <div class="card">
+            <img class="card-img-top" src="https://thumbs.dreamstime.com/b/comic-boom-oops-icon-simple-black-style-illustration-web-122999699.jpg" alt="Just oops image">
+            <div class="card-body text-center">
+                <h5 class="card-title text-center">Only admins can create games</h5>
+                <a href="/Admins/Become" class="btn">Become Admin</a>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

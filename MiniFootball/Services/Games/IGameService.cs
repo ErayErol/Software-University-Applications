@@ -27,7 +27,8 @@
             string description,
             int places,
             bool hasPlaces,
-            int adminId);
+            int adminId, 
+            string phoneNumber);
 
         IEnumerable<GameListingServiceModel> ByUser(string userId);
         
@@ -57,8 +58,10 @@
         
         GameIdUserIdServiceModel GameIdUserId(string id);
 
-        bool IsExist(int fieldId, DateTime date, int time);
+        bool IsAlreadyReserved(int fieldId, DateTime date, int time);
         
         bool RemoveUserFromGame(string gameId, string userIdToDelete);
+        
+        bool IsExist(string id);
     }
 }

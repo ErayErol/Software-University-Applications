@@ -73,7 +73,7 @@
             }
 
             TempData[GlobalMessageKey] = "You created city!";
-            return RedirectToAction("CountryListing", "Games");
+            return RedirectToAction("CreateGameFirstStep", "Games");
         }
     }
 }

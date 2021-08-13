@@ -156,7 +156,7 @@
 
             var field = this.fields.GetDetails(id);
 
-            // TODO: Only creator of field can edit his own fields, not other fields, and others can not edit his fields
+            // TODO: Only creator of field can edit his own fields
             //if (field?.UserId != userId)
             //{
             //    return Unauthorized();
@@ -256,13 +256,15 @@
         [Authorize]
         public IActionResult Mine(int id)
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            var userId = this.User.Id();
+
+            if (this.admins.IsAdmin(userId) == false || this.User.IsManager())
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
             var myFields = this.fields
-                .ByUser(this.User.Id())
+                .ByUser(userId)
                 .OrderByDescending(f => f.Id);
 
             if (myFields.Any() == false)

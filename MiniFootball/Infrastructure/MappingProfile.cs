@@ -15,6 +15,8 @@
             this.CreateMap<Game, GameListingServiceModel>();
             this.CreateMap<Game, GameIdUserIdServiceModel>();
             this.CreateMap<GameDetailsServiceModel, GameFormModel>();
+            
+            this.CreateMap<CreateGameSecondStepViewModel, CreateGameLastStepViewModel>();
 
             this.CreateMap<Game, GameDetailsServiceModel>()
                 .ForMember(gDSM => gDSM.UserId, cfg => cfg.MapFrom(g => g.Admin.UserId));

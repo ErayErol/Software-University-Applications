@@ -10,7 +10,7 @@ using MiniFootball.Data;
 namespace MiniFootball.Data.Migrations
 {
     [DbContext(typeof(MiniFootballDbContext))]
-    [Migration("20210812172422_InitialCreate")]
+    [Migration("20210813124240_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -319,6 +319,9 @@ namespace MiniFootball.Data.Migrations
 
                     b.Property<int>("NumberOfPlayers")
                         .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Places")
                         .HasColumnType("int");

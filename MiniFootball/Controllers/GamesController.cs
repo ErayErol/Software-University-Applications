@@ -61,7 +61,7 @@
         }
 
         [Authorize]
-        public IActionResult CountryListing()
+        public IActionResult CreateGameFirstStep()
         {
             if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
             {
@@ -77,7 +77,7 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult CountryListing(CreateGameFirstStepViewModel gameModel)
+        public IActionResult CreateGameFirstStep(CreateGameFirstStepViewModel gameModel)
         {
             if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
             {
@@ -93,18 +93,18 @@
 
             gameModel.CityName = FirstLetterUpperThenLower(gameModel.CityName);
 
-            var isExist = this.countries
+            var isCityExistInCountry = this.countries
                 .Cities(gameModel.CountryName)?
                 .Any(c => c == gameModel.CityName);
 
-            if (isExist == false)
+            if (isCityExistInCountry == false)
             {
                 TempData[GlobalMessageKey] =
                     "This City does not exist in this Country. First you have to create City and then create Game!";
                 return RedirectToAction("Create", "Cities");
             }
 
-            return RedirectToAction("FieldListing", "Games", new CreateGameFirstStepViewModel
+            return RedirectToAction("CreateGameSecondStep", "Games", new CreateGameCountryAndCityViewModel()
             {
                 CityName = gameModel.CityName,
                 CountryName = gameModel.CountryName,
@@ -112,14 +112,14 @@
         }
 
         [Authorize]
-        public IActionResult FieldListing(CreateGameFirstStepViewModel gameModel)
+        public IActionResult CreateGameSecondStep(CreateGameCountryAndCityViewModel gameModel)
         {
             if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
             {
                 return View();
             }
 
-            return View(new FieldListingViewModel
+            return View(new CreateGameSecondStepViewModel
             {
                 Fields = this.fields.FieldsListing(gameModel.CityName, gameModel.CountryName),
                 CityName = gameModel.CityName,
@@ -129,7 +129,7 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult FieldListing(FieldListingViewModel gameModel)
+        public IActionResult CreateGameSecondStep(CreateGameSecondStepViewModel gameModel)
         {
             if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
             {
@@ -146,15 +146,17 @@
             var fieldName = this.fields.FieldName(fieldId);
             gameModel.Name = fieldName;
 
-            return RedirectToAction("Create", "Games", gameModel);
+            var lastStepGame = this.mapper.Map<CreateGameLastStepViewModel>(gameModel);
+
+            return RedirectToAction("CreateGameLastStep", "Games", lastStepGame);
         }
 
         [Authorize]
-        public IActionResult Create(FieldListingViewModel gameModel)
+        public IActionResult CreateGameLastStep(CreateGameLastStepViewModel gameModel)
         {
             if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
             {
-                return View();
+                return BadRequest();
             }
 
             if (this.fields.IsCorrectCountryAndCity(
@@ -166,7 +168,7 @@
                 return BadRequest();
             }
 
-            return View(new GameFormModel
+            return View(new CreateGameFormModel
             {
                 FieldId = gameModel.FieldId,
             });
@@ -174,7 +176,7 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(GameFormModel gameModel)
+        public IActionResult CreateGameLastStep(CreateGameFormModel gameModel)
         {
             var adminId = this.admins.IdByUser(this.User.Id());
 
@@ -188,19 +190,25 @@
                 return View(gameModel);
             }
 
-            if (gameModel.Date != null && gameModel.Date.Value < DateTime.Today)
+            var correctDate = gameModel.Date != null && gameModel.Date.Value < DateTime.Today;
+
+            if (correctDate)
             {
                 TempData[GlobalMessageKey] = "The date has to be today or after today!";
                 return View(gameModel);
             }
 
-            var game = this.games.IsExist(gameModel.FieldId, gameModel.Date.Value, gameModel.Time.Value);
+            var reserved = this.games
+                .IsAlreadyReserved(gameModel.FieldId, gameModel.Date.Value, gameModel.Time.Value);
 
-            if (game)
+            if (reserved)
             {
-                TempData[GlobalMessageKey] = "There are already a game in this field in this date and time!";
+                TempData[GlobalMessageKey] =
+                    "There are already a game in this field in this date and time! Choose another time";
                 return View(gameModel);
             }
+
+            var phoneNumber = this.users.UserDetails(this.User.Id()).PhoneNumber;
 
             var id = this.games.Create(
                 gameModel.FieldId,
@@ -212,14 +220,10 @@
                 gameModel.Jerseys,
                 gameModel.Goalkeeper,
                 gameModel.Description,
-                gameModel.NumberOfPlayers.Value,
-                true,
-                adminId);
-
-            if (id == null)
-            {
-                return BadRequest();
-            }
+                gameModel.Places,
+                gameModel.HasPlaces,
+                adminId,
+                phoneNumber);
 
             TempData[GlobalMessageKey] = "You created game!";
             return Redirect($"Details?id={id}");
@@ -351,34 +355,34 @@
         }
 
         [Authorize]
-        public IActionResult SeePlayers(string id)
+        public IActionResult SeePlayers(string gameId)
         {
             var userId = this.User.Id();
 
-            var game = this.games.GameIdUserId(id);
-
-            if (this.games.IsUserIsJoinGame(id, userId) == false && this.User.IsManager() == false)
+            if (this.games.IsUserIsJoinGame(gameId, userId) == false && this.User.IsManager() == false)
             {
-                if (game.UserId != userId)
+                var gameIdUserId = this.games.GameIdUserId(gameId);
+
+                if (gameIdUserId.UserId != userId)
                 {
                     TempData[GlobalMessageKey] = "Only joined players can view the list of players!";
                     return RedirectToAction(nameof(All));
                 }
             }
 
-            var players = this.games.SeePlayers(id);
+            var joinedPlayers = this.games.SeePlayers(gameId);
 
-            if (players.Any() == false)
+            if (joinedPlayers.Any() == false)
             {
                 TempData[GlobalMessageKey] = "Still there are no players for this game!";
-                return Redirect($"Details?id={id}");
+                return Redirect($"Details?id={gameId}");
             }
 
-            return View(players);
+            return View(joinedPlayers);
         }
 
         [Authorize]
-        public IActionResult ExitGame([FromQuery]string gameIdUserId)
+        public IActionResult ExitGame([FromQuery] string gameIdUserId)
         {
             var currentUserId = this.User.Id();
             var splitQuery = gameIdUserId.Split('*');
@@ -424,20 +428,21 @@
         [Authorize]
         public IActionResult Details(string id)
         {
-            // TODO: REFACTOR THIS
-            var game = this.games.GetDetails(id);
+            var isGamExist = this.games.IsExist(id);
 
-            var gameForm = this.mapper.Map<GameFormModel>(game);
+            if (isGamExist == false)
+            {
+                return BadRequest();
+            }
 
-            // TODO: THIS PHONE NUMBER IS INCORRECT
-            gameForm.PhoneNumber = this.users.UserDetails(this.User.Id()).PhoneNumber;
+            var gameDetails = this.games.GetDetails(id);
 
             if (this.games.IsUserIsJoinGame(id, this.User.Id()))
             {
-                gameForm.IsUserAlreadyJoin = true;
+                gameDetails.IsUserAlreadyJoin = true;
             }
 
-            return View(gameForm);
+            return View(gameDetails);
         }
 
         [Authorize]
