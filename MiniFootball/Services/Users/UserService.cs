@@ -23,7 +23,7 @@
         }
 
         public GameUserInfoServiceModel UserInfo(string id)
-            => this.data
+            => data
                 .Users
                 .Where(x => x.Id == id)
                 .Select(x => new GameUserInfoServiceModel
@@ -39,10 +39,10 @@
 
         public UserDetailsServiceModel UserDetails(string id)
         {
-            var user = this.data
+            var user = data
                 .Users
                 .Where(u => u.Id == id)
-                .ProjectTo<UserDetailsServiceModel>(this.mapper)
+                .ProjectTo<UserDetailsServiceModel>(mapper)
                 .FirstOrDefault();
 
             CorrectAge(user);

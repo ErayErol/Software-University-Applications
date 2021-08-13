@@ -12,24 +12,29 @@
     {
         public MappingProfile()
         {
-            this.CreateMap<Game, GameListingServiceModel>();
-            this.CreateMap<Game, GameIdUserIdServiceModel>();
-            this.CreateMap<GameDetailsServiceModel, GameFormModel>();
-            
-            this.CreateMap<CreateGameSecondStepViewModel, CreateGameLastStepViewModel>();
+            CreateMap<Game, GameListingServiceModel>();
+            CreateMap<Game, GameIdUserIdServiceModel>();
 
-            this.CreateMap<Game, GameDetailsServiceModel>()
+            //CreateMap<GameDetailsServiceModel, GameFormModel>();
+
+            CreateMap<GameDetailsServiceModel, GameEditServiceModel>()
+                .ForMember(gE => gE.GameId, cfg => cfg.MapFrom(gD => gD.Id));
+
+            CreateMap<CreateGameSecondStepViewModel, CreateGameLastStepViewModel>();
+
+            CreateMap<Game, GameDetailsServiceModel>()
                 .ForMember(gDSM => gDSM.UserId, cfg => cfg.MapFrom(g => g.Admin.UserId));
 
-            this.CreateMap<Game, GameIdUserIdServiceModel>()
-                .ForMember(gDSM => gDSM.UserId, cfg => cfg.MapFrom(g => g.Admin.UserId));
+            CreateMap<Game, GameIdUserIdServiceModel>()
+                .ForMember(gDSM => gDSM.UserId, cfg => cfg.MapFrom(g => g.Admin.UserId))
+                .ForMember(gDSM => gDSM.GameId, cfg => cfg.MapFrom(g => g.Id));
 
-            this.CreateMap<Field, FieldServiceModel>();
-            this.CreateMap<Field, FieldListingServiceModel>();
-            this.CreateMap<Field, FieldDetailServiceModel>();
-            this.CreateMap<FieldDetailServiceModel, FieldFormModel>();
+            CreateMap<Field, FieldServiceModel>();
+            CreateMap<Field, FieldListingServiceModel>();
+            CreateMap<Field, FieldDetailServiceModel>();
+            CreateMap<FieldDetailServiceModel, FieldFormModel>();
 
-            this.CreateMap<User, UserDetailsServiceModel>();
+            CreateMap<User, UserDetailsServiceModel>();
         }
     }
 }

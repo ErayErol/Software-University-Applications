@@ -11,7 +11,7 @@ namespace MiniFootball
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using MiniFootball.Data;
+    using Data;
     using Services.Admins;
     using Services.Countries;
     using Services.Fields;
@@ -34,7 +34,7 @@ namespace MiniFootball
         {
             services
                 .AddDbContext<MiniFootballDbContext>(options => options
-                    .UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
+                    .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services
                 .AddDatabaseDeveloperPageExceptionFilter();

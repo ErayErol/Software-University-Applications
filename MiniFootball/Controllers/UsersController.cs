@@ -16,7 +16,7 @@
         [Authorize]
         public IActionResult Details(string id)
         {
-            var user = this.users.UserDetails(id);
+            var user = users.UserDetails(id);
 
             return View(user);
         }

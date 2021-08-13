@@ -13,7 +13,7 @@
         var userId = User.Id();
         var userIsAdmin = Admins.IsAdmin(userId);
         var userIsManager = User.IsManager();
-        var userImg = this.AppUser.UserInfo(userId).ImageUrl;
+        var userImg = AppUser.UserInfo(userId).ImageUrl;
 
         if (userIsAdmin && userIsManager == false)
         {

@@ -1,17 +1,13 @@
-﻿namespace MiniFootball.Models.Games
+﻿namespace MiniFootball.Services.Games.Models
 {
-    using Data.Models;
     using System.ComponentModel.DataAnnotations;
+
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Game;
 
-    public class CreateGameFormModel
+    public class GameEditServiceModel
     {
-        public string Id { get; set; }
-
-        [Display(Name = "Field")]
-        public int FieldId { get; set; }
-        public Field Field { get; set; }
+        public string GameId { get; set; }
 
         [Display(Name = "Select Date:")]
         [Required(ErrorMessage = Empty)]
@@ -41,14 +37,5 @@
         public bool Ball { get; set; }
 
         public bool Jerseys { get; set; }
-
-        public int Places
-            => GetPlaces;
-
-        public bool HasPlaces
-            => true;
-
-        private int GetPlaces
-            => NumberOfPlayers.Value;
     }
 }

@@ -5,7 +5,7 @@
 }
 
 @{
-    var isCreator = Model.Any(u => u.IsCreator && this.User.Id() == u.UserId);
+    var isCreator = Model.Any(u => u.IsCreator && User.Id() == u.UserId);
 }
 
 <div class="row">

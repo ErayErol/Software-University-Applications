@@ -12,9 +12,9 @@
 
         public StatisticsServiceModel Total()
         {
-            var totalGames = this.data.Games.Count();
-            var totalPlaygrounds = this.data.Fields.Count();
-            var totalUsers = this.data.Users.Count();
+            var totalGames = data.Games.Count();
+            var totalPlaygrounds = data.Fields.Count();
+            var totalUsers = data.Users.Count();
 
             return new StatisticsServiceModel
             {

@@ -17,15 +17,15 @@
                 @if (ViewBag.AllowCarEdit == true || User.IsManager())
                 {
                     <div class="text-center mt-4 my-item-center my-item-center-btns">
-                        <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn min-width-size">Info</a>
-                        <a asp-controller="Games" asp-action="Edit" asp-route-id="@game.Id" class="btn btn-warning min-width-size">Edit</a>
-                        <a asp-controller="Games" asp-action="Delete" asp-route-id="@game.Id" class="btn btn-danger min-width-size">Delete</a>
+                        <a asp-controller="Games" asp-action="Details" asp-route-gameId="@game.Id" class="btn min-width-size">Info</a>
+                        <a asp-controller="Games" asp-action="Edit" asp-route-gameId="@game.Id" class="btn btn-warning min-width-size">Edit</a>
+                        <a asp-controller="Games" asp-action="Delete" asp-route-gameId="@game.Id" class="btn btn-danger min-width-size">Delete</a>
                     </div>
                 }
                 else
                 {
                     <div class="text-center mt-4 my-item-center">
-                        <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn min-width-size-btn">Info</a>
+                        <a asp-controller="Games" asp-action="Details" asp-route-gameId="@game.Id" class="btn min-width-size-btn">Info</a>
                     </div>
                 }
             </div>

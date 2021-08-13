@@ -24,22 +24,22 @@
         {
             this.data = data;
             this.cache = cache;
-            this.allCountries = new List<string>();
+            allCountries = new List<string>();
         }
 
         public List<string> All()
         {
-            this.allCountries = this.cache.Get<List<string>>(latestGamesCacheKey);
+            allCountries = cache.Get<List<string>>(latestGamesCacheKey);
 
             if (allCountries == null)
             {
-                allCountries = this.data.Countries.Select(country => country.Name).ToList();
+                allCountries = data.Countries.Select(country => country.Name).ToList();
                 allCountries.Sort();
 
                 var cacheOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromDays(365));
 
-                this.cache.Set(latestGamesCacheKey, allCountries, cacheOptions);
+                cache.Set(latestGamesCacheKey, allCountries, cacheOptions);
             }
 
             return allCountries;
@@ -58,26 +58,26 @@
                 if (cultureList.Contains(getRegionInfo.EnglishName) == false)
                 {
                     cultureList.Add(getRegionInfo.EnglishName);
-                    this.data.Countries.Add(new Country { Name = getRegionInfo.EnglishName });
-                    this.data.SaveChanges();
+                    data.Countries.Add(new Country { Name = getRegionInfo.EnglishName });
+                    data.SaveChanges();
                 }
             }
         }
 
         public string Name(int id)
-            => this.data
+            => data
                 .Countries
                 .Where(c => c.Id == id)
                 .Select(c => c.Name)
                 .FirstOrDefault();
 
         public Country Country(string name)
-            => this.data
+            => data
                 .Countries
                 .FirstOrDefault(c => c.Name == name);
 
         public IEnumerable<string> Cities(string countryName) 
-            => this.data
+            => data
                 .Cities
                 .Where(c => c.Country.Name == countryName)
                 .Select(c => c.Name);

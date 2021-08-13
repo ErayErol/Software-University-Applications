@@ -93,7 +93,7 @@
                     PhoneNumber = Input.PhoneNumber,
                 };
 
-                var result = await this.userManager.CreateAsync(user, Input.Password);
+                var result = await userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {

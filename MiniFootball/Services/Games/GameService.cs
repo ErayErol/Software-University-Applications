@@ -30,11 +30,11 @@
             int currentPage,
             int gamesPerPage)
         {
-            var city = this.data
+            var city = data
                 .Cities
                 .FirstOrDefault(c => c.Name == cityName);
 
-            var gamesQuery = this.data.Games.AsQueryable();
+            var gamesQuery = data.Games.AsQueryable();
 
             if (string.IsNullOrWhiteSpace(city?.Name) == false)
             {
@@ -69,7 +69,7 @@
 
             var games = GetGames(gamesQuery
                 .Skip((currentPage - 1) * gamesPerPage)
-                .Take(gamesPerPage), this.mapper)
+                .Take(gamesPerPage), mapper)
                 .ToList();
 
             foreach (var gameListingServiceModel in games)
@@ -118,8 +118,8 @@
                 PhoneNumber = phoneNumber,
             };
 
-            this.data.Games.Add(game);
-            this.data.SaveChanges();
+            data.Games.Add(game);
+            data.SaveChanges();
 
             return game.Id;
         }
@@ -134,7 +134,7 @@
             bool goalkeeper,
             string description)
         {
-            var game = this.data.Games.Find(id);
+            var game = data.Games.Find(id);
 
             if (game == null)
             {
@@ -158,16 +158,16 @@
             game.Goalkeeper = goalkeeper;
             game.Description = description;
 
-            this.data.SaveChanges();
+            data.SaveChanges();
 
             return true;
         }
 
-        public bool AddUserToGame(string id, string userId)
+        public bool AddUserToGame(string gameId, string userId)
         {
-            var game = this.data
+            var game = data
                 .Games
-                .FirstOrDefault(c => c.Id == id);
+                .FirstOrDefault(c => c.Id == gameId);
 
             if (game == null)
             {
@@ -185,69 +185,68 @@
                 UserId = userId
             };
 
-            this.data.UserGames.Add(userGame);
-
-            this.data.SaveChanges();
+            data.UserGames.Add(userGame);
+            data.SaveChanges();
 
             return true;
         }
 
-        public bool IsUserIsJoinGame(string id, string userId)
-            => this.data.UserGames
-                .Any(c => c.GameId == id && c.UserId == userId);
+        public bool IsUserIsJoinGame(string gameId, string userId)
+            => data.UserGames
+                .Any(c => c.GameId == gameId && c.UserId == userId);
 
-        public IQueryable<GameSeePlayersServiceModel> SeePlayers(string id)
+        public IQueryable<GameSeePlayersServiceModel> SeePlayers(string gameId)
         {
-            var games =  this.data
+            var games =  data
                 .UserGames
-                .Where(g => g.GameId == id)
+                .Where(g => g.GameId == gameId)
                 .Select(g => new GameSeePlayersServiceModel
                 {
-                    GameId = id,
+                    GameId = gameId,
                     UserId = g.User.Id,
                     ImageUrl = g.User.ImageUrl,
                     FirstName = g.User.FirstName,
                     LastName = g.User.LastName,
                     NickName = g.User.NickName,
                     PhoneNumber = g.User.PhoneNumber,
-                    IsCreator = this.GameIdUserId(id).UserId == g.UserId,
+                    IsCreator = GameIdUserId(gameId).UserId == g.UserId,
                 });
 
             return games;
         }
 
 
-        public bool Delete(string id)
+        public bool Delete(string gameId)
         {
-            var game = this.data
+            var game = data
                 .Games
-                .FirstOrDefault(g => g.Id == id);
+                .FirstOrDefault(g => g.Id == gameId);
 
             if (game == null)
             {
                 return false;
             }
 
-            this.data.Remove(game);
-            this.data.SaveChanges();
+            data.Remove(game);
+            data.SaveChanges();
 
             return true;
         }
 
-        public GameIdUserIdServiceModel GameIdUserId(string id)
-            => this.data
+        public GameIdUserIdServiceModel GameIdUserId(string gameId)
+            => data
                 .Games
-                .Where(g => g.Id == id)
-                .ProjectTo<GameIdUserIdServiceModel>(this.mapper)
+                .Where(g => g.Id == gameId)
+                .ProjectTo<GameIdUserIdServiceModel>(mapper)
                 .FirstOrDefault();
 
-        public bool IsAlreadyReserved(int fieldId, DateTime date, int time) 
-            => this.data.Games
+        public bool IsFieldAlreadyReserved(int fieldId, DateTime date, int time) 
+            => data.Games
                 .Any(g => g.FieldId.Equals(fieldId) && g.Date.Equals(date) && g.Time.Equals(time));
 
         public bool RemoveUserFromGame(string gameId, string userIdToDelete)
         {
-            var userGame = this.data
+            var userGame = data
                 .UserGames
                 .FirstOrDefault(ug => ug.GameId == gameId && ug.UserId == userIdToDelete);
 
@@ -256,19 +255,19 @@
                 return false;
             }
 
-            this.data.UserGames.Remove(userGame);
-            this.data.SaveChanges();
+            data.UserGames.Remove(userGame);
+            data.SaveChanges();
 
             return true;
         }
 
-        public IEnumerable<GameListingServiceModel> ByUser(string userId)
+        public IEnumerable<GameListingServiceModel> GamesWhereCreatorIsUser(string userId)
         {
             var games = GetGames(
-                this.data
+                data
                     .Games
                     .Where(g => g.Admin.UserId == userId),
-                this.mapper)
+                mapper)
                 .ToList();
 
             foreach (var gameListingServiceModel in games)
@@ -282,37 +281,43 @@
 
         public GameDetailsServiceModel GetDetails(string id)
         {
-            var games = this.data
+            var gameDetails = data
                 .Games
                 .Where(g => g.Id == id)
-                .ProjectTo<GameDetailsServiceModel>(this.mapper)
+                .ProjectTo<GameDetailsServiceModel>(mapper)
                 .FirstOrDefault();
 
-            var joinedPayers = this.SeePlayers(id).Count();
-
-            if (games.NumberOfPlayers.Value != games.Places)
+            if (gameDetails == null)
             {
-                games.Places = games.NumberOfPlayers.Value - joinedPayers;
+                return null;
             }
 
-            return games;
+            var joinedPayers = SeePlayers(id).Count();
+            var availablePlaces = gameDetails.NumberOfPlayers.Value - joinedPayers;
+
+            if (gameDetails.Places != availablePlaces)
+            {
+                gameDetails.Places = availablePlaces;
+            }
+
+            return gameDetails;
         }
 
         public IEnumerable<GameListingServiceModel> Latest()
-            => this.data
+            => data
                 .Games
                 .OrderByDescending(g => g.Date.Date)
-                .ProjectTo<GameListingServiceModel>(this.mapper)
+                .ProjectTo<GameListingServiceModel>(mapper)
                 .Take(3)
                 .ToList();
 
-        public bool IsByAdmin(string id, int adminId)
-            => this.data
+        public bool IsAdminCreatorOfGame(string gameId, int adminId)
+            => data
                 .Games
-                .Any(c => c.Id == id && c.AdminId == adminId);
+                .Any(c => c.Id == gameId && c.AdminId == adminId);
 
-        public bool IsExist(string id)
-            => this.data.Games.Any(g => g.Id == id);
+        //public bool IsExist(string id)
+        //    => this.data.Games.Any(g => g.Id == id);
 
         private static IEnumerable<GameListingServiceModel> GetGames(
             IQueryable<Game> gameQuery,

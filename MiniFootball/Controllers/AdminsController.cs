@@ -20,7 +20,7 @@
         [Authorize]
         public IActionResult Become()
         {
-            if (this.admins.IsAdmin(this.User.Id()) || this.User.IsManager())
+            if (admins.IsAdmin(User.Id()) || User.IsManager())
             {
                 TempData[GlobalMessageKey] = "You can not become an admin!";
                 return View();
@@ -28,7 +28,7 @@
 
             return View(new BecomeAdminFormModel
             {
-                Name = this.User.Identity?.Name
+                Name = User.Identity?.Name
             });
         }
 
@@ -41,7 +41,7 @@
                 return View(adminModel);
             }
 
-            this.admins.Become(adminModel.Name, this.User.Id());
+            admins.Become(adminModel.Name, User.Id());
 
             TempData[GlobalMessageKey] = "You have become an admin!";
 

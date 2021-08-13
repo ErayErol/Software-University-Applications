@@ -43,7 +43,7 @@
 
         public IActionResult All([FromQuery] GameAllQueryModel query)
         {
-            var queryResult = this.games
+            var queryResult = games
                 .All(
                     query.City,
                     query.SearchTerm,
@@ -51,7 +51,7 @@
                     query.CurrentPage,
                     query.GamesPerPage);
 
-            var cities = this.fields.Cities();
+            var cities = fields.Cities();
 
             query.TotalGames = queryResult.TotalGames;
             query.Games = queryResult.Games;
@@ -63,7 +63,7 @@
         [Authorize]
         public IActionResult CreateGameFirstStep()
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
                 TempData[GlobalMessageKey] = "Only Admins can create games!";
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
@@ -71,7 +71,7 @@
 
             return View(new CreateGameFirstStepViewModel
             {
-                Countries = this.countries.All(),
+                Countries = countries.All(),
             });
         }
 
@@ -79,7 +79,7 @@
         [HttpPost]
         public IActionResult CreateGameFirstStep(CreateGameFirstStepViewModel gameModel)
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
                 TempData[GlobalMessageKey] = "Only Admins can create fields!";
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
@@ -87,13 +87,13 @@
 
             if (ModelState.IsValid == false)
             {
-                gameModel.Countries = this.countries.All();
+                gameModel.Countries = countries.All();
                 return View(gameModel);
             }
 
             gameModel.CityName = FirstLetterUpperThenLower(gameModel.CityName);
 
-            var isCityExistInCountry = this.countries
+            var isCityExistInCountry = countries
                 .Cities(gameModel.CountryName)?
                 .Any(c => c == gameModel.CityName);
 
@@ -104,7 +104,7 @@
                 return RedirectToAction("Create", "Cities");
             }
 
-            return RedirectToAction("CreateGameSecondStep", "Games", new CreateGameCountryAndCityViewModel()
+            return RedirectToAction("CreateGameChooseField", "Games", new CreateGameCountryAndCityViewModel()
             {
                 CityName = gameModel.CityName,
                 CountryName = gameModel.CountryName,
@@ -112,16 +112,16 @@
         }
 
         [Authorize]
-        public IActionResult CreateGameSecondStep(CreateGameCountryAndCityViewModel gameModel)
+        public IActionResult CreateGameChooseField(CreateGameCountryAndCityViewModel gameModel)
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
                 return View();
             }
 
             return View(new CreateGameSecondStepViewModel
             {
-                Fields = this.fields.FieldsListing(gameModel.CityName, gameModel.CountryName),
+                Fields = fields.FieldsListing(gameModel.CityName, gameModel.CountryName),
                 CityName = gameModel.CityName,
                 CountryName = gameModel.CountryName,
             });
@@ -129,24 +129,24 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult CreateGameSecondStep(CreateGameSecondStepViewModel gameModel)
+        public IActionResult CreateGameChooseField(CreateGameSecondStepViewModel gameModel)
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
                 return BadRequest();
             }
 
             var fieldId = gameModel.FieldId;
 
-            if (this.fields.FieldExist(fieldId) == false)
+            if (fields.FieldExist(fieldId) == false)
             {
                 return BadRequest();
             }
 
-            var fieldName = this.fields.FieldName(fieldId);
+            var fieldName = fields.FieldName(fieldId);
             gameModel.Name = fieldName;
 
-            var lastStepGame = this.mapper.Map<CreateGameLastStepViewModel>(gameModel);
+            var lastStepGame = mapper.Map<CreateGameLastStepViewModel>(gameModel);
 
             return RedirectToAction("CreateGameLastStep", "Games", lastStepGame);
         }
@@ -154,12 +154,12 @@
         [Authorize]
         public IActionResult CreateGameLastStep(CreateGameLastStepViewModel gameModel)
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
                 return BadRequest();
             }
 
-            if (this.fields.IsCorrectCountryAndCity(
+            if (fields.IsCorrectCountryAndCity(
                 gameModel.FieldId,
                 gameModel.Name,
                 gameModel.CountryName,
@@ -178,9 +178,9 @@
         [HttpPost]
         public IActionResult CreateGameLastStep(CreateGameFormModel gameModel)
         {
-            var adminId = this.admins.IdByUser(this.User.Id());
+            var adminId = admins.IdByUser(User.Id());
 
-            if (adminId == 0 || this.User.IsManager())
+            if (adminId == 0 || User.IsManager())
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
@@ -198,8 +198,8 @@
                 return View(gameModel);
             }
 
-            var reserved = this.games
-                .IsAlreadyReserved(gameModel.FieldId, gameModel.Date.Value, gameModel.Time.Value);
+            var reserved = games
+                .IsFieldAlreadyReserved(gameModel.FieldId, gameModel.Date.Value, gameModel.Time.Value);
 
             if (reserved)
             {
@@ -208,9 +208,9 @@
                 return View(gameModel);
             }
 
-            var phoneNumber = this.users.UserDetails(this.User.Id()).PhoneNumber;
+            var phoneNumber = users.UserDetails(User.Id()).PhoneNumber;
 
-            var id = this.games.Create(
+            var gameId = games.Create(
                 gameModel.FieldId,
                 gameModel.Date.Value,
                 gameModel.Time.Value,
@@ -226,40 +226,45 @@
                 phoneNumber);
 
             TempData[GlobalMessageKey] = "You created game!";
-            return Redirect($"Details?id={id}");
+            return Redirect($"Details?gameId={gameId}");
         }
 
         [Authorize]
-        public IActionResult Edit(string id)
+        public IActionResult Edit(string gameId)
         {
-            var userId = this.User.Id();
+            var userId = User.Id();
 
-            if (this.admins.IsAdmin(userId) == false && this.User.IsManager() == false)
+            if (admins.IsAdmin(userId) == false && User.IsManager() == false)
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            var game = this.games.GetDetails(id);
+            var game = games.GetDetails(gameId);
 
-            if (game?.UserId != userId && this.User.IsManager() == false)
+            if (game?.UserId != userId && User.IsManager() == false)
             {
-                return Unauthorized();
+                return BadRequest();
             }
 
-            var gameForm = this.mapper.Map<GameFormModel>(game);
+            var gameForm = mapper.Map<GameEditServiceModel>(game);
 
             return View(gameForm);
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Edit(GameFormModel gameModel)
+        public IActionResult Edit(GameEditServiceModel gameModel)
         {
-            var adminId = this.admins.IdByUser(this.User.Id());
+            var adminId = admins.IdByUser(User.Id());
 
-            if (adminId == 0 || this.User.IsManager())
+            if (adminId == 0 && User.IsManager() == false)
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
+            }
+
+            if (games.IsAdminCreatorOfGame(gameModel.GameId, adminId) == false && User.IsManager() == false)
+            {
+                return BadRequest();
             }
 
             if (ModelState.IsValid == false)
@@ -267,13 +272,8 @@
                 return View(gameModel);
             }
 
-            if (this.games.IsByAdmin(gameModel.Id, adminId) == false && this.User.IsManager() == false)
-            {
-                return BadRequest();
-            }
-
-            var isEdit = this.games.Edit(
-                gameModel.Id,
+            var isEdit = games.Edit(
+                gameModel.GameId,
                 gameModel.Date,
                 gameModel.Time,
                 gameModel.NumberOfPlayers,
@@ -293,42 +293,49 @@
         }
 
         [Authorize]
-        public IActionResult Delete(string id)
+        public IActionResult Delete(string gameId)
         {
-            var userId = this.User.Id();
+            var userId = User.Id();
 
-            if (this.admins.IsAdmin(userId) == false && this.User.IsManager() == false)
+            if (admins.IsAdmin(userId) == false && User.IsManager() == false)
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            var game = this.games.GameIdUserId(id);
+            var adminId = admins.IdByUser(User.Id());
 
-            if (game.UserId != userId && this.User.IsManager() == false)
+            var isAdminCreatorOfGame = games.IsAdminCreatorOfGame(gameId, adminId);
+
+            if (isAdminCreatorOfGame == false && User.IsManager() == false)
             {
-                return Unauthorized();
+                TempData[GlobalMessageKey] = "Only creator of this game can delete game!";
+                return BadRequest();
             }
 
-            return View(game);
+            var gameDeleteDetails = games.GameIdUserId(gameId);
+
+            return View(gameDeleteDetails);
         }
 
         [HttpPost]
         [Authorize]
         public IActionResult Delete(GameIdUserIdServiceModel gameModel)
         {
-            var adminId = this.admins.IdByUser(this.User.Id());
+            var adminId = admins.IdByUser(User.Id());
 
-            if (adminId == 0 && this.User.IsManager() == false)
+            if (adminId == 0 && User.IsManager() == false)
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            if (this.games.IsByAdmin(gameModel.Id, adminId) == false && this.User.IsManager() == false)
+            var isAdminCreatorOfGame = games.IsAdminCreatorOfGame(gameModel.GameId, adminId);
+
+            if (isAdminCreatorOfGame == false && User.IsManager() == false)
             {
                 return BadRequest();
             }
 
-            if (this.games.Delete(gameModel.Id) == false)
+            if (games.Delete(gameModel.GameId) == false)
             {
                 return BadRequest();
             }
@@ -338,30 +345,30 @@
         }
 
         [Authorize]
-        public IActionResult AddUserToGame(string id)
+        public IActionResult AddUserToGame(string gameId)
         {
             if (ModelState.IsValid == false)
             {
                 return RedirectToAction(nameof(Details));
             }
 
-            if (this.games.AddUserToGame(id, this.User.Id()) == false)
+            if (games.AddUserToGame(gameId, User.Id()) == false)
             {
                 return BadRequest();
             }
 
             TempData[GlobalMessageKey] = "You joined game!";
-            return Redirect($"SeePlayers?id={id}");
+            return Redirect($"SeePlayers?gameId={gameId}");
         }
 
         [Authorize]
         public IActionResult SeePlayers(string gameId)
         {
-            var userId = this.User.Id();
+            var userId = User.Id();
 
-            if (this.games.IsUserIsJoinGame(gameId, userId) == false && this.User.IsManager() == false)
+            if (games.IsUserIsJoinGame(gameId, userId) == false && User.IsManager() == false)
             {
-                var gameIdUserId = this.games.GameIdUserId(gameId);
+                var gameIdUserId = games.GameIdUserId(gameId);
 
                 if (gameIdUserId.UserId != userId)
                 {
@@ -370,28 +377,28 @@
                 }
             }
 
-            var joinedPlayers = this.games.SeePlayers(gameId);
+            var joinedPlayers = games.SeePlayers(gameId);
 
             if (joinedPlayers.Any() == false)
             {
                 TempData[GlobalMessageKey] = "Still there are no players for this game!";
-                return Redirect($"Details?id={gameId}");
+                return Redirect($"Details?gameId={gameId}");
             }
 
             return View(joinedPlayers);
         }
 
         [Authorize]
-        public IActionResult ExitGame([FromQuery] string gameIdUserId)
+        public IActionResult ExitGame(string gameIdUserId)
         {
-            var currentUserId = this.User.Id();
+            var currentUserId = User.Id();
             var splitQuery = gameIdUserId.Split('*');
             var gameId = splitQuery[0];
             var userIdToDelete = splitQuery[1];
-            var currentUserAdminId = this.admins.IdByUser(currentUserId);
+            var currentUserAdminId = admins.IdByUser(currentUserId);
 
-            if (this.admins.IsAdmin(currentUserId) == false
-                && this.User.IsManager() == false
+            if (admins.IsAdmin(currentUserId) == false
+                && User.IsManager() == false
                 && currentUserId != userIdToDelete)
             {
                 TempData[GlobalMessageKey] = "You can not remove player from this game!";
@@ -399,22 +406,22 @@
             }
 
             if (currentUserAdminId == 0
-                && this.User.IsManager() == false
+                && User.IsManager() == false
                 && currentUserId != userIdToDelete)
             {
                 TempData[GlobalMessageKey] = "You can not remove player from this game!";
                 return RedirectToAction(nameof(All));
             }
 
-            if (this.games.IsByAdmin(gameId, currentUserAdminId) == false
-                && this.User.IsManager() == false
+            if (games.IsAdminCreatorOfGame(gameId, currentUserAdminId) == false
+                && User.IsManager() == false
                 && currentUserId != userIdToDelete)
             {
                 TempData[GlobalMessageKey] = "You can not remove player from this game!";
                 return RedirectToAction(nameof(All));
             }
 
-            var isUserRemoved = this.games.RemoveUserFromGame(gameId, userIdToDelete);
+            var isUserRemoved = games.RemoveUserFromGame(gameId, userIdToDelete);
 
             if (isUserRemoved == false)
             {
@@ -426,18 +433,16 @@
         }
 
         [Authorize]
-        public IActionResult Details(string id)
+        public IActionResult Details(string gameId)
         {
-            var isGamExist = this.games.IsExist(id);
+            var gameDetails = games.GetDetails(gameId);
 
-            if (isGamExist == false)
+            if (gameDetails == null)
             {
                 return BadRequest();
             }
 
-            var gameDetails = this.games.GetDetails(id);
-
-            if (this.games.IsUserIsJoinGame(id, this.User.Id()))
+            if (games.IsUserIsJoinGame(gameId, User.Id()))
             {
                 gameDetails.IsUserAlreadyJoin = true;
             }
@@ -448,13 +453,13 @@
         [Authorize]
         public IActionResult Mine()
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            var myGames = this.games
-                .ByUser(this.User.Id())
+            var myGames = games
+                .GamesWhereCreatorIsUser(User.Id())
                 .OrderByDescending(g => g.Date.Date);
 
             if (myGames.Any() == false)

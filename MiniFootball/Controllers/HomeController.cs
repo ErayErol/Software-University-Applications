@@ -25,18 +25,18 @@
         {
             const string latestGamesCacheKey = "LatestGamesCacheKey";
 
-            var lastGames = this.cache.Get<List<GameListingServiceModel>>(latestGamesCacheKey);
+            var lastGames = cache.Get<List<GameListingServiceModel>>(latestGamesCacheKey);
 
             if (lastGames == null)
             {
-                lastGames = this.games
+                lastGames = games
                     .Latest()
                     .ToList();
 
                 var cacheOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
 
-                this.cache.Set(latestGamesCacheKey, lastGames, cacheOptions);
+                cache.Set(latestGamesCacheKey, lastGames, cacheOptions);
             }
 
             // TODO: Add CSS Number Counter in Statistics

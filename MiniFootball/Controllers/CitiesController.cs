@@ -30,7 +30,7 @@
         [Authorize]
         public IActionResult Create()
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
                 TempData[GlobalMessageKey] = "Only Admins can create city!";
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
@@ -38,7 +38,7 @@
 
             return View(new CityFormModel
             {
-                Countries = this.countries.All()
+                Countries = countries.All()
             });
         }
 
@@ -46,27 +46,27 @@
         [HttpPost]
         public IActionResult Create(CityFormModel cityModel)
         {
-            var adminId = this.admins.IdByUser(this.User.Id());
+            var adminId = admins.IdByUser(User.Id());
 
-            if (adminId == 0 || this.User.IsManager())
+            if (adminId == 0 || User.IsManager())
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
             if (ModelState.IsValid == false)
             {
-                cityModel.Countries = this.countries.All();
+                cityModel.Countries = countries.All();
                 return View(cityModel);
             }
 
             cityModel.CountryName = FirstLetterUpperThenLower(cityModel.CountryName);
             cityModel.Name = FirstLetterUpperThenLower(cityModel.Name);
 
-            var cityId = this.cities.Create(cityModel.Name, cityModel.CountryName, adminId);
+            var cityId = cities.Create(cityModel.Name, cityModel.CountryName, adminId);
 
             if (cityId == 0)
             {
-                cityModel.Countries = this.countries.All();
+                cityModel.Countries = countries.All();
 
                 TempData[GlobalMessageKey] = "There are already a City with this Name and Country!";
                 return View(cityModel);

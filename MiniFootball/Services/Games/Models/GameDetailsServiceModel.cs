@@ -30,6 +30,6 @@
         public bool IsUserAlreadyJoin { get; set; }
 
         private bool IsHasPlaces
-            => this.Places > 0;
+            => Places > 0;
     }
 }

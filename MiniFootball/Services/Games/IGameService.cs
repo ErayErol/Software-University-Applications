@@ -1,11 +1,10 @@
 ﻿namespace MiniFootball.Services.Games
 {
+    using MiniFootball.Models;
     using Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Data.Models;
-    using MiniFootball.Models;
 
     public interface IGameService
     {
@@ -16,7 +15,8 @@
             int currentPage,
             int gamesPerPage);
 
-        string Create(int fieldId,
+        string Create(
+            int fieldId,
             DateTime date,
             int time,
             int numberOfPlayers,
@@ -30,15 +30,8 @@
             int adminId, 
             string phoneNumber);
 
-        IEnumerable<GameListingServiceModel> ByUser(string userId);
-        
-        IEnumerable<GameListingServiceModel> Latest();
-
-        GameDetailsServiceModel GetDetails(string id);
-
-        bool IsByAdmin(string id, int adminId);
-
-        bool Edit(string id,
+        bool Edit(
+            string id,
             DateTime? date,
             int? time,
             int? numberOfPlayers,
@@ -48,20 +41,28 @@
             bool goalkeeper,
             string description);
 
-        bool AddUserToGame(string id, string userId);
-        
-        bool IsUserIsJoinGame(string id, string userId);
+        IEnumerable<GameListingServiceModel> GamesWhereCreatorIsUser(string userId);
 
-        IQueryable<GameSeePlayersServiceModel> SeePlayers(string id);
-        
-        bool Delete(string id);
-        
-        GameIdUserIdServiceModel GameIdUserId(string id);
+        IEnumerable<GameListingServiceModel> Latest();
 
-        bool IsAlreadyReserved(int fieldId, DateTime date, int time);
+        IQueryable<GameSeePlayersServiceModel> SeePlayers(string gameId);
+
+        GameDetailsServiceModel GetDetails(string id);
+
+        GameIdUserIdServiceModel GameIdUserId(string gameId);
+
+        bool Delete(string gameId);
+
+        bool IsAdminCreatorOfGame(string gameId, int adminId);
+
+        bool AddUserToGame(string gameId, string userId);
+        
+        bool IsUserIsJoinGame(string gameId, string userId);
+        
+        bool IsFieldAlreadyReserved(int fieldId, DateTime date, int time);
         
         bool RemoveUserFromGame(string gameId, string userIdToDelete);
         
-        bool IsExist(string id);
+        //bool IsExist(string id);
     }
 }

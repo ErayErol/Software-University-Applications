@@ -19,7 +19,7 @@
         }
 
         public City City(string name)
-            => this.data
+            => data
                 .Cities
                 .FirstOrDefault(c => c.Name == name);
 
@@ -28,7 +28,7 @@
             string countryName, 
             int adminId)
         {
-            var city = this.City(name);
+            var city = City(name);
 
             if (city != null)
             {
@@ -38,12 +38,12 @@
             city = new City
             {
                 Name = name,
-                Country= this.countries.Country(countryName),
+                Country= countries.Country(countryName),
                 AdminId = adminId,
             };
 
-            this.data.Cities.Add(city);
-            this.data.SaveChanges();
+            data.Cities.Add(city);
+            data.SaveChanges();
 
             return city.Id;
         }

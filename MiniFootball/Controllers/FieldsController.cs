@@ -39,7 +39,7 @@
         [Authorize]
         public IActionResult Create()
         {
-            if (this.admins.IsAdmin(this.User.Id()) == false || this.User.IsManager())
+            if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
                 TempData[GlobalMessageKey] = "Only Admins can create fields!";
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
@@ -47,7 +47,7 @@
 
             return View(new FieldFormModel
             {
-                Countries = this.countries.All(),
+                Countries = countries.All(),
             });
         }
 
@@ -55,9 +55,9 @@
         [HttpPost]
         public IActionResult Create(FieldFormModel fieldModel)
         {
-            var adminId = this.admins.IdByUser(this.User.Id());
+            var adminId = admins.IdByUser(User.Id());
 
-            if (adminId == 0 || this.User.IsManager())
+            if (adminId == 0 || User.IsManager())
             {
                 TempData[GlobalMessageKey] = "Only Admins can create fields!";
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
@@ -65,21 +65,21 @@
 
             if (ModelState.IsValid == false)
             {
-                fieldModel.Countries = this.countries.All();
+                fieldModel.Countries = countries.All();
                 return View(fieldModel);
             }
 
-            fieldModel.Country = this.countries.Country(fieldModel.CountryName);
-            fieldModel.City = this.cities.City(fieldModel.CityName);
+            fieldModel.Country = countries.Country(fieldModel.CountryName);
+            fieldModel.City = cities.City(fieldModel.CityName);
 
             if (fieldModel.City == null)
             {
                 RedirectToAction("Create", "Cities");
             }
 
-            if (this.fields.IsExist(fieldModel.Name, fieldModel.Country.Id, fieldModel.City.Id))
+            if (fields.IsExist(fieldModel.Name, fieldModel.Country.Id, fieldModel.City.Id))
             {
-                fieldModel.Countries = this.countries.All();
+                fieldModel.Countries = countries.All();
                 TempData[GlobalMessageKey] = "There are already exist fields with this Name, Country and City";
                 return View(fieldModel);
             }
@@ -90,7 +90,7 @@
             fieldModel.Address = FirstLetterUpperThenLower(fieldModel.Address);
             fieldModel.Description = FirstLetterUpperThenLower(fieldModel.Description);
 
-            var fieldId = this.fields.Create(
+            var fieldId = fields.Create(
                 fieldModel.Name,
                 fieldModel.Country.Id,
                 fieldModel.City.Id,
@@ -115,14 +115,14 @@
 
         public IActionResult All([FromQuery] FieldAllQueryModel query)
         {
-            var queryResult = this.fields.All(
+            var queryResult = fields.All(
                 query.City,
                 query.SearchTerm,
                 query.Sorting,
                 query.CurrentPage,
                 query.PlaygroundsPerPage);
 
-            var queryCities = this.fields.Cities();
+            var queryCities = fields.Cities();
 
             query.TotalFields = queryResult.TotalFields;
             query.Fields = queryResult.Fields;
@@ -134,7 +134,7 @@
         [Authorize]
         public IActionResult Details(int id)
         {
-            var field = this.fields.GetDetails(id);
+            var field = fields.GetDetails(id);
 
             if (field == null)
             {
@@ -147,14 +147,14 @@
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var userId = this.User.Id();
+            var userId = User.Id();
 
-            if (this.admins.IsAdmin(userId) == false && this.User.IsManager() == false)
+            if (admins.IsAdmin(userId) == false && User.IsManager() == false)
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            var field = this.fields.GetDetails(id);
+            var field = fields.GetDetails(id);
 
             // TODO: Only creator of field can edit his own fields
             //if (field?.UserId != userId)
@@ -162,7 +162,7 @@
             //    return Unauthorized();
             //}
 
-            var fieldForm = this.mapper.Map<FieldFormModel>(field);
+            var fieldForm = mapper.Map<FieldFormModel>(field);
 
             return View(fieldForm);
         }
@@ -171,9 +171,9 @@
         [Authorize]
         public IActionResult Edit(FieldFormModel fieldModel)
         {
-            var adminId = this.admins.IdByUser(this.User.Id());
+            var adminId = admins.IdByUser(User.Id());
 
-            if (adminId == 0 && this.User.IsManager() == false)
+            if (adminId == 0 && User.IsManager() == false)
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
@@ -183,12 +183,12 @@
                 return View(fieldModel);
             }
 
-            if (this.fields.IsByAdmin(fieldModel.Id, adminId) == false && this.User.IsManager() == false)
+            if (fields.IsByAdmin(fieldModel.Id, adminId) == false && User.IsManager() == false)
             {
                 return BadRequest();
             }
 
-            var isEdit = this.fields.Edit(
+            var isEdit = fields.Edit(
                 fieldModel.Id,
                 fieldModel.Name,
                 fieldModel.Address,
@@ -211,14 +211,14 @@
         [Authorize]
         public IActionResult Delete(int id)
         {
-            var userId = this.User.Id();
+            var userId = User.Id();
 
-            if (this.admins.IsAdmin(userId) == false && this.User.IsManager() == false)
+            if (admins.IsAdmin(userId) == false && User.IsManager() == false)
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            var field = this.fields.GetDetails(id);
+            var field = fields.GetDetails(id);
 
             if (field == null)
             {
@@ -232,19 +232,19 @@
         [Authorize]
         public IActionResult Delete(FieldDetailServiceModel fieldDetails)
         {
-            var adminId = this.admins.IdByUser(this.User.Id());
+            var adminId = admins.IdByUser(User.Id());
 
-            if (adminId == 0 && this.User.IsManager() == false)
+            if (adminId == 0 && User.IsManager() == false)
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            if (this.fields.IsByAdmin(fieldDetails.Id, adminId) == false && this.User.IsManager() == false)
+            if (fields.IsByAdmin(fieldDetails.Id, adminId) == false && User.IsManager() == false)
             {
                 return BadRequest();
             }
 
-            if (this.fields.Delete(fieldDetails.Id) == false)
+            if (fields.Delete(fieldDetails.Id) == false)
             {
                 return BadRequest();
             }
@@ -256,14 +256,14 @@
         [Authorize]
         public IActionResult Mine(int id)
         {
-            var userId = this.User.Id();
+            var userId = User.Id();
 
-            if (this.admins.IsAdmin(userId) == false || this.User.IsManager())
+            if (admins.IsAdmin(userId) == false || User.IsManager())
             {
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            var myFields = this.fields
+            var myFields = fields
                 .ByUser(userId)
                 .OrderByDescending(f => f.Id);
 

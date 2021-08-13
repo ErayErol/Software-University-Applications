@@ -14,12 +14,12 @@
         }
 
         public bool IsAdmin(string userId)
-            => this.data
+            => data
                 .Admins
                 .Any(d => d.UserId == userId);
 
         public int IdByUser(string userId)
-            => this.data
+            => data
                 .Admins
                 .Where(d => d.UserId == userId)
                 .Select(d => d.Id)
@@ -33,8 +33,8 @@
                 UserId = userId
             };
 
-            this.data.Admins.Add(admin);
-            this.data.SaveChanges();
+            data.Admins.Add(admin);
+            data.SaveChanges();
 
             return admin.Id;
         }
