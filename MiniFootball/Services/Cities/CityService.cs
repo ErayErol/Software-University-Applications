@@ -30,13 +30,13 @@
             string countryName,
             int adminId)
         {
-            var id = this.CityIdByName(name);
+            var id = CityIdByName(name);
 
-            var city = this.data.Cities.FirstOrDefault(c => c.Id == id);
+            var city = data.Cities.FirstOrDefault(c => c.Id == id);
 
             if (city != null)
             {
-                if (city.CountryId == this.countries.CountryIdByName(countryName))
+                if (city.CountryId == countries.CountryIdByName(countryName))
                 {
                     return 0;
                 }

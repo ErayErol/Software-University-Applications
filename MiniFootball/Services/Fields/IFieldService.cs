@@ -48,6 +48,8 @@
 
         FieldDetailServiceModel GetDetails(int id);
 
+        FieldDeleteServiceModel FieldDeleteInfo(int id);
+
         string FieldName(int fieldId);
 
         bool FieldExist(int fieldId);

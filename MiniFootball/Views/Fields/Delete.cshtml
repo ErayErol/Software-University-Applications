@@ -8,19 +8,24 @@
     <div class="row">
         <div class="offset-1 offset-sm-1 offset-md-2 offset-lg-3 offset-xl-3 col-10 col-sm-9 col-md-8 col-lg-6 col-xl-5">
 
-            <h3 class="mt-3 mb-3 text-center">Are you sure you want to delete this game</h3>
-
-            <form method="post" class="form-group">
-
-                <div class="my-item-center">
-                    <a href="/Fields/Details?id=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">No, my mistake!</a>
+            <div class="card mb-4 img-thumbnail">
+                <img class="card-img-top" src="@Model.ImageUrl" alt="@Model.Name">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="card-title h4-like">@Model.Name</div>
+                    </div>
+                    <h6 class="card-title">Location : @Model.CountryName, @Model.CityName</h6>
+                    <h3 class="card-title mb-4 text-danger">Are you sure you want to delete this field?</h3>
+                    <form method="post" class="form-group">
+                        <div class="my-item-center">
+                            <a href="/Fields/Details?id=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">No, my mistake!</a>
+                        </div>
+                        <div class="my-item-center">
+                            <input class="btn-danger min-width-size btn text-uppercase" type="submit" value="Yes, delete!" />
+                        </div>
+                    </form>
                 </div>
-
-                <div class="my-item-center">
-                    <input class="btn-danger min-width-size btn text-uppercase" type="submit" value="Yes, delete!" />
-                </div>
-
-            </form>
+            </div>
 
         </div>
     </div>

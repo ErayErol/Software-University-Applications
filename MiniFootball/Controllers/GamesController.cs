@@ -13,6 +13,7 @@
     using Services.Games.Models;
     using Services.Users;
     using System.Linq;
+    using Services.Cities;
     using static Convert;
     using static WebConstants;
 
@@ -22,6 +23,7 @@
         private readonly ICountryService countries;
         private readonly IGameService games;
         private readonly IAdminService admins;
+        private readonly ICityService cities;
         private readonly IFieldService fields;
         private readonly IMapper mapper;
 
@@ -31,7 +33,8 @@
             IAdminService admins,
             IFieldService fields,
             IMapper mapper,
-            IUserService users)
+            IUserService users, 
+            ICityService cities)
         {
             this.countries = countries;
             this.games = games;
@@ -39,6 +42,7 @@
             this.fields = fields;
             this.mapper = mapper;
             this.users = users;
+            this.cities = cities;
         }
 
         public IActionResult All([FromQuery] GameAllQueryModel query)
@@ -93,11 +97,9 @@
 
             gameModel.CityName = ToTitleCase(gameModel.CityName);
 
-            var isCityExistInCountry = countries
-                .Cities(gameModel.CountryName)?
-                .Any(c => c == gameModel.CityName);
+            var cityId = cities.CityIdByName(gameModel.CityName);
 
-            if (isCityExistInCountry == false)
+            if (cityId == 0)
             {
                 TempData[GlobalMessageKey] =
                     "This City does not exist in this Country. First you have to create City and then create Game!";
@@ -171,6 +173,7 @@
             return View(new CreateGameFormModel
             {
                 FieldId = gameModel.FieldId,
+                FieldName = fields.FieldName(gameModel.FieldId)
             });
         }
 
@@ -314,14 +317,14 @@
                 return BadRequest();
             }
 
-            var gameDeleteDetails = games.GameIdUserId(gameId);
+            var gameDeleteDetails = games.GameDeleteInfo(gameId);
 
             return View(gameDeleteDetails);
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Delete(GameIdUserIdServiceModel gameModel)
+        public IActionResult Delete(GameDeleteServiceModel gameModel)
         {
             var adminId = admins.IdByUser(User.Id());
 
@@ -370,7 +373,7 @@
 
             if (games.IsUserIsJoinGame(gameId, userId) == false && User.IsManager() == false)
             {
-                var gameIdUserId = games.GameIdUserId(gameId);
+                var gameIdUserId = games.GameDeleteInfo(gameId);
 
                 if (gameIdUserId.UserId != userId)
                 {

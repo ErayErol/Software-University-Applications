@@ -49,7 +49,7 @@
 
         GameDetailsServiceModel GetDetails(string id);
 
-        GameIdUserIdServiceModel GameIdUserId(string gameId);
+        GameDeleteServiceModel GameDeleteInfo(string gameId);
 
         bool Delete(string gameId);
 
@@ -62,7 +62,5 @@
         bool IsFieldAlreadyReserved(int fieldId, DateTime date, int time);
         
         bool RemoveUserFromGame(string gameId, string userIdToDelete);
-        
-        //bool IsExist(string id);
     }
 }

@@ -13,13 +13,13 @@
         public MappingProfile()
         {
             CreateMap<Game, GameListingServiceModel>();
-            CreateMap<Game, GameIdUserIdServiceModel>();
+            CreateMap<Game, GameDeleteServiceModel>();
 
             CreateMap<Game, GameDetailsServiceModel>()
                 .ForMember(gDSM => gDSM.UserId, cfg => cfg.MapFrom(g => g.Admin.UserId))
                 .ForMember(gDSM => gDSM.GameId, cfg => cfg.MapFrom(g => g.Id));
 
-            CreateMap<Game, GameIdUserIdServiceModel>()
+            CreateMap<Game, GameDeleteServiceModel>()
                 .ForMember(gDSM => gDSM.UserId, cfg => cfg.MapFrom(g => g.Admin.UserId))
                 .ForMember(gDSM => gDSM.GameId, cfg => cfg.MapFrom(g => g.Id));
 
@@ -31,6 +31,7 @@
             CreateMap<Field, GameFieldListingServiceModel>();
             CreateMap<Field, FieldListingServiceModel>();
             CreateMap<Field, FieldDetailServiceModel>();
+            CreateMap<Field, FieldDeleteServiceModel>();
             CreateMap<FieldDetailServiceModel, FieldCreateFormModel>();
             CreateMap<FieldDetailServiceModel, FieldEditFormModel>();
 

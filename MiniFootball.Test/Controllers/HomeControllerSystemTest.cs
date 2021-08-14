@@ -15,7 +15,7 @@
         public async Task IndexShouldReturnCorrectStatusCode()
         {
             // Arrange
-            var client = this.factory.CreateClient();
+            var client = factory.CreateClient();
 
             // Act
             var result = await client.GetAsync("/");

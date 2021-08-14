@@ -210,7 +210,7 @@
                     LastName = g.User.LastName,
                     NickName = g.User.NickName,
                     PhoneNumber = g.User.PhoneNumber,
-                    IsCreator = GameIdUserId(gameId).UserId == g.UserId,
+                    IsCreator = GameDeleteInfo(gameId).UserId == g.UserId,
                 });
 
             return games;
@@ -234,11 +234,11 @@
             return true;
         }
 
-        public GameIdUserIdServiceModel GameIdUserId(string gameId)
+        public GameDeleteServiceModel GameDeleteInfo(string gameId)
             => data
                 .Games
                 .Where(g => g.Id == gameId)
-                .ProjectTo<GameIdUserIdServiceModel>(mapper)
+                .ProjectTo<GameDeleteServiceModel>(mapper)
                 .FirstOrDefault();
 
         public bool IsFieldAlreadyReserved(int fieldId, DateTime date, int time) 
@@ -295,12 +295,6 @@
 
             var joinedPayers = SeePlayers(id).Count();
             gameDetails.JoinedPlayersCount = joinedPayers;
-            //var availablePlaces = gameDetails.NumberOfPlayers.Value - joinedPayers;
-
-            //if (gameDetails.Places != availablePlaces)
-            //{
-            //    gameDetails.Places = availablePlaces;
-            //}
 
             return gameDetails;
         }

@@ -28,6 +28,12 @@
         [Url(ErrorMessage = Url)]
         public string FacebookUrl { get; set; }
 
+        [Display(Name = "Image")]
+        public string FieldImageUrl { get; set; }
+
+        [Display(Name = "Field:")]
+        public string FieldName { get; set; }
+
         [Required(ErrorMessage = Empty)]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = Range)]
         public string Description { get; set; }

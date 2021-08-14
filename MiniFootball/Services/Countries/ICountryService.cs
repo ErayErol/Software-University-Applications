@@ -4,8 +4,6 @@
 
     public interface ICountryService
     {
-        IEnumerable<string> Cities(string countryName);
-        
         List<string> All();
         
         int CountryIdByName(string name);

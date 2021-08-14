@@ -31,7 +31,7 @@
             int currentPage,
             int fieldsPerPage)
         {
-            var fieldsQuery = this.data.Fields.AsQueryable();
+            var fieldsQuery = data.Fields.AsQueryable();
 
             var city = data
                 .Cities
@@ -109,8 +109,8 @@
                 AdminId = adminId
             };
 
-            this.data.Fields.Add(field);
-            this.data.SaveChanges();
+            data.Fields.Add(field);
+            data.SaveChanges();
 
             return field.Id;
         }
@@ -127,7 +127,7 @@
             string description, 
             string phoneNumber)
         {
-            var field = this.data.Fields.Find(id);
+            var field = data.Fields.Find(id);
 
             if (field == null)
             {
@@ -144,14 +144,14 @@
             field.Cafe = cafe;
             field.Description = ToSentenceCase(description);
 
-            this.data.SaveChanges();
+            data.SaveChanges();
 
             return true;
         }
 
         public bool Delete(int id)
         {
-            var field = this.data.Fields.Find(id);
+            var field = data.Fields.Find(id);
 
             if (field == null)
             {
@@ -162,26 +162,26 @@
                 .Games
                 .Where(g => g.FieldId == field.Id);
 
-            this.data.Games.RemoveRange(gamesToRemove);
-            this.data.SaveChanges();
+            data.Games.RemoveRange(gamesToRemove);
+            data.SaveChanges();
 
-            this.data.Fields.Remove(field);
-            this.data.SaveChanges();
+            data.Fields.Remove(field);
+            data.SaveChanges();
 
             return true;
         }
 
         public bool IsCorrectParameters(int fieldId, string name, string countryName, string cityName)
         {
-            var field = this.data.Fields.FirstOrDefault(f => f.Id == fieldId);
+            var field = data.Fields.FirstOrDefault(f => f.Id == fieldId);
 
             if (field == null)
             {
                 return false;
             }
 
-            field.Country = this.data.Countries.Find(field.CountryId);
-            field.City = this.data.Cities.Find(field.CityId);
+            field.Country = data.Countries.Find(field.CountryId);
+            field.City = data.Cities.Find(field.CityId);
 
             return
                 field != null &&
@@ -191,12 +191,12 @@
         }
 
         public bool IsAlreadyExist(string name, int countryId, int cityId)
-            => this.data
+            => data
                 .Fields
                 .Any(p => p.Name == name && p.Country.Id == countryId && p.City.Id == cityId);
 
         public IEnumerable<string> AllCreatedCitiesName()
-            => this.data
+            => data
                 .Fields
                 .Select(p => p.City.Name)
                 .Distinct()
@@ -204,19 +204,26 @@
                 .AsEnumerable();
 
         public IEnumerable<GameFieldListingServiceModel> FieldsListing(string cityName, string countryName)
-            => this.data
+            => data
                 .Fields
                 .Where(x => x.City.Name == cityName && x.Country.Name == countryName)
                 .ProjectTo<GameFieldListingServiceModel>(mapper)
                 .ToList();
 
         public bool FieldExist(int fieldId)
-            => this.data
+            => data
                 .Fields
                 .Any(p => p.Id == fieldId);
 
+        public FieldDeleteServiceModel FieldDeleteInfo(int id)
+            => data
+                .Fields
+                .Where(f => f.Id == id)
+                .ProjectTo<FieldDeleteServiceModel>(mapper)
+                .FirstOrDefault();
+
         public string FieldName(int fieldId)
-            => this.data
+            => data
                 .Fields
                 .Where(f => f.Id == fieldId)
                 .Select(f => f.Name)
@@ -231,13 +238,13 @@
 
         public IEnumerable<FieldListingServiceModel> FieldsWhereCreatorIsUser(string userId) 
             => GetFields(
-                this.data
+                data
                     .Fields
                     .Where(g => g.Admin.UserId == userId),
                 mapper);
 
         public bool IsAdminCreatorOfField(int id, int adminId) 
-            => this.data
+            => data
                 .Fields
                 .Any(c => c.Id == id && c.AdminId == adminId);
 
