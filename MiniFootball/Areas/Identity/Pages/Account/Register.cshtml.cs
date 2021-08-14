@@ -11,6 +11,7 @@
 
     using static Data.DataConstants.User;
 
+    using static Convert;
     using static WebConstants;
 
     [AllowAnonymous]
@@ -81,6 +82,10 @@
         {
             if (ModelState.IsValid)
             {
+                Input.FirstName = ToTitleCase(Input.FirstName);
+                Input.LastName = ToTitleCase(Input.LastName);
+                Input.NickName = ToTitleCase(Input.NickName);
+
                 var user = new User
                 {
                     UserName = Input.Email,

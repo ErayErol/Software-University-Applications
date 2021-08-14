@@ -8,6 +8,11 @@
     using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
 
+    using static Data.DataConstants.User;
+
+    using static Convert;
+    using static WebConstants;
+
     public partial class IndexModel : PageModel
     {
         private readonly UserManager<User> _userManager;
@@ -21,24 +26,31 @@
             _signInManager = signInManager;
         }
 
+        public string Email { get; set; }
+
+        [Required]
         [Display(Name = "First Name")]
+        [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
         public string FirstName { get; set; }
 
+        [Required]
         [Display(Name = "Last Name")]
+        [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
         public string LastName { get; set; }
 
         [Display(Name = "Nick Name")]
+        [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
         public string NickName { get; set; }
 
+        [Required]
         public DateTime? Birthdate { get; set; }
 
-        [Display(Name = "Image")]
-        public string ImageUrl { get; set; }
-
+        [Required]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
-        public string Username { get; set; }
+        [Display(Name = "Image")]
+        public string ImageUrl { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -56,7 +68,7 @@
             var userName = await _userManager.GetUserNameAsync(user);
 
             ImageUrl = user.ImageUrl;
-            Username = userName;
+            Email = userName;
             FirstName = user.FirstName;
             LastName= user.LastName;
             NickName = user.NickName;
@@ -86,6 +98,10 @@
 
             if (!ModelState.IsValid)
             {
+                user.FirstName = ToTitleCase(user.FirstName);
+                user.LastName = ToTitleCase(user.LastName);
+                user.NickName = ToTitleCase(user.NickName);
+
                 await LoadAsync(user);
                 return Page();
             }

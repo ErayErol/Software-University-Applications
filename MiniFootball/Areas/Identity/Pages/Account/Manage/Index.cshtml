@@ -13,8 +13,8 @@
             </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group my-item-center">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control text-center min-width-size" disabled />
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control text-center min-width-size" disabled />
             </div>
             <div class="form-group my-item-center">
                 <label asp-for="FirstName"></label>
@@ -40,7 +40,7 @@
                 <label asp-for="ImageUrl"></label>
                 <img src="@Model.ImageUrl" class="img-thumbnail" />
             </div>
-            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+@*            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>*@
         </form>
     </div>
 </div>

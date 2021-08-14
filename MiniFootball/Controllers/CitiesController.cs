@@ -8,7 +8,7 @@
     using Services.Cities;
     using Services.Countries;
 
-    using static MyWebCase;
+    using static Convert;
     using static WebConstants;
 
     public class CitiesController : Controller
@@ -59,8 +59,8 @@
                 return View(cityModel);
             }
 
-            cityModel.CountryName = FirstLetterUpperThenLower(cityModel.CountryName);
-            cityModel.Name = FirstLetterUpperThenLower(cityModel.Name);
+            cityModel.CountryName = ToTitleCase(cityModel.CountryName);
+            cityModel.Name = ToTitleCase(cityModel.Name);
 
             var cityId = cities.Create(cityModel.Name, cityModel.CountryName, adminId);
 

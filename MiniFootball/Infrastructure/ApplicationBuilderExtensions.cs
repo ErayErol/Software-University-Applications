@@ -11,6 +11,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using static Areas.Manager.ManagerConstants;
 
     public static class ApplicationBuilderExtensions
@@ -299,21 +300,36 @@
                     }
                 }
 
+                var firstAdminUserId = data.Admins
+                    .FirstOrDefault(a => a.Id == 1).UserId;
+                var firstPhoneNumber = data.Users
+                    .Where(u => u.Id == firstAdminUserId)
+                    .Select(u => u.PhoneNumber)
+                    .FirstOrDefault();
+
+                var secondAdminUserId = data.Admins
+                    .FirstOrDefault(a => a.Id == 2).UserId;
+                var secondPhoneNumber = data.Users
+                    .Where(u => u.Id == secondAdminUserId)
+                    .Select(u => u.PhoneNumber)
+                    .FirstOrDefault();
+
                 data.Games.AddRange(
-                    new Game
-                    {
-                        AdminId = 1,
-                        FieldId = 1,
-                        Date = DateTime.ParseExact($"{month:D2}/{day:D2}/{year}", "d", CultureInfo.InvariantCulture),
-                        Time = 20,
-                        Ball = true,
-                        Jerseys = true,
-                        Description = "Just friendly game. It will be fun!",
-                        NumberOfPlayers = 12,
-                        Places = 12,
-                        HasPlaces = true,
-                        FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
-                    },
+                new Game
+                {
+                    AdminId = 1,
+                    FieldId = 1,
+                    Date = DateTime.ParseExact($"{month:D2}/{day:D2}/{year}", "d", CultureInfo.InvariantCulture),
+                    Time = 20,
+                    Ball = true,
+                    Jerseys = true,
+                    Description = "Just friendly game. It will be fun!",
+                    NumberOfPlayers = 12,
+                    Places = 12,
+                    HasPlaces = true,
+                    FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
+                    PhoneNumber = firstPhoneNumber,
+                },
                     new Game
                     {
                         AdminId = 2,
@@ -327,6 +343,7 @@
                         Places = 8,
                         HasPlaces = true,
                         FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
+                        PhoneNumber = secondPhoneNumber,
                     });
             }
 

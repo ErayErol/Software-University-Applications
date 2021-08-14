@@ -13,7 +13,7 @@
     using Services.Games.Models;
     using Services.Users;
     using System.Linq;
-    using static MyWebCase;
+    using static Convert;
     using static WebConstants;
 
     public class GamesController : Controller
@@ -91,7 +91,7 @@
                 return View(gameModel);
             }
 
-            gameModel.CityName = FirstLetterUpperThenLower(gameModel.CityName);
+            gameModel.CityName = ToTitleCase(gameModel.CityName);
 
             var isCityExistInCountry = countries
                 .Cities(gameModel.CountryName)?

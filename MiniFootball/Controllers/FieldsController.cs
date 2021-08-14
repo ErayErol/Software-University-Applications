@@ -11,7 +11,7 @@
     using Services.Countries;
     using Services.Fields;
 
-    using static MyWebCase;
+    using static Convert;
     using static WebConstants;
 
     public class FieldsController : Controller
@@ -84,11 +84,11 @@
                 return View(fieldModel);
             }
 
-            fieldModel.Name = FirstLetterUpperThenLower(fieldModel.Name);
-            fieldModel.CountryName = FirstLetterUpperThenLower(fieldModel.CountryName);
-            fieldModel.CityName = FirstLetterUpperThenLower(fieldModel.CityName);
-            fieldModel.Address = FirstLetterUpperThenLower(fieldModel.Address);
-            fieldModel.Description = FirstLetterUpperThenLower(fieldModel.Description);
+            fieldModel.Name = ToTitleCase(fieldModel.Name);
+            fieldModel.CountryName = ToTitleCase(fieldModel.CountryName);
+            fieldModel.CityName = ToTitleCase(fieldModel.CityName);
+            fieldModel.Address = ToTitleCase(fieldModel.Address);
+            fieldModel.Description = ToTitleCase(fieldModel.Description);
 
             var fieldId = fields.Create(
                 fieldModel.Name,
