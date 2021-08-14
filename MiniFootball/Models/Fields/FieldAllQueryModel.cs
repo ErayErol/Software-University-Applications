@@ -19,6 +19,6 @@
 
         public IEnumerable<string> Cities { get; set; }
 
-        public IEnumerable<FieldServiceModel> Fields { get; set; }
+        public IEnumerable<FieldListingServiceModel> Fields { get; set; }
     }
 }

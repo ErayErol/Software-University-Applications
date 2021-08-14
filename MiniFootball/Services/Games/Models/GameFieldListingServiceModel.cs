@@ -1,6 +1,6 @@
 ﻿namespace MiniFootball.Services.Games.Models
 {
-    public class FieldListingServiceModel
+    public class GameFieldListingServiceModel
     {
         public int Id { get; set; }
 

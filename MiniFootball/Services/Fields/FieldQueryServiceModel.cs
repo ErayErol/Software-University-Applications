@@ -6,6 +6,6 @@
     {
         public int TotalFields { get; set; }
 
-        public IEnumerable<FieldServiceModel> Fields { get; set; }
+        public IEnumerable<FieldListingServiceModel> Fields { get; set; }
     }
 }

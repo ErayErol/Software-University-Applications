@@ -2,7 +2,7 @@
 {
     using Data.Models;
 
-    public class FieldServiceModel
+    public class FieldListingServiceModel
     {
         public int Id { get; set; }
 

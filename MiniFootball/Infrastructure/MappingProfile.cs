@@ -28,10 +28,11 @@
 
             CreateMap<CreateGameSecondStepViewModel, CreateGameLastStepViewModel>();
 
-            CreateMap<Field, FieldServiceModel>();
+            CreateMap<Field, GameFieldListingServiceModel>();
             CreateMap<Field, FieldListingServiceModel>();
             CreateMap<Field, FieldDetailServiceModel>();
-            CreateMap<FieldDetailServiceModel, FieldFormModel>();
+            CreateMap<FieldDetailServiceModel, FieldCreateFormModel>();
+            CreateMap<FieldDetailServiceModel, FieldEditFormModel>();
 
             CreateMap<User, UserDetailsServiceModel>();
         }

@@ -51,7 +51,7 @@
                     query.CurrentPage,
                     query.GamesPerPage);
 
-            var cities = fields.Cities();
+            var cities = fields.AllCreatedCitiesName();
 
             query.TotalGames = queryResult.TotalGames;
             query.Games = queryResult.Games;
@@ -159,7 +159,7 @@
                 return BadRequest();
             }
 
-            if (fields.IsCorrectCountryAndCity(
+            if (fields.IsCorrectParameters(
                 gameModel.FieldId,
                 gameModel.Name,
                 gameModel.CountryName,
@@ -208,6 +208,8 @@
                 return View(gameModel);
             }
 
+
+            gameModel.Description = ToSentenceCase(gameModel.Description);
             var phoneNumber = users.UserDetails(User.Id()).PhoneNumber;
 
             var gameId = games.Create(

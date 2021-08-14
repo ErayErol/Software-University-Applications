@@ -1,12 +1,18 @@
 ﻿namespace MiniFootball.Services.Fields
 {
-    using System;
-    using Games.Models;
     using Models;
     using System.Collections.Generic;
+    using Games.Models;
 
     public interface IFieldService
     {
+        FieldQueryServiceModel All(
+            string cityName,
+            string searchTerm,
+            Sorting sorting,
+            int currentPage,
+            int fieldsPerPage);
+
         int Create(string name,
             int countryId,
             int cityId,
@@ -19,32 +25,7 @@
             bool changingRoom,
             string description, int adminId);
 
-        bool IsExist(
-            string name,
-            int countryId,
-            int cityId);
-
-        IEnumerable<string> Cities();
-
-        IEnumerable<FieldListingServiceModel> FieldsListing(string cityName, string countryName);
-
-        bool FieldExist(int fieldId);
-
-        FieldQueryServiceModel All(
-            string cityName,
-            string searchTerm,
-            Sorting sorting,
-            int currentPage,
-            int fieldsPerPage);
-
-        bool IsCorrectCountryAndCity(int fieldId, string name, string country, string city);
-
-        string FieldName(int fieldId);
-
-        FieldDetailServiceModel GetDetails(int id);
-
-        bool Edit(
-            int id,
+        bool Edit(int id,
             string name,
             string address,
             string imageUrl,
@@ -52,12 +33,29 @@
             bool shower,
             bool changingRoom,
             bool cafe,
-            string description);
+            string description, string phoneNumber);
+
+        bool IsAlreadyExist(
+            string name,
+            int countryId,
+            int cityId);
+
+        IEnumerable<string> AllCreatedCitiesName();
+
+        IEnumerable<GameFieldListingServiceModel> FieldsListing(string cityName, string countryName);
+
+        IEnumerable<FieldListingServiceModel> FieldsWhereCreatorIsUser(string id);
+
+        FieldDetailServiceModel GetDetails(int id);
+
+        string FieldName(int fieldId);
+
+        bool FieldExist(int fieldId);
 
         bool Delete(int id);
-
-        IEnumerable<FieldServiceModel> ByUser(string id);
         
-        bool IsByAdmin(int id, int adminId);
+        bool IsAdminCreatorOfField(int id, int adminId);
+
+        bool IsCorrectParameters(int fieldId, string name, string country, string city);
     }
 }

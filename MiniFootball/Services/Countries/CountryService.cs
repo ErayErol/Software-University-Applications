@@ -71,10 +71,12 @@
                 .Select(c => c.Name)
                 .FirstOrDefault();
 
-        public Country Country(string name)
+        public int CountryIdByName(string name)
             => data
                 .Countries
-                .FirstOrDefault(c => c.Name == name);
+                .Where(c => c.Name == name)
+                .Select(c => c.Id)
+                .FirstOrDefault();
 
         public IEnumerable<string> Cities(string countryName) 
             => data

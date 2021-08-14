@@ -5,6 +5,6 @@
 
     public class CreateGameSecondStepViewModel : CreateGameLastStepViewModel
     {
-        public IEnumerable<FieldListingServiceModel> Fields { get; set; }
+        public IEnumerable<GameFieldListingServiceModel> Fields { get; set; }
     }
 }
