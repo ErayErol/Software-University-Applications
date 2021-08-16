@@ -14,15 +14,15 @@
                     </div>
 
                     <div class="text-center mt-4 my-item-center my-item-center-btns">
-                        <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" class="btn min-width-size">Info</a>
-                        <a asp-controller="Fields" asp-action="Edit" asp-route-id="@field.Id" class="btn btn-warning min-width-size">Edit</a>
-                        <a asp-controller="Fields" asp-action="Delete" asp-route-id="@field.Id" class="btn btn-danger min-width-size">Delete</a>
+                        <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" asp-route-information="@field.Name" class="btn min-width-size">Info</a>
+                        <a asp-controller="Fields" asp-action="Edit" asp-route-id="@field.Id" asp-route-information="@field.Name" class="btn btn-warning min-width-size">Edit</a>
+                        <a asp-controller="Fields" asp-action="Delete" asp-route-id="@field.Id" asp-route-information="@field.Name" class="btn btn-danger min-width-size">Delete</a>
                     </div>
                 }
                 else
                 {
                     <div class="text-center my-item-center">
-                        <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" class="btn">@field.Name - @field.Country.Name @field.City.Name</a>
+                        <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" asp-route-information="@field.Name" class="btn">@field.Name - @field.Country.Name @field.City.Name</a>
                     </div>
                 }
             </div>

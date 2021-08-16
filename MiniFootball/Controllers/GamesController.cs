@@ -230,12 +230,17 @@
                 adminId,
                 phoneNumber);
 
+            if (gameId == string.Empty)
+            {
+                return BadRequest();
+            }
+
             TempData[GlobalMessageKey] = "You created game!";
-            return Redirect($"Details?gameId={gameId}");
+            return RedirectToAction("Mine");
         }
 
         [Authorize]
-        public IActionResult Edit(string gameId)
+        public IActionResult Edit(string gameId, string information)
         {
             var userId = User.Id();
 
@@ -245,6 +250,11 @@
             }
 
             var game = games.GetDetails(gameId);
+
+            if (game.FieldName.Equals(information) == false)
+            {
+                return BadRequest();
+            }
 
             if (game?.UserId != userId && User.IsManager() == false)
             {
@@ -294,11 +304,11 @@
             }
 
             TempData[GlobalMessageKey] = "You edited game!";
-            return RedirectToAction(nameof(All));
+            return Redirect($"/Details/{gameModel.GameId}/{gameModel.FieldName}");
         }
 
         [Authorize]
-        public IActionResult Delete(string gameId)
+        public IActionResult Delete(string gameId, string information)
         {
             var userId = User.Id();
 
@@ -318,6 +328,11 @@
             }
 
             var gameDeleteDetails = games.GameDeleteInfo(gameId);
+
+            if (gameDeleteDetails.FieldName.Equals(information) == false)
+            {
+                return BadRequest();
+            }
 
             return View(gameDeleteDetails);
         }
@@ -387,19 +402,15 @@
             if (joinedPlayers.Any() == false)
             {
                 TempData[GlobalMessageKey] = "Still there are no players for this game!";
-                return Redirect($"Details?gameId={gameId}");
             }
 
             return View(joinedPlayers);
         }
 
         [Authorize]
-        public IActionResult ExitGame(string gameIdUserId)
+        public IActionResult ExitGame(string gameId, string userIdToDelete)
         {
             var currentUserId = User.Id();
-            var splitQuery = gameIdUserId.Split('*');
-            var gameId = splitQuery[0];
-            var userIdToDelete = splitQuery[1];
             var currentUserAdminId = admins.IdByUser(currentUserId);
 
             if (admins.IsAdmin(currentUserId) == false
@@ -438,11 +449,11 @@
         }
 
         [Authorize]
-        public IActionResult Details(string gameId)
+        public IActionResult Details(string gameId, string information)
         {
             var gameDetails = games.GetDetails(gameId);
 
-            if (gameDetails == null)
+            if (gameDetails == null || gameDetails.FieldName.Equals(information) == false)
             {
                 return BadRequest();
             }

@@ -127,11 +127,11 @@
             }
 
             TempData[GlobalMessageKey] = "You created field!";
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Mine));
         }
 
         [Authorize]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int id, string information)
         {
             var userId = User.Id();
 
@@ -141,6 +141,11 @@
             }
 
             var field = fields.GetDetails(id);
+
+            if (field.Name.Equals(information) == false)
+            {
+                return BadRequest();
+            }
 
             var fieldForm = mapper.Map<FieldEditFormModel>(field);
 
@@ -186,11 +191,11 @@
             }
 
             TempData[GlobalMessageKey] = "You edited field!";
-            return RedirectToAction(nameof(All));
+            return Redirect($"/Details/{fieldModel.Id}/{fieldModel.Name}");
         }
 
         [Authorize]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, string information)
         {
             var userId = User.Id();
 
@@ -207,6 +212,11 @@
             }
 
             var fieldDeleteDetails = fields.FieldDeleteInfo(id);
+
+            if (fieldDeleteDetails.Name.Equals(information) == false)
+            {
+                return BadRequest();
+            }
 
             return View(fieldDeleteDetails);
         }
@@ -237,16 +247,16 @@
         }
 
         [Authorize]
-        public IActionResult Details(int id)
+        public IActionResult Details(int id, string information)
         {
-            var field = fields.GetDetails(id);
+            var fieldDetails = fields.GetDetails(id);
 
-            if (field == null)
+            if (fieldDetails == null || fieldDetails.Name.Equals(information) == false)
             {
                 return BadRequest();
             }
 
-            return View(field);
+            return View(fieldDetails);
         }
 
         [Authorize]

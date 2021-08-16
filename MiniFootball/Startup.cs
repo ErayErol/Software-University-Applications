@@ -80,13 +80,6 @@ namespace MiniFootball
                 .AddTransient<IAdminService, AdminService>()
                 .AddTransient<IStatisticsService, StatisticsService>()
                 .AddTransient<ICountryService, CountryService>();
-
-            // Cloudinary Setup
-            //Cloudinary cloudinary = new Cloudinary(new Account(
-            //    CloudName, // this.configuration["Cloudinary:CloudName"],
-            //    ApiKey, //this.configuration["Cloudinary:ApiKey"],
-            //    ApiSecret)); //this.configuration["Cloudinary:ApiSecret"]));
-            //services.AddSingleton(cloudinary);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -113,6 +106,42 @@ namespace MiniFootball
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
+                    endpoints
+                        .MapControllerRoute(
+                        name: "Game Details",
+                        pattern: "/Games/Details/{gameId}/{information}",
+                        defaults: new { controller = "Games", action = "Details" });
+
+                    endpoints
+                        .MapControllerRoute(
+                            name: "Game Delete",
+                            pattern: "/Games/Delete/{gameId}/{information}",
+                            defaults: new { controller = "Games", action = "Delete" });
+
+                    endpoints
+                        .MapControllerRoute(
+                            name: "Game Edit",
+                            pattern: "/Games/Edit/{gameId}/{information}",
+                            defaults: new { controller = "Games", action = "Edit" });
+
+                    endpoints
+                        .MapControllerRoute(
+                            name: "Field Details",
+                            pattern: "/Field/Details/{id}/{information}",
+                            defaults: new { controller = "Fields", action = "Details" });
+
+                    endpoints
+                        .MapControllerRoute(
+                            name: "Field Edit",
+                            pattern: "/Field/Edit/{id}/{information}",
+                            defaults: new { controller = "Fields", action = "Edit" });
+
+                    endpoints
+                        .MapControllerRoute(
+                            name: "Field Delete",
+                            pattern: "/Field/Delete/{id}/{information}",
+                            defaults: new { controller = "Fields", action = "Delete" });
+
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();
                 });

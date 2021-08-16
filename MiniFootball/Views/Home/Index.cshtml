@@ -30,7 +30,7 @@
                             <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
                                 <img class="d-block w-100 img-thumbnail" src="@game.Field.ImageUrl" alt="First slide">
                                 <div class="carousel-caption my-item-center">
-                                    <a asp-controller="Games" asp-action="Details" asp-route-gameId="@game.Id" class="btn min-width-size home-button-size">@game.Field.Name - @game.Date.ToString("D") @game.Time:00</a>
+                                    <a asp-controller="Games" asp-action="Details" asp-route-gameId="@game.Id" asp-route-information="@game.Field.Name" class="btn min-width-size home-button-size">@game.Field.Name - @game.Date.ToString("D") @game.Time:00</a>
                                 </div>
                             </div>
                         }
