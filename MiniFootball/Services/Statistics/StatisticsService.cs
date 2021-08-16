@@ -12,14 +12,14 @@
 
         public StatisticsServiceModel Total()
         {
-            var totalGames = data.Games.Count();
-            var totalPlaygrounds = data.Fields.Count();
+            var totalGames = data.Games.Count(g => g.IsPublic);
+            var totalFields = data.Fields.Count(f => f.IsPublic);
             var totalUsers = data.Users.Count();
 
             return new StatisticsServiceModel
             {
                 TotalGames = totalGames,
-                TotalFields = totalPlaygrounds,
+                TotalFields = totalFields,
                 TotalUsers = totalUsers,
             };
         }

@@ -42,6 +42,8 @@
 
         public string PhoneNumber { get; set; }
 
+        public bool IsPublic { get; set; }
+
         public int AdminId { get; set; }
 
         public virtual Admin Admin { get; set; }

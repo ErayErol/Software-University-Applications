@@ -457,6 +457,10 @@ h6,
     line-height: 16px;
 }
 
+.tbody-green {
+    color: #16ff00;
+}
+
 select {
     background: #F8F8F8;
     border: 1px solid #16ff00;

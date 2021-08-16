@@ -106,6 +106,8 @@ namespace MiniFootball
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
+                    endpoints.MapDefaultAreaRoute();
+
                     endpoints
                         .MapControllerRoute(
                         name: "Game Details",
@@ -127,19 +129,19 @@ namespace MiniFootball
                     endpoints
                         .MapControllerRoute(
                             name: "Field Details",
-                            pattern: "/Field/Details/{id}/{information}",
+                            pattern: "/Fields/Details/{id}/{information}",
                             defaults: new { controller = "Fields", action = "Details" });
 
                     endpoints
                         .MapControllerRoute(
                             name: "Field Edit",
-                            pattern: "/Field/Edit/{id}/{information}",
+                            pattern: "/Fields/Edit/{id}/{information}",
                             defaults: new { controller = "Fields", action = "Edit" });
 
                     endpoints
                         .MapControllerRoute(
                             name: "Field Delete",
-                            pattern: "/Field/Delete/{id}/{information}",
+                            pattern: "/Fields/Delete/{id}/{information}",
                             defaults: new { controller = "Fields", action = "Delete" });
 
                     endpoints.MapDefaultControllerRoute();

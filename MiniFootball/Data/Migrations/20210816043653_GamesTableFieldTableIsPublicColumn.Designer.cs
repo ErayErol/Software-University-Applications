@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniFootball.Data;
 
 namespace MiniFootball.Data.Migrations
 {
     [DbContext(typeof(MiniFootballDbContext))]
-    partial class MiniFootballDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210816043653_GamesTableFieldTableIsPublicColumn")]
+    partial class GamesTableFieldTableIsPublicColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

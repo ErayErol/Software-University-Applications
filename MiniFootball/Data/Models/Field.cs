@@ -43,6 +43,8 @@
 
         public bool Cafe { get; set; }
 
+        public bool IsPublic { get; set; }
+
         [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }

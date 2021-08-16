@@ -1,6 +1,5 @@
 ﻿@using MiniFootball.Data.Models
 @using Microsoft.AspNetCore.Identity
-@using MiniFootball.Services.Users
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -28,6 +27,15 @@
         {
             <li class="nav-item">
                 <a class="nav-link btn btn-link min-width-nav-size" asp-area="" asp-controller="Admins" asp-action="Become">Become Admin</a>
+            </li>
+        }
+        else if (userIsManager)
+        {
+            <li class="nav-item">
+                <a class="nav-link btn btn-link min-width-nav-size mr-xl-3 mr-lg-3" asp-area="Manager" asp-controller="Games" asp-action="AllGames">All Games</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn btn-link min-width-nav-size" asp-area="Manager" asp-controller="Fields" asp-action="AllFields">All Fields</a>
             </li>
         }
         <li class="nav-item">

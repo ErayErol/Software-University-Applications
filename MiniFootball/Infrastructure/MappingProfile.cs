@@ -24,7 +24,8 @@
                 .ForMember(gDSM => gDSM.GameId, cfg => cfg.MapFrom(g => g.Id));
 
             CreateMap<GameDetailsServiceModel, GameEditServiceModel>()
-                .ForMember(gE => gE.GameId, cfg => cfg.MapFrom(gD => gD.GameId));
+                .ForMember(gE => gE.GameId, cfg => cfg.MapFrom(gD => gD.GameId))
+                .ForMember(gE => gE.FieldName, cfg => cfg.MapFrom(gD => gD.FieldName));
 
             CreateMap<CreateGameSecondStepViewModel, CreateGameLastStepViewModel>();
 

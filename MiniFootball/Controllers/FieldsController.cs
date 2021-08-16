@@ -126,7 +126,7 @@
                 return BadRequest();
             }
 
-            TempData[GlobalMessageKey] = "You created field!";
+            TempData[GlobalMessageKey] = "Your field was created and is awaiting approval!";
             return RedirectToAction(nameof(Mine));
         }
 
@@ -183,15 +183,18 @@
                 fieldModel.ChangingRoom,
                 fieldModel.Cafe,
                 fieldModel.Description,
-                fieldModel.PhoneNumber);
+                fieldModel.PhoneNumber,
+                this.User.IsManager());
 
             if (isEdit == false)
             {
                 return BadRequest();
             }
 
-            TempData[GlobalMessageKey] = "You edited field!";
-            return Redirect($"/Details/{fieldModel.Id}/{fieldModel.Name}");
+            var fieldName = fields.FieldName(fieldModel.Id);
+
+            TempData[GlobalMessageKey] = $"Your field was edited{(this.User.IsManager() ? string.Empty : " and is awaiting approval")}!";
+            return RedirectToAction(nameof(Details), new { id = fieldModel.Id, information = fieldName });
         }
 
         [Authorize]

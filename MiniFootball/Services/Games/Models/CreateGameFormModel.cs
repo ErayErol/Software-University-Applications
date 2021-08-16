@@ -6,7 +6,6 @@
     {
         [Display(Name = "Field")]
         public int FieldId { get; set; }
-        //public Field Field { get; set; }
 
         public int Places
             => GetPlaces;

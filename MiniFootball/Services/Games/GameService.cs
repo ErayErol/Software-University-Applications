@@ -24,17 +24,19 @@
         }
 
         public GameQueryServiceModel All(
-            string cityName,
-            string searchTerm,
-            Sorting sorting,
-            int currentPage,
-            int gamesPerPage)
+            string cityName = null,
+            string searchTerm = null,
+            Sorting sorting = Sorting.DateCreated,
+            int currentPage = 1,
+            int gamesPerPage = int.MaxValue,
+            bool publicOnly = true)
         {
             var city = data
                 .Cities
                 .FirstOrDefault(c => c.Name == cityName);
 
-            var gamesQuery = data.Games.AsQueryable();
+            var gamesQuery = data.Games
+                .Where(g => !publicOnly || g.IsPublic);
 
             if (string.IsNullOrWhiteSpace(city?.Name) == false)
             {
@@ -116,6 +118,7 @@
                 HasPlaces = hasPlaces,
                 AdminId = adminId,
                 PhoneNumber = phoneNumber,
+                IsPublic = false,
             };
 
             data.Games.Add(game);
@@ -124,7 +127,8 @@
             return game.Id;
         }
 
-        public bool Edit(string id,
+        public bool Edit(
+            string id,
             DateTime? date,
             int? time,
             int? numberOfPlayers,
@@ -132,7 +136,8 @@
             bool ball,
             bool jerseys,
             bool goalkeeper,
-            string description)
+            string description,
+            bool isPublic)
         {
             var game = data.Games.Find(id);
 
@@ -141,7 +146,6 @@
                 return false;
             }
 
-            // TODO: Maybe this is not necessary, add it in GameEditServiceModel
             if (game.NumberOfPlayers != numberOfPlayers.Value)
             {
                 game.Places = numberOfPlayers.Value;
@@ -158,6 +162,7 @@
             game.Jerseys = jerseys;
             game.Goalkeeper = goalkeeper;
             game.Description = description;
+            game.IsPublic = isPublic;
 
             data.SaveChanges();
 
@@ -215,7 +220,6 @@
 
             return games;
         }
-
 
         public bool Delete(string gameId)
         {
@@ -299,9 +303,19 @@
             return gameDetails;
         }
 
+        public void ChangeVisibility(string id)
+        {
+            var game = this.data.Games.Find(id);
+
+            game.IsPublic = !game.IsPublic;
+
+            this.data.SaveChanges();
+        }
+
         public IEnumerable<GameListingServiceModel> Latest()
             => data
                 .Games
+                .Where(g => g.IsPublic)
                 .OrderByDescending(g => g.Date.Date)
                 .ProjectTo<GameListingServiceModel>(mapper)
                 .Take(3)
@@ -311,9 +325,6 @@
             => data
                 .Games
                 .Any(c => c.Id == gameId && c.AdminId == adminId);
-
-        //public bool IsExist(string id)
-        //    => this.data.Games.Any(g => g.Id == id);
 
         private static IEnumerable<GameListingServiceModel> GetGames(
             IQueryable<Game> gameQuery,

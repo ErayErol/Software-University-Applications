@@ -7,13 +7,15 @@
     public interface IFieldService
     {
         FieldQueryServiceModel All(
-            string cityName,
-            string searchTerm,
-            Sorting sorting,
-            int currentPage,
-            int fieldsPerPage);
+            string cityName = null,
+            string searchTerm = null,
+            Sorting sorting = Sorting.DateCreated,
+            int currentPage = 1,
+            int fieldsPerPage = int.MaxValue,
+            bool publicOnly = true);
 
-        int Create(string name,
+        int Create(
+            string name,
             int countryId,
             int cityId,
             string address,
@@ -25,7 +27,8 @@
             bool changingRoom,
             string description, int adminId);
 
-        bool Edit(int id,
+        bool Edit(
+            int id,
             string name,
             string address,
             string imageUrl,
@@ -33,7 +36,9 @@
             bool shower,
             bool changingRoom,
             bool cafe,
-            string description, string phoneNumber);
+            string description, 
+            string phoneNumber,
+            bool isPublic);
 
         bool IsAlreadyExist(
             string name,
@@ -59,5 +64,7 @@
         bool IsAdminCreatorOfField(int id, int adminId);
 
         bool IsCorrectParameters(int fieldId, string name, string country, string city);
+        
+        void ChangeVisibility(int id);
     }
 }

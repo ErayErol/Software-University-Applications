@@ -12,5 +12,7 @@
         public DateTime Date { get; set; }
         
         public int Time { get; set; }
+
+        public bool IsPublic { get; set; }
     }
 }

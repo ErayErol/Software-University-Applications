@@ -33,7 +33,7 @@
             IAdminService admins,
             IFieldService fields,
             IMapper mapper,
-            IUserService users, 
+            IUserService users,
             ICityService cities)
         {
             this.countries = countries;
@@ -235,7 +235,7 @@
                 return BadRequest();
             }
 
-            TempData[GlobalMessageKey] = "You created game!";
+            TempData[GlobalMessageKey] = "Your game was created and is awaiting approval!";
             return RedirectToAction("Mine");
         }
 
@@ -249,21 +249,21 @@
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            var game = games.GetDetails(gameId);
+            var gameDetails = games.GetDetails(gameId);
 
-            if (game.FieldName.Equals(information) == false)
+            if (gameDetails.FieldName.Equals(information) == false)
             {
                 return BadRequest();
             }
 
-            if (game?.UserId != userId && User.IsManager() == false)
+            if (gameDetails?.UserId != userId && User.IsManager() == false)
             {
                 return BadRequest();
             }
 
-            var gameForm = mapper.Map<GameEditServiceModel>(game);
+            var gameEdit = mapper.Map<GameEditServiceModel>(gameDetails);
 
-            return View(gameForm);
+            return View(gameEdit);
         }
 
         [HttpPost]
@@ -296,15 +296,18 @@
                 gameModel.Ball,
                 gameModel.Jerseys,
                 gameModel.Goalkeeper,
-                gameModel.Description);
+                gameModel.Description,
+                this.User.IsManager());
 
             if (isEdit == false)
             {
                 return BadRequest();
             }
 
-            TempData[GlobalMessageKey] = "You edited game!";
-            return Redirect($"/Details/{gameModel.GameId}/{gameModel.FieldName}");
+            TempData[GlobalMessageKey] = $"Your game was edited{(this.User.IsManager() ? string.Empty : " and is awaiting approval")}!";
+
+            return RedirectToAction(nameof(Details),
+                new { gameId = gameModel.GameId, information = gameModel.FieldName });
         }
 
         [Authorize]

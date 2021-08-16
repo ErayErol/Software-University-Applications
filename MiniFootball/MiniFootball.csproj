@@ -34,11 +34,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Areas\Manager\Controller\" />
-		<Folder Include="Areas\Manager\View\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Include="Views\Users\Details.cshtml" />
 	</ItemGroup>
 

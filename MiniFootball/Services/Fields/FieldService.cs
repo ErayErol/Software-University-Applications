@@ -4,11 +4,10 @@
     using AutoMapper.QueryableExtensions;
     using Data;
     using Data.Models;
+    using Games.Models;
     using Models;
     using System.Collections.Generic;
     using System.Linq;
-    using Games.Models;
-
     using static Convert;
 
     public class FieldService : IFieldService
@@ -25,13 +24,15 @@
         }
 
         public FieldQueryServiceModel All(
-            string cityName,
-            string searchTerm,
-            Sorting sorting,
-            int currentPage,
-            int fieldsPerPage)
+            string cityName = null,
+            string searchTerm = null,
+            Sorting sorting = Sorting.DateCreated,
+            int currentPage = 1,
+            int fieldsPerPage = int.MaxValue,
+            bool publicOnly = true)
         {
-            var fieldsQuery = data.Fields.AsQueryable();
+            var fieldsQuery = data.Fields
+                .Where(f => !publicOnly || f.IsPublic);
 
             var city = data
                 .Cities
@@ -90,7 +91,7 @@
             bool cafe,
             bool shower,
             bool changingRoom,
-            string description, 
+            string description,
             int adminId)
         {
             var field = new Field
@@ -106,7 +107,8 @@
                 Shower = shower,
                 ChangingRoom = changingRoom,
                 Description = ToSentenceCase(description),
-                AdminId = adminId
+                AdminId = adminId,
+                IsPublic = false,
             };
 
             data.Fields.Add(field);
@@ -124,8 +126,9 @@
             bool shower,
             bool changingRoom,
             bool cafe,
-            string description, 
-            string phoneNumber)
+            string description,
+            string phoneNumber,
+            bool isPublic)
         {
             var field = data.Fields.Find(id);
 
@@ -143,6 +146,7 @@
             field.ChangingRoom = changingRoom;
             field.Cafe = cafe;
             field.Description = ToSentenceCase(description);
+            field.IsPublic = isPublic;
 
             data.SaveChanges();
 
@@ -188,6 +192,15 @@
                 field.Name.ToLower() == name.ToLower() &&
                 field.Country.Name.ToLower() == countryName.ToLower() &&
                 field.City.Name.ToLower() == cityName.ToLower();
+        }
+
+        public void ChangeVisibility(int id)
+        {
+            var field = this.data.Fields.Find(id);
+
+            field.IsPublic = !field.IsPublic;
+
+            this.data.SaveChanges();
         }
 
         public bool IsAlreadyExist(string name, int countryId, int cityId)
@@ -236,14 +249,14 @@
                 .ProjectTo<FieldDetailServiceModel>(mapper)
                 .FirstOrDefault();
 
-        public IEnumerable<FieldListingServiceModel> FieldsWhereCreatorIsUser(string userId) 
+        public IEnumerable<FieldListingServiceModel> FieldsWhereCreatorIsUser(string userId)
             => GetFields(
                 data
                     .Fields
                     .Where(g => g.Admin.UserId == userId),
                 mapper);
 
-        public bool IsAdminCreatorOfField(int id, int adminId) 
+        public bool IsAdminCreatorOfField(int id, int adminId)
             => data
                 .Fields
                 .Any(c => c.Id == id && c.AdminId == adminId);
