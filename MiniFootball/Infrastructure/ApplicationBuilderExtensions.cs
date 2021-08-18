@@ -124,7 +124,7 @@
 
                     data.Users.Add(applicationUser);
 
-                    var hashedPassword = passwordHasher.HashPassword(applicationUser, $"user{i}@user.com");
+                    var hashedPassword = passwordHasher.HashPassword(applicationUser, $"123456");
                     applicationUser.SecurityStamp = Guid.NewGuid().ToString();
                     applicationUser.PasswordHash = hashedPassword;
 
