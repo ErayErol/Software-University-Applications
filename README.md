@@ -18,6 +18,7 @@
 
 - User
   - You can view all approved games and fields.
+  - You can become an admin.
 
 ## :hammer_and_pick: Built With
 
@@ -46,6 +47,6 @@ is in `appsettings.json`. If you use SQLEXPRESS, you should replace `Server=.;` 
 
 ### 2. Seeding sample data
 would happen once you run the application, including Test Accounts:
-  - User: user@user.com / password: 123456
+  - User: user4@user.com / password: 123456
+  - Admin: user1@user.com / password: 123456
   - Mini Football Field Manager: manager@manager.com / password: 123456
-  - Admin: admin@admin.com / password: 123456
