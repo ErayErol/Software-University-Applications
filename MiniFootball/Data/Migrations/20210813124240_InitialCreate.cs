@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace MiniFootball.Data.Migrations
+﻿namespace MiniFootball.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+    using System;
+
     public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

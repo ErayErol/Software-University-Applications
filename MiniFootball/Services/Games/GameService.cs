@@ -53,7 +53,6 @@
                         .Contains(searchTerm.ToLower()));
             }
 
-            // TODO: You can add searching by time too
             gamesQuery = sorting switch
             {
                 Sorting.City

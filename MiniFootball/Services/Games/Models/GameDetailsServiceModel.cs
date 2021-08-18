@@ -11,8 +11,6 @@
 
         public bool IsUserAlreadyJoin { get; set; }
 
-        // TODO: Maybe this 3 props can go to GameEditServiceModel
-
         [Display(Name = "Available Places")]
         public virtual int Places 
             => AvailablePlaces;

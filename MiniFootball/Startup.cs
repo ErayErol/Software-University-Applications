@@ -1,5 +1,6 @@
 namespace MiniFootball
 {
+    using Data;
     using Data.Models;
     using Infrastructure;
     using Microsoft.AspNetCore.Builder;
@@ -11,15 +12,14 @@ namespace MiniFootball
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Data;
     using Services.Admins;
+    using Services.Cities;
     using Services.Countries;
     using Services.Fields;
     using Services.Games;
     using Services.Statistics;
     using Services.Users;
     using System.Security.Claims;
-    using Services.Cities;
 
     public class Startup
     {
@@ -68,7 +68,6 @@ namespace MiniFootball
                     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
                 });
 
-            // If you don't have this, you cannot use ClaimsPrincipal in services
             services.AddTransient<ClaimsPrincipal>(options =>
                 options.GetService<IHttpContextAccessor>()?.HttpContext?.User);
 

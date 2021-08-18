@@ -39,13 +39,6 @@
                 .HasForeignKey(g => g.FieldId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //builder
-            //    .Entity<Admin>()
-            //    .HasOne<User>()
-            //    .WithOne()
-            //    .HasForeignKey<Admin>(a => a.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
             builder
                 .Entity<Field>()
                 .HasOne(f => f.Country)
@@ -59,21 +52,6 @@
                 .WithMany(c => c.Fields)
                 .HasForeignKey(g => g.CityId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-
-            //builder
-            //    .Entity<UserGame>()
-            //    .HasOne(ug => ug.User)
-            //    .WithMany(u => u.UserGames)
-            //    .HasForeignKey(ug => ug.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //builder
-            //    .Entity<UserGame>()
-            //    .HasOne(ug => ug.Game)
-            //    .WithMany(g => g.UserGames)
-            //    .HasForeignKey(ug => ug.GameId)
-            //    .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Entity<UserGame>()

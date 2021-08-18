@@ -1,4 +1,4 @@
-﻿namespace MiniFootball.Test.Controller
+﻿namespace MiniFootball.Test.Controllers
 {
     using MiniFootball.Controllers;
     using MiniFootball.Data.Models;
@@ -8,7 +8,6 @@
     using Models.Games;
     using Xunit;
     using static WebConstants;
-
 
     public class AdminsControllerTest
     {

@@ -29,7 +29,6 @@ namespace MiniFootball.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        // TODO: If you want do this
         [TempData]
         public string StatusMessage { get; set; }
 

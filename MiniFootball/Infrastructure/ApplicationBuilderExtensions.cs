@@ -11,7 +11,6 @@
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using static Areas.Manager.ManagerConstants;
 
     public static class ApplicationBuilderExtensions
@@ -28,7 +27,6 @@
 
             MigrateDatabase(services);
 
-            // TODO: Refactor this
             Seeds(data, countries, passwordHasher);
             SeedManager(services);
 
@@ -59,25 +57,25 @@
 
                     await roleManager.CreateAsync(role);
 
-                    const string adminEmail = "admin@mnf.com";
-                    const string adminPassword = "admin@mnf.com";
+                    const string managerEmail = "manager@manager.com";
+                    const string managerPassword = "123456";
 
                     var user = new User
                     {
-                        Email = adminEmail,
-                        UserName = adminEmail,
-                        FirstName = "FirstName-Admin",
-                        LastName = "LastName-Admin",
-                        NickName = "NickName-Admin",
+                        Email = managerEmail,
+                        UserName = managerEmail,
+                        FirstName = "FirstName-manager",
+                        LastName = "LastName-manager",
+                        NickName = "NickName-manager",
                         PhoneNumber = "0886911492",
                         ImageUrl = "https://thumbs.dreamstime.com/b/manager-38039871.jpg",
                         Birthdate = DateTime.ParseExact(
-                            "2019-05-08 14:40:52,531",
+                            "1995-09-30 14:00:52,531",
                             "yyyy-MM-dd HH:mm:ss,fff",
                             CultureInfo.InvariantCulture),
                     };
 
-                    await userManager.CreateAsync(user, adminPassword);
+                    await userManager.CreateAsync(user, managerPassword);
 
                     await userManager.AddToRoleAsync(user, role.Name);
                 })
@@ -101,15 +99,15 @@
                 {
                     var applicationUser = new User
                     {
-                        UserName = $"zwp{i}@gmail.com",
-                        Email = $"zwp{i}@gmail.com",
-                        NormalizedUserName = $"zwp{i}@gmail.com",
-                        FirstName = $"FirstName-zwp{i}",
-                        LastName = $"LastName-zwp{i}",
-                        NickName = $"NickName-zwp{i}",
+                        UserName = $"user{i}@user.com",
+                        Email = $"user{i}@user.com",
+                        NormalizedUserName = $"user{i}@user.com",
+                        FirstName = $"FirstName-user{i}",
+                        LastName = $"LastName-user{i}",
+                        NickName = $"NickName-user{i}",
                         PhoneNumber = $"088691149{i}",
                         Birthdate = DateTime.ParseExact(
-                            "2009-05-08 14:40:52,531",
+                            "1999-05-08 14:40:52,531",
                             "yyyy-MM-dd HH:mm:ss,fff",
                             CultureInfo.InvariantCulture),
                     };
@@ -126,7 +124,7 @@
 
                     data.Users.Add(applicationUser);
 
-                    var hashedPassword = passwordHasher.HashPassword(applicationUser, $"zwp{i}@gmail.com");
+                    var hashedPassword = passwordHasher.HashPassword(applicationUser, $"user{i}@user.com");
                     applicationUser.SecurityStamp = Guid.NewGuid().ToString();
                     applicationUser.PasswordHash = hashedPassword;
 
@@ -138,7 +136,7 @@
             {
                 for (int i = 1; i <= 3; i++)
                 {
-                    var user = data.Users.FirstOrDefault(x => x.UserName == $"zwp{i}@gmail.com");
+                    var user = data.Users.FirstOrDefault(x => x.UserName == $"user{i}@user.com");
 
                     data.Admins.Add(new Admin
                     {
@@ -189,18 +187,16 @@
                         {
                             CountryId = data
                                 .Countries
-                                .Where(c => c.Name == "Turkey")
+                                .Where(c => c.Name == "Japan")
                                 .Select(c => c.Id)
                                 .FirstOrDefault(),
-                            Name = "Edirne",
+                            Name = "Tokyo",
                             AdminId = 3,
                         }
                     );
 
                     data.SaveChanges();
                 }
-
-                // TODO: Add Players and Teams
 
                 data.Fields.AddRange(
                     new Field
@@ -223,7 +219,7 @@
                         Name = "Kortove",
                         CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
                         CityId = data.Cities.Where(c => c.Name == "Haskovo").Select(c => c.Id).FirstOrDefault(),
-                        Description = "In the winter this place is number 1 to play mini football, because the players play inside.",
+                        Description = "In the winter this place is number 1 to play mini football, because the players play inside when it is very cold.",
                         Address = "След Хотел Европа - до тенис кортовете",
                         ImageUrl = "https://tennishaskovo.com/uploads/galerii/baza_kenana/44.jpg",
                         Cafe = false,
@@ -235,17 +231,17 @@
                     },
                     new Field
                     {
-                        Name = "Yildizlar",
-                        CountryId = data.Countries.Where(c => c.Name == "Turkey").Select(c => c.Id).FirstOrDefault(),
-                        CityId = data.Cities.Where(c => c.Name == "Edirne").Select(c => c.Id).FirstOrDefault(),
-                        Description = "In the summer this place is number 1 to play mini football in Edirne.",
-                        Address = "Ilk Okullun yaninda.",
-                        ImageUrl = "https://hotel-evrika.com/wp-content/uploads/2019/12/VIK_6225-1024x683.jpg",
-                        Cafe = false,
+                        Name = "Rooftop Football",
+                        CountryId = data.Countries.Where(c => c.Name == "Japan").Select(c => c.Id).FirstOrDefault(),
+                        CityId = data.Cities.Where(c => c.Name == "Tokyo").Select(c => c.Id).FirstOrDefault(),
+                        Description = "In the summer this place is number 1 to play mini football in Tokyo.",
+                        Address = "Some Japanese Address.",
+                        ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/ea/Tokyo_rooftop_football.jpg",
+                        Cafe = true,
                         ChangingRoom = true,
                         Parking = true,
-                        Shower = true,
-                        PhoneNumber = "0888888887",
+                        Shower = false,
+                        PhoneNumber = "04444444444",
                         AdminId = 3,
                     },
                     new Field
@@ -255,7 +251,7 @@
                         CityId = data.Cities.Where(c => c.Name == "Plovdiv").Select(c => c.Id).FirstOrDefault(),
                         Description = "In summer and winter this place is number 1 to play mini football in Plovdiv.",
                         Address = "бул. „Асеновградско шосе",
-                        ImageUrl = "https://imgrabo.com/pics/guide/900x600/20150901162641_20158.jpg",
+                        ImageUrl = "https://i.id24.bg/i/36739.jpg",
                         Cafe = false,
                         ChangingRoom = true,
                         Parking = true,
@@ -318,7 +314,7 @@
                 new Game
                 {
                     AdminId = 1,
-                    FieldId = 1,
+                    FieldId = 3,
                     Date = DateTime.ParseExact($"{month:D2}/{day:D2}/{year}", "d", CultureInfo.InvariantCulture),
                     Time = 20,
                     Ball = true,

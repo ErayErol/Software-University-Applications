@@ -37,11 +37,11 @@
                 <a asp-area="" asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" asp-route-information="@field.Name" class="btn btn-primary float-right ml-3">View</a>
                 @if (field.IsPublic)
                 {
-                    <a asp-area="Manager" asp-controller="Fields" asp-action="ChangeVisibility" asp-route-id="@field.Id" class="btn float-right ml-3">Show</a>
+                    <a asp-area="Manager" asp-controller="Fields" asp-action="ChangeVisibility" asp-route-id="@field.Id" class="btn btn-danger float-right ml-3">Hide</a>
                 }
                 else
                 {
-                    <a asp-area="Manager" asp-controller="Fields" asp-action="ChangeVisibility" asp-route-id="@field.Id" class="btn btn-danger float-right ml-3">Hide</a>
+                    <a asp-area="Manager" asp-controller="Fields" asp-action="ChangeVisibility" asp-route-id="@field.Id" class="btn float-right ml-3">Show</a>
                 }
             </td>
         </tr>

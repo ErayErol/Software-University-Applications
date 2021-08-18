@@ -1,6 +1,6 @@
 ﻿namespace MiniFootball.Test.Routing
 {
-    using Controllers;
+    using MiniFootball.Controllers;
     using Models.Admins;
     using MyTested.AspNetCore.Mvc;
     using Xunit;
