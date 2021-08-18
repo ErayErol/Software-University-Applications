@@ -8,6 +8,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using static WebConstants.Cache;
+
     public class HomeController : Controller
     {
         private readonly IGameService games;
@@ -23,9 +25,7 @@
 
         public IActionResult Index()
         {
-            const string latestGamesCacheKey = "LatestGamesCacheKey";
-
-            var lastGames = cache.Get<List<GameListingServiceModel>>(latestGamesCacheKey);
+            var lastGames = cache.Get<List<GameListingServiceModel>>(LatestGamesCacheKey);
 
             if (lastGames == null)
             {
@@ -36,7 +36,7 @@
                 var cacheOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
 
-                cache.Set(latestGamesCacheKey, lastGames, cacheOptions);
+                cache.Set(LatestGamesCacheKey, lastGames, cacheOptions);
             }
 
             // TODO: Add CSS Number Counter in Statistics

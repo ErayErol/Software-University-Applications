@@ -1,106 +1,41 @@
-﻿//namespace MiniFootball.Test.Controllers
-//{
-//    using Data.Models;
-//    using FluentAssertions;
-//    using MiniFootball.Controllers;
-//    using MiniFootball.Services.Games;
-//    using MiniFootball.Services.Statistics;
-//    using Microsoft.AspNetCore.Mvc;
-//    using Mocks;
-//    using MyTested.AspNetCore.Mvc;
-//    using System.Collections.Generic;
-//    using System.Linq;
-//    using MiniFootball.Services.Games.Models;
-//    using Xunit;
+﻿namespace MiniFootball.Test.Controller
+{
+    using System;
+    using Controllers;
+    using FluentAssertions;
+    using MyTested.AspNetCore.Mvc;
+    using Services.Games.Models;
+    using System.Collections.Generic;
+    using Xunit;
+    using static Data.Games;
+    using static WebConstants.Cache;
 
-//    public class HomeControllerTest
-//    {
-//        [Fact]
-//        public void IndexShouldReturnViewWithCorrectModelAndData()
-//            => MyMvc
-//                .Pipeline()
-//                .ShouldMap("/")
-//                .To<HomeController>(c => c.Index())
-//                .Which(controller => controller
-//                    .WithData(GetGames()))
-//                .ShouldReturn()
-//                .View(view => view
-//                    .WithModelOfType<List<GameListingServiceModel>>()
-//                    .Passing(m => m.Should().HaveCount(3)));
+    public class HomeControllerTest
+    {
+        [Fact]
+        public void IndexShouldReturnViewWithCorrectModel()
+            => MyController<HomeController>
+                .Instance(instance => instance
+                    .WithData(TenPublicGames()))
+                .Calling(c => c.Index())
+                .ShouldHave()
+                .MemoryCache(cache => cache
+                    .ContainingEntry(entry => entry
+                        .WithKey(LatestGamesCacheKey)
+                        .WithAbsoluteExpirationRelativeToNow(TimeSpan.FromMinutes(15))
+                        .WithValueOfType<List<GameListingServiceModel>>()))
+                .AndAlso()
+                .ShouldReturn()
+                .View(view => view
+                    .WithModelOfType<List<GameListingServiceModel>>()
+                    .Passing(m => m.Should().HaveCount(3)));
 
-//        [Fact]
-//        public void IndexShouldReturnViewWithCorrectModel()
-//        {
-//            // Arrange
-//            var data = DatabaseMock.Instance;
-//            var mapper = MapperMock.Instance;
-
-//            var games = GetGames()
-//                .ToList();
-
-//            data.Games.AddRange(games);
-//            data.Users.Add(new User());
-
-//            data.SaveChanges();
-
-//            var gameService = new GameService(data, mapper);
-//            var statisticsService = new StatisticsService(data);
-
-//            var homeController = new HomeController(gameService, statisticsService);
-
-//            // Act
-//            var result = homeController.Index();
-
-//            // Assert
-//            // Assert.NotNull(result);
-
-//            // var viewResult = Assert.IsType<ViewResult>(result);
-
-//            // var model = viewResult.Model;
-
-//            // var indexViewModel = Assert.IsType<IndexViewModel>(model);
-
-//            // Assert.Equal(3, indexViewModel.Games.Count);
-//            // Assert.Equal(10, indexViewModel.TotalGames);
-//            // Assert.Equal(1, indexViewModel.TotalUsers);
-
-//            result
-//                .Should()
-//                .NotBeNull()
-//                .And
-//                .BeAssignableTo<ViewResult>()
-//                .Which
-//                .Model
-//                .As<List<GameListingServiceModel>>()
-//                .Invoking(model =>
-//                {
-//                    model.Should().HaveCount(3);
-//                    model.TotalGames.Should().Be(10);
-//                    model.TotalUsers.Should().Be(1);
-//                })
-//                .Invoke();
-//        }
-
-//        [Fact]
-//        public void ErrorShouldReturnView()
-//        {
-//            // Arrange
-//            var homeController = new HomeController(null, null);
-
-//            // Act
-//            var result = homeController.Error();
-
-//            // Assert
-//            Assert.NotNull(result);
-//            Assert.IsType<ViewResult>(result);
-//        }
-
-//        private static IEnumerable<Game> GetGames()
-//            => Enumerable
-//                .Range(0, 10)
-//                .Select(i => new Game
-//                {
-//                    Field = new Field()
-//                });
-//    }
-//}
+        [Fact]
+        public void ErrorShouldReturnView()
+            => MyController<HomeController>
+                .Instance()
+                .Calling(c => c.Error())
+                .ShouldReturn()
+                .View();
+    }
+}
