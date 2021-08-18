@@ -7,7 +7,7 @@
     public class HomeControllerTest
     {
         [Fact]
-        public void IndexRouteShouldBeMapped()
+        public void GetIndexRouteShouldBeMapped()
             => MyRouting
                 .Configuration()
                 .ShouldMap(request => request
@@ -15,7 +15,7 @@
                 .To<HomeController>(c => c.Index());
 
         [Fact]
-        public void ErrorRouteShouldBeMapped()
+        public void GetErrorRouteShouldBeMapped()
             => MyRouting
                 .Configuration()
                 .ShouldMap(request => request

@@ -45,7 +45,7 @@
 
             TempData[GlobalMessageKey] = "You have become an admin!";
 
-            return RedirectToAction("All", "Games");
+            return RedirectToAction(nameof(GamesController.All), "Games");
         }
     }
 }

@@ -15,7 +15,7 @@
         [Fact]
         public void IndexShouldReturnViewWithCorrectModel()
             => MyController<HomeController>
-                .Instance(instance => instance
+                .Instance(controller => controller
                     .WithData(TenPublicGames()))
                 .Calling(c => c.Index())
                 .ShouldHave()
