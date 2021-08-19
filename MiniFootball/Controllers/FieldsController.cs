@@ -65,7 +65,6 @@
             return View(new FieldCreateFormModel
             {
                 Countries = countries.All(),
-
             });
         }
 

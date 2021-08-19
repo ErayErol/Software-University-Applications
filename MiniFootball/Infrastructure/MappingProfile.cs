@@ -14,6 +14,7 @@
         {
             CreateMap<Game, GameListingServiceModel>();
             CreateMap<Game, GameDeleteServiceModel>();
+            CreateMap<CreateGameSecondStepViewModel, CreateGameLastStepViewModel>();
 
             CreateMap<Game, GameDetailsServiceModel>()
                 .ForMember(gDSM => gDSM.UserId, cfg => cfg.MapFrom(g => g.Admin.UserId))
@@ -26,8 +27,6 @@
             CreateMap<GameDetailsServiceModel, GameEditServiceModel>()
                 .ForMember(gE => gE.GameId, cfg => cfg.MapFrom(gD => gD.GameId))
                 .ForMember(gE => gE.FieldName, cfg => cfg.MapFrom(gD => gD.FieldName));
-
-            CreateMap<CreateGameSecondStepViewModel, CreateGameLastStepViewModel>();
 
             CreateMap<Field, GameFieldListingServiceModel>();
             CreateMap<Field, FieldListingServiceModel>();

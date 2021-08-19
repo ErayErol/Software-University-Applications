@@ -11,14 +11,26 @@
 
     public class AdminsControllerTest
     {
-        [Fact]
-        public void GetBecomeShouldBeForAuthorizedUsers()
+        [Theory]
+        [InlineData("12345")]
+        public void GetBecomeShouldBeForAuthorizedUsers(string userId)
             => MyController<AdminsController>
-                .Instance()
-                .Calling(c => c.Become(new BecomeAdminFormModel()))
+                .Instance(controller => controller
+                    .WithUser(user => user
+                        .WithIdentifier(userId))
+                    .WithData(data => data
+                        .WithSet<Admin>(admin => admin
+                            .Add(new Admin
+                            {
+                                Name = TestUser.Username,
+                                UserId = userId
+                            }))))
+                .Calling(c => c.Become())
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
+                .TempData(tempDate => tempDate
+                    .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
                 .View();
@@ -48,6 +60,6 @@
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
-                    .To<GamesController>(c=>c.All(With.Any<GameAllQueryModel>())));
+                    .To<GamesController>(c => c.All(With.Any<GameAllQueryModel>())));
     }
 }
