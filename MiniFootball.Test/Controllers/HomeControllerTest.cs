@@ -1,12 +1,11 @@
 ﻿namespace MiniFootball.Test.Controllers
 {
-    using System;
-    using Controllers;
     using FluentAssertions;
+    using MiniFootball.Controllers;
     using MyTested.AspNetCore.Mvc;
     using Services.Games.Models;
+    using System;
     using System.Collections.Generic;
-    using MiniFootball.Controllers;
     using Xunit;
     using static Data.Games;
     using static WebConstants.Cache;

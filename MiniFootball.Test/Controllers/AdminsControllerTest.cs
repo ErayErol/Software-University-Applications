@@ -5,26 +5,22 @@
     using Models.Admins;
     using MyTested.AspNetCore.Mvc;
     using System.Linq;
+    using Data;
     using Models.Games;
     using Xunit;
     using static WebConstants;
 
     public class AdminsControllerTest
     {
-        [Theory]
-        [InlineData("12345")]
-        public void GetBecomeShouldBeForAuthorizedUsers(string userId)
+        [Fact]
+        public void GetBecomeWhenUserIsAdminShouldReturnView()
             => MyController<AdminsController>
                 .Instance(controller => controller
                     .WithUser(user => user
-                        .WithIdentifier(userId))
+                        .WithIdentifier(TestUser.Identifier))
                     .WithData(data => data
                         .WithSet<Admin>(admin => admin
-                            .Add(new Admin
-                            {
-                                Name = TestUser.Username,
-                                UserId = userId
-                            }))))
+                            .Add(Admins.NewAdmin()))))
                 .Calling(c => c.Become())
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
@@ -35,13 +31,26 @@
                 .ShouldReturn()
                 .View();
 
+        [Fact]
+        public void GetBecomeWhenUserIsNotAdminShouldReturnView()
+            => MyController<AdminsController>
+                .Instance(controller => controller
+                    .WithUser())
+                .Calling(c => c.Become())
+                .ShouldHave()
+                .ActionAttributes(attributes => attributes
+                    .RestrictingForAuthorizedRequests())
+                .AndAlso()
+                .ShouldReturn()
+                .View();
+
         [Theory]
         [InlineData("Admin")]
         public void PostBecomeShouldBeForAuthorizedUsersAndReturnRedirectWithValidMode(string adminName)
             => MyController<AdminsController>
                 .Instance(controller => controller
                     .WithUser())
-                .Calling(c => c.Become(new BecomeAdminFormModel()
+                .Calling(c => c.Become(new BecomeAdminFormModel
                 {
                     Name = adminName,
                 }))

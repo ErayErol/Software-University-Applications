@@ -1,10 +1,14 @@
 ﻿namespace MiniFootball.Test.Controllers
 {
+    using Data;
     using MiniFootball.Controllers;
     using MiniFootball.Data.Models;
     using Models.Cities;
+    using Models.Games;
     using MyTested.AspNetCore.Mvc;
+    using System.Linq;
     using Xunit;
+    using static WebConstants;
 
     public class CitiesControllerTest
     {
@@ -17,6 +21,8 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
+                .TempData(tempDate => tempDate
+                    .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
                 .RedirectToAction(nameof(AdminsController.Become), "Admins");
@@ -25,15 +31,10 @@
         public void GetCreateWhenUserIsAdminShouldReturnView()
             => MyController<CitiesController>
                 .Instance(controller => controller
-                    .WithUser(user => user
-                        .WithIdentifier(TestUser.Identifier))
+                    .WithUser(TestUser.Identifier)
                     .WithData(data => data
                         .WithSet<Admin>(admin => admin
-                            .Add(new Admin
-                            {
-                                Name = TestUser.Username,
-                                UserId = TestUser.Identifier
-                            }))))
+                            .Add(Admins.NewAdmin()))))
                 .Calling(c => c.Create())
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
@@ -54,5 +55,51 @@
                 .ShouldReturn()
                 .Redirect(redirect => redirect
                     .To<AdminsController>(c => c.Become()));
+
+        [Theory]
+        [InlineData("Sofia", "Bulgaria", 1, 24, 1)]
+        public void PostCreateShouldBeForAuthorizedUsersAndReturnRedirectWithValidMode(
+            string name,
+            string countryName,
+            int id,
+            int countryId,
+            int adminId)
+            => MyController<CitiesController>
+                .Instance(controller => controller
+                    .WithUser(user => user
+                        .WithIdentifier(TestUser.Identifier))
+                    .WithData(data => data
+                        .WithSet<Admin>(admin => admin
+                            .Add(Admins.NewAdmin()))
+                        .WithSet<City>(city => city
+                            .Add(new City
+                            {
+                                Name = name,
+                                CountryId = countryId,
+                                AdminId = adminId
+                            }))))
+                .Calling(c => c.Create(new CityFormModel
+                {
+                    Name = name,
+                    CountryName = countryName,
+                    Id = id,
+                }))
+                .ShouldHave()
+                .ActionAttributes(attributes => attributes
+                    .RestrictingForHttpMethod(HttpMethod.Post)
+                    .RestrictingForAuthorizedRequests())
+                .ValidModelState()
+                .Data(data => data
+                    .WithSet<City>(city => city
+                        .Any(c =>
+                            c.Name == name &&
+                            c.CountryId == 24 &&
+                            c.Id == id)))
+                .TempData(tempDate => tempDate
+                    .ContainingEntryWithKey(GlobalMessageKey))
+                .AndAlso()
+                .ShouldReturn()
+                .Redirect(redirect => redirect
+                    .To<GamesController>(c => c.CreateGameFirstStep(With.Any<CreateGameFirstStepViewModel>())));
     }
 }
