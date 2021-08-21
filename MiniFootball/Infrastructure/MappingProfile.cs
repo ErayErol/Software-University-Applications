@@ -12,6 +12,20 @@
     {
         public MappingProfile()
         {
+            Games();
+
+            Fields();
+
+            Users();
+        }
+
+        private void Users()
+        {
+            CreateMap<User, UserDetailsServiceModel>();
+        }
+
+        private void Games()
+        {
             CreateMap<Game, GameListingServiceModel>();
             CreateMap<Game, GameDeleteServiceModel>();
             CreateMap<CreateGameSecondStepViewModel, CreateGameLastStepViewModel>();
@@ -27,15 +41,16 @@
             CreateMap<GameDetailsServiceModel, GameEditServiceModel>()
                 .ForMember(gE => gE.GameId, cfg => cfg.MapFrom(gD => gD.GameId))
                 .ForMember(gE => gE.FieldName, cfg => cfg.MapFrom(gD => gD.FieldName));
+        }
 
-            CreateMap<Field, GameFieldListingServiceModel>();
+        private void Fields()
+        {
             CreateMap<Field, FieldListingServiceModel>();
             CreateMap<Field, FieldDetailServiceModel>();
             CreateMap<Field, FieldDeleteServiceModel>();
-            CreateMap<FieldDetailServiceModel, FieldCreateFormModel>();
+            //CreateMap<Field, GameFieldListingServiceModel>();
+            //CreateMap<FieldDetailServiceModel, FieldCreateFormModel>();
             CreateMap<FieldDetailServiceModel, FieldEditFormModel>();
-
-            CreateMap<User, UserDetailsServiceModel>();
         }
     }
 }

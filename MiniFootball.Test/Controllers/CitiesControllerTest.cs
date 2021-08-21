@@ -56,14 +56,29 @@
                 .Redirect(redirect => redirect
                     .To<AdminsController>(c => c.Become()));
 
+        [Fact]
+        public void PostCreateWhenUserIsAdminAndModelStateIsInvalidShouldReturnView()
+            => MyController<CitiesController>
+                .Instance(controller => controller
+                    .WithUser(TestUser.Identifier)
+                    .WithData(data => data
+                        .WithSet<Admin>(admin => admin
+                            .Add(Admins.NewAdmin()))))
+                .Calling(c => c.Create(new CityFormModel()))
+                .ShouldHave()
+                .ActionAttributes(attributes => attributes
+                    .RestrictingForAuthorizedRequests())
+                .AndAlso()
+                .ShouldReturn()
+                .View();
+
         [Theory]
-        [InlineData("Sofia", "Bulgaria", 1, 24, 1)]
+        [InlineData("Sofia", "Bulgaria", 1, 24)]
         public void PostCreateShouldBeForAuthorizedUsersAndReturnRedirectWithValidMode(
             string name,
             string countryName,
             int id,
-            int countryId,
-            int adminId)
+            int countryId)
             => MyController<CitiesController>
                 .Instance(controller => controller
                     .WithUser(user => user
@@ -72,12 +87,7 @@
                         .WithSet<Admin>(admin => admin
                             .Add(Admins.NewAdmin()))
                         .WithSet<City>(city => city
-                            .Add(new City
-                            {
-                                Name = name,
-                                CountryId = countryId,
-                                AdminId = adminId
-                            }))))
+                            .Add(Cities.Sofia()))))
                 .Calling(c => c.Create(new CityFormModel
                 {
                     Name = name,
@@ -93,7 +103,7 @@
                     .WithSet<City>(city => city
                         .Any(c =>
                             c.Name == name &&
-                            c.CountryId == 24 &&
+                            c.CountryId == countryId &&
                             c.Id == id)))
                 .TempData(tempDate => tempDate
                     .ContainingEntryWithKey(GlobalMessageKey))

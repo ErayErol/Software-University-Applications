@@ -18,7 +18,7 @@
                     <h3 class="card-title mb-4 text-danger">Are you sure you want to delete this field?</h3>
                     <form method="post" class="form-group">
                         <div class="my-item-center">
-                            <a href="/Fields/Details?id=@Model.Id" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">No, my mistake!</a>
+                            <a asp-controller="Fields" asp-action="Details" asp-route-id="@Model.Id" asp-route-information="@Model.Name" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">No, my mistake!</a>
                         </div>
                         <div class="my-item-center">
                             <input class="btn-danger min-width-size btn text-uppercase" type="submit" value="Yes, delete!" />

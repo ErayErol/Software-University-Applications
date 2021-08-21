@@ -88,196 +88,26 @@
             ICountryService countryService,
             IPasswordHasher<User> passwordHasher)
         {
-            if (data.Countries.Any() == false)
-            {
-                countryService.SaveAll();
-            }
+            AddCountries(data, countryService);
 
-            if (data.Users.Any() == false)
-            {
-                for (var i = 1; i <= 5; i++)
-                {
-                    var applicationUser = new User
-                    {
-                        UserName = $"user{i}@user.com",
-                        Email = $"user{i}@user.com",
-                        NormalizedUserName = $"user{i}@user.com",
-                        FirstName = $"FirstName-user{i}",
-                        LastName = $"LastName-user{i}",
-                        NickName = $"NickName-user{i}",
-                        PhoneNumber = $"088691149{i}",
-                        Birthdate = DateTime.ParseExact(
-                            "1999-05-08 14:40:52,531",
-                            "yyyy-MM-dd HH:mm:ss,fff",
-                            CultureInfo.InvariantCulture),
-                    };
+            AddUsers(data, passwordHasher);
 
-                    applicationUser.ImageUrl = i switch
-                    {
-                        1 => "https://thumbs.dreamstime.com/b/admin-sign-laptop-icon-stock-vector-166205404.jpg",
-                        2 => "https://www.seekpng.com/png/full/356-3562377_personal-user.png",
-                        3 => "https://www.pngfind.com/pngs/m/470-4703547_icon-user-icon-hd-png-download.png",
-                        4 => "https://amzsummits.com/wp-content/uploads/2019/05/Ferry-Vermeulen.jpeg",
-                        5 => "https://www.shareicon.net/data/512x512/2016/09/15/829452_user_512x512.png",
-                        _ => applicationUser.ImageUrl
-                    };
-
-                    data.Users.Add(applicationUser);
-
-                    var hashedPassword = passwordHasher.HashPassword(applicationUser, $"123456");
-                    applicationUser.SecurityStamp = Guid.NewGuid().ToString();
-                    applicationUser.PasswordHash = hashedPassword;
-
-                    data.SaveChanges();
-                }
-            }
-
-            if (data.Admins.Any() == false)
-            {
-                for (int i = 1; i <= 3; i++)
-                {
-                    var user = data.Users.FirstOrDefault(x => x.UserName == $"user{i}@user.com");
-
-                    data.Admins.Add(new Admin
-                    {
-                        Name = $"zwpAdmin{i}",
-                        UserId = user?.Id,
-                    });
-
-                    data.SaveChanges();
-                }
-            }
+            AddAdmins(data);
 
             if (data.Fields.Any() == false)
             {
-                if (data.Cities.Any() == false)
-                {
-                    data.Cities.AddRange(
-                        new City
-                        {
-                            CountryId = data
-                                .Countries
-                                .Where(c => c.Name == "Bulgaria")
-                                .Select(c => c.Id)
-                                .FirstOrDefault(),
-                            Name = "Haskovo",
-                            AdminId = 1,
-                        },
-                        new City
-                        {
-                            CountryId = data
-                                .Countries
-                                .Where(c => c.Name == "Bulgaria")
-                                .Select(c => c.Id)
-                                .FirstOrDefault(),
-                            Name = "Plovdiv",
-                            AdminId = 2,
-                        },
-                        new City
-                        {
-                            CountryId = data
-                                .Countries
-                                .Where(c => c.Name == "Bulgaria")
-                                .Select(c => c.Id)
-                                .FirstOrDefault(),
-                            Name = "Sofia",
-                            AdminId = 1,
-                        },
-                        new City
-                        {
-                            CountryId = data
-                                .Countries
-                                .Where(c => c.Name == "Japan")
-                                .Select(c => c.Id)
-                                .FirstOrDefault(),
-                            Name = "Tokyo",
-                            AdminId = 3,
-                        }
-                    );
+                AddCities(data);
 
-                    data.SaveChanges();
-                }
-
-                data.Fields.AddRange(
-                    new Field
-                    {
-                        Name = "Avenue",
-                        CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
-                        CityId = data.Cities.Where(c => c.Name == "Haskovo").Select(c => c.Id).FirstOrDefault(),
-                        Description = "In the summer this place is number 1 to play mini football.",
-                        Address = "ул. Дунав 1 - в парка под супермаркет авеню",
-                        ImageUrl = "https://imgrabo.com/pics/businesses/b18e8a5e845a9317f4e301b3ffd58c14.jpeg",
-                        Cafe = true,
-                        ChangingRoom = true,
-                        Parking = true,
-                        Shower = true,
-                        PhoneNumber = "0888888889",
-                        AdminId = 1,
-                    },
-                    new Field
-                    {
-                        Name = "Kortove",
-                        CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
-                        CityId = data.Cities.Where(c => c.Name == "Haskovo").Select(c => c.Id).FirstOrDefault(),
-                        Description = "In the winter this place is number 1 to play mini football, because the players play inside when it is very cold.",
-                        Address = "След Хотел Европа - до тенис кортовете",
-                        ImageUrl = "https://tennishaskovo.com/uploads/galerii/baza_kenana/44.jpg",
-                        Cafe = false,
-                        ChangingRoom = true,
-                        Parking = true,
-                        Shower = true,
-                        PhoneNumber = "0888888888",
-                        AdminId = 1,
-                    },
-                    new Field
-                    {
-                        Name = "Rooftop Football",
-                        CountryId = data.Countries.Where(c => c.Name == "Japan").Select(c => c.Id).FirstOrDefault(),
-                        CityId = data.Cities.Where(c => c.Name == "Tokyo").Select(c => c.Id).FirstOrDefault(),
-                        Description = "In the summer this place is number 1 to play mini football in Tokyo.",
-                        Address = "Some Japanese Address.",
-                        ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/ea/Tokyo_rooftop_football.jpg",
-                        Cafe = true,
-                        ChangingRoom = true,
-                        Parking = true,
-                        Shower = false,
-                        PhoneNumber = "04444444444",
-                        AdminId = 3,
-                    },
-                    new Field
-                    {
-                        Name = "Optimum",
-                        CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
-                        CityId = data.Cities.Where(c => c.Name == "Plovdiv").Select(c => c.Id).FirstOrDefault(),
-                        Description = "In summer and winter this place is number 1 to play mini football in Plovdiv.",
-                        Address = "бул. „Асеновградско шосе",
-                        ImageUrl = "https://i.id24.bg/i/36739.jpg",
-                        Cafe = false,
-                        ChangingRoom = true,
-                        Parking = true,
-                        Shower = true,
-                        PhoneNumber = "0888888886",
-                        AdminId = 2,
-                    },
-                    new Field
-                    {
-                        Name = "Avangard Fitness",
-                        CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
-                        CityId = data.Cities.Where(c => c.Name == "Plovdiv").Select(c => c.Id).FirstOrDefault(),
-                        Description = "You can workout in fitness and then play football with friends.",
-                        Address = "жк. Тракия 96-Д, 4023 кв. Капитан Бураго",
-                        ImageUrl = "https://fitness-avantgarde.com/sites/default/files/img_8189.jpg",
-                        Cafe = false,
-                        ChangingRoom = true,
-                        Parking = true,
-                        Shower = true,
-                        PhoneNumber = "0888888885",
-                        AdminId = 2,
-                    });
-
-                data.SaveChanges();
+                AddFields(data);
             }
 
+            AddGames(data);
+
+            data.SaveChanges();
+        }
+
+        private static void AddGames(MiniFootballDbContext data)
+        {
             if (data.Games.Any() == false)
             {
                 var today = DateTime.Today;
@@ -311,21 +141,21 @@
                     .FirstOrDefault();
 
                 data.Games.AddRange(
-                new Game
-                {
-                    AdminId = 1,
-                    FieldId = 3,
-                    Date = DateTime.ParseExact($"{month:D2}/{day:D2}/{year}", "d", CultureInfo.InvariantCulture),
-                    Time = 20,
-                    Ball = true,
-                    Jerseys = true,
-                    Description = "Just friendly game. It will be fun!",
-                    NumberOfPlayers = 12,
-                    Places = 12,
-                    HasPlaces = true,
-                    FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
-                    PhoneNumber = firstPhoneNumber,
-                },
+                    new Game
+                    {
+                        AdminId = 1,
+                        FieldId = 3,
+                        Date = DateTime.ParseExact($"{month:D2}/{day:D2}/{year}", "d", CultureInfo.InvariantCulture),
+                        Time = 20,
+                        Ball = true,
+                        Jerseys = true,
+                        Description = "Just friendly game. It will be fun!",
+                        NumberOfPlayers = 12,
+                        Places = 12,
+                        HasPlaces = true,
+                        FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
+                        PhoneNumber = firstPhoneNumber,
+                    },
                     new Game
                     {
                         AdminId = 2,
@@ -342,8 +172,229 @@
                         PhoneNumber = secondPhoneNumber,
                     });
             }
+        }
+
+        private static void AddFields(MiniFootballDbContext data)
+        {
+            data.Fields.AddRange(
+                new Field
+                {
+                    Name = "Bogorodica",
+                    CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
+                    CityId = data.Cities.Where(c => c.Name == "Haskovo").Select(c => c.Id).FirstOrDefault(),
+                    Description = "This place is very good to play mini football, we have two fields, a small and a large.",
+                    Address = "Зад монумент света богородица",
+                    ImageUrl = "https://haskovo.live/haskovo_content/uploads/2019/07/65968766_1192162560964390_4606051931868102656_n.jpg",
+                    Cafe = false,
+                    ChangingRoom = false,
+                    Parking = true,
+                    Shower = false,
+                    PhoneNumber = "0888888881",
+                    AdminId = 1,
+                },
+                new Field
+                {
+                    Name = "Avenue",
+                    CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
+                    CityId = data.Cities.Where(c => c.Name == "Haskovo").Select(c => c.Id).FirstOrDefault(),
+                    Description = "In the summer this place is number 1 to play mini football.",
+                    Address = "ул. Дунав 1 - в парка под супермаркет авеню",
+                    ImageUrl = "https://imgrabo.com/pics/businesses/b18e8a5e845a9317f4e301b3ffd58c14.jpeg",
+                    Cafe = true,
+                    ChangingRoom = true,
+                    Parking = true,
+                    Shower = true,
+                    PhoneNumber = "0888888889",
+                    AdminId = 1,
+                },
+                new Field
+                {
+                    Name = "Kortove",
+                    CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
+                    CityId = data.Cities.Where(c => c.Name == "Haskovo").Select(c => c.Id).FirstOrDefault(),
+                    Description =
+                        "In the winter this place is number 1 to play mini football, because the players play inside when it is very cold.",
+                    Address = "След Хотел Европа - до тенис кортовете",
+                    ImageUrl = "https://tennishaskovo.com/uploads/galerii/baza_kenana/44.jpg",
+                    Cafe = false,
+                    ChangingRoom = true,
+                    Parking = true,
+                    Shower = true,
+                    PhoneNumber = "0888888888",
+                    AdminId = 1,
+                },
+                new Field
+                {
+                    Name = "Rooftop Football",
+                    CountryId = data.Countries.Where(c => c.Name == "Japan").Select(c => c.Id).FirstOrDefault(),
+                    CityId = data.Cities.Where(c => c.Name == "Tokyo").Select(c => c.Id).FirstOrDefault(),
+                    Description = "In the summer this place is number 1 to play mini football in Tokyo.",
+                    Address = "Some Japanese Address.",
+                    ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/ea/Tokyo_rooftop_football.jpg",
+                    Cafe = true,
+                    ChangingRoom = true,
+                    Parking = true,
+                    Shower = false,
+                    PhoneNumber = "04444444444",
+                    AdminId = 3,
+                },
+                new Field
+                {
+                    Name = "Optimum",
+                    CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
+                    CityId = data.Cities.Where(c => c.Name == "Plovdiv").Select(c => c.Id).FirstOrDefault(),
+                    Description = "In summer and winter this place is number 1 to play mini football in Plovdiv.",
+                    Address = "бул. „Асеновградско шосе",
+                    ImageUrl = "https://i.id24.bg/i/36739.jpg",
+                    Cafe = false,
+                    ChangingRoom = true,
+                    Parking = true,
+                    Shower = true,
+                    PhoneNumber = "0888888886",
+                    AdminId = 2,
+                },
+                new Field
+                {
+                    Name = "Avangard Fitness",
+                    CountryId = data.Countries.Where(c => c.Name == "Bulgaria").Select(c => c.Id).FirstOrDefault(),
+                    CityId = data.Cities.Where(c => c.Name == "Plovdiv").Select(c => c.Id).FirstOrDefault(),
+                    Description = "You can workout in fitness and then play football with friends.",
+                    Address = "жк. Тракия 96-Д, 4023 кв. Капитан Бураго",
+                    ImageUrl = "https://fitness-avantgarde.com/sites/default/files/img_8189.jpg",
+                    Cafe = false,
+                    ChangingRoom = true,
+                    Parking = true,
+                    Shower = true,
+                    PhoneNumber = "0888888885",
+                    AdminId = 2,
+                });
 
             data.SaveChanges();
+        }
+
+        private static void AddCities(MiniFootballDbContext data)
+        {
+            if (data.Cities.Any() == false)
+            {
+                data.Cities.AddRange(
+                    new City
+                    {
+                        CountryId = data
+                            .Countries
+                            .Where(c => c.Name == "Bulgaria")
+                            .Select(c => c.Id)
+                            .FirstOrDefault(),
+                        Name = "Haskovo",
+                        AdminId = 1,
+                    },
+                    new City
+                    {
+                        CountryId = data
+                            .Countries
+                            .Where(c => c.Name == "Bulgaria")
+                            .Select(c => c.Id)
+                            .FirstOrDefault(),
+                        Name = "Plovdiv",
+                        AdminId = 2,
+                    },
+                    new City
+                    {
+                        CountryId = data
+                            .Countries
+                            .Where(c => c.Name == "Bulgaria")
+                            .Select(c => c.Id)
+                            .FirstOrDefault(),
+                        Name = "Sofia",
+                        AdminId = 1,
+                    },
+                    new City
+                    {
+                        CountryId = data
+                            .Countries
+                            .Where(c => c.Name == "Japan")
+                            .Select(c => c.Id)
+                            .FirstOrDefault(),
+                        Name = "Tokyo",
+                        AdminId = 3,
+                    }
+                );
+
+                data.SaveChanges();
+            }
+        }
+
+        private static void AddAdmins(MiniFootballDbContext data)
+        {
+            if (data.Admins.Any() == false)
+            {
+                for (int i = 1; i <= 3; i++)
+                {
+                    var user = data.Users.FirstOrDefault(x => x.UserName == $"admin{i}@admin.com");
+
+                    data.Admins.Add(new Admin
+                    {
+                        Name = $"admin{i}",
+                        UserId = user?.Id,
+                    });
+
+                    data.SaveChanges();
+                }
+            }
+        }
+
+        private static void AddUsers(MiniFootballDbContext data, IPasswordHasher<User> passwordHasher)
+        {
+            if (data.Users.Any() == false)
+            {
+                var name = string.Empty;
+                for (var i = 1; i <= 5; i++)
+                {
+                    name = i >= 1 && i <= 3 
+                        ? "admin" 
+                        : "user";
+
+                    var applicationUser = new User
+                    {
+                        UserName = $"{name}{i}@{name}.com",
+                        Email = $"{name}{i}@{name}.com",
+                        NormalizedUserName = $"{name}{i}@{name}.com",
+                        FirstName = $"FirstName-{name}{i}",
+                        LastName = $"LastName-{name}{i}",
+                        NickName = $"NickName-{name}{i}",
+                        PhoneNumber = $"088691149{i}",
+                        Birthdate = DateTime.ParseExact(
+                            $"199{i}-0{i}-0{i} 1{i}:{i}0:52,531",
+                            "yyyy-MM-dd HH:mm:ss,fff",
+                            CultureInfo.InvariantCulture),
+                    };
+
+                    applicationUser.ImageUrl = i switch
+                    {
+                        1 => "https://thumbs.dreamstime.com/b/admin-sign-laptop-icon-stock-vector-166205404.jpg",
+                        2 => "https://www.seekpng.com/png/full/356-3562377_personal-user.png",
+                        3 => "https://www.pngfind.com/pngs/m/470-4703547_icon-user-icon-hd-png-download.png",
+                        4 => "https://amzsummits.com/wp-content/uploads/2019/05/Ferry-Vermeulen.jpeg",
+                        5 => "https://www.shareicon.net/data/512x512/2016/09/15/829452_user_512x512.png",
+                        _ => applicationUser.ImageUrl
+                    };
+
+                    data.Users.Add(applicationUser);
+
+                    var hashedPassword = passwordHasher.HashPassword(applicationUser, "123456");
+                    applicationUser.SecurityStamp = Guid.NewGuid().ToString();
+                    applicationUser.PasswordHash = hashedPassword;
+
+                    data.SaveChanges();
+                }
+            }
+        }
+
+        private static void AddCountries(MiniFootballDbContext data, ICountryService countryService)
+        {
+            if (data.Countries.Any() == false)
+            {
+                countryService.SaveAll();
+            }
         }
     }
 }

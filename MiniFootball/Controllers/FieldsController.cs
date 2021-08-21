@@ -139,16 +139,16 @@
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
-            var field = fields.GetDetails(id);
+            var fieldDetails = fields.GetDetails(id);
 
-            if (field.Name.Equals(information) == false)
+            if (fieldDetails.Name.Equals(information) == false)
             {
                 return BadRequest();
             }
 
-            var fieldForm = mapper.Map<FieldEditFormModel>(field);
+            var fieldEdit = mapper.Map<FieldEditFormModel>(fieldDetails);
 
-            return View(fieldForm);
+            return View(fieldEdit);
         }
 
         [HttpPost]
