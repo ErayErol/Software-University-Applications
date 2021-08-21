@@ -48,7 +48,7 @@
             CreateMap<Field, FieldListingServiceModel>();
             CreateMap<Field, FieldDetailServiceModel>();
             CreateMap<Field, FieldDeleteServiceModel>();
-            //CreateMap<Field, GameFieldListingServiceModel>();
+            CreateMap<Field, GameFieldListingServiceModel>();
             //CreateMap<FieldDetailServiceModel, FieldCreateFormModel>();
             CreateMap<FieldDetailServiceModel, FieldEditFormModel>();
         }
