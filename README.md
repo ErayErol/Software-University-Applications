@@ -22,11 +22,11 @@
    - Can Delete/Update/View all games and fields.
 # 🛠 Built with:
 - ASP.NET Core 5.0
-- Entity Framework (EF) Core .50
+- Entity Framework (EF) Core 5.0
+- MyTested.AspNetCore.Mvc 5.0
 - Microsoft SQL Server Express
 - ASP.NET Identity System
 - MVC Areas with Multiple Layouts
-- MyTested.AspNetCore.Mvc
 - Razor Pages, Sections, Partial Views
 - Auto Мapping
 - Dependency Injection
@@ -46,3 +46,22 @@ would happen once you run the application, including Test Accounts:
   - User: user4@user.com / password: 123456
   - Admin: admin1@admin.com / password: 123456
   - Field Manager: manager@manager.com / password: 123456
+# :camera: Screenshots
+
+### Home Page (Logged Users)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/home-page-logged-user.png?raw=true"/>
+
+### All fields (Logged Users)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields.png?raw=true"/>
+
+### All games (Logged Users)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-games.png?raw=true"/>
+
+### Field Details (Logged Users)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/field-details.png?raw=true"/>
+
+### Game Details (Logged Users)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/game-details.png?raw=true"/>
+
+### Fields Approving (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields-manager.png?raw=true"/>
