@@ -48,20 +48,47 @@ would happen once you run the application, including Test Accounts:
   - Field Manager: manager@manager.com / password: 123456
 # :camera: Screenshots
 
-### Home Page (Logged Users)
+### Login (Guest)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/login.png?raw=true"/>
+
+### Register (Guest)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/register.png?raw=true"/>
+
+### Home Page (Manager)
 <img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/home-page-logged-user.png?raw=true"/>
 
-### All fields (Logged Users)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields.png?raw=true"/>
-
-### All games (Logged Users)
+### All games (Guest)
 <img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-games.png?raw=true"/>
 
-### Field Details (Logged Users)
+### All games (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-games2-manager.png?raw=true"/>
+
+### Create game (Admin)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/create-game.png?raw=true"/>
+
+### Create field (Admin)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/create-field.png?raw=true"/>
+
+### Create city (Admin)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/create-city.png?raw=true"/>
+
+### All fields (Guest)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields.png?raw=true"/>
+
+### All fields (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields2-manager.png?raw=true"/>
+
+### Field Details 1 (Manager)
 <img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/field-details.png?raw=true"/>
 
-### Game Details (Logged Users)
+### Field Details 2 (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/field-details2.png?raw=true"/>
+
+### Game Details 1 (Manager)
 <img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/game-details.png?raw=true"/>
 
+### Game Details 2 (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/game-details2.png?raw=true"/>
+
 ### Fields Approving (Manager)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields-manager.png?raw=true"/>
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/approving-fields-manager.png?raw=true"/>
