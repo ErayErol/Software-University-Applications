@@ -3,13 +3,12 @@
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using MiniFootball.Controllers;
     using Models.Admins;
     using Services.Admins;
-
+    using static GlobalConstant;
     using static WebConstants;
 
-    [Area("Admin")]
+    [Area(Admin.AreaName)]
     public class AdminsController : Controller
     {
         private readonly IAdminService admins;
@@ -24,7 +23,7 @@
         {
             if (admins.IsAdmin(User.Id()) || User.IsManager())
             {
-                TempData[GlobalMessageKey] = "You can not become an admin!";
+                TempData[GlobalMessageKey] = Admin.CanNotBecomeAdmin;
                 return View();
             }
 
@@ -45,9 +44,8 @@
 
             admins.Become(adminModel.Name, User.Id());
 
-            TempData[GlobalMessageKey] = "You have become an admin!";
-
-            return RedirectToAction(nameof(GamesController.All), "Games");
+            TempData[GlobalMessageKey] = Admin.SuccessfullyBecome;
+            return Redirect(Home.HomePage);
         }
     }
 }

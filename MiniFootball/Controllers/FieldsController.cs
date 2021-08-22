@@ -13,6 +13,7 @@
     using Areas.Admin.Controllers;
     using static Convert;
     using static WebConstants;
+    using static GlobalConstant;
 
     public class FieldsController : Controller
     {
@@ -59,8 +60,8 @@
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
-                TempData[GlobalMessageKey] = "Only Admins can create fields!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Field.OnlyAdminCanCreate;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             return View(new FieldCreateFormModel
@@ -77,8 +78,8 @@
 
             if (adminId == 0 || User.IsManager())
             {
-                TempData[GlobalMessageKey] = "Only Admins can create fields!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Field.OnlyAdminCanCreate;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             if (ModelState.IsValid == false)
@@ -92,15 +93,14 @@
 
             if (fieldModel.CityId == 0)
             {
-                TempData[GlobalMessageKey] =
-                    "This City does not exist in this Country. First you have to create City and then create Game!";
-                return RedirectToAction("Create", "Cities");
+                TempData[GlobalMessageKey] = City.CityDoesNotExistInCountry;
+                return RedirectToAction(GlobalConstant.Create, City.ControllerName);
             }
 
             if (fields.IsAlreadyExist(fieldModel.Name, fieldModel.CountryId, fieldModel.CityId))
             {
                 fieldModel.Countries = countries.All();
-                TempData[GlobalMessageKey] = "There are already exist fields with this Name, Country and City";
+                TempData[GlobalMessageKey] = Field.ThereAreAlreadyExistField;
                 return View(fieldModel);
             }
 
@@ -123,11 +123,11 @@
 
             if (fieldId == 0)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
-            TempData[GlobalMessageKey] = "Your field was created and is awaiting approval!";
+            TempData[GlobalMessageKey] = Field.SuccessfullyCreated;
             return RedirectToAction(nameof(Mine));
         }
 
@@ -138,16 +138,16 @@
 
             if (admins.IsAdmin(userId) == false && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only Admins and Moderator can edit fields!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Field.OnlyCreatorCanEdit;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             var fieldDetails = fields.GetDetails(id);
 
             if (fieldDetails.Name.Equals(information) == false)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             var fieldEdit = mapper.Map<FieldEditFormModel>(fieldDetails);
@@ -163,8 +163,8 @@
 
             if (adminId == 0 && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only Admins and Moderator can edit fields!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Field.OnlyCreatorCanEdit;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             if (ModelState.IsValid == false)
@@ -174,8 +174,8 @@
 
             if (fields.IsAdminCreatorOfField(fieldModel.Id, adminId) == false && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only the creator of the field or moderator can edit the field!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = Field.OnlyCreatorCanEdit;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             var isEdit = fields.Edit(
@@ -193,13 +193,14 @@
 
             if (isEdit == false)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             var fieldName = fields.FieldName(fieldModel.Id);
 
-            TempData[GlobalMessageKey] = $"Your field was edited{(this.User.IsManager() ? string.Empty : " and is awaiting approval")}!";
+            TempData[GlobalMessageKey] =
+                $"Your field was edited{(this.User.IsManager() ? string.Empty : " and is awaiting approval")}!";
             return RedirectToAction(nameof(Details), new { id = fieldModel.Id, information = fieldName });
         }
 
@@ -210,24 +211,24 @@
 
             if (admins.IsAdmin(userId) == false && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only Admins and Moderator can delete fields!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Field.OnlyCreatorCanDelete;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             var field = fields.FieldExist(id);
 
             if (field == false)
             {
-                TempData[GlobalMessageKey] = "Field does not exist. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = Field.DoesNotExist;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             var fieldDeleteDetails = fields.FieldDeleteInfo(id);
 
             if (fieldDeleteDetails.Name.Equals(information) == false)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             return View(fieldDeleteDetails);
@@ -241,23 +242,23 @@
 
             if (adminId == 0 && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only the creator of this field and Moderator can delete the field!"; 
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Field.OnlyCreatorCanDelete;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             if (fields.IsAdminCreatorOfField(fieldModel.Id, adminId) == false && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only the creator of this field and Moderator can delete the field!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = Field.OnlyCreatorCanDelete;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             if (fields.Delete(fieldModel.Id) == false)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
-            TempData[GlobalMessageKey] = "You deleted field!";
+            TempData[GlobalMessageKey] = Field.SuccessfullyDelete;
             return RedirectToAction(nameof(All));
         }
 
@@ -268,8 +269,8 @@
 
             if (fieldDetails == null || fieldDetails.Name.Equals(information) == false)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             return View(fieldDetails);
@@ -282,7 +283,7 @@
 
             if (admins.IsAdmin(userId) == false || User.IsManager())
             {
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             var myFields = fields
@@ -291,7 +292,7 @@
 
             if (myFields.Any() == false)
             {
-                TempData[GlobalMessageKey] = "Still you do not have fields, but you can create it!";
+                TempData[GlobalMessageKey] = Field.YouDoNotHaveAnyFieldsYet;
             }
 
             return View(myFields);

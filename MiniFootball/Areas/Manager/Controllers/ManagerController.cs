@@ -2,10 +2,10 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using static ManagerConstants;
+    using static GlobalConstant;
 
-    [Area(AreaName)]
-    [Authorize(Roles = ManagerRoleName)]
+    [Area(Manager.AreaName)]
+    [Authorize(Roles = Manager.ManagerRoleName)]
     public abstract class ManagerController : Controller
     {
     }

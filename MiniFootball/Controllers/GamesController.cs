@@ -17,6 +17,7 @@
     using Services.Cities;
     using static Convert;
     using static WebConstants;
+    using static GlobalConstant;
 
     public class GamesController : Controller
     {
@@ -70,8 +71,8 @@
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
-                TempData[GlobalMessageKey] = "Only Admins can create games!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Game.OnlyAdminCanCreate;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             return View(new CreateGameFirstStepViewModel
@@ -86,8 +87,8 @@
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
-                TempData[GlobalMessageKey] = "Only Admins can create games!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Game.OnlyAdminCanCreate;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             if (ModelState.IsValid == false)
@@ -102,16 +103,18 @@
 
             if (cityId == 0)
             {
-                TempData[GlobalMessageKey] =
-                    "This City does not exist in this Country. First you have to create City and then create Game!";
-                return RedirectToAction("Create", "Cities");
+                TempData[GlobalMessageKey] = City.CityDoesNotExistInCountry;
+                return RedirectToAction(GlobalConstant.Create, City.ControllerName);
             }
 
-            return RedirectToAction("CreateGameChooseField", "Games", new CreateGameCountryAndCityViewModel()
-            {
-                CityName = gameModel.CityName,
-                CountryName = gameModel.CountryName,
-            });
+            return RedirectToAction(
+                Game.CreateGameChooseField,
+                Game.ControllerName,
+                new CreateGameCountryAndCityViewModel
+                {
+                    CityName = gameModel.CityName,
+                    CountryName = gameModel.CountryName,
+                });
         }
 
         [Authorize]
@@ -136,16 +139,16 @@
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
-                TempData[GlobalMessageKey] = "Only Admins can create games!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Game.OnlyAdminCanCreate;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             var fieldId = gameModel.FieldId;
 
             if (fields.FieldExist(fieldId) == false)
             {
-                TempData[GlobalMessageKey] = "Field does not exist. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = Field.DoesNotExist;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             var fieldName = fields.FieldName(fieldId);
@@ -153,7 +156,10 @@
 
             var lastStepGame = mapper.Map<CreateGameLastStepViewModel>(gameModel);
 
-            return RedirectToAction("CreateGameLastStep", "Games", lastStepGame);
+            return RedirectToAction(
+                Game.CreateGameLastStep, 
+                Game.ControllerName, 
+                lastStepGame);
         }
 
         [Authorize]
@@ -161,8 +167,8 @@
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
-                TempData[GlobalMessageKey] = "Only Admins can create games!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Game.OnlyAdminCanCreate;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             if (fields.IsCorrectParameters(
@@ -171,8 +177,8 @@
                 gameModel.CountryName,
                 gameModel.CityName) == false)
             {
-                TempData[GlobalMessageKey] = "Field parameters are incorrect. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = Field.IncorrectParameters;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             return View(new CreateGameFormModel
@@ -190,8 +196,8 @@
 
             if (adminId == 0 || User.IsManager())
             {
-                TempData[GlobalMessageKey] = "Only Admins can create games!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Game.OnlyAdminCanCreate;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             if (ModelState.IsValid == false)
@@ -203,7 +209,7 @@
 
             if (correctDate)
             {
-                TempData[GlobalMessageKey] = "The date has to be today or after today!";
+                TempData[GlobalMessageKey] = Game.IncorrectDate;
                 return View(gameModel);
             }
 
@@ -212,8 +218,7 @@
 
             if (reserved)
             {
-                TempData[GlobalMessageKey] =
-                    "There are already a game in this field in this date and time! Choose another time!";
+                TempData[GlobalMessageKey] = Game.ThereAreAlreadyAGame;
                 return View(gameModel);
             }
 
@@ -238,12 +243,12 @@
 
             if (gameId == string.Empty)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
-            TempData[GlobalMessageKey] = "Your game was created and is awaiting approval!";
-            return RedirectToAction("Mine");
+            TempData[GlobalMessageKey] = Game.SuccessfullyCreated;
+            return RedirectToAction(Game.Mine);
         }
 
         [Authorize]
@@ -253,22 +258,22 @@
 
             if (admins.IsAdmin(userId) == false && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only Admins and Moderator can edit games!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Game.OnlyCreatorCanEdit;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             var gameDetails = games.GetDetails(gameId);
 
             if (gameDetails.FieldName.Equals(information) == false)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             if (gameDetails?.UserId != userId && User.IsManager() == false)
             {
                 TempData[GlobalMessageKey] = "Only the creator of the game or moderator can edit the game!";
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             var gameEdit = mapper.Map<GameEditServiceModel>(gameDetails);
@@ -284,14 +289,14 @@
 
             if (adminId == 0 && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only the creator of the game or moderator can edit the game!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = Game.OnlyCreatorCanEdit;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             if (games.IsAdminCreatorOfGame(gameModel.GameId, adminId) == false && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only the creator of the game or moderator can edit the game!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = Game.OnlyCreatorCanEdit;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             if (ModelState.IsValid == false)
@@ -313,11 +318,12 @@
 
             if (isEdit == false)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
-            TempData[GlobalMessageKey] = $"Your game was edited{(this.User.IsManager() ? string.Empty : " and is awaiting approval")}!";
+            TempData[GlobalMessageKey] = 
+                $"Your game was edited{(this.User.IsManager() ? string.Empty : " and is awaiting approval")}!";
 
             return RedirectToAction(nameof(Details),
                 new { gameId = gameModel.GameId, information = gameModel.FieldName });
@@ -330,8 +336,8 @@
 
             if (admins.IsAdmin(userId) == false && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only Admins and Moderator can delete games!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Game.OnlyCreatorCanDelete;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             var adminId = admins.IdByUser(User.Id());
@@ -340,16 +346,16 @@
 
             if (isAdminCreatorOfGame == false && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only the creator of this game and Moderator can delete the game!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = Game.OnlyCreatorCanDelete;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             var gameDeleteDetails = games.GameDeleteInfo(gameId);
 
             if (gameDeleteDetails.FieldName.Equals(information) == false)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             return View(gameDeleteDetails);
@@ -363,25 +369,25 @@
 
             if (adminId == 0 && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only the creator of this game and Moderator can delete the game!"; 
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = Game.OnlyCreatorCanDelete;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             var isAdminCreatorOfGame = games.IsAdminCreatorOfGame(gameModel.GameId, adminId);
 
             if (isAdminCreatorOfGame == false && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only the creator of this game and Moderator can delete the game!"; 
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = Game.OnlyCreatorCanDelete;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             if (games.Delete(gameModel.GameId) == false)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
-            TempData[GlobalMessageKey] = "You deleted game!";
+            TempData[GlobalMessageKey] = Game.SuccessfullyDeleted;
             return RedirectToAction(nameof(All));
         }
 
@@ -390,16 +396,16 @@
         {
             if (ModelState.IsValid == false)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
                 return RedirectToAction(nameof(Details));
             }
 
             if (games.AddUserToGame(gameId, User.Id()) == false)
             {
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
-            TempData[GlobalMessageKey] = "You joined game!";
+            TempData[GlobalMessageKey] = Game.SuccessfullyJoined;
             return Redirect($"SeePlayers?gameId={gameId}");
         }
 
@@ -414,7 +420,7 @@
 
                 if (gameIdUserId.UserId != userId)
                 {
-                    TempData[GlobalMessageKey] = "Only joined players can view the list of players!";
+                    TempData[GlobalMessageKey] = Game.OnlyJoinedPlayersCanView;
                     return RedirectToAction(nameof(All));
                 }
             }
@@ -423,7 +429,7 @@
 
             if (joinedPlayers.Any() == false)
             {
-                TempData[GlobalMessageKey] = "Still there are no players for this game!";
+                TempData[GlobalMessageKey] = Game.YetNoPlayers;
             }
 
             return View(joinedPlayers);
@@ -439,7 +445,7 @@
                 && User.IsManager() == false
                 && currentUserId != userIdToDelete)
             {
-                TempData[GlobalMessageKey] = "You can not remove player from this game!";
+                TempData[GlobalMessageKey] = Game.YouCanNotRemovePlayer;
                 return RedirectToAction(nameof(All));
             }
 
@@ -447,7 +453,7 @@
                 && User.IsManager() == false
                 && currentUserId != userIdToDelete)
             {
-                TempData[GlobalMessageKey] = "You can not remove player from this game!";
+                TempData[GlobalMessageKey] = Game.YouCanNotRemovePlayer;
                 return RedirectToAction(nameof(All));
             }
 
@@ -455,7 +461,7 @@
                 && User.IsManager() == false
                 && currentUserId != userIdToDelete)
             {
-                TempData[GlobalMessageKey] = "You can not remove player from this game!";
+                TempData[GlobalMessageKey] = Game.YouCanNotRemovePlayer;
                 return RedirectToAction(nameof(All));
             }
 
@@ -463,12 +469,12 @@
 
             if (isUserRemoved == false)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
-            TempData[GlobalMessageKey] = "User exit from game!";
-            return RedirectToAction("All");
+            TempData[GlobalMessageKey] = Game.UserExit;
+            return RedirectToAction(nameof(All));
         }
 
         [Authorize]
@@ -478,8 +484,8 @@
 
             if (gameDetails == null || gameDetails.FieldName.Equals(information) == false)
             {
-                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
-                return RedirectToAction("Error", "Home");
+                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             if (games.IsUserIsJoinGame(gameId, User.Id()))
@@ -495,7 +501,7 @@
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             var myGames = games
@@ -504,7 +510,7 @@
 
             if (myGames.Any() == false)
             {
-                TempData[GlobalMessageKey] = "Still you do not have games, but you can create it!";
+                TempData[GlobalMessageKey] = Game.YouDoNotHaveAnyGamesYet;
             }
 
             return View(myGames);

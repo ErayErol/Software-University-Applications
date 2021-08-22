@@ -3,8 +3,10 @@
     using Microsoft.AspNetCore.Mvc;
     using Services.Statistics;
 
+    using static GlobalConstant;
+
     [ApiController]
-    [Route("api/statistics")]
+    [Route(Api.ApiStatisticsRoute)]
     public class StatisticsApiController : ControllerBase
     {
         private readonly IStatisticsService statistics;

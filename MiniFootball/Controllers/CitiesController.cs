@@ -11,6 +11,7 @@
 
     using static Convert;
     using static WebConstants;
+    using static GlobalConstant;
 
     public class CitiesController : Controller
     {
@@ -33,8 +34,8 @@
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
-                TempData[GlobalMessageKey] = "Only Admins can create city!";
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                TempData[GlobalMessageKey] = City.OnlyAdminCanCreate;
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             return View(new CityFormModel
@@ -51,7 +52,7 @@
 
             if (adminId == 0 || User.IsManager())
             {
-                return RedirectToAction(nameof(AdminsController.Become), "Admins");
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             if (ModelState.IsValid == false)
@@ -69,12 +70,12 @@
             {
                 cityModel.Countries = countries.All();
 
-                TempData[GlobalMessageKey] = "There are already a City with this Name and Country!";
+                TempData[GlobalMessageKey] = City.ThereAreAlreadyACity;
                 return View(cityModel);
             }
 
-            TempData[GlobalMessageKey] = "You created city!";
-            return RedirectToAction("CreateGameFirstStep", "Games");
+            TempData[GlobalMessageKey] = City.SuccessfullyCreated;
+            return RedirectToAction(Game.CreateGameFirstStep, Game.ControllerName);
         }
     }
 }

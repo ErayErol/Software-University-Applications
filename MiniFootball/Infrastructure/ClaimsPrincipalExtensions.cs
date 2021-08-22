@@ -1,7 +1,6 @@
 ﻿namespace MiniFootball.Infrastructure
 {
     using System.Security.Claims;
-    using static Areas.Manager.ManagerConstants;
 
     public static class ClaimsPrincipalExtensions
     {
@@ -9,6 +8,6 @@
             => user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         public static bool IsManager(this ClaimsPrincipal user)
-            => user.IsInRole(ManagerRoleName);
+            => user.IsInRole(GlobalConstant.Manager.ManagerRoleName);
     }
 }
