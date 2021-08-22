@@ -109,6 +109,12 @@ namespace MiniFootball
 
                     endpoints
                         .MapControllerRoute(
+                            name: "Admin Become",
+                            pattern: "Admin/Admins/Become",
+                            defaults: new { controller = "Admins", action = "Become" });
+
+                    endpoints
+                        .MapControllerRoute(
                         name: "Game Details",
                         pattern: "/Games/Details/{gameId}/{information}",
                         defaults: new { controller = "Games", action = "Details" });

@@ -3743,3 +3743,8 @@ input.btn {
     background-repeat: no-repeat;
     background-size:100% 100%;
 }*/
+
+.searching-sorting {
+    position: relative;
+    justify-content: center;
+}

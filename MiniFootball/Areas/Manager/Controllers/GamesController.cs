@@ -1,4 +1,4 @@
-﻿namespace MiniFootball.Areas.Manager.Controller
+﻿namespace MiniFootball.Areas.Manager.Controllers
 {
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;

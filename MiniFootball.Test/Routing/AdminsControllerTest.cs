@@ -1,6 +1,6 @@
 ﻿namespace MiniFootball.Test.Routing
 {
-    using MiniFootball.Controllers;
+    using Areas.Admin.Controllers;
     using Models.Admins;
     using MyTested.AspNetCore.Mvc;
     using Xunit;
@@ -12,7 +12,7 @@
             => MyRouting
                 .Configuration()
                 .ShouldMap(request => request
-                    .WithPath("/Admins/Become"))
+                    .WithPath("/Admin/Admins/Become"))
                 .To<AdminsController>(c => c.Become());
 
         [Fact]
@@ -20,7 +20,7 @@
             => MyRouting
                 .Configuration()
                 .ShouldMap(request => request
-                    .WithPath("/Admins/Become")
+                    .WithPath("/Admin/Admins/Become")
                     .WithMethod(HttpMethod.Post))
                 .To<AdminsController>(c => c.Become(With.Any<BecomeAdminFormModel>()));
     }

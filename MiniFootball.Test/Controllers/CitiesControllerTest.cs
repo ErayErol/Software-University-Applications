@@ -7,6 +7,7 @@
     using Models.Games;
     using MyTested.AspNetCore.Mvc;
     using System.Linq;
+    using Areas.Admin.Controllers;
     using Xunit;
     using static WebConstants;
 

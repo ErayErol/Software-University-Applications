@@ -1,4 +1,4 @@
-﻿namespace MiniFootball.Areas.Manager.Controller
+﻿namespace MiniFootball.Areas.Manager.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;

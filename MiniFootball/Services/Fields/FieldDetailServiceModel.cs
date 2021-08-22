@@ -8,7 +8,7 @@
     public class FieldDetailServiceModel : FieldEditFormModel
     {
         [StringLength(CountryMaxLength, MinimumLength = CountryMinLength, ErrorMessage = Range)]
-        [Display(Name = "Select Country:")]
+        [Display(Name = "Country")]
         public string CountryName { get; set; }
 
         [StringLength(CityMaxLength, MinimumLength = CityMinLength, ErrorMessage = Range)]

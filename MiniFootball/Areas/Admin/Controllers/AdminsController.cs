@@ -1,13 +1,15 @@
-﻿namespace MiniFootball.Controllers
+﻿namespace MiniFootball.Areas.Admin.Controllers
 {
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using MiniFootball.Controllers;
     using Models.Admins;
     using Services.Admins;
 
     using static WebConstants;
 
+    [Area("Admin")]
     public class AdminsController : Controller
     {
         private readonly IAdminService admins;

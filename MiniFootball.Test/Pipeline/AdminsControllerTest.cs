@@ -6,6 +6,7 @@
     using Models.Games;
     using MyTested.AspNetCore.Mvc;
     using System.Linq;
+    using Areas.Admin.Controllers;
     using Xunit;
     using static WebConstants;
 
@@ -16,7 +17,7 @@
             => MyMvc
                 .Pipeline()
                 .ShouldMap(request => request
-                    .WithPath("/Admins/Become")
+                    .WithPath("/Admin/Admins/Become")
                     .WithUser())
                 .To<AdminsController>(c => c.Become())
                 .Which()
@@ -32,7 +33,7 @@
             => MyPipeline
                 .Configuration()
                 .ShouldMap(request => request
-                    .WithPath("/Admins/Become")
+                    .WithPath("/Admin/Admins/Become")
                     .WithMethod(HttpMethod.Post)
                     .WithFormFields(new
                     {
@@ -59,7 +60,6 @@
                     .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
-                .Redirect(redirect => redirect
-                    .To<GamesController>(c => c.All(With.Any<GameAllQueryModel>())));
+                .RedirectToAction(nameof(GamesController.All), "Games");
     }
 }

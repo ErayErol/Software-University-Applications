@@ -5,6 +5,7 @@
     using Models.Admins;
     using MyTested.AspNetCore.Mvc;
     using System.Linq;
+    using Areas.Admin.Controllers;
     using Data;
     using Models.Games;
     using Xunit;
@@ -68,7 +69,6 @@
                     .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
-                .Redirect(redirect => redirect
-                    .To<GamesController>(c => c.All(With.Any<GameAllQueryModel>())));
+                .RedirectToAction(nameof(GamesController.All), "Games");
     }
 }
