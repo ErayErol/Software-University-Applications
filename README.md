@@ -75,6 +75,9 @@ would happen once you run the application, including Test Accounts:
 ### All fields (Guest)
 <img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields.png?raw=true"/>
 
+### All fields (User)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields-user.png?raw=true"/>
+
 ### All fields (Manager)
 <img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields2-manager.png?raw=true"/>
 
