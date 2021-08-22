@@ -123,7 +123,8 @@
 
             if (fieldId == 0)
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
+                return RedirectToAction("Error", "Home");
             }
 
             TempData[GlobalMessageKey] = "Your field was created and is awaiting approval!";
@@ -137,6 +138,7 @@
 
             if (admins.IsAdmin(userId) == false && User.IsManager() == false)
             {
+                TempData[GlobalMessageKey] = "Only Admins and Moderator can edit fields!";
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
@@ -144,7 +146,8 @@
 
             if (fieldDetails.Name.Equals(information) == false)
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
+                return RedirectToAction("Error", "Home");
             }
 
             var fieldEdit = mapper.Map<FieldEditFormModel>(fieldDetails);
@@ -160,6 +163,7 @@
 
             if (adminId == 0 && User.IsManager() == false)
             {
+                TempData[GlobalMessageKey] = "Only Admins and Moderator can edit fields!";
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
@@ -170,7 +174,8 @@
 
             if (fields.IsAdminCreatorOfField(fieldModel.Id, adminId) == false && User.IsManager() == false)
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "Only the creator of the field or moderator can edit the field!";
+                return RedirectToAction("Error", "Home");
             }
 
             var isEdit = fields.Edit(
@@ -188,7 +193,8 @@
 
             if (isEdit == false)
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
+                return RedirectToAction("Error", "Home");
             }
 
             var fieldName = fields.FieldName(fieldModel.Id);
@@ -204,6 +210,7 @@
 
             if (admins.IsAdmin(userId) == false && User.IsManager() == false)
             {
+                TempData[GlobalMessageKey] = "Only Admins and Moderator can delete fields!";
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
@@ -211,14 +218,16 @@
 
             if (field == false)
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "Field does not exist. Try again!";
+                return RedirectToAction("Error", "Home");
             }
 
             var fieldDeleteDetails = fields.FieldDeleteInfo(id);
 
             if (fieldDeleteDetails.Name.Equals(information) == false)
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
+                return RedirectToAction("Error", "Home");
             }
 
             return View(fieldDeleteDetails);
@@ -232,17 +241,20 @@
 
             if (adminId == 0 && User.IsManager() == false)
             {
+                TempData[GlobalMessageKey] = "Only the creator of this field and Moderator can delete the field!"; 
                 return RedirectToAction(nameof(AdminsController.Become), "Admins");
             }
 
             if (fields.IsAdminCreatorOfField(fieldModel.Id, adminId) == false && User.IsManager() == false)
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "Only the creator of this field and Moderator can delete the field!";
+                return RedirectToAction("Error", "Home");
             }
 
             if (fields.Delete(fieldModel.Id) == false)
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
+                return RedirectToAction("Error", "Home");
             }
 
             TempData[GlobalMessageKey] = "You deleted field!";
@@ -256,7 +268,8 @@
 
             if (fieldDetails == null || fieldDetails.Name.Equals(information) == false)
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "Something is wrong. Try again!";
+                return RedirectToAction("Error", "Home");
             }
 
             return View(fieldDetails);

@@ -42,6 +42,9 @@
             return View(lastGames);
         }
 
-        public IActionResult Error() => View();
+        public IActionResult Error()
+        {
+            return View();
+        }
     }
 }
