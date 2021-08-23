@@ -1,18 +1,17 @@
 ﻿namespace MiniFootball.Services.Countries
 {
+    using Data;
+    using Data.Models;
+    using Microsoft.Extensions.Caching.Memory;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using Data;
-    using Data.Models;
-    using Microsoft.Extensions.Caching.Memory;
 
-    using static WebConstants;
+    using static GlobalConstant;
 
     public class CountryService : ICountryService
     {
-        private const string latestGamesCacheKey = "AllCountriesCacheKey";
         private List<string> allCountries;
 
         private readonly MiniFootballDbContext data;
@@ -29,7 +28,7 @@
 
         public List<string> All()
         {
-            allCountries = cache.Get<List<string>>(latestGamesCacheKey);
+            allCountries = cache.Get<List<string>>(LatestGamesCacheKey);
 
             if (allCountries == null)
             {
@@ -39,7 +38,7 @@
                 var cacheOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromDays(365));
 
-                cache.Set(latestGamesCacheKey, allCountries, cacheOptions);
+                cache.Set(LatestGamesCacheKey, allCountries, cacheOptions);
             }
 
             return allCountries;

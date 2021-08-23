@@ -1,13 +1,12 @@
 ﻿namespace MiniFootball.Test.Pipeline
 {
-    using MiniFootball.Controllers;
+    using Areas.Admin.Controllers;
     using MiniFootball.Data.Models;
     using Models.Admins;
-    using Models.Games;
     using MyTested.AspNetCore.Mvc;
     using System.Linq;
-    using Areas.Admin.Controllers;
     using Xunit;
+    using static GlobalConstant.Home;
     using static WebConstants;
 
     public class AdminsControllerTest
@@ -60,6 +59,6 @@
                     .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
-                .RedirectToAction(nameof(GamesController.All), "Games");
+                .Redirect(HomePage);
     }
 }

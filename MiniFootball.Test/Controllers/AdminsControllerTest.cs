@@ -9,6 +9,7 @@
     using Data;
     using Models.Games;
     using Xunit;
+    using static GlobalConstant.Home;
     using static WebConstants;
 
     public class AdminsControllerTest
@@ -69,6 +70,6 @@
                     .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
-                .RedirectToAction(nameof(GamesController.All), "Games");
+                .Redirect(HomePage);
     }
 }

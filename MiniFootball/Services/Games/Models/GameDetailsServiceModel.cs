@@ -1,17 +1,18 @@
 ﻿namespace MiniFootball.Services.Games.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using Data;
 
     public class GameDetailsServiceModel : CreateGameFormModel
     {
         public string UserId { get; set; }
 
-        [Display(Name = "Phone Number")]
+        [Display(Name = DataConstants.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
         public bool IsUserAlreadyJoin { get; set; }
 
-        [Display(Name = "Available Places")]
+        [Display(Name = DataConstants.Game.AvailablePlaces)]
         public virtual int Places 
             => AvailablePlaces;
 

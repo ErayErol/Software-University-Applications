@@ -26,7 +26,7 @@
 
         public IActionResult ChangeVisibility(string id)
         {
-            this.games.ChangeVisibility(id);
+            games.ChangeVisibility(id);
 
             return RedirectToAction(nameof(AllGames));
         }

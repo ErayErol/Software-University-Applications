@@ -1,32 +1,33 @@
 ﻿namespace MiniFootball.Models.Fields
 {
-    using System.ComponentModel.DataAnnotations;
     using Data;
+    using System.ComponentModel.DataAnnotations;
+    using static Data.DataConstants;
 
     public class FieldEditFormModel
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = DataConstants.ErrorMessages.Empty)]
-        [StringLength(DataConstants.Field.NameMaxLength, MinimumLength = DataConstants.Field.NameMinLength, ErrorMessage = DataConstants.ErrorMessages.Range)]
+        [Required(ErrorMessage = ErrorMessages.Empty)]
+        [StringLength(Field.NameMaxLength, MinimumLength = Field.NameMinLength, ErrorMessage = ErrorMessages.Range)]
         public string Name { get; set; }
 
         [Required]
-        [MaxLength(DataConstants.Field.PhoneNumberMaxLength)]
-        [Display(Name = "Phone Number")]
+        [MaxLength(Field.PhoneNumberMaxLength)]
+        [Display(Name = DataConstants.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
         [Required]
-        [StringLength(DataConstants.Field.AddressMaxLength, MinimumLength = DataConstants.Field.AddressMinLength, ErrorMessage = DataConstants.ErrorMessages.Range)]
+        [StringLength(Field.AddressMaxLength, MinimumLength = Field.AddressMinLength, ErrorMessage = ErrorMessages.Range)]
         public string Address { get; set; }
 
         [Required]
-        [Display(Name = "Image URL")]
-        [Url(ErrorMessage = DataConstants.ErrorMessages.Url)]
+        [Display(Name = DataConstants.ImageUrl)]
+        [Url(ErrorMessage = ErrorMessages.Url)]
         public string ImageUrl { get; set; }
 
-        [Required(ErrorMessage = DataConstants.ErrorMessages.Empty)]
-        [StringLength(DataConstants.Field.DescriptionMaxLength, MinimumLength = DataConstants.Field.DescriptionMinLength, ErrorMessage = DataConstants.ErrorMessages.Range)]
+        [Required(ErrorMessage = ErrorMessages.Empty)]
+        [StringLength(Field.DescriptionMaxLength, MinimumLength = Field.DescriptionMinLength, ErrorMessage = ErrorMessages.Range)]
         public string Description { get; set; }
 
         public bool Parking { get; set; }

@@ -9,7 +9,11 @@
     using System.Linq;
     using Areas.Admin.Controllers;
     using Xunit;
+    using static GlobalConstant;
     using static WebConstants;
+    using Admin = MiniFootball.Data.Models.Admin;
+    using City = MiniFootball.Data.Models.City;
+    using Field = MiniFootball.Data.Models.Field;
 
     public class FieldsControllerTest
     {
@@ -420,7 +424,7 @@
                     .RestrictingForAuthorizedRequests())
                 .AndAlso()
                 .ShouldReturn()
-                .BadRequest();
+                .RedirectToAction(Home.Error, Home.ControllerName);
 
         [Theory]
         [InlineData(1, "Avenue")]

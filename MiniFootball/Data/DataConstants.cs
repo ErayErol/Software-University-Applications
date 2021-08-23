@@ -2,6 +2,12 @@
 {
     public class DataConstants
     {
+        public const string PhoneNumber = "Phone Number";
+
+        public const string ImageUrl = "Image URL";
+        
+        public const string FacebookUrl = "Facebook URL";
+
         public class ErrorMessages
         {
             public const string Empty = "Cannot be empty!";
@@ -13,14 +19,41 @@
 
         public class User
         {
+            public const string Image = "Image";
+            public const string FirstName = "First Name";
+            public const string LastName = "Last Name";
+            public const string NickName = "Nick Name";
+
+
             public const int FullNameMinLength = 2;
             public const int FullNameMaxLength = 40;
+            
             public const int PasswordMinLength = 6;
             public const int PasswordMaxLength = 100;
         }
 
+        public class Country
+        {
+            public const string CountryName = "Country";
+
+            public const string SelectCountry = "Select Country:";
+        }
+
+        public class City
+        {
+            public const string CityName = "City";
+        }
+
         public class Game
         {
+            public const string AvailablePlaces = "Available Places";
+            
+            public const string SelectDate = "Select Date:";
+            
+            public const string SelectTime = "Set time:";
+            
+            public const string NumberOfPlayers = "Number of players";
+
             public const int NumberOfPlayersMin = 8;
             public const int NumberOfPlayersMax = 22;
 
@@ -39,6 +72,12 @@
 
         public class Field
         {
+            public const string SelectField = "Select Field:";
+            
+            public const string FieldName = "Field";
+            
+            public const string FieldImage = "Image";
+
             public const int NameMinLength = 2;
             public const int NameMaxLength = 26;
 

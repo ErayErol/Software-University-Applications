@@ -7,7 +7,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using Microsoft.AspNetCore.Authorization;
     using static WebConstants.Cache;
 
     public class HomeController : Controller
@@ -40,6 +40,12 @@
             }
 
             return View(lastGames);
+        }
+
+        [Authorize]
+        public IActionResult Chat()
+        {
+            return this.View();
         }
 
         public IActionResult Error()

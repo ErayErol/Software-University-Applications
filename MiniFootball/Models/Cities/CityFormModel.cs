@@ -6,6 +6,7 @@
 
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Field;
+    using static Data.DataConstants.Country;
 
     public class CityFormModel
     {
@@ -13,7 +14,7 @@
 
         [Required]
         [StringLength(CountryMaxLength, MinimumLength = CountryMinLength, ErrorMessage = Range)]
-        [Display(Name = "Select Country:")]
+        [Display(Name = SelectCountry)]
         public string CountryName { get; set; }
         public Country Country { get; set; }
 

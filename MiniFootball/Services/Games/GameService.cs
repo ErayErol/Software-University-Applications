@@ -304,11 +304,11 @@
 
         public void ChangeVisibility(string id)
         {
-            var game = this.data.Games.Find(id);
+            var game = data.Games.Find(id);
 
             game.IsPublic = !game.IsPublic;
 
-            this.data.SaveChanges();
+            data.SaveChanges();
         }
 
         public IEnumerable<GameListingServiceModel> Latest()

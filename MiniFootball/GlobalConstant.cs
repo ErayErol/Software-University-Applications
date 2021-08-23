@@ -1,12 +1,13 @@
 ﻿namespace MiniFootball
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
     public static class GlobalConstant
     {
+        public const string DefaultConnection = "DefaultConnection";
+        
+        public const string ErrorPage = "/Home/Error";
+
+        public const string LatestGamesCacheKey = "AllCountriesCacheKey";
+
         public const string Create = "Create";
         
         public const string SomethingIsWrong = "Something is wrong. Try again!";

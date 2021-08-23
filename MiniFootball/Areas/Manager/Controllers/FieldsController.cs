@@ -26,7 +26,7 @@
 
         public IActionResult ChangeVisibility(int id)
         {
-            this.fields.ChangeVisibility(id);
+            fields.ChangeVisibility(id);
 
             return RedirectToAction(nameof(AllFields));
         }

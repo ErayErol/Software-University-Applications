@@ -123,7 +123,7 @@
 
             if (fieldId == 0)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
@@ -146,7 +146,7 @@
 
             if (fieldDetails.Name.Equals(information) == false)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
@@ -189,18 +189,18 @@
                 fieldModel.Cafe,
                 fieldModel.Description,
                 fieldModel.PhoneNumber,
-                this.User.IsManager());
+                User.IsManager());
 
             if (isEdit == false)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             var fieldName = fields.FieldName(fieldModel.Id);
 
             TempData[GlobalMessageKey] =
-                $"Your field was edited{(this.User.IsManager() ? string.Empty : " and is awaiting approval")}!";
+                $"Your field was edited{(User.IsManager() ? string.Empty : " and is awaiting approval")}!";
             return RedirectToAction(nameof(Details), new { id = fieldModel.Id, information = fieldName });
         }
 
@@ -227,7 +227,7 @@
 
             if (fieldDeleteDetails.Name.Equals(information) == false)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
@@ -254,7 +254,7 @@
 
             if (fields.Delete(fieldModel.Id) == false)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
@@ -269,7 +269,7 @@
 
             if (fieldDetails == null || fieldDetails.Name.Equals(information) == false)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 

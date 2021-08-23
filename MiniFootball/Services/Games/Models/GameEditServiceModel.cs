@@ -1,7 +1,8 @@
 ﻿namespace MiniFootball.Services.Games.Models
 {
     using System.ComponentModel.DataAnnotations;
-
+    using Data;
+    using static Data.DataConstants;
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Game;
 
@@ -9,29 +10,29 @@
     {
         public string GameId { get; set; }
 
-        [Display(Name = "Select Date:")]
+        [Display(Name = SelectDate)]
         [Required(ErrorMessage = Empty)]
         public System.DateTime? Date { get; set; }
 
         [Required(ErrorMessage = Empty)]
         [Range(TimeMin, TimeMax)]
-        [Display(Name = "Set time:")]
+        [Display(Name = SelectTime)]
         public int? Time { get; set; }
 
         [Required(ErrorMessage = Empty)]
         [Range(NumberOfPlayersMin, NumberOfPlayersMax)]
-        [Display(Name = "Number of players")]
+        [Display(Name = Game.NumberOfPlayers)]
         public int? NumberOfPlayers { get; set; }
 
-        [Display(Name = "Facebook URL")]
+        [Display(Name = PhoneNumber)]
         [Required(ErrorMessage = Empty)]
         [Url(ErrorMessage = Url)]
         public string FacebookUrl { get; set; }
 
-        [Display(Name = "Image")]
+        [Display(Name = Field.FieldImage)]
         public string FieldImageUrl { get; set; }
 
-        [Display(Name = "Field:")]
+        [Display(Name = Field.FieldName)]
         public string FieldName { get; set; }
 
         [Required(ErrorMessage = Empty)]

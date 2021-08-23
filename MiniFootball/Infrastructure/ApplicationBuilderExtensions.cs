@@ -11,7 +11,6 @@
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
-    using static Areas.Manager.ManagerConstants;
 
     public static class ApplicationBuilderExtensions
     {
@@ -22,12 +21,15 @@
             var services = serviceScope.ServiceProvider;
 
             var data = serviceScope.ServiceProvider.GetService<MiniFootballDbContext>();
+            
             var countries = serviceScope.ServiceProvider.GetService<ICountryService>();
+            
             var passwordHasher = serviceScope.ServiceProvider.GetService<IPasswordHasher<User>>();
 
             MigrateDatabase(services);
 
             Seeds(data, countries, passwordHasher);
+            
             SeedManager(services);
 
             return app;

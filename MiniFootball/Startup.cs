@@ -20,6 +20,8 @@ namespace MiniFootball
     using Services.Statistics;
     using Services.Users;
     using System.Security.Claims;
+    using Hubs;
+    using static GlobalConstant;
 
     public class Startup
     {
@@ -32,12 +34,27 @@ namespace MiniFootball
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddDbContext<MiniFootballDbContext>(options => options
-                    .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddSignalR();
+
+            services.AddMemoryCache();
+
+            services.AddAutoMapper(typeof(Startup));
 
             services
                 .AddDatabaseDeveloperPageExceptionFilter();
+
+            services
+                .AddDbContext<MiniFootballDbContext>(options => options
+                    .UseSqlServer(configuration.GetConnectionString(DefaultConnection)));
+
+            services
+                .AddControllersWithViews(options =>
+                {
+                    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+                });
+
+            services.AddTransient<ClaimsPrincipal>(options =>
+                options.GetService<IHttpContextAccessor>()?.HttpContext?.User);
 
             services
                 .AddDefaultIdentity<User>(options =>
@@ -57,19 +74,6 @@ namespace MiniFootball
                 .AddEntityFrameworkStores<MiniFootballDbContext>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
-
-            services.AddAutoMapper(typeof(Startup));
-
-            services.AddMemoryCache();
-
-            services
-                .AddControllersWithViews(options =>
-                {
-                    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
-                });
-
-            services.AddTransient<ClaimsPrincipal>(options =>
-                options.GetService<IHttpContextAccessor>()?.HttpContext?.User);
 
             services
                 .AddTransient<ICityService, CityService>()
@@ -93,8 +97,9 @@ namespace MiniFootball
             }
             else
             {
-                app.UseStatusCodePagesWithRedirects("/Home/Error");
-                app.UseHsts();
+                app
+                    .UseStatusCodePagesWithRedirects(ErrorPage)
+                    .UseHsts();
             }
 
             app
@@ -148,6 +153,8 @@ namespace MiniFootball
                             name: "Field Delete",
                             pattern: "/Fields/Delete/{id}/{information}",
                             defaults: new { controller = "Fields", action = "Delete" });
+
+                    endpoints.MapHub<ChatHub>("/chat");
 
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();

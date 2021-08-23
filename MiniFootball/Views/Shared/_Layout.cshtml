@@ -30,7 +30,10 @@
                     </span>
                 </button>
                 <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1 mobile-version-center">
+                    <ul class="navbar-nav flex-grow-1 mobile-version-center-btns">
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-link min-width-nav-size" asp-area="" asp-controller="Home" asp-action="Chat">Chat</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Games" asp-action="All">Games</a>
                         </li>
@@ -75,6 +78,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

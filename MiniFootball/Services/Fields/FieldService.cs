@@ -196,11 +196,11 @@
 
         public void ChangeVisibility(int id)
         {
-            var field = this.data.Fields.Find(id);
+            var field = data.Fields.Find(id);
 
             field.IsPublic = !field.IsPublic;
 
-            this.data.SaveChanges();
+            data.SaveChanges();
         }
 
         public bool IsAlreadyExist(string name, int countryId, int cityId)

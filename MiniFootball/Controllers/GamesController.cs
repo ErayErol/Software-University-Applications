@@ -104,7 +104,7 @@
             if (cityId == 0)
             {
                 TempData[GlobalMessageKey] = City.CityDoesNotExistInCountry;
-                return RedirectToAction(GlobalConstant.Create, City.ControllerName);
+                return RedirectToAction(Create, City.ControllerName);
             }
 
             return RedirectToAction(
@@ -243,7 +243,7 @@
 
             if (gameId == string.Empty)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
@@ -266,7 +266,7 @@
 
             if (gameDetails.FieldName.Equals(information) == false)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
@@ -314,16 +314,16 @@
                 gameModel.Jerseys,
                 gameModel.Goalkeeper,
                 gameModel.Description,
-                this.User.IsManager());
+                User.IsManager());
 
             if (isEdit == false)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
             TempData[GlobalMessageKey] = 
-                $"Your game was edited{(this.User.IsManager() ? string.Empty : " and is awaiting approval")}!";
+                $"Your game was edited{(User.IsManager() ? string.Empty : " and is awaiting approval")}!";
 
             return RedirectToAction(nameof(Details),
                 new { gameId = gameModel.GameId, information = gameModel.FieldName });
@@ -354,7 +354,7 @@
 
             if (gameDeleteDetails.FieldName.Equals(information) == false)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
@@ -383,7 +383,7 @@
 
             if (games.Delete(gameModel.GameId) == false)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
@@ -396,7 +396,7 @@
         {
             if (ModelState.IsValid == false)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(nameof(Details));
             }
 
@@ -469,7 +469,7 @@
 
             if (isUserRemoved == false)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
@@ -484,7 +484,7 @@
 
             if (gameDetails == null || gameDetails.FieldName.Equals(information) == false)
             {
-                TempData[GlobalMessageKey] = GlobalConstant.SomethingIsWrong;
+                TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 

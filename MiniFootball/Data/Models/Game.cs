@@ -49,8 +49,5 @@
         public virtual Admin Admin { get; set; }
 
         public virtual IEnumerable<UserGame> UserGames { get; init; } = new HashSet<UserGame>();
-
-        // you can add Stars(Rate) a hour after the match
-        // Enum of levels of game (amateur, pro...)
     }
 }
