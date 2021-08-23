@@ -3774,3 +3774,21 @@ input.btn {
     position: relative;
     justify-content: center;
 }
+
+#message-holder {
+    display: flex;
+    justify-content: center;
+}
+
+
+@media (min-width: 550px) {
+    #messagesList {
+        font-size: 22px;
+    }
+}
+
+@media (min-width: 950px) {
+    #messagesList {
+        font-size: 28px;
+    }
+}
