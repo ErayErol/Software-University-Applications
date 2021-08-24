@@ -272,7 +272,7 @@
 
             if (gameDetails?.UserId != userId && User.IsManager() == false)
             {
-                TempData[GlobalMessageKey] = "Only the creator of the game or moderator can edit the game!";
+                TempData[GlobalMessageKey] = Game.OnlyCreatorCanEdit;
                 return RedirectToAction(Home.Error, Home.ControllerName);
             }
 
@@ -290,7 +290,7 @@
             if (adminId == 0 && User.IsManager() == false)
             {
                 TempData[GlobalMessageKey] = Game.OnlyCreatorCanEdit;
-                return RedirectToAction(Home.Error, Home.ControllerName);
+                return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
             if (games.IsAdminCreatorOfGame(gameModel.GameId, adminId) == false && User.IsManager() == false)
