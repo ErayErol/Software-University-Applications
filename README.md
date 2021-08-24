@@ -47,58 +47,10 @@ would happen once you run the application, including Test Accounts:
   - User: user4@user.com / password: 123456
   - Admin: admin1@admin.com / password: 123456
   - Field Manager: manager@manager.com / password: 123456
-# :camera: Screenshots
-
-### Login (Guest)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/login.png?raw=true"/>
-
-### Register (Guest)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/register.png?raw=true"/>
-
-### Home Page (Manager)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/home-page-logged-user.png?raw=true"/>
-
-### All games (Guest)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-games.png?raw=true"/>
-
-### All games (Manager)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-games2-manager.png?raw=true"/>
-
-### Create game (Admin)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/create-game.png?raw=true"/>
-
-### Create field (Admin)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/create-field.png?raw=true"/>
-
-### Create city (Admin)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/create-city.png?raw=true"/>
-
-### All fields (Guest)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields.png?raw=true"/>
-
-### All fields (User)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields-user.png?raw=true"/>
-
-### All fields (Manager)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields2-manager.png?raw=true"/>
-
-### Field Details 1 (Manager)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/field-details.png?raw=true"/>
-
-### Field Details 2 (Manager)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/field-details2.png?raw=true"/>
-
-### Game Details 1 (Manager)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/game-details.png?raw=true"/>
-
-### Game Details 2 (Manager)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/game-details2.png?raw=true"/>
-
-### Fields Approving (Manager)
-<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/approving-fields-manager.png?raw=true"/>
 
 # :scroll: General Requirements
-<table width="100%" align="left">
+
+<table width="100%" align="center">
   <tbody>
     <tr>
       <th align="left" width="90%">ASP.NET Core 5.0</th>
@@ -186,3 +138,135 @@ would happen once you run the application, including Test Accounts:
     </tr>
   </tbody>
 </table>
+
+# :scroll: Additional Requirements
+
+<table width="100%" align="center">
+  <tbody>
+    <tr>
+      <th align="left" width="90%">Well-structured Architecture</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Well-configured Control Flow</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Best practices for Object Oriented design</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">High-quality code</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">OOP principles</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Exception handling</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Strong cohesion and loose coupling</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Readable code</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">UI good-looking and easy to use</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Supporting all major modern Web browsers</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Caching</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+  </tbody>
+</table>
+
+
+# :scroll: Source Control
+
+<table width="100%" align="center">
+  <tbody>
+    <tr>
+      <th align="left" width="90%">Public source code repository</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Have commits in at least 5 DIFFERENT days</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Have at least 20 commits</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+  </tbody>
+</table>
+
+# :scroll: Bonuses
+
+<table width="100%" align="center">
+  <tbody>
+    <tr>
+      <th align="left" width="90%">SignalR</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+  </tbody>
+</table>
+
+# :camera: Screenshots
+
+### Login (Guest)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/login.png?raw=true"/>
+
+### Register (Guest)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/register.png?raw=true"/>
+
+### Home Page (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/home-page-logged-user.png?raw=true"/>
+
+### All games (Guest)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-games.png?raw=true"/>
+
+### All games (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-games2-manager.png?raw=true"/>
+
+### Create game (Admin)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/create-game.png?raw=true"/>
+
+### Create field (Admin)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/create-field.png?raw=true"/>
+
+### Create city (Admin)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/create-city.png?raw=true"/>
+
+### All fields (Guest)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields.png?raw=true"/>
+
+### All fields (User)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields-user.png?raw=true"/>
+
+### All fields (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/all-fields2-manager.png?raw=true"/>
+
+### Field Details 1 (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/field-details.png?raw=true"/>
+
+### Field Details 2 (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/field-details2.png?raw=true"/>
+
+### Game Details 1 (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/game-details.png?raw=true"/>
+
+### Game Details 2 (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/game-details2.png?raw=true"/>
+
+### Fields Approving (Manager)
+<img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/approving-fields-manager.png?raw=true"/>
