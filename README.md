@@ -1,5 +1,5 @@
 # :soccer: MiniFootball 
-- My project for the ASP.NET Core course at SoftUni. (June 2021) 
+- My project for the ASP.NET Core course at SoftUni. (June 2021)
 # 🎯 Purpose
 - MiniFootball makes it simple to discover mini football activities happening in your city or nearby, as well as the people that want to participate in them or the people who looking for players.
 - If you are Mini Football Field Manager you can also add it to our database and gain more customers.
@@ -24,7 +24,7 @@
 - ASP.NET Core 5.0
 - Entity Framework (EF) Core 5.0
 - MyTested.AspNetCore.Mvc 5.0
-- Microsoft SQL Server Express
+- Microsoft SQL Server
 - ASP.NET Identity System
 - MVC Areas with Multiple Layouts
 - Razor Pages, Sections, Partial Views
@@ -34,7 +34,8 @@
 - Data Validation, both Client-side and Server-side
 - Data Validation in the Models and Input View Models
 - Responsive Design
-- Bootstrap
+- Bootstrap v5.0 and my own design
+- SignalR
 - jQuery
 # :gear: Application Configurations
 ### 1. The Connection string 
@@ -95,3 +96,93 @@ would happen once you run the application, including Test Accounts:
 
 ### Fields Approving (Manager)
 <img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/approving-fields-manager.png?raw=true"/>
+
+# :scroll: General Requirements
+<table width="100%" align="left">
+  <tbody>
+    <tr>
+      <th align="left" width="90%">ASP.NET Core 5.0</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">+15 Views</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">+6 Entity Models</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">+6 Controllers</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Visual Studio 2019</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Razor(section and partial views)</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Web API and RESTful service</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Microsoft SQL Server</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Entity Framework (EF) Core 5.0</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">MVC Areas(Identity, Admin and Manager)</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Bootstrap v5.0 and my own design</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Responsive design</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">ASP.NET Identity System</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">AJAX</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Tests covered at least 65% of business logic</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Error Handling and Data Validation</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Both client-side and server-side validation</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Handle correctly the special HTML characters</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Dependency Injection</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">AutoMapping</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">Prevent from security vulnerabilities</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+  </tbody>
+</table>
