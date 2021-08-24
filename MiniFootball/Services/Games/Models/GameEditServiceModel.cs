@@ -24,7 +24,7 @@
         [Display(Name = Game.NumberOfPlayers)]
         public int? NumberOfPlayers { get; set; }
 
-        [Display(Name = PhoneNumber)]
+        [Display(Name = DataConstants.FacebookUrl)]
         [Required(ErrorMessage = Empty)]
         [Url(ErrorMessage = Url)]
         public string FacebookUrl { get; set; }
