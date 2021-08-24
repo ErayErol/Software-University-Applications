@@ -3,6 +3,7 @@
 # 🎯 Purpose
 - MiniFootball makes it simple to discover mini football activities happening in your city or nearby, as well as the people that want to participate in them or the people who looking for players.
 - If you are Mini Football Field Manager you can also add it to our database and gain more customers.
+### URL : https://mini-football.azurewebsites.net/
 # :information_source: How It Works
 - Guest visitors:
   - Can view all approved games and fields.
@@ -218,6 +219,10 @@ would happen once you run the application, including Test Accounts:
       <th align="left" width="90%">SignalR</th>
       <th width="10%" align="left">✔</th>
     </tr>
+    <tr>
+      <th align="left" width="90%">Host the application in a cloud environment [Azure]</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
   </tbody>
 </table>
 
@@ -270,3 +275,15 @@ would happen once you run the application, including Test Accounts:
 
 ### Fields Approving (Manager)
 <img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/approving-fields-manager.png?raw=true"/>
+
+⭐️ ...if you like the app, star the repository and show it to your friends!
+
+## Acknowledgments
+- My Trainer from SoftUni [Ivaylo Kenov](https://github.com/ivaylokenov)
+
+## Author Contacts:
+- [Github](https://github.com/erayerol)
+- [Instagram](https://www.instagram.com/eray.errol/)
+- [Facebook](https://www.facebook.com/profile.php?id=100001781550068)
+- [Twitter](https://twitter.com/errayerrol?fbclid=IwAR3KLJXbPc7FI4HS8MDIFtRXquu7VMvKEhTivDxzDN7MhZQPpu3c8mgvXL8)
+- [LinkedIn](https://www.linkedin.com/in/eray-erol-a05789170/)
