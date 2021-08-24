@@ -135,7 +135,7 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult CreateGameChooseField(CreateGameSecondStepViewModel gameModel)
+        public IActionResult CreateGameChooseField(CreateGameSecondStepViewModel gameSecondStepViewModel)
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
@@ -143,7 +143,7 @@
                 return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
-            var fieldId = gameModel.FieldId;
+            var fieldId = gameSecondStepViewModel.FieldId;
 
             if (fields.FieldExist(fieldId) == false)
             {
@@ -152,14 +152,14 @@
             }
 
             var fieldName = fields.FieldName(fieldId);
-            gameModel.Name = fieldName;
+            gameSecondStepViewModel.Name = fieldName;
 
-            var lastStepGame = mapper.Map<CreateGameLastStepViewModel>(gameModel);
+            var gameLastStepViewModel = mapper.Map<CreateGameLastStepViewModel>(gameSecondStepViewModel);
 
             return RedirectToAction(
                 Game.CreateGameLastStep, 
                 Game.ControllerName, 
-                lastStepGame);
+                gameLastStepViewModel);
         }
 
         [Authorize]
@@ -205,9 +205,9 @@
                 return View(gameModel);
             }
 
-            var correctDate = gameModel.Date != null && gameModel.Date.Value < DateTime.Today;
+            var incorrectDate = gameModel.Date != null && gameModel.Date.Value < DateTime.Today;
 
-            if (correctDate)
+            if (incorrectDate)
             {
                 TempData[GlobalMessageKey] = Game.IncorrectDate;
                 return View(gameModel);
@@ -264,7 +264,7 @@
 
             var gameDetails = games.GetDetails(gameId);
 
-            if (gameDetails.FieldName.Equals(information) == false)
+            if (gameDetails == null || gameDetails.FieldName.Equals(information) == false)
             {
                 TempData[GlobalMessageKey] = SomethingIsWrong;
                 return RedirectToAction(Home.Error, Home.ControllerName);

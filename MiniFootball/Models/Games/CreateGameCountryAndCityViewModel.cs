@@ -1,11 +1,10 @@
 ﻿namespace MiniFootball.Models.Games
 {
-    using System.ComponentModel.DataAnnotations;
     using Data;
+    using System.ComponentModel.DataAnnotations;
+    using static Data.DataConstants.Country;
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Field;
-    using static Data.DataConstants.Country;
-    using static Data.DataConstants.City;
 
     public class CreateGameCountryAndCityViewModel
     {
