@@ -279,12 +279,13 @@ would happen once you run the application, including Test Accounts:
 ### Chat (User)
 <img src="https://github.com/ErayErol/MiniFootball/blob/main/MiniFootball/wwwroot/images-github/chat.png?raw=true"/>
 
-⭐️ ...if you like the app, star the repository and show it to your friends!
+## ⭐️Leave a feedback
+ - If you like the app, star the repository and show it to your friends!
 
-## Acknowledgments
+## 🤝 Acknowledgments
 - My Trainer from SoftUni [Ivaylo Kenov](https://github.com/ivaylokenov)
 
-## Author Contacts:
+## :standing_person: Author Contacts:
 - [Github](https://github.com/erayerol)
 - [Instagram](https://www.instagram.com/eray.errol/)
 - [Facebook](https://www.facebook.com/profile.php?id=100001781550068)
