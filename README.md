@@ -25,6 +25,7 @@
 - ASP.NET Core 5.0
 - Entity Framework (EF) Core 5.0
 - MyTested.AspNetCore.Mvc 5.0
+- xUnit
 - Microsoft SQL Server
 - ASP.NET Identity System
 - MVC Areas with Multiple Layouts
@@ -47,7 +48,6 @@ would be applied when you run the application, since the `ASPNETCORE-ENVIRONMENT
 would happen once you run the application, including Test Accounts:
   - User: user4@user.com / password: 123456
   - Admin: admin1@admin.com / password: 123456
-  - Field Manager: manager@manager.com / password: 123456
 
 # :scroll: General Requirements
 
@@ -58,15 +58,19 @@ would happen once you run the application, including Test Accounts:
       <th width="10%" align="left">✔</th>
     </tr>
     <tr>
-      <th align="left" width="90%">+15 Views</th>
+      <th align="left" width="90%">25+ Views</th>
       <th width="10%" align="left">✔</th>
     </tr>
     <tr>
-      <th align="left" width="90%">+6 Entity Models</th>
+      <th align="left" width="90%">6+ Entity Models</th>
       <th width="10%" align="left">✔</th>
     </tr>
     <tr>
-      <th align="left" width="90%">+6 Controllers</th>
+      <th align="left" width="90%">6+ Controllers</th>
+      <th width="10%" align="left">✔</th>
+    </tr>
+    <tr>
+      <th align="left" width="90%">41+ Service methods</th>
       <th width="10%" align="left">✔</th>
     </tr>
     <tr>
@@ -74,7 +78,7 @@ would happen once you run the application, including Test Accounts:
       <th width="10%" align="left">✔</th>
     </tr>
     <tr>
-      <th align="left" width="90%">Razor(section and partial views)</th>
+      <th align="left" width="90%">Razor + section and partial views</th>
       <th width="10%" align="left">✔</th>
     </tr>
     <tr>
@@ -90,7 +94,7 @@ would happen once you run the application, including Test Accounts:
       <th width="10%" align="left">✔</th>
     </tr>
     <tr>
-      <th align="left" width="90%">MVC Areas(Identity, Admin and Manager)</th>
+      <th align="left" width="90%">MVC Areas (Identity, Admin and Manager)</th>
       <th width="10%" align="left">✔</th>
     </tr>
     <tr>
