@@ -1,6 +1,7 @@
 ﻿namespace MiniFootball.Controllers
 {
     using Areas.Admin.Controllers;
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -10,23 +11,26 @@
     using Services.Countries;
 
     using static Convert;
-    using static WebConstants;
     using static GlobalConstant;
+    using static GlobalConstant.Notifications;
 
     public class CitiesController : Controller
     {
         private readonly ICountryService countries;
         private readonly ICityService cities;
         private readonly IAdminService admins;
+        private readonly INotyfService notifications;
 
         public CitiesController(
-            ICountryService countries, 
-            ICityService cities, 
-            IAdminService admins)
+            ICountryService countries,
+            ICityService cities,
+            IAdminService admins,
+            INotyfService notifications)
         {
             this.countries = countries;
             this.cities = cities;
             this.admins = admins;
+            this.notifications = notifications;
         }
 
         [Authorize]
@@ -34,7 +38,7 @@
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
-                TempData[GlobalMessageKey] = City.OnlyAdminCanCreate;
+                notifications.Error(City.OnlyAdminCanCreate);
                 return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
@@ -52,6 +56,7 @@
 
             if (adminId == 0 || User.IsManager())
             {
+                notifications.Error(City.OnlyAdminCanCreate);
                 return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
@@ -70,11 +75,11 @@
             {
                 cityModel.Countries = countries.All();
 
-                TempData[GlobalMessageKey] = City.ThereAreAlreadyACity;
+                notifications.Error(City.ThereAreAlreadyACity);
                 return View(cityModel);
             }
 
-            TempData[GlobalMessageKey] = City.SuccessfullyCreated;
+            notifications.Success(City.SuccessfullyCreated, DurationInSeconds);
             return RedirectToAction(Game.CreateGameFirstStep, Game.ControllerName);
         }
     }

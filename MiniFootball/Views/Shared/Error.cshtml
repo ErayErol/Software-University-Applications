@@ -1,9 +1,24 @@
-﻿@model ErrorViewModel
-@{
+﻿@{
     ViewData["Title"] = "Error";
 }
 
 <div class="my-item-center mt-5">
-    <h1 class="mb-4">Error</h1>
-    <a href="/" class="btn min-width-size-btn">Go to Home Page</a>
+    <h1 class="mb-4 text-center">Error</h1>
+    @if (ViewBag.StatusCode != null)
+    {
+        <h3 class="mb-4 text-center">Status code : @ViewBag.StatusCode</h3>
+    }
+    @if (@ViewBag.Path != null)
+    {
+        <h3 class="mb-4 text-center">Path : @ViewBag.Path</h3>
+    }
+    @if (ViewBag.QS != null)
+    {
+        <h3 class="mb-4 text-center">Query String : @ViewBag.QS</h3>
+    }
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <h3 class="mb-4 text-center">@ViewBag.ErrorMessage</h3>
+    }
+    <a class="btn min-width-size-btn" href='javascript:history.go(-1)'>Return to previous page</a>
 </div>

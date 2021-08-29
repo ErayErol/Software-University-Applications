@@ -23,15 +23,5 @@
                 .View(view => view
                     .WithModelOfType<List<GameListingServiceModel>>()
                     .Passing(m => m.Should().HaveCount(3)));
-
-        [Fact]
-        public void ErrorShouldReturnView()
-            => MyMvc
-                .Pipeline()
-                .ShouldMap("/Home/Error")
-                .To<HomeController>(c => c.Error())
-                .Which()
-                .ShouldReturn()
-                .View();
     }
 }

@@ -29,13 +29,5 @@
                 .View(view => view
                     .WithModelOfType<List<GameListingServiceModel>>()
                     .Passing(m => m.Should().HaveCount(3)));
-
-        [Fact]
-        public void ErrorShouldReturnView()
-            => MyController<HomeController>
-                .Instance()
-                .Calling(c => c.Error())
-                .ShouldReturn()
-                .View();
     }
 }

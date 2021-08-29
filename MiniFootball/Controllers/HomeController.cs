@@ -1,5 +1,6 @@
 ﻿namespace MiniFootball.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
     using Services.Games;
@@ -7,7 +8,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.AspNetCore.Authorization;
+
     using static WebConstants.Cache;
 
     public class HomeController : Controller
@@ -44,11 +45,6 @@
 
         [Authorize]
         public IActionResult Chat()
-        {
-            return this.View();
-        }
-
-        public IActionResult Error()
         {
             return View();
         }

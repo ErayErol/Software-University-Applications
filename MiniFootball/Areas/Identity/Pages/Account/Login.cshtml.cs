@@ -8,16 +8,24 @@
     using MiniFootball.Data.Models;
     using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
-
+    using AspNetCoreHero.ToastNotification.Abstractions;
+    using static GlobalConstant.Login;
+    using static GlobalConstant.Notifications;
     using static WebConstants;
 
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
         private readonly SignInManager<User> signInManager;
+        private readonly INotyfService notifications;
 
-        public LoginModel(SignInManager<User> signInManager)
-            => this.signInManager = signInManager;
+        public LoginModel(
+            SignInManager<User> signInManager, 
+            INotyfService notifications)
+        {
+            this.signInManager = signInManager;
+            this.notifications = notifications;
+        }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -37,7 +45,7 @@
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember Me?")]
+            [Display(Name = GlobalConstant.Login.RememberMe)]
             public bool RememberMe { get; set; }
         }
 
@@ -65,7 +73,7 @@
 
                 if (result.Succeeded)
                 {
-                    TempData[GlobalMessageKey] = "Welcome to Mini Football!";
+                    notifications.Success(Welcome, DurationInSeconds);
                     return LocalRedirect(returnUrl);
                 }
 
@@ -75,8 +83,7 @@
                 }
                 else
                 {
-                    TempData[GlobalMessageKey] = "Invalid email or password!";
-
+                    notifications.Error(InvalidEmailOrPassword);
                     return Page();
                 }
             }

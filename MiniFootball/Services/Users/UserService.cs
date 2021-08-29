@@ -45,7 +45,10 @@
                 .ProjectTo<UserDetailsServiceModel>(mapper)
                 .FirstOrDefault();
 
-            CorrectAge(user);
+            if (user != null)
+            {
+                CorrectAge(user);
+            }
 
             return user;
         }

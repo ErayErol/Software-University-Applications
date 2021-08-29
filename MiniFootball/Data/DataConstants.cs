@@ -17,18 +17,33 @@
             public const string Range = "Must be in range {2} and {1}";
         }
 
+        public class Register
+        {
+            public const string ConfirmPassword = "Confirm Password";
+
+            public const string NotMatchPassword = "The password and confirmation password do not match.";
+            
+            public const string ThereIsAlreadyAUser = "There is already a user with this email address!";
+            
+            public const string SuccessfullyRegister = "Successfully registered!";
+        }
+
         public class User
         {
             public const string Image = "Image";
+            
             public const string FirstName = "First Name";
+            
             public const string LastName = "Last Name";
+            
             public const string NickName = "Nick Name";
 
-
             public const int FullNameMinLength = 2;
+            
             public const int FullNameMaxLength = 40;
             
             public const int PasswordMinLength = 6;
+            
             public const int PasswordMaxLength = 100;
         }
 

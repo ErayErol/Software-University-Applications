@@ -8,7 +8,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
-
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using static Data.DataConstants.User;
 
     using static Convert;
@@ -18,11 +18,14 @@
     public class RegisterModel : PageModel
     {
         private readonly UserManager<User> userManager;
+        private readonly INotyfService notifications;
 
         public RegisterModel(
-            UserManager<User> userManager)
+            UserManager<User> userManager, 
+            INotyfService notifications)
         {
             this.userManager = userManager;
+            this.notifications = notifications;
         }
 
         [BindProperty]
@@ -37,16 +40,16 @@
             public string Email { get; set; }
 
             [Required]
-            [Display(Name = "First Name")]
+            [Display(Name = Data.DataConstants.User.FirstName)]
             [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
             public string FirstName { get; set; }
 
             [Required]
-            [Display(Name = "Last Name")]
-            [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)] 
+            [Display(Name = Data.DataConstants.User.LastName)]
+            [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
             public string LastName { get; set; }
 
-            [Display(Name = "Nick Name")]
+            [Display(Name = Data.DataConstants.User.NickName)]
             [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
             public string NickName { get; set; }
 
@@ -54,12 +57,12 @@
             public DateTime? Birthdate { get; set; }
 
             [Required]
-            [Display(Name = "Image URL")]
+            [Display(Name = Data.DataConstants.ImageUrl)]
             [Url(ErrorMessage = Data.DataConstants.ErrorMessages.Url)]
             public string ImageUrl { get; set; }
 
             [Required]
-            [Display(Name = "Phone Number")]
+            [Display(Name = Data.DataConstants.PhoneNumber)]
             public string PhoneNumber { get; set; }
 
             [Required]
@@ -68,8 +71,8 @@
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm Password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = Data.DataConstants.Register.ConfirmPassword)]
+            [Compare("Password", ErrorMessage = Data.DataConstants.Register.NotMatchPassword)]
             public string ConfirmPassword { get; set; }
         }
 
@@ -102,13 +105,13 @@
 
                 if (result.Succeeded)
                 {
+                    notifications.Success(Data.DataConstants.Register.SuccessfullyRegister);
                     return Redirect("Login");
                 }
 
                 foreach (var error in result.Errors)
                 {
-                    TempData[GlobalMessageKey] = "There is already a user with this email address!";
-
+                    notifications.Error(Data.DataConstants.Register.ThereIsAlreadyAUser);
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }

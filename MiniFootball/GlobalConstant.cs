@@ -4,13 +4,35 @@
     {
         public const string DefaultConnection = "DefaultConnection";
         
-        public const string ErrorPage = "/Home/Error";
-
         public const string LatestGamesCacheKey = "AllCountriesCacheKey";
 
         public const string Create = "Create";
         
         public const string SomethingIsWrong = "Something is wrong. Try again!";
+
+        public static class Error
+        {
+            public const string Name = "Error";
+
+            public const string ErrorPage = "/Error/{0}";
+
+            public const string ErrorRoute = "Error/{statusCode}";
+
+            public const string ErrorMessage404 = "Sorry, the resource you requested could not be found!";
+        }
+
+        public static class Notifications
+        {
+            public const int DurationInSeconds = 4;
+            
+            public const string GreenColor = "#16ff00";
+            
+            public const string Welcome = "Welcome to Mini Football!";
+
+            public const string Goodbye = "Goodbye!";
+
+            public const string InvalidEmailOrPassword = "Invalid email or password!";
+        }
 
         public static class AccountsSeeding
         {
@@ -26,6 +48,16 @@
         public static class Api
         {
             public const string ApiStatisticsRoute = "api/statistics";
+        }
+
+        public static class GameUser
+        {
+            public const string UserDoesNotExist = "User does not exist!";
+        }
+
+        public static class Login
+        {
+            public const string RememberMe = "Remember Me?";
         }
 
         public static class Admin
@@ -85,6 +117,8 @@
             public const string ControllerName = "Games";
             
             public const string UserExit = "User exit from game!";
+            
+            public const string DoesNotExist = "Game Does Not Exist!";
 
             public const string IncorrectDate = "The date has to be today or after today!";
             
@@ -135,10 +169,6 @@
             public const string Error = "Error";
             
             public const string HomePage = "/";
-        }
-
-        public static class ErrorMessages
-        {
         }
     }
 }

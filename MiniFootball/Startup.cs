@@ -20,6 +20,7 @@ namespace MiniFootball
     using Services.Statistics;
     using Services.Users;
     using System.Security.Claims;
+    using AspNetCoreHero.ToastNotification;
     using Hubs;
     using static GlobalConstant;
 
@@ -57,6 +58,14 @@ namespace MiniFootball
                 options.GetService<IHttpContextAccessor>()?.HttpContext?.User);
 
             services
+                .AddNotyf(config =>
+                {
+                    config.DurationInSeconds = 10;
+                    config.IsDismissable = true;
+                    config.Position = NotyfPosition.TopCenter;
+                });
+
+            services
                 .AddDefaultIdentity<User>(options =>
                 {
                     options.Password.RequireDigit = false;
@@ -89,7 +98,7 @@ namespace MiniFootball
         {
             app.PrepareDatabase();
 
-            if (env.IsDevelopment())
+            if (!env.IsDevelopment())
             {
                 app
                     .UseDeveloperExceptionPage()
@@ -98,7 +107,7 @@ namespace MiniFootball
             else
             {
                 app
-                    .UseStatusCodePagesWithRedirects(ErrorPage)
+                    .UseStatusCodePagesWithReExecute(Error.ErrorPage)
                     .UseHsts();
             }
 

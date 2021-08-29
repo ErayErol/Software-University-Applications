@@ -5,18 +5,18 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.SignalR;
     
-    using MiniFootball.Models.Chat;
+    using Models.Chat;
 
     [Authorize]
     public class ChatHub : Hub
     {
         public async Task Send(string message)
         {
-            await this.Clients.All.SendAsync(
+            await Clients.All.SendAsync(
                 "NewMessage",
                 new Message
                 {
-                    User = this.Context.User.Identity.Name, 
+                    User = Context.User.Identity.Name, 
                     Text = message,
                 });
         }

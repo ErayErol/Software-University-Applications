@@ -1,5 +1,6 @@
 ﻿namespace MiniFootball.Areas.Admin.Controllers
 {
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,14 @@
     public class AdminsController : Controller
     {
         private readonly IAdminService admins;
+        private readonly INotyfService notifications;
 
-        public AdminsController(IAdminService admins)
+        public AdminsController(
+            IAdminService admins,
+            INotyfService notifications)
         {
             this.admins = admins;
+            this.notifications = notifications;
         }
 
         [Authorize]
@@ -23,7 +28,7 @@
         {
             if (admins.IsAdmin(User.Id()) || User.IsManager())
             {
-                TempData[GlobalMessageKey] = Admin.CanNotBecomeAdmin;
+                notifications.Error(Admin.CanNotBecomeAdmin);
                 return View();
             }
 
@@ -44,7 +49,7 @@
 
             admins.Become(adminModel.Name, User.Id());
 
-            TempData[GlobalMessageKey] = Admin.SuccessfullyBecome;
+            notifications.Success(Admin.SuccessfullyBecome);
             return Redirect(Home.HomePage);
         }
     }

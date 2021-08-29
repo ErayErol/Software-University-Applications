@@ -13,13 +13,5 @@
                 .ShouldMap(request => request
                     .WithPath("/"))
                 .To<HomeController>(c => c.Index());
-
-        [Fact]
-        public void GetErrorRouteShouldBeMapped()
-            => MyRouting
-                .Configuration()
-                .ShouldMap(request => request
-                    .WithPath("/Home/Error"))
-                .To<HomeController>(c => c.Error());
     }
 }
