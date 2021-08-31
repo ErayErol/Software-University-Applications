@@ -34,6 +34,7 @@
 
         public bool Shower { get; set; }
 
+        [Display(Name = DataConstants.ChangingRoom)]
         public bool ChangingRoom { get; set; }
 
         public bool Cafe { get; set; }

@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using Data;
+
     using static Data.DataConstants;
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Game;

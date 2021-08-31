@@ -2,6 +2,8 @@
 {
     public class DataConstants
     {
+        public const string ChangingRoom = "Changing Room";
+
         public const string PhoneNumber = "Phone Number";
 
         public const string ImageUrl = "Image URL";

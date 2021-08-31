@@ -98,7 +98,7 @@ namespace MiniFootball
         {
             app.PrepareDatabase();
 
-            if (!env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 app
                     .UseDeveloperExceptionPage()

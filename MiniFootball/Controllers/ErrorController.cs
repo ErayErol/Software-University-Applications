@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Mvc;
+    using Models;
 
     using static GlobalConstant.Error;
 
@@ -11,20 +12,25 @@
         public IActionResult Error(int statusCode)
         {
             var statusCodeResult = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
-            
+
+            var errorViewModel = new ErrorViewModel();
+
             if (statusCode != 0)
             {
-                ViewBag.StatusCode = statusCode;
-                ViewBag.Path = statusCodeResult.OriginalPath;
-                ViewBag.QS = statusCodeResult.OriginalQueryString;
+                errorViewModel = new ErrorViewModel
+                {
+                    StatusCode = statusCode,
+                    Path = statusCodeResult.OriginalPath,
+                    QueryString = statusCodeResult.OriginalQueryString,
+                };
 
                 if (statusCode == 404)
                 {
-                    ViewBag.ErrorMessage = ErrorMessage404;
+                    errorViewModel.Message = ErrorMessage404;
                 }
             }
 
-            return View(Name);
+            return View(errorViewModel);
         }
     }
 }
