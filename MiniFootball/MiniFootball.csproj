@@ -14,10 +14,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Remove="Views\Users\Details.cshtml" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
 		<PackageReference Include="CloudinaryDotNet" Version="1.15.2" />
@@ -31,10 +27,6 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="Views\Users\Details.cshtml" />
 	</ItemGroup>
 
 </Project>

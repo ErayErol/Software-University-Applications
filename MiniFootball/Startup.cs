@@ -1,7 +1,9 @@
 namespace MiniFootball
 {
+    using AspNetCoreHero.ToastNotification;
     using Data;
     using Data.Models;
+    using Hubs;
     using Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -20,8 +22,7 @@ namespace MiniFootball
     using Services.Statistics;
     using Services.Users;
     using System.Security.Claims;
-    using AspNetCoreHero.ToastNotification;
-    using Hubs;
+
     using static GlobalConstant;
 
     public class Startup
