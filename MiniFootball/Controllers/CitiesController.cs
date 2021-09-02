@@ -16,19 +16,19 @@
 
     public class CitiesController : Controller
     {
-        private readonly ICountryService countries;
         private readonly ICityService cities;
+        private readonly ICountryService countries;
         private readonly IAdminService admins;
         private readonly INotyfService notifications;
 
         public CitiesController(
-            ICountryService countries,
             ICityService cities,
+            ICountryService countries,
             IAdminService admins,
             INotyfService notifications)
         {
-            this.countries = countries;
             this.cities = cities;
+            this.countries = countries;
             this.admins = admins;
             this.notifications = notifications;
         }
@@ -42,10 +42,12 @@
                 return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
-            return View(new CityFormModel
+            var cityFormModel = new CityFormModel
             {
                 Countries = countries.All()
-            });
+            };
+
+            return View(cityFormModel);
         }
 
         [Authorize]
@@ -74,7 +76,6 @@
             if (cityId == 0)
             {
                 cityModel.Countries = countries.All();
-
                 notifications.Error(City.ThereAreAlreadyACity);
                 return View(cityModel);
             }

@@ -24,7 +24,7 @@
             this.cache = cache;
         }
 
-        public IActionResult Index()
+        public ViewResult Index()
         {
             var lastGames = cache.Get<List<GameListingServiceModel>>(LatestGamesCacheKey);
 
@@ -44,7 +44,7 @@
         }
 
         [Authorize]
-        public IActionResult Chat()
+        public ViewResult Chat()
         {
             return View();
         }

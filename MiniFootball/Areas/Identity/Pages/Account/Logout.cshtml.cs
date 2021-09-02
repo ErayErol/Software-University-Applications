@@ -8,6 +8,7 @@
     using MiniFootball.Data.Models;
     using System.Threading.Tasks;
     using AspNetCoreHero.ToastNotification.Abstractions;
+
     using static GlobalConstant.Notifications;
 
     [AllowAnonymous]

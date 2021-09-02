@@ -87,6 +87,8 @@
 
         public static class Field
         {
+            public const string ControllerName = "Fields";
+         
             public const string SuccessfullyCreated = "Your field was created and is awaiting approval!";
             
             public const string SuccessfullyDelete = "You successfully deleted field!";
@@ -102,12 +104,18 @@
             
             public const string YouDoNotHaveAnyFieldsYet = 
                 "You do not have any fields yet, but you can create them!";
-            
+
+            public const string DoNotHaveAnyFieldsYet =
+                "There are no fields, but you can create one!";
+
             public const string OnlyCreatorCanDelete = 
                 "Only the creator of this field and Moderator can delete the field!";
             
             public const string ThereAreAlreadyExistField = 
                 "There are already exist fields with this Name, Country and City";
+
+            public const string ThereAreNoFieldsInThisCity =
+                "There are no fields in this city. First Create Field in this City and then Create Game!";
         }
 
         public static class Game
@@ -116,7 +124,7 @@
             
             public const string ControllerName = "Games";
             
-            public const string UserExit = "User exit from game!";
+            public const string UserExited = "User exited from the game!";
             
             public const string DoesNotExist = "Game Does Not Exist!";
 
@@ -143,7 +151,10 @@
             public const string SuccessfullyJoined = "You successfully joined game!";
 
             public const string YouDoNotHaveAnyGamesYet =
-                "You do not have any games yet, but you can create them!";
+                "You do not have any games yet, but you can create one!";
+
+            public const string DoNotHaveAnyGamesYet =
+                "There are no games, but you can create one!";
 
             public const string ThereAreAlreadyAGame =
                 "There are already a game in this field in this date and time! Choose another time!";

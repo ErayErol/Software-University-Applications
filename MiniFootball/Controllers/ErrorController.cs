@@ -9,7 +9,7 @@
     public class ErrorController : Controller
     {
         [Route(ErrorRoute)]
-        public IActionResult Error(int statusCode)
+        public ViewResult Error(int statusCode)
         {
             var statusCodeResult = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
 

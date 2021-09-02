@@ -5,14 +5,17 @@
 {
     <div class="col-md-4">
         <div class="card mb-3 img-thumbnail">
-            <img class="card-img-top" src="@field.ImageUrl" alt="@field.Name @field.Country - @field.City">
+            @if (ViewBag.AllowImage == true)
+            {
+                <img class="card-img-top" src="@field.ImageUrl" alt="@field.Name @field.Country - @field.City">
+            }
             <div class="card-body text-center">
+                <div class="text-center mb-4">
+                    <div class="card-title h4-like">@field.Name</div>
+                </div>
+                <h6 class="card-title">Place : @field.Country.Name, @field.City.Name</h6>
                 @if (ViewBag.AllowCarEdit == true || User.IsManager())
                 {
-                    <div class="text-center">
-                        <div class="card-title h4-like">@field.Name - @field.Country.Name @field.City.Name</div>
-                    </div>
-
                     <div class="text-center mt-4 my-item-center my-item-center-btns">
                         <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" asp-route-information="@field.Name" class="btn min-width-size">Info</a>
                         <a asp-controller="Fields" asp-action="Edit" asp-route-id="@field.Id" asp-route-information="@field.Name" class="btn btn-warning min-width-size">Edit</a>
@@ -21,8 +24,8 @@
                 }
                 else
                 {
-                    <div class="text-center my-item-center">
-                        <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" asp-route-information="@field.Name" class="btn">@field.Name - @field.Country.Name @field.City.Name</a>
+                    <div class="text-center my-item-center mt-4">
+                        <a asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id" asp-route-information="@field.Name" class="btn min-width-size-btn">Info</a>
                     </div>
                 }
             </div>

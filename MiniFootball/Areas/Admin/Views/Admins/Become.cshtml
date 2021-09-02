@@ -6,20 +6,9 @@
 
 <img class="background-image" src="~/images/wembley_park_1.jpg" />
 
-@if (Model == null)
-{
-    <div class="col-md-4">
-        <div class="card">
-            <img class="card-img-top" src="https://thumbs.dreamstime.com/b/comic-boom-oops-icon-simple-black-style-illustration-web-122999699.jpg" alt="Just oops image">
-            <div class="card-body text-center">
-                <h5 class="card-title text-center">You are already a Admin</h5>
-            </div>
-        </div>
-    </div>
-}
-else
-{
-    <div class="row">
+<div class="row">
+    @if (Model != null)
+    {
         <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
             <h2 class="heading-margin text-center mt-5 mb-4">@ViewBag.Title</h2>
 
@@ -34,8 +23,26 @@ else
                 </div>
             </form>
         </div>
-    </div>
-}
+    }
+    else
+    {
+        <div class="col-md-4 col-6 offset-3 offset-md-4 mt-5">
+            <div class="card">
+                <img class="card-img-top" src="https://thumbs.dreamstime.com/b/comic-boom-oops-icon-simple-black-style-illustration-web-122999699.jpg" alt="Just oops image">
+                <div class="card-body text-center">
+                    @if (User.IsManager())
+                    {
+                        <h5 class="card-title text-center">Manager can not become an admin!</h5>
+                    }
+                    else
+                    {
+                        <h5 class="card-title text-center">You are already an admin!</h5>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

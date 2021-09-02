@@ -217,7 +217,7 @@
         public void PostEditWhenUserIsNotAdminShouldRedirectToBecomeAdmin()
             => MyController<FieldsController>
                 .Instance()
-                .Calling(c => c.Edit(new FieldEditFormModel()))
+                .Calling(c => c.Edit(new FieldDetailServiceModel()))
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
@@ -268,7 +268,7 @@
                             .Add(Cities.Haskovo()))
                         .WithSet<Field>(field => field
                             .Add(Fields.Avenue()))))
-                .Calling(c => c.Edit(new FieldEditFormModel
+                .Calling(c => c.Edit(new FieldDetailServiceModel
                 {
                     Id = fieldId,
                     Name = name,

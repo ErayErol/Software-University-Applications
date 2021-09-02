@@ -12,33 +12,33 @@
     using Services.Countries;
     using Services.Fields;
     using System.Linq;
-    
+
     using static Convert;
     using static GlobalConstant;
     using static GlobalConstant.Error;
 
     public class FieldsController : Controller
     {
-        private readonly INotyfService notifications;
+        private readonly IFieldService fields;
+        private readonly IAdminService admins;
         private readonly ICountryService countries;
         private readonly ICityService cities;
-        private readonly IAdminService admins;
-        private readonly IFieldService fields;
         private readonly IMapper mapper;
+        private readonly INotyfService notifications;
 
         public FieldsController(
-            ICountryService countries,
             IFieldService fields,
+            IAdminService admins,
+            ICountryService countries,
             ICityService cities,
             IMapper mapper,
-            IAdminService admins, 
             INotyfService notifications)
         {
-            this.countries = countries;
             this.fields = fields;
+            this.admins = admins;
+            this.countries = countries;
             this.cities = cities;
             this.mapper = mapper;
-            this.admins = admins;
             this.notifications = notifications;
         }
 
@@ -57,6 +57,11 @@
             query.Fields = queryResult.Fields;
             query.Cities = queryCities;
 
+            if (query.Fields.Any() == false)
+            {
+                notifications.Information(Field.DoNotHaveAnyFieldsYet);
+            }
+
             return View(query);
         }
 
@@ -69,10 +74,12 @@
                 return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
-            return View(new FieldCreateFormModel
+            var createFormModel = new FieldCreateFormModel
             {
-                Countries = countries.All(),
-            });
+                Countries = countries.All()
+            };
+
+            return View(createFormModel);
         }
 
         [Authorize]
@@ -112,7 +119,20 @@
             fieldModel.CountryName = ToTitleCase(fieldModel.CountryName);
             fieldModel.CityName = ToTitleCase(fieldModel.CityName);
 
-            var fieldId = fields.Create(
+            var fieldId = FieldId(fieldModel, adminId);
+
+            if (fieldId == 0)
+            {
+                notifications.Error(SomethingIsWrong);
+                return RedirectToAction(Name, Name);
+            }
+
+            notifications.Success(Field.SuccessfullyCreated);
+            return RedirectToAction(nameof(Mine));
+        }
+
+        private int FieldId(FieldCreateFormModel fieldModel, int adminId) 
+            => fields.Create(
                 fieldModel.Name,
                 fieldModel.CountryId,
                 fieldModel.CityId,
@@ -125,16 +145,6 @@
                 fieldModel.ChangingRoom,
                 fieldModel.Description,
                 adminId);
-
-            if (fieldId == 0)
-            {
-                notifications.Error(SomethingIsWrong);
-                return RedirectToAction(Name, Name);
-            }
-
-            notifications.Success(Field.SuccessfullyCreated);
-            return RedirectToAction(nameof(Mine));
-        }
 
         [Authorize]
         public IActionResult Edit(int id, string information)
@@ -155,14 +165,12 @@
                 return RedirectToAction(Name, Name);
             }
 
-            var fieldEdit = mapper.Map<FieldEditFormModel>(fieldDetails);
-
-            return View(fieldEdit);
+            return View(fieldDetails);
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Edit(FieldEditFormModel fieldModel)
+        public IActionResult Edit(FieldDetailServiceModel fieldModel)
         {
             var adminId = admins.IdByUser(User.Id());
 
@@ -183,7 +191,31 @@
                 return RedirectToAction(Name, Name);
             }
 
-            var isEdit = fields.Edit(
+            var isEdit = IsEdit(fieldModel);
+
+            if (isEdit == false)
+            {
+                notifications.Error(SomethingIsWrong);
+                return RedirectToAction(Name, Name);
+            }
+
+            notifications.Success(
+                "Your field was edited" +
+                $"{(User.IsManager() ? string.Empty : " and is awaiting approval")}!");
+
+            var fieldName = fields.FieldName(fieldModel.Id);
+
+            var routeValues = new
+            {
+                id = fieldModel.Id,
+                information = fieldName
+            };
+
+            return RedirectToAction(nameof(Details), routeValues);
+        }
+
+        private bool IsEdit(FieldDetailServiceModel fieldModel)
+            => fields.Edit(
                 fieldModel.Id,
                 fieldModel.Name,
                 fieldModel.Address,
@@ -195,18 +227,6 @@
                 fieldModel.Description,
                 fieldModel.PhoneNumber,
                 User.IsManager());
-
-            if (isEdit == false)
-            {
-                notifications.Error(SomethingIsWrong);
-                return RedirectToAction(Name, Name);
-            }
-
-            var fieldName = fields.FieldName(fieldModel.Id);
-
-            notifications.Success($"Your field was edited{(User.IsManager() ? string.Empty : " and is awaiting approval")}!");
-            return RedirectToAction(nameof(Details), new { id = fieldModel.Id, information = fieldName });
-        }
 
         [Authorize]
         public IActionResult Delete(int id, string information)
@@ -240,7 +260,7 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult Delete(FieldDeleteServiceModel fieldModel)
+        public RedirectToActionResult Delete(FieldDeleteServiceModel fieldModel)
         {
             var adminId = admins.IdByUser(User.Id());
 

@@ -6,8 +6,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Models.Admins;
     using Services.Admins;
+
     using static GlobalConstant;
-    using static WebConstants;
 
     [Area(Admin.AreaName)]
     public class AdminsController : Controller
@@ -24,7 +24,7 @@
         }
 
         [Authorize]
-        public IActionResult Become()
+        public ViewResult Become()
         {
             if (admins.IsAdmin(User.Id()) || User.IsManager())
             {
@@ -32,10 +32,8 @@
                 return View();
             }
 
-            return View(new BecomeAdminFormModel
-            {
-                Name = User.Identity?.Name
-            });
+            var formModel = new BecomeAdminFormModel { Name = User.Identity?.Name };
+            return View(formModel);
         }
 
         [HttpPost]
@@ -48,7 +46,6 @@
             }
 
             admins.Become(adminModel.Name, User.Id());
-
             notifications.Success(Admin.SuccessfullyBecome);
             return Redirect(Home.HomePage);
         }

@@ -1,57 +1,57 @@
 ﻿namespace MiniFootball.Controllers
 {
-    using System;
+    using Areas.Admin.Controllers;
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using AutoMapper;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Models.Games;
     using Services.Admins;
+    using Services.Cities;
     using Services.Countries;
     using Services.Fields;
     using Services.Games;
     using Services.Games.Models;
     using Services.Users;
+    using System;
     using System.Linq;
-    using Areas.Admin.Controllers;
-    using AspNetCoreHero.ToastNotification.Abstractions;
-    using Services.Cities;
+
     using static Convert;
-    using static WebConstants;
     using static GlobalConstant;
 
     public class GamesController : Controller
     {
-        private readonly IUserService users;
-        private readonly ICountryService countries;
         private readonly IGameService games;
+        private readonly IUserService users;
         private readonly IAdminService admins;
+        private readonly ICountryService countries;
         private readonly ICityService cities;
         private readonly IFieldService fields;
         private readonly IMapper mapper;
         private readonly INotyfService notifications;
 
         public GamesController(
-            ICountryService countries,
             IGameService games,
+            IUserService users,
             IAdminService admins,
+            ICountryService countries,
+            ICityService cities,
             IFieldService fields,
             IMapper mapper,
-            IUserService users,
-            ICityService cities,
             INotyfService notifications)
         {
-            this.countries = countries;
             this.games = games;
+            this.users = users;
             this.admins = admins;
+            this.countries = countries;
+            this.cities = cities;
             this.fields = fields;
             this.mapper = mapper;
-            this.users = users;
-            this.cities = cities;
             this.notifications = notifications;
         }
 
-        public IActionResult All([FromQuery] GameAllQueryModel query)
+        public ViewResult All([FromQuery] GameAllQueryModel query)
         {
             var queryResult = games
                 .All(
@@ -61,11 +61,16 @@
                     query.CurrentPage,
                     query.GamesPerPage);
 
-            var cities = fields.AllCreatedCitiesName();
+            var citiesName = fields.AllCreatedCitiesName();
 
             query.TotalGames = queryResult.TotalGames;
             query.Games = queryResult.Games;
-            query.Cities = cities;
+            query.Cities = citiesName;
+
+            if (query.Games.Any() == false)
+            {
+                notifications.Information(Game.DoNotHaveAnyGamesYet);
+            }
 
             return View(query);
         }
@@ -79,10 +84,12 @@
                 return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
-            return View(new CreateGameFirstStepViewModel
+            var firstStepViewModel = new CreateGameFirstStepViewModel
             {
-                Countries = countries.All(),
-            });
+                Countries = countries.All()
+            };
+
+            return View(firstStepViewModel);
         }
 
         [Authorize]
@@ -111,14 +118,16 @@
                 return RedirectToAction(Create, City.ControllerName);
             }
 
+            var countryAndCityViewModel = new CreateGameCountryAndCityViewModel
+            {
+                CityName = gameModel.CityName,
+                CountryName = gameModel.CountryName,
+            };
+
             return RedirectToAction(
                 Game.CreateGameChooseField,
                 Game.ControllerName,
-                new CreateGameCountryAndCityViewModel
-                {
-                    CityName = gameModel.CityName,
-                    CountryName = gameModel.CountryName,
-                });
+                countryAndCityViewModel);
         }
 
         [Authorize]
@@ -129,17 +138,30 @@
                 return View();
             }
 
-            return View(new CreateGameSecondStepViewModel
+            var gameSecondStepViewModel = new CreateGameSecondStepViewModel
             {
                 Fields = fields.FieldsListing(gameModel.CityName, gameModel.CountryName),
                 CityName = gameModel.CityName,
                 CountryName = gameModel.CountryName,
-            });
+            };
+
+            var noFieldsInCity =
+                gameSecondStepViewModel.CountryName == null ||
+                gameSecondStepViewModel.CityName == null ||
+                gameSecondStepViewModel.Fields.Any() == false;
+
+            if (noFieldsInCity)
+            {
+                notifications.Information(Field.ThereAreNoFieldsInThisCity);
+                return RedirectToAction(nameof(FieldsController.Create), Field.ControllerName);
+            }
+
+            return View(gameSecondStepViewModel);
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult CreateGameChooseField(CreateGameSecondStepViewModel gameSecondStepViewModel)
+        public RedirectToActionResult CreateGameChooseField(CreateGameSecondStepViewModel gameSecondStepViewModel)
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
             {
@@ -175,21 +197,26 @@
                 return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
-            if (fields.IsCorrectParameters(
-                gameModel.FieldId,
-                gameModel.Name,
-                gameModel.CountryName,
-                gameModel.CityName) == false)
+            var isCorrectParameters =
+                fields.IsCorrectParameters(
+                    gameModel.FieldId,
+                    gameModel.Name,
+                    gameModel.CountryName,
+                    gameModel.CityName);
+
+            if (isCorrectParameters == false)
             {
                 notifications.Error(Field.IncorrectParameters);
                 return RedirectToAction(Error.Name, Error.Name);
             }
 
-            return View(new CreateGameFormModel
+            var gameFormModel = new CreateGameFormModel
             {
                 FieldId = gameModel.FieldId,
                 FieldName = fields.FieldName(gameModel.FieldId)
-            });
+            };
+
+            return View(gameFormModel);
         }
 
         [Authorize]
@@ -209,7 +236,9 @@
                 return View(gameModel);
             }
 
-            var incorrectDate = gameModel.Date != null && gameModel.Date.Value < DateTime.Today;
+            var incorrectDate =
+                gameModel.Date != null &&
+                gameModel.Date.Value < DateTime.Today;
 
             if (incorrectDate)
             {
@@ -217,8 +246,11 @@
                 return View(gameModel);
             }
 
-            var reserved = games
-                .IsFieldAlreadyReserved(gameModel.FieldId, gameModel.Date.Value, gameModel.Time.Value);
+            var reserved =
+                games.IsFieldAlreadyReserved(
+                    gameModel.FieldId,
+                    gameModel.Date.Value,
+                    gameModel.Time.Value);
 
             if (reserved)
             {
@@ -226,11 +258,24 @@
                 return View(gameModel);
             }
 
-
             gameModel.Description = ToSentenceCase(gameModel.Description);
+
             var phoneNumber = users.UserDetails(User.Id()).PhoneNumber;
 
-            var gameId = games.Create(
+            var gameId = GameId(gameModel, adminId, phoneNumber);
+
+            if (gameId == string.Empty)
+            {
+                notifications.Error(SomethingIsWrong);
+                return RedirectToAction(Error.Name, Error.Name);
+            }
+
+            notifications.Success(Game.SuccessfullyCreated);
+            return RedirectToAction(Game.Mine);
+        }
+
+        private string GameId(CreateGameFormModel gameModel, int adminId, string phoneNumber)
+            => games.Create(
                 gameModel.FieldId,
                 gameModel.Date.Value,
                 gameModel.Time.Value,
@@ -244,16 +289,6 @@
                 gameModel.HasPlaces,
                 adminId,
                 phoneNumber);
-
-            if (gameId == string.Empty)
-            {
-                notifications.Error(SomethingIsWrong);
-                return RedirectToAction(Error.Name, Error.Name);
-            }
-
-            notifications.Success(Game.SuccessfullyCreated);
-            return RedirectToAction(Game.Mine);
-        }
 
         [Authorize]
         public IActionResult Edit(string gameId, string information)
@@ -281,7 +316,6 @@
             }
 
             var gameEdit = mapper.Map<GameEditServiceModel>(gameDetails);
-
             return View(gameEdit);
         }
 
@@ -308,7 +342,29 @@
                 return View(gameModel);
             }
 
-            var isEdit = games.Edit(
+            var isEdit = IsEdit(gameModel);
+
+            if (isEdit == false)
+            {
+                notifications.Error(SomethingIsWrong);
+                return RedirectToAction(Error.Name, Error.Name);
+            }
+
+            notifications.Success(
+                "Your game was edited" +
+                $"{(User.IsManager() ? string.Empty : " and is awaiting approval")}!");
+
+            var routeValues = new
+            {
+                gameId = gameModel.GameId,
+                information = gameModel.FieldName
+            };
+
+            return RedirectToAction(nameof(Details), routeValues);
+        }
+
+        private bool IsEdit(GameEditServiceModel gameModel)
+            => games.Edit(
                 gameModel.GameId,
                 gameModel.Date,
                 gameModel.Time,
@@ -319,16 +375,6 @@
                 gameModel.Goalkeeper,
                 gameModel.Description,
                 User.IsManager());
-
-            if (isEdit == false)
-            {
-                notifications.Error(SomethingIsWrong);
-                return RedirectToAction(Error.Name, Error.Name);
-            }
-
-            notifications.Success($"Your game was edited{(User.IsManager() ? string.Empty : " and is awaiting approval")}!");
-            return RedirectToAction(nameof(Details), new { gameId = gameModel.GameId, information = gameModel.FieldName });
-        }
 
         [Authorize]
         public IActionResult Delete(string gameId, string information)
@@ -364,7 +410,7 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult Delete(GameDeleteServiceModel gameModel)
+        public RedirectToActionResult Delete(GameDeleteServiceModel gameModel)
         {
             var adminId = admins.IdByUser(User.Id());
 
@@ -420,7 +466,7 @@
             }
 
             var userId = User.Id();
-            
+
             if (games.IsUserIsJoinGame(gameId, userId) == false && User.IsManager() == false)
             {
                 var gameIdUserId = games.GameDeleteInfo(gameId);
@@ -443,30 +489,28 @@
         }
 
         [Authorize]
-        public IActionResult ExitGame(string gameId, string userIdToDelete)
+        public RedirectToActionResult ExitGame(string gameId, string userIdToDelete)
         {
             var currentUserId = User.Id();
             var currentUserAdminId = admins.IdByUser(currentUserId);
 
-            if (admins.IsAdmin(currentUserId) == false
-                && User.IsManager() == false
-                && currentUserId != userIdToDelete)
-            {
-                notifications.Error(Game.YouCanNotRemovePlayer);
-                return RedirectToAction(nameof(All));
-            }
+            //var isNotAdminAndNotManagerAndNotCurrentUser =
+            //    currentUserAdminId == 0 && 
+            //    User.IsManager() == false && 
+            //    currentUserId != userIdToDelete;
 
-            if (currentUserAdminId == 0
-                && User.IsManager() == false
-                && currentUserId != userIdToDelete)
-            {
-                notifications.Error(Game.YouCanNotRemovePlayer);
-                return RedirectToAction(nameof(All));
-            }
+            //if (isNotAdminAndNotManagerAndNotCurrentUser)
+            //{
+            //    notifications.Error(Game.YouCanNotRemovePlayer);
+            //    return RedirectToAction(nameof(All));
+            //}
 
-            if (games.IsAdminCreatorOfGame(gameId, currentUserAdminId) == false
-                && User.IsManager() == false
-                && currentUserId != userIdToDelete)
+            var youCanNotRemovePlayer = 
+                games.IsAdminCreatorOfGame(gameId, currentUserAdminId) == false &&
+                User.IsManager() == false &&
+                currentUserId != userIdToDelete;
+
+            if (youCanNotRemovePlayer)
             {
                 notifications.Error(Game.YouCanNotRemovePlayer);
                 return RedirectToAction(nameof(All));
@@ -480,7 +524,7 @@
                 return RedirectToAction(Error.Name, Error.Name);
             }
 
-            notifications.Warning(Game.UserExit);
+            notifications.Warning(Game.UserExited);
             return RedirectToAction(nameof(All));
         }
 

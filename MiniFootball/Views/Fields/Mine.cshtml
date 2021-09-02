@@ -3,9 +3,8 @@
 @{
     ViewBag.Title = "My Fields";
     ViewBag.AllowCarEdit = true;
+    ViewBag.AllowImage = true;
 }
-
-<img class="background-image" src="~/images/cl-1.jpg" />
 
 
 @if (Model.Any() == false)
@@ -16,7 +15,7 @@
 }
 else
 {
-    <div class="row">
+    <div><div class="row">
         <partial name="_FieldPartial" model="@Model" />
-    </div>
+    </div></div>
 }

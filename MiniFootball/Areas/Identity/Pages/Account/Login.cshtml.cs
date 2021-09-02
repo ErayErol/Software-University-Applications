@@ -1,5 +1,6 @@
 ﻿namespace MiniFootball.Areas.Identity.Pages.Account
 {
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -8,10 +9,8 @@
     using MiniFootball.Data.Models;
     using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
-    using AspNetCoreHero.ToastNotification.Abstractions;
-    using static GlobalConstant.Login;
+
     using static GlobalConstant.Notifications;
-    using static WebConstants;
 
     [AllowAnonymous]
     public class LoginModel : PageModel

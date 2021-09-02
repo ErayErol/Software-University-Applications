@@ -1,68 +1,62 @@
-﻿@model FieldEditFormModel
+﻿@model FieldDetailServiceModel
 
 @{
-    ViewBag.Title = "Edit Field";
+    ViewBag.Title = "Field Edit";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="offset-1 offset-sm-1 offset-md-2 offset-lg-3 offset-xl-3 col-11 col-sm-9 col-md-8 col-lg-6 col-xl-5">
+<div class="row">
+    <div class="offset-1 offset-sm-1 offset-md-2 offset-lg-3 offset-xl-3 col-10 col-sm-10 col-md-8 col-lg-6 col-xl-6">
+        <form method="get" class="form-group">
 
-            <img class="card-img-top img-thumbnail mt-3 mb-4" src="@Model.ImageUrl" alt="@Model.Name">
+            <img class="card-img-top img-thumbnail mt-3 mb-4" src="@Model.ImageUrl" alt="@Model.Name @Model.CountryName - @Model.CityName">
 
-            <form method="post" class="form-group">
-                <div class="form-group mb-3 my-item-center">
-                    <label asp-for="Name"></label>
-                    <input asp-for="Name" type="text" class="form-control text-center min-width-size">
-                    <span asp-validation-for="Name" class="small text-danger"></span>
-                </div>
+            <h3 class="text-center mb-3">Contacts:</h3>
 
-                <div class="form-group my-item-center">
-                    <label asp-for="PhoneNumber"></label>
-                    <input asp-for="PhoneNumber" type="text" class="form-control text-center min-width-size">
-                    <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
-                </div>
+            <div class="form-group my-item-center">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" type="tel" class="form-control text-center" value="@Model.PhoneNumber">
+            </div>
 
-                <div class="form-group my-item-center">
-                    <label asp-for="Address"></label>
-                    <input asp-for="Address" type="text" class="form-control text-center">
-                    <span asp-validation-for="Address" class="small text-danger"></span>
-                </div>
+            <div class="form-group my-item-center">
+                <label asp-for="Address"></label>
+                <input asp-for="Address" type="tel" class="form-control text-center" value="@Model.Address">
+            </div>
 
-                <div class="form-group my-item-center">
-                    <label asp-for="ImageUrl"></label>
-                    <input asp-for="ImageUrl" class="form-control text-center">
-                    <span asp-validation-for="ImageUrl" class="small text-danger"></span>
-                </div>
+            <h3 class="text-center mb-3 mt-4">Details:</h3>
 
-                <div class="mb-3 my-item-center">
-                    <label asp-for="Description"></label>
-                    <textarea asp-for="Description" class="form-control text-center" rows="3"></textarea>
-                    <span asp-validation-for="Description" class="small text-danger"></span>
-                </div>
+            <div class="form-group my-item-center">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" type="tel" class="form-control text-center" value="@Model.Name">
+            </div>
 
-                <div class="mt-4 mb-3 createPlaygroundChechboxes">
-                    <input class="checkbox-down" asp-for="Parking" type="checkbox">
-                    <label asp-for="Parking">Parking</label>
+            <div class="form-group my-item-center">
+                <label asp-for="CountryName"></label>
+                <input asp-for="CountryName" readonly="readonly" type="tel" class="form-control text-center" value="@Model.CountryName">
+            </div>
 
-                    <input class="checkbox-down" asp-for="Shower" type="checkbox">
-                    <label asp-for="Shower">Shower</label>
+            <div class="form-group my-item-center">
+                <label asp-for="CityName"></label>
+                <input asp-for="CityName" readonly="readonly" type="tel" class="form-control text-center" value="@Model.CityName">
+            </div>
 
-                    <input class="checkbox-down" asp-for="ChangingRoom" type="checkbox">
-                    <label asp-for="ChangingRoom">Changing Room</label>
+            <div class="mb-3 my-item-center">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control text-center" rows="2"></textarea>
+            </div>
 
-                    <input class="checkbox-down" asp-for="Cafe" type="checkbox">
-                    <label asp-for="Cafe">Cafe</label>
-                </div>
+            <div class="mt-4 mb-3 createPlaygroundChechboxes">
+                <input class="checkbox-down" asp-for="Parking" type="checkbox" value="@Model.Parking">
+                <label asp-for="Parking"></label>
 
-                <div class="my-item-center">
-                    <input class="btn btn-success min-width-size-btn" type="submit" value="Edit" />
-                </div>
-            </form>
-        </div>
+                <input class="checkbox-down" asp-for="Shower" type="checkbox" value="@Model.Shower">
+                <label asp-for="Shower"></label>
+
+                <input class="checkbox-down" asp-for="ChangingRoom" type="checkbox" value="@Model.ChangingRoom">
+                <label asp-for="ChangingRoom"></label>
+
+                <input class="checkbox-down" asp-for="Cafe" type="checkbox" value="@Model.Cafe">
+                <label asp-for="Cafe"></label>
+            </div>
+        </form>
     </div>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

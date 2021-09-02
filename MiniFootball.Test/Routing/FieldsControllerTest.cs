@@ -39,7 +39,7 @@
                 .Configuration()
                 .ShouldMap(request => request
                     .WithPath("/Fields/Edit"))
-                .To<FieldsController>(c => c.Edit(With.Any<FieldEditFormModel>()));
+                .To<FieldsController>(c => c.Edit(With.Any<FieldDetailServiceModel>()));
 
         [Fact]
         public void PostEditRouteShouldBeMapped()
@@ -48,7 +48,7 @@
                 .ShouldMap(request => request
                     .WithPath("/Fields/Edit")
                     .WithMethod(HttpMethod.Post))
-                .To<FieldsController>(c => c.Edit(With.Any<FieldEditFormModel>()));
+                .To<FieldsController>(c => c.Edit(With.Any<FieldDetailServiceModel>()));
 
         [Fact]
         public void GetDeleteRouteShouldBeMapped()
