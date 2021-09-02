@@ -11,7 +11,7 @@
 @if (Model.Any() == false)
 {
     <div class="my-item-center mt-5">
-        <a href="/Fields/Create" class="btn min-width-size-btn">Create Field</a>
+        <a asp-controller="Fields" asp-action="Create" class="btn min-width-size-btn">Create Field</a>
     </div>
 }
 else

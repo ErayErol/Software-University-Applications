@@ -11,110 +11,110 @@
 
             <form method="post" class="form-group">
 
-                    <div>
-                        <h1 class="text-center mb-4 mt-2">@Model.FieldName</h1>
+                <div>
+                    <h1 class="text-center mb-4 mt-2">@Model.FieldName</h1>
 
-                        <img class="card-img-top img-thumbnail" src="@Model.FieldImageUrl" alt="image">
-                    </div>
+                    <img class="card-img-top img-thumbnail" src="@Model.FieldImageUrl" alt="image">
+                </div>
 
-                    <div>
-                        @if (Model.HasPlaces)
+                <div>
+                    @if (Model.HasPlaces)
+                    {
+                        @if (Model.IsUserAlreadyJoin || Model.UserId == User.Id() || User.IsManager())
                         {
-                            @if (Model.IsUserAlreadyJoin || Model.UserId == User.Id() || User.IsManager())
+                            @if (Model.IsUserAlreadyJoin)
                             {
-                                @if (Model.IsUserAlreadyJoin)
-                                {
-                                    <h3 class="text-center mb-4 mt-4">You already join to this game</h3>
-                                }
-                                else
-                                {
-                                    <h3 class="text-center mb-4 mt-4">@Model.Places Available Places</h3>
-                                    <div class="my-item-center">
-                                        <a href="/Games/AddUserToGame?gameId=@Model.GameId" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">Join Game</a>
-                                    </div>
-                                }
-                                <div class="my-item-center">
-                                    <a href="/Games/SeePlayers?gameId=@Model.GameId" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">See the list of players</a>
-                                </div>
+                                <h3 class="text-center mb-4 mt-4">You already join to this game</h3>
                             }
                             else
                             {
-                                @if (Model.Places < 3)
-                                {
-                                    <h3 class="text-center mb-4 mt-4">Hurry up! Only @Model.Places Available Places</h3>
-                                }
-                                else
-                                {
-                                    <h3 class="text-center mb-4 mt-4">@Model.Places Available Places</h3>
-                                }
+                                <h3 class="text-center mb-4 mt-4">@Model.Places Available Places</h3>
                                 <div class="my-item-center">
-                                    <a href="/Games/AddUserToGame?gameId=@Model.GameId" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">Join Game</a>
+                                    <a asp-controller="Games" asp-action="AddUserToGame" asp-route-gameId="@Model.GameId" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">Join Game</a>
                                 </div>
                             }
+                            <div class="my-item-center">
+                                <a asp-controller="Games" asp-action="SeePlayers" asp-route-gameId="@Model.GameId" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">See the list of players</a>
+                            </div>
                         }
                         else
                         {
-                            <h3 class="text-center mb-4 mt-4">There are no available places</h3>
-                            <a href="/Games/SeePlayers?gameId=@Model.GameId" class="btn btn-primary btn-block text-uppercase mb-3">See the list of players</a>
+                            @if (Model.Places < 3)
+                            {
+                                <h3 class="text-center mb-4 mt-4">Hurry up! Only @Model.Places Available Places</h3>
+                            }
+                            else
+                            {
+                                <h3 class="text-center mb-4 mt-4">@Model.Places Available Places</h3>
+                            }
+                            <div class="my-item-center">
+                                <a asp-controller="Games" asp-action="AddUserToGame" asp-route-gameId="@Model.GameId" class="btn btn-primary btn-block text-uppercase mb-3 min-width-size">Join Game</a>
+                            </div>
                         }
+                    }
+                    else
+                    {
+                        <h3 class="text-center mb-4 mt-4">There are no available places</h3>
+                        <a asp-controller="Games" asp-action="SeePlayers" asp-route-gameId="@Model.GameId" class="btn btn-primary btn-block text-uppercase mb-3">See the list of players</a>
+                    }
+                </div>
+
+                <div>
+                    <h3 class="text-center mb-3 mt-3">Contacts:</h3>
+
+                    <div class="form-group my-item-center">
+                        <label asp-for="PhoneNumber"></label>
+                        <input asp-for="PhoneNumber" readonly="readonly" type="tel" class="form-control text-center" value="@Model.PhoneNumber">
                     </div>
 
-                    <div>
-                        <h3 class="text-center mb-3 mt-3">Contacts:</h3>
+                    <div class="form-group my-item-center">
+                        <label asp-for="FacebookUrl"></label>
+                        <input asp-for="FacebookUrl" readonly="readonly" type="tel" class="form-control text-center" value="@Model.FacebookUrl">
+                    </div>
+                </div>
 
-                        <div class="form-group my-item-center">
-                            <label asp-for="PhoneNumber"></label>
-                            <input asp-for="PhoneNumber" readonly="readonly" type="tel" class="form-control text-center" value="@Model.PhoneNumber">
-                        </div>
+                <div>
+                    <h3 class="text-center mb-3 mt-4">Details:</h3>
 
-                        <div class="form-group my-item-center">
-                            <label asp-for="FacebookUrl"></label>
-                            <input asp-for="FacebookUrl" readonly="readonly" type="tel" class="form-control text-center" value="@Model.FacebookUrl">
-                        </div>
+                    <div class="form-group my-item-center">
+                        <label asp-for="Date">Date</label>
+                        <input asp-for="Date" type="datetime" readonly class="form-control text-center" value="@Model.Date.Value.ToString("d")">
                     </div>
 
-                    <div>
-                        <h3 class="text-center mb-3 mt-4">Details:</h3>
-
-                        <div class="form-group my-item-center">
-                            <label asp-for="Date">Date</label>
-                            <input asp-for="Date" type="datetime" readonly class="form-control text-center" value="@Model.Date.Value.ToString("d")">
-                        </div>
-
-                        <div class="form-group my-item-center">
-                            <label asp-for="Time">Time</label>
-                            <input asp-for="Time" readonly="readonly" type="text" class="form-control text-center" value="@Model.Time:00">
-                        </div>
-
-                        <div class="form-group my-item-center">
-                            <label asp-for="NumberOfPlayers"></label>
-                            <input asp-for="NumberOfPlayers" readonly="readonly" type="number" class="form-control text-center" value="@Model.NumberOfPlayers.Value">
-                        </div>
-
-                        <div class="form-group my-item-center">
-                            <label asp-for="Places"></label>
-                            <input asp-for="Places" readonly="readonly" type="number" class="form-control text-center" value="@Model.Places">
-                        </div>
-
-                        <div class="mb-3 my-item-center">
-                            <label asp-for="Description"></label>
-                            <textarea asp-for="Description" class="form-control text-center" rows="2" readonly="readonly"></textarea>
-                        </div>
+                    <div class="form-group my-item-center">
+                        <label asp-for="Time">Time</label>
+                        <input asp-for="Time" readonly="readonly" type="text" class="form-control text-center" value="@Model.Time:00">
                     </div>
 
-
-                    <div class="mt-4 mb-3 createPlaygroundChechboxes">
-                        <input class="checkbox-down" asp-for="Ball" type="checkbox" value="@Model.Ball" onclick="return false;">
-                        <label asp-for="Ball"></label>
-
-                        <input class="checkbox-down" asp-for="Jerseys" type="checkbox" value="@Model.Jerseys" onclick="return false;">
-                        <label asp-for="Jerseys"></label>
-
-                        <input class="checkbox-down" asp-for="Goalkeeper" type="checkbox" value="@Model.Goalkeeper" onclick="return false;">
-                        <label asp-for="Goalkeeper"></label>
+                    <div class="form-group my-item-center">
+                        <label asp-for="NumberOfPlayers"></label>
+                        <input asp-for="NumberOfPlayers" readonly="readonly" type="number" class="form-control text-center" value="@Model.NumberOfPlayers.Value">
                     </div>
 
-                </form>
+                    <div class="form-group my-item-center">
+                        <label asp-for="Places"></label>
+                        <input asp-for="Places" readonly="readonly" type="number" class="form-control text-center" value="@Model.Places">
+                    </div>
+
+                    <div class="mb-3 my-item-center">
+                        <label asp-for="Description"></label>
+                        <textarea asp-for="Description" class="form-control text-center" rows="2" readonly="readonly"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="mt-4 mb-3 createPlaygroundChechboxes">
+                    <input class="checkbox-down" asp-for="Ball" type="checkbox" value="@Model.Ball" onclick="return false;">
+                    <label asp-for="Ball"></label>
+
+                    <input class="checkbox-down" asp-for="Jerseys" type="checkbox" value="@Model.Jerseys" onclick="return false;">
+                    <label asp-for="Jerseys"></label>
+
+                    <input class="checkbox-down" asp-for="Goalkeeper" type="checkbox" value="@Model.Goalkeeper" onclick="return false;">
+                    <label asp-for="Goalkeeper"></label>
+                </div>
+
+            </form>
         </div>
     </div>
 </div>

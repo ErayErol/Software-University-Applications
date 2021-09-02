@@ -10,9 +10,9 @@
 
 @if (Model.Any() == false)
 {
-    <div class="my-item-center mt-5">
-        <a href="/Games/CreateGameFirstStep" class="btn min-width-size-btn">Create Game</a>
-    </div>
+<div class="my-item-center mt-5">
+    <a asp-controller="Games" asp-action="CreateGameFirstStep" class="btn min-width-size-btn">Create Game</a>
+</div>
 }
 else
 {

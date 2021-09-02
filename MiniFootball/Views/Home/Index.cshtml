@@ -32,7 +32,7 @@
                             <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
                                 <img class="d-block w-100 img-thumbnail" src="@game.Field.ImageUrl" alt="First slide">
                                 <div class="carousel-caption my-item-center">
-                                    <a id="toastr-img" asp-controller="Games" asp-action="Details" asp-route-gameId="@game.Id" asp-route-information="@game.Field.Name" class="btn min-width-size home-button-size">@game.Field.Name - @game.Date.ToString("D") @game.Time:00</a>
+                                    <a asp-controller="Games" asp-action="Details" asp-route-gameId="@game.Id" asp-route-information="@game.Field.Name" class="btn min-width-size home-button-size">@game.Field.Name - @game.Date.ToString("D") @game.Time:00</a>
                                 </div>
                             </div>
                         }
@@ -53,9 +53,6 @@
 }
 
 @section Scripts {
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-
     <script>
         $.get('/api/statistics',
             (data) => {
@@ -63,11 +60,5 @@
                 $('#total-fields').text(data.totalFields + " Fields");
                 $('#total-users').text(data.totalUsers + " Users");
             });
-
-        $(function () {
-            $('#toastr-img').click(function () {
-                toastr.error("ASds", "asd");
-            });
-        });
     </script>
 }

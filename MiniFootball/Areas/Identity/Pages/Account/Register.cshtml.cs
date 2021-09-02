@@ -1,5 +1,6 @@
 ﻿namespace MiniFootball.Areas.Identity.Pages.Account
 {
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -8,11 +9,9 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
-    using AspNetCoreHero.ToastNotification.Abstractions;
-    using static Data.DataConstants.User;
 
     using static Convert;
-    using static WebConstants;
+    using static Data.DataConstants.User;
 
     [AllowAnonymous]
     public class RegisterModel : PageModel
@@ -111,7 +110,7 @@
 
                 foreach (var error in result.Errors)
                 {
-                    notifications.Error(Data.DataConstants.Register.ThereIsAlreadyAUser);
+                    TempData[WebConstants.GlobalMessageKey] = error.Description;
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }

@@ -17,25 +17,25 @@
         if (userIsAdmin && userIsManager == false)
         {
             <li class="nav-item">
-                <a class="nav-link min-width-nav-size btn btn-link mr-xl-3 mr-lg-3" asp-area="" asp-controller="Games" asp-action="Mine">My Games</a>
+                <a asp-area="" asp-controller="Games" asp-action="Mine" class="nav-link min-width-nav-size btn btn-link mr-xl-3 mr-lg-3">My Games</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link btn btn-link min-width-nav-size" asp-area="" asp-controller="Fields" asp-action="Mine">My Fields</a>
+                <a asp-area="" asp-controller="Fields" asp-action="Mine" class="nav-link btn btn-link min-width-nav-size">My Fields</a>
             </li>
         }
         else if (userIsManager == false)
         {
             <li class="nav-item">
-                <a class="nav-link btn btn-link min-width-nav-size" asp-area="Admin" asp-controller="Admins" asp-action="Become">Become Admin</a>
+                <a asp-area="Admin" asp-controller="Admins" asp-action="Become" class="nav-link btn btn-link min-width-nav-size">Become Admin</a>
             </li>
         }
         else if (userIsManager)
         {
             <li class="nav-item">
-                <a class="nav-link btn btn-link min-width-nav-size mr-xl-3 mr-lg-3" asp-area="Manager" asp-controller="Games" asp-action="AllGames">All Games</a>
+                <a asp-area="Manager" asp-controller="Games" asp-action="AllGames" class="nav-link btn btn-link min-width-nav-size mr-xl-3 mr-lg-3">All Games</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link btn btn-link min-width-nav-size" asp-area="Manager" asp-controller="Fields" asp-action="AllFields">All Fields</a>
+                <a asp-area="Manager" asp-controller="Fields" asp-action="AllFields" class="nav-link btn btn-link min-width-nav-size">All Fields</a>
             </li>
         }
         <li class="nav-item">
@@ -52,10 +52,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link btn btn-link mr-2 min-width-nav-size" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a asp-area="Identity" asp-page="/Account/Register" class="nav-link btn btn-link mr-2 min-width-nav-size">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link btn btn-link mr-2 min-width-nav-size" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a asp-area="Identity" asp-page="/Account/Login" class="nav-link btn btn-link mr-2 min-width-nav-size">Login</a>
         </li>
     }
 </ul>
