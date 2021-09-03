@@ -13,8 +13,8 @@
 
         <form asp-controller="Cities" asp-action="Create" method="post">
             <div class="select-container mt-5 mb-5">
-                <label asp-for="CountryName" class="mb-2"></label>
-                <select asp-for="CountryName" class="mt-2 custom-select mr-sm-5">
+                <label asp-for="CountryName"></label>
+                <select asp-for="CountryName" class="mt-2 mb-3">
                     @foreach (var country in Model.Countries)
                     {
                         @if (country == "Bulgaria")
@@ -30,8 +30,8 @@
             </div>
 
             <div class="input-container">
-                <label asp-for="Name" class="mb-2"></label>
-                <input asp-for="Name" type="text" class="mt-2">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" type="text" class="mt-2 mb-3">
                 <span asp-validation-for="Name" class="small text-danger"></span>
             </div>
 

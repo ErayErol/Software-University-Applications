@@ -11,10 +11,10 @@
             <h3>First step to Create Game</h3>
         </div>
 
-        <form asp-controller="Games" asp-action="CreateGameFirstStep" method="post">
+        <form method="post">
             <div class="select-container mt-5 mb-5">
-                <label asp-for="CountryName" class="mb-2"></label>
-                <select asp-for="CountryName" class="mt-2">
+                <label asp-for="CountryName"></label>
+                <select asp-for="CountryName" class="mt-2 mb-3">
                     @foreach (var country in Model.Countries)
                     {
                         @if (country == "Bulgaria")
@@ -30,8 +30,8 @@
             </div>
 
             <div class="input-container">
-                <label asp-for="CityName" class="mb-2"></label>
-                <input asp-for="CityName" type="text" class="mt-2">
+                <label asp-for="CityName"></label>
+                <input asp-for="CityName" type="text" class="mt-2 mb-3">
                 <span asp-validation-for="CityName" class="small text-danger"></span>
             </div>
 

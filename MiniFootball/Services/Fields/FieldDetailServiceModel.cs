@@ -11,8 +11,8 @@
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = ErrorMessages.Empty)]
-        [StringLength(Field.NameMaxLength, MinimumLength = Field.NameMinLength, ErrorMessage = ErrorMessages.Range)]
+        [Required(ErrorMessage = Empty)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = Range)]
         public string Name { get; set; }
 
         [StringLength(CountryMaxLength, MinimumLength = CountryMinLength, ErrorMessage = Range)]
@@ -24,21 +24,21 @@
         public string CityName { get; set; }
 
         [Required]
-        [MaxLength(Field.PhoneNumberMaxLength)]
+        [MaxLength(PhoneNumberMaxLength)]
         [Display(Name = DataConstants.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
         [Required]
-        [StringLength(Field.AddressMaxLength, MinimumLength = Field.AddressMinLength, ErrorMessage = ErrorMessages.Range)]
+        [StringLength(AddressMaxLength, MinimumLength = AddressMinLength, ErrorMessage = Range)]
         public string Address { get; set; }
 
         [Required]
         [Display(Name = DataConstants.ImageUrl)]
-        [Url(ErrorMessage = ErrorMessages.Url)]
+        [Url(ErrorMessage = Url)]
         public string ImageUrl { get; set; }
 
-        [Required(ErrorMessage = ErrorMessages.Empty)]
-        [StringLength(Field.DescriptionMaxLength, MinimumLength = Field.DescriptionMinLength, ErrorMessage = ErrorMessages.Range)]
+        [Required(ErrorMessage = Empty)]
+        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = Range)]
         public string Description { get; set; }
 
         public bool Parking { get; set; }

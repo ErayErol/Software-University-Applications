@@ -4026,3 +4026,15 @@ select option {
         width: 200px;
     }
 }
+
+@media (max-width: 1500px) and (min-width: 850px) {
+    .box-acount-manage {
+        padding: 60px 100px;
+        height: 95%;
+        width: 80%;
+    }
+}
+
+.box-info-and-edit {
+    transform: translate(-50%);
+}

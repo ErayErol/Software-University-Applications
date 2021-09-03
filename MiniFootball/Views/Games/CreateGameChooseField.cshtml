@@ -7,7 +7,7 @@
 
     <form method="post">
         <div class="select-container mt-5 mb-5">
-            <label asp-for="FieldId" class="mb-2"></label>
+            <label asp-for="FieldId"></label>
             <select asp-for="FieldId" class="mt-2">
                 @foreach (var field in Model.Fields)
                 {

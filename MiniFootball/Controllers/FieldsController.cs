@@ -199,7 +199,7 @@
                 return RedirectToAction(Name, Name);
             }
 
-            notifications.Success(
+            notifications.Information(
                 "Your field was edited" +
                 $"{(User.IsManager() ? string.Empty : " and is awaiting approval")}!");
 

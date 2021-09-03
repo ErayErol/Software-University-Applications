@@ -152,7 +152,7 @@
                 .ShouldReturn()
                 .RedirectToAction(
                     CreateGameChooseField,
-                    GlobalConstant.Game.ControllerName,
+                    ControllerName,
                     new CreateGameCountryAndCityViewModel
                     {
                         CountryName = countryName,
@@ -282,7 +282,7 @@
                 .ShouldReturn()
                 .RedirectToAction(
                     CreateGameLastStep,
-                    GlobalConstant.Game.ControllerName,
+                    ControllerName,
                     new CreateGameLastStepViewModel
                     {
                         FieldId = 1,
@@ -562,7 +562,7 @@
                     .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
-                .RedirectToAction(GlobalConstant.Game.Mine);
+                .RedirectToAction(Mine);
 
         [Theory]
         [InlineData("1", "Avenue")]

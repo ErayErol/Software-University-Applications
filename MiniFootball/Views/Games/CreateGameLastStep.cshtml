@@ -11,30 +11,30 @@
             <h3>Field Name - @Model.FieldName</h3>
         </div>
 
-        <form asp-controller="Games" asp-action="CreateGameLastStep" method="post">
+        <form method="post">
             <div class="input-container mt-5">
-                <label asp-for="Date" class="mb-2 mt-3"></label>
-                <input asp-for="Date" type="date" class="mt-2">
+                <label asp-for="Date"></label>
+                <input asp-for="Date" type="date" class="mt-2 mb-3">
                 <span asp-validation-for="Date" class="small text-danger"></span>
             </div>
             <div class="input-container">
-                <label asp-for="Time" class="mb-2 mt-3"></label>
-                <input asp-for="Time" min="1" max="24" type="number" placeholder="From 01 To 24" class="mt-2">
+                <label asp-for="Time"></label>
+                <input asp-for="Time" min="1" max="24" type="number" placeholder="From 01 To 24" class="mt-2 mb-3">
                 <span asp-validation-for="Time" class="small text-danger"></span>
             </div>
             <div class="input-container">
-                <label asp-for="NumberOfPlayers" class="mb-2 mt-3"></label>
-                <input asp-for="NumberOfPlayers" min="8" max="22" type="number" placeholder="Min 8 and Max 22" class="mt-2">
+                <label asp-for="NumberOfPlayers"></label>
+                <input asp-for="NumberOfPlayers" min="8" max="22" type="number" placeholder="Min 8 and Max 22" class="mt-2 mb-3">
                 <span asp-validation-for="NumberOfPlayers" class="small text-danger"></span>
             </div>
             <div class="input-container">
-                <label asp-for="FacebookUrl" class="mb-2 mt-3"></label>
-                <input asp-for="FacebookUrl" type="url" class="mt-2">
+                <label asp-for="FacebookUrl"></label>
+                <input asp-for="FacebookUrl" type="url" class="mt-2 mb-3">
                 <span asp-validation-for="FacebookUrl" class="small text-danger"></span>
             </div>
             <div class="textarea-container">
-                <label asp-for="Description" class="mb-2 mt-3"></label>
-                <textarea asp-for="Description" class="mt-2">rows="2"></textarea>
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="mt-2 mb-3">rows="2"></textarea>
                 <span asp-validation-for="Description" class="small text-danger"></span>
             </div>
 
