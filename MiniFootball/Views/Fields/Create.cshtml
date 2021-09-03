@@ -6,78 +6,57 @@
 
 @if (@Model != null)
 {
-    <div class="col-sm-10 ml-sm-5">
-        <div class="form-group row text-center">
-            <h3 class="mt-3 ml-3">Create Field</h3>
+    <div class="box box-large">
+        <div class="text-center">
+            <h3>Create Field</h3>
         </div>
 
-        <form asp-controller="Fields" asp-action="Create" method="post" class="mt-3">
-
-            <div class="form-group row">
-                <label asp-for="Name" class="col-form-label col-sm-5"></label>
-                <div class="col-sm-10">
-                    <input asp-for="Name" type="text" class="form-control">
-                    <span asp-validation-for="Name" class="small text-danger"></span>
-                </div>
+        <form asp-controller="Fields" asp-action="Create" method="post">
+            <div class="input-container mt-5">
+                <label asp-for="Name" class="mb-2"></label>
+                <input asp-for="Name" type="text" class="mt-2">
+                <span asp-validation-for="Name" class="small text-danger"></span>
             </div>
-
-            <div class="form-group row">
-                <label asp-for="PhoneNumber" class="col-form-label col-sm-5"></label>
-                <div class="col-sm-10">
-                    <input asp-for="PhoneNumber" type="text" class="form-control">
-                    <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
-                </div>
+            <div class="input-container">
+                <label asp-for="PhoneNumber" class="mb-2"></label>
+                <input asp-for="PhoneNumber" type="text" class="mt-2">
+                <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
             </div>
-
-            <div class="form-group row">
-                <label asp-for="CountryName" class="col-form-label col-sm-5"></label>
-                <div class="col-sm-10">
-                    <select asp-for="CountryName" class="form-control custom-select mr-sm-5">
-                        @foreach (var country in Model.Countries)
+            <div class="select-container">
+                <label asp-for="CountryName" class="mb-2"></label>
+                <select asp-for="CountryName" class="mt-2">
+                    @foreach (var country in Model.Countries)
+                    {
+                        @if (country == "Bulgaria")
                         {
-                            @if (country == "Bulgaria")
-                            {
-                                <option selected="selected" value="@country"> @country </option>
-                            }
-                            else
-                            {
-                                <option value="@country"> @country </option>
-                            }
+                            <option selected="selected" value="@country"> @country </option>
                         }
-                    </select>
-                </div>
+                        else
+                        {
+                            <option value="@country"> @country </option>
+                        }
+                    }
+                </select>
             </div>
-
-            <div class="form-group row">
-                <label asp-for="CityName" class="col-form-label col-sm-5"></label>
-                <div class="col-sm-10">
-                    <input asp-for="CityName" type="text" class="form-control">
-                    <span asp-validation-for="CityName" class="small text-danger"></span>
-                </div>
+            <div class="input-container">
+                <label asp-for="CityName" class="mb-2"></label>
+                <input asp-for="CityName" type="text" class="mt-2">
+                <span asp-validation-for="CityName" class="small text-danger"></span>
             </div>
-
-            <div class="form-group row">
-                <label asp-for="Address" class="col-form-label col-sm-5"></label>
-                <div class="col-sm-10">
-                    <input asp-for="Address" type="text" class="form-control">
-                    <span asp-validation-for="Address" class="small text-danger"></span>
-                </div>
+            <div class="input-container">
+                <label asp-for="Address" class="mb-2"></label>
+                <input asp-for="Address" type="text" class="mt-2">
+                <span asp-validation-for="Address" class="small text-danger"></span>
             </div>
-
-            <div class="form-group row">
-                <label asp-for="ImageUrl" class="col-form-label col-sm-5"></label>
-                <div class="col-sm-10">
-                    <input asp-for="ImageUrl" type="url" class="form-control">
-                    <span asp-validation-for="ImageUrl" class="small text-danger"></span>
-                </div>
+            <div class="input-container">
+                <label asp-for="ImageUrl" class="mb-2"></label>
+                <input asp-for="ImageUrl" type="url" class="mt-2">
+                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
             </div>
-
-            <div class="form-group row">
-                <label asp-for="Description" class="col-form-label col-sm-5"></label>
-                <div class="col-sm-10">
-                    <textarea asp-for="Description" class="form-control">rows="2"></textarea>
-                    <span asp-validation-for="Description" class="small text-danger"></span>
-                </div>
+            <div class="textarea-container">
+                <label asp-for="Description" class="mb-2"></label>
+                <textarea asp-for="Description" class="mt-2">rows="2"></textarea>
+                <span asp-validation-for="Description" class="small text-danger"></span>
             </div>
 
             <div class="mt-4 mb-3 ml-3 createPlaygroundChechboxes">
@@ -94,8 +73,8 @@
                 <label asp-for="Cafe">Cafe</label>
             </div>
 
-            <div class="form-group row">
-                <input class="btn btn-form-size ml-3" type="submit" value="Create" />
+            <div>
+                <input class="btn btn-form-size ml-xl-0 ml-lg-0 ml-md-0 ml-sm-0 ml-3" type="submit" value="Create" />
             </div>
         </form>
     </div>

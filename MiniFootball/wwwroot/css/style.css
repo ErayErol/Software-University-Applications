@@ -1194,7 +1194,7 @@ input {
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #2d3546;
+    background-color: rgba(0, 0, 0, 0.69);
     background-clip: border-box;
     border: 1px solid rgba(0,0,0,.125);
     border-radius: .25rem;
@@ -3832,60 +3832,63 @@ body {
 }
 
 .box {
-    position: absolute;
+    position: relative;
     left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    background-color: rgba(0, 0, 0, 0.89);
+    transform: translate(-50%, 2%);
+    background-color: rgba(0, 0, 0, 0.69);
     border-radius: 3px;
 }
 
 @media (max-width: 550px) {
-    .box-login {
+    .box-small {
         padding: 70px 25px;
         width: 90%;
+        transform: translate(-50%, 25%);
     }
 }
 
 @media (max-width: 850px) and (min-width: 550px) {
-    .box-login {
+    .box-small {
         padding: 70px 75px;
         width: 85%;
+        transform: translate(-50%, 25%);
     }
 }
 
 @media (max-width: 1500px) and (min-width: 850px) {
-    .box-login {
+    .box-small {
         padding: 70px 100px;
         width: 70%;
+        transform: translate(-50%, 25%);
     }
 }
 
 @media (max-width: 2000px) and (min-width: 1500px) {
-    .box-login {
+    .box-small {
         padding: 70px 100px;
         width: 50%;
+        transform: translate(-50%, 25%);
     }
 }
 
 @media (max-width: 550px) {
-    .box-register {
+    .box-large {
         padding: 65px 25px;
-        height: 85%;
         width: 90%;
+        transform: translate(-50%, 3%);
     }
 }
 
 @media (max-width: 850px) and (min-width: 550px) {
-    .box-register {
+    .box-large {
         padding: 65px 25px;
-        height: 85%;
         width: 85%;
+        transform: translate(-50%, 2%);
     }
 }
 
 @media (max-width: 1500px) and (min-width: 850px) {
-    .box-register {
+    .box-large {
         padding: 60px 100px;
         height: 85%;
         width: 80%;
@@ -3893,10 +3896,9 @@ body {
 }
 
 @media (max-width: 2000px) and (min-width: 1500px) {
-    .box-register {
+    .box-large {
         padding: 60px 100px;
         width: 50%;
-        height: 85%;
     }
 }
 
@@ -3918,7 +3920,7 @@ body {
         border-bottom: 1px solid #555;
         background: transparent;
         width: 100%;
-        padding: 8px 0 5px 0;
+        padding: 8px 0 5px 10px;
         font-size: 16px;
         color: #16ff00;
     }
@@ -3934,3 +3936,93 @@ body {
                 top: -12px;
                 font-size: 12px;
             }
+
+.textarea-container {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+    .textarea-container label {
+        position: absolute;
+        top: -20px;
+        left: 0px;
+        color: #fff;
+        transition: all 0.5s ease-in-out;
+    }
+
+    .textarea-container textarea {
+        border: 0;
+        border-bottom: 1px solid #555;
+        background: transparent;
+        width: 100%;
+        padding: 8px 0 5px 10px;
+        font-size: 16px;
+        color: #16ff00;
+    }
+
+        .textarea-container textarea:focus {
+            border: none;
+            outline: none;
+            border-bottom: 1px solid #16ff00;
+        }
+
+            .textarea-container textarea:focus ~ label,
+            .textarea-container textarea:valid ~ label {
+                top: -12px;
+                font-size: 12px;
+            }
+
+.select-container {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+    .select-container label {
+        position: absolute;
+        top: -20px;
+        left: 0px;
+        color: #fff;
+        transition: all 0.5s ease-in-out;
+    }
+
+    .select-container select {
+        border: 0;
+        border-bottom: 1px solid #555;
+        background: transparent;
+        width: 100%;
+        padding: 8px 0 5px 10px;
+        font-size: 16px;
+        color: #16ff00;
+    }
+
+        .select-container select:focus {
+            border: none;
+            outline: none;
+            border-bottom: 1px solid #16ff00;
+        }
+
+            .select-container select:focus ~ label,
+            .select-container select:valid ~ label {
+                top: -12px;
+                font-size: 12px;
+            }
+
+
+select option {
+    background-color: rgba(0, 0, 0, 0.69);
+    color: #16ff00;
+}
+
+.navbar {
+    background-color: rgba(0, 0, 0, 0.69);
+}
+
+.btn-error-size {
+    width: 220px;
+}
+
+@media (max-width: 400px) and (min-width: 0px) {
+    .btn-error-size {
+        width: 200px;
+    }
+}

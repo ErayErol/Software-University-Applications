@@ -4,23 +4,37 @@
     ViewData["Title"] = "Error";
 }
 
-<div class="my-item-center mt-5">
-    <h1 class="mb-4 text-center">Error</h1>
+<div class="box box-large">
+    <h1 class="mb-4 text-center mb-5">Error</h1>
     @if (Model.StatusCode != 0)
     {
-        <h3 class="mb-4 text-center">Status code : @Model.StatusCode</h3>
+        <div class="input-container">
+            <label class="mt-4">Status code :</label>
+            <input type="text" class="mt-4" value="@Model.StatusCode" readonly="readonly">
+        </div>
     }
     @if (@Model.Path != null)
     {
-        <h3 class="mb-4 text-center">Path : @Model.Path</h3>
+        <div class="textarea-container">
+            <label class="mt-4">Path :</label>
+            <textarea type="text" class="mt-4" readonly="readonly" rows="2">@Model.Path</textarea>
+        </div>
     }
     @if (Model.QueryString != null)
     {
-        <h3 class="mb-4 text-center">Query String : @Model.QueryString</h3>
+        <div class="textarea-container">
+            <label class="mt-4">Query String :</label>
+            <textarea type="text" class="mt-4" readonly="readonly" rows="2">@Model.QueryString</textarea>
+        </div>
     }
     @if (Model.Message != null)
     {
-        <h3 class="mb-4 text-center">@Model.Message</h3>
+        <div class="textarea-container">
+            <label class="mt-4">Message :</label>
+            <textarea type="text" class="mt-4" readonly="readonly" rows="2">@Model.Message</textarea>
+        </div>
     }
-    <a class="btn min-width-size-btn" href='javascript:history.go(-1)'>Return to previous page</a>
+    <div>
+        <a class="btn btn-error-size" href='javascript:history.go(-1)'>Return to previous page</a>
+    </div>
 </div>

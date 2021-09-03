@@ -6,51 +6,36 @@
 
 @if (Model != null)
 {
-    <div class="col-sm-10 ml-sm-5">
-        <div class="form-group row text-center">
-            <h3 class="mt-3 ml-3">Field Name - @Model.FieldName</h3>
+    <div class="box box-large">
+        <div class="text-center">
+            <h3>Field Name - @Model.FieldName</h3>
         </div>
 
-        <form asp-controller="Games" asp-action="CreateGameLastStep" method="post" class="mt-3">
-
-            <div class="form-group row">
-                <label asp-for="Date" class="col-form-label col-sm-5"></label>
-                <div class="col-sm-10">
-                    <input asp-for="Date" type="date" class="form-control">
-                    <span asp-validation-for="Date" class="small text-danger"></span>
-                </div>
+        <form asp-controller="Games" asp-action="CreateGameLastStep" method="post">
+            <div class="input-container mt-5">
+                <label asp-for="Date" class="mb-2 mt-3"></label>
+                <input asp-for="Date" type="date" class="mt-2">
+                <span asp-validation-for="Date" class="small text-danger"></span>
             </div>
-
-            <div class="form-group row">
-                <label asp-for="Time" class="col-form-label col-sm-5"></label>
-                <div class="col-sm-10">
-                    <input asp-for="Time" min="1" max="24" type="number" placeholder="From 01 To 24" class="form-control">
-                    <span asp-validation-for="Time" class="small text-danger"></span>
-                </div>
+            <div class="input-container">
+                <label asp-for="Time" class="mb-2 mt-3"></label>
+                <input asp-for="Time" min="1" max="24" type="number" placeholder="From 01 To 24" class="mt-2">
+                <span asp-validation-for="Time" class="small text-danger"></span>
             </div>
-
-            <div class="form-group row">
-                <label asp-for="NumberOfPlayers" class="col-form-label col-sm-5"></label>
-                <div class="col-sm-10">
-                    <input asp-for="NumberOfPlayers" min="8" max="22" type="number" placeholder="Min 8 and Max 22" class="form-control">
-                    <span asp-validation-for="NumberOfPlayers" class="small text-danger"></span>
-                </div>
+            <div class="input-container">
+                <label asp-for="NumberOfPlayers" class="mb-2 mt-3"></label>
+                <input asp-for="NumberOfPlayers" min="8" max="22" type="number" placeholder="Min 8 and Max 22" class="mt-2">
+                <span asp-validation-for="NumberOfPlayers" class="small text-danger"></span>
             </div>
-
-            <div class="form-group row">
-                <label asp-for="FacebookUrl" class="col-form-label col-sm-5"></label>
-                <div class="col-sm-10">
-                    <input asp-for="FacebookUrl" type="url" class="form-control">
-                    <span asp-validation-for="FacebookUrl" class="small text-danger"></span>
-                </div>
+            <div class="input-container">
+                <label asp-for="FacebookUrl" class="mb-2 mt-3"></label>
+                <input asp-for="FacebookUrl" type="url" class="mt-2">
+                <span asp-validation-for="FacebookUrl" class="small text-danger"></span>
             </div>
-
-            <div class="form-group row">
-                <label asp-for="Description" class="col-form-label col-sm-5"></label>
-                <div class="col-sm-10">
-                    <textarea asp-for="Description" class="form-control">rows="2"></textarea>
-                    <span asp-validation-for="Description" class="small text-danger"></span>
-                </div>
+            <div class="textarea-container">
+                <label asp-for="Description" class="mb-2 mt-3"></label>
+                <textarea asp-for="Description" class="mt-2">rows="2"></textarea>
+                <span asp-validation-for="Description" class="small text-danger"></span>
             </div>
 
             <div class="mt-4 mb-3 ml-3 createPlaygroundChechboxes">
@@ -64,8 +49,8 @@
                 <label asp-for="Goalkeeper"></label>
             </div>
 
-            <div class="form-group row">
-                <input class="btn btn-form-size ml-3" type="submit" value="Create" />
+            <div>
+                <input class="btn btn-form-size ml-xl-0 ml-lg-0 ml-md-0 ml-sm-0 ml-3" type="submit" value="Create" />
             </div>
         </form>
     </div>

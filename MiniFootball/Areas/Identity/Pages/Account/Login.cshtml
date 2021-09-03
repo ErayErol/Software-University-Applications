@@ -5,14 +5,14 @@
     ViewData["Title"] = "Log in";
 }
 
-<div class="box box-login">
+<div class="box box-small">
     <h1 class="text-center mb-5">@ViewData["Title"]</h1>
 
     <form id="account" class="mt-4" method="post">
         <div class="input-container">
             <label asp-for="Input.Email" class="mb-2"></label>
             <input asp-for="Input.Email" class="mt-2" />
-            <span asp-validation-for="Input.Email" class="text-danger mt-5 mb-5"></span>
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
         </div>
         <div class="input-container">
             <label asp-for="Input.Password"></label>
