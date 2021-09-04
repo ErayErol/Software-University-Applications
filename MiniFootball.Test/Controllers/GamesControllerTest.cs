@@ -37,8 +37,7 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
@@ -68,8 +67,7 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
@@ -213,8 +211,7 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
@@ -245,8 +242,7 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .RedirectToAction(Home.Error, Home.ControllerName);
@@ -299,8 +295,6 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
@@ -318,8 +312,7 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .RedirectToAction(Home.Error, Home.ControllerName);
@@ -370,8 +363,7 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
@@ -428,8 +420,7 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .View();
@@ -468,8 +459,7 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .View();
@@ -558,8 +548,7 @@
                             g.Places == numberOfPlayers &&
                             g.IsPublic == isPublic &&
                             g.PhoneNumber == phoneNumber)))
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .RedirectToAction(Mine);
@@ -573,8 +562,6 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
@@ -601,8 +588,7 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .RedirectToAction(Home.Error, Home.ControllerName);
@@ -626,8 +612,7 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .RedirectToAction(Home.Error, Home.ControllerName);
@@ -665,8 +650,6 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect

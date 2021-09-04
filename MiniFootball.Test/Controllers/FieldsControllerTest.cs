@@ -33,8 +33,7 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
@@ -82,8 +81,7 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
@@ -168,8 +166,7 @@
                             f.Shower == shower &&
                             f.AdminId == adminId &&
                             f.PhoneNumber == phoneNumber)))
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
@@ -301,8 +298,7 @@
                             f.Shower == shower &&
                             f.AdminId == adminId &&
                             f.PhoneNumber == phoneNumber)))
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
+                
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
@@ -406,8 +402,6 @@
                             f.CityId == cityId &&
                             f.AdminId == adminId &&
                             f.ImageUrl == imageUrl) == false))
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect

@@ -55,8 +55,6 @@
                         .Any(a =>
                             a.Name == adminName &&
                             a.UserId == TestUser.Identifier)))
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(HomePage);

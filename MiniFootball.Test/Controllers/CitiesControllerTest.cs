@@ -22,8 +22,6 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
                 .RedirectToAction(nameof(AdminsController.Become), "Admins");
@@ -106,8 +104,6 @@
                             c.Name == name &&
                             c.CountryId == countryId &&
                             c.Id == id)))
-                .TempData(tempDate => tempDate
-                    .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect

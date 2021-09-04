@@ -36,27 +36,36 @@ namespace MiniFootball
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSignalR();
+            services
+                .AddSignalR();
 
-            services.AddMemoryCache();
+            services
+                .AddMemoryCache();
 
-            services.AddAutoMapper(typeof(Startup));
+            services
+                .AddAutoMapper(typeof(Startup));
 
             services
                 .AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDbContext<MiniFootballDbContext>(options => options
-                    .UseSqlServer(configuration.GetConnectionString(DefaultConnection)));
+                .AddDbContext<MiniFootballDbContext>(options =>
+                    options
+                        .UseSqlServer(configuration
+                            .GetConnectionString(DefaultConnection)));
 
             services
                 .AddControllersWithViews(options =>
-                {
-                    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
-                });
+                    options
+                        .Filters
+                        .Add<AutoValidateAntiforgeryTokenAttribute>());
 
-            services.AddTransient<ClaimsPrincipal>(options =>
-                options.GetService<IHttpContextAccessor>()?.HttpContext?.User);
+            services
+                .AddTransient<ClaimsPrincipal>(options =>
+                    options
+                        .GetService<IHttpContextAccessor>()?
+                        .HttpContext?
+                        .User);
 
             services
                 .AddNotyf(config =>
@@ -93,7 +102,7 @@ namespace MiniFootball
         {
             app.PrepareDatabase();
 
-            if (!env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 app
                     .UseDeveloperExceptionPage()
