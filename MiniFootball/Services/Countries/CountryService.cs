@@ -57,7 +57,13 @@
                 if (cultureList.Contains(getRegionInfo.EnglishName) == false)
                 {
                     cultureList.Add(getRegionInfo.EnglishName);
-                    data.Countries.Add(new Country { Name = getRegionInfo.EnglishName });
+                    
+                    var country = new Country
+                    {
+                        Name = getRegionInfo.EnglishName
+                    };
+
+                    data.Countries.Add(country);
                     data.SaveChanges();
                 }
             }

@@ -20,159 +20,115 @@
 
             var services = serviceScope.ServiceProvider;
 
-            var data = serviceScope.ServiceProvider.GetService<MiniFootballDbContext>();
-            
-            var countries = serviceScope.ServiceProvider.GetService<ICountryService>();
-            
-            var passwordHasher = serviceScope.ServiceProvider.GetService<IPasswordHasher<User>>();
-
             MigrateDatabase(services);
 
-            Seeds(data, countries, passwordHasher);
-            
-            SeedManager(services);
+            Seeds(services);
 
             return app;
         }
 
         private static void MigrateDatabase(IServiceProvider services)
         {
-            var data = services.GetRequiredService<MiniFootballDbContext>();
-
-            data.Database.Migrate();
+            services
+                .GetRequiredService<MiniFootballDbContext>()
+                .Database
+                .Migrate();
         }
 
-        private static void SeedManager(IServiceProvider services)
+        private static void Seeds(IServiceProvider services)
         {
-            var userManager = services.GetRequiredService<UserManager<User>>();
-            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            var data = services.GetService<MiniFootballDbContext>();
 
-            Task
-                .Run(async () =>
+            CreateCountries(data, services);
+
+            CreateUsers(data, services);
+
+            CreateAdmins(data);
+
+            CreateFields(data);
+
+            CreateGames(data);
+
+            CreateRoleManager(services);
+
+            data?.SaveChanges();
+        }
+
+        private static void CreateCountries(MiniFootballDbContext data, IServiceProvider services)
+        {
+            if (data.Countries.Any() == false)
+            {
+                services
+                    .GetService<ICountryService>()?
+                    .SaveAll();
+            }
+        }
+        
+        private static void CreateUsers(MiniFootballDbContext data, IServiceProvider services)
+        {
+            if (data.Users.Any() == false)
+            {
+                for (var i = 1; i <= 2; i++)
                 {
-                    if (await roleManager.RoleExistsAsync(GlobalConstant.Manager.ManagerRoleName))
+                    var name = i == 1
+                        ? "admin"
+                        : "user";
+
+                    var applicationUser = new User
                     {
-                        return;
-                    }
-
-                    var role = new IdentityRole { Name = GlobalConstant.Manager.ManagerRoleName };
-
-                    await roleManager.CreateAsync(role);
-
-                    const string managerEmail = "manager@manager.com";
-                    const string managerPassword = "123456";
-
-                    var user = new User
-                    {
-                        Email = managerEmail,
-                        UserName = managerEmail,
-                        FirstName = "FirstName-manager",
-                        LastName = "LastName-manager",
-                        NickName = "NickName-manager",
-                        PhoneNumber = "0886911492",
-                        ImageUrl = "https://thumbs.dreamstime.com/b/manager-38039871.jpg",
+                        UserName = $"{name}@{name}.com",
+                        Email = $"{name}@{name}.com",
+                        NormalizedUserName = $"{name}@{name}.com",
+                        FirstName = $"FirstName-{name}",
+                        LastName = $"LastName-{name}",
+                        NickName = $"NickName-{name}",
+                        PhoneNumber = $"088691149",
                         Birthdate = DateTime.ParseExact(
-                            "1995-09-30 14:00:52,531",
+                            $"199{i}-0{i}-0{i} 1{i}:{i}0:52,531",
                             "yyyy-MM-dd HH:mm:ss,fff",
                             CultureInfo.InvariantCulture),
                     };
 
-                    await userManager.CreateAsync(user, managerPassword);
+                    applicationUser.ImageUrl = i switch
+                    {
+                        1 => "https://thumbs.dreamstime.com/b/admin-sign-laptop-icon-stock-vector-166205404.jpg",
+                        2 => "https://amzsummits.com/wp-content/uploads/2019/05/Ferry-Vermeulen.jpeg",
+                        _ => applicationUser.ImageUrl
+                    };
 
-                    await userManager.AddToRoleAsync(user, role.Name);
-                })
-                .GetAwaiter()
-                .GetResult();
+                    data.Users.Add(applicationUser);
+                    var passwordHasher = services.GetService<IPasswordHasher<User>>();
+                    var hashedPassword = passwordHasher?.HashPassword(applicationUser, "123456");
+                    applicationUser.SecurityStamp = Guid.NewGuid().ToString();
+                    applicationUser.PasswordHash = hashedPassword;
+                    data.SaveChanges();
+                }
+            }
         }
-
-        private static void Seeds(
-            MiniFootballDbContext data,
-            ICountryService countryService,
-            IPasswordHasher<User> passwordHasher)
+        
+        private static void CreateAdmins(MiniFootballDbContext data)
         {
-            AddCountries(data, countryService);
+            if (data.Admins.Any() == false)
+            {
+                var user = data.Users.FirstOrDefault(x => x.UserName == "admin@admin.com");
 
-            AddUsers(data, passwordHasher);
+                data.Admins.Add(new Admin
+                {
+                    Name = "admin",
+                    UserId = user?.Id,
+                });
 
-            AddAdmins(data);
-
+                data.SaveChanges();
+            }
+        }
+        
+        private static void CreateFields(MiniFootballDbContext data)
+        {
             if (data.Fields.Any() == false)
             {
-                AddCities(data);
+                CreateCities(data);
 
                 AddFields(data);
-            }
-
-            AddGames(data);
-
-            data.SaveChanges();
-        }
-
-        private static void AddGames(MiniFootballDbContext data)
-        {
-            if (data.Games.Any() == false)
-            {
-                var today = DateTime.Today;
-                var day = today.Day + 2;
-                var month = today.Month;
-                var year = today.Year;
-
-                if (today.Day > 24)
-                {
-                    day = 2;
-                    month += 1;
-                    if (month >= 12)
-                    {
-                        month = 1;
-                        year += 1;
-                    }
-                }
-
-                var firstAdminUserId = data.Admins
-                    .FirstOrDefault(a => a.Id == 1).UserId;
-                var firstPhoneNumber = data.Users
-                    .Where(u => u.Id == firstAdminUserId)
-                    .Select(u => u.PhoneNumber)
-                    .FirstOrDefault();
-
-                var secondAdminUserId = data.Admins
-                    .FirstOrDefault(a => a.Id == 2).UserId;
-                var secondPhoneNumber = data.Users
-                    .Where(u => u.Id == secondAdminUserId)
-                    .Select(u => u.PhoneNumber)
-                    .FirstOrDefault();
-
-                data.Games.AddRange(
-                    new Game
-                    {
-                        AdminId = 1,
-                        FieldId = 3,
-                        Date = DateTime.ParseExact($"{month:D2}/{day:D2}/{year}", "d", CultureInfo.InvariantCulture),
-                        Time = 20,
-                        Ball = true,
-                        Jerseys = true,
-                        Description = "Just friendly game. It will be fun!",
-                        NumberOfPlayers = 12,
-                        Places = 12,
-                        HasPlaces = true,
-                        FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
-                        PhoneNumber = firstPhoneNumber,
-                    },
-                    new Game
-                    {
-                        AdminId = 2,
-                        FieldId = 5,
-                        Date = DateTime.ParseExact($"{month:D2}/{(day + 2):D2}/{year}", "d", CultureInfo.InvariantCulture),
-                        Time = 19,
-                        Ball = true,
-                        Jerseys = true,
-                        Description = "The level of the game will be one step more than the amateur.",
-                        NumberOfPlayers = 8,
-                        Places = 8,
-                        HasPlaces = true,
-                        FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
-                        PhoneNumber = secondPhoneNumber,
-                    });
             }
         }
 
@@ -238,7 +194,7 @@
                     Parking = true,
                     Shower = false,
                     PhoneNumber = "04444444444",
-                    AdminId = 3,
+                    AdminId = 1,
                 },
                 new Field
                 {
@@ -253,7 +209,7 @@
                     Parking = true,
                     Shower = true,
                     PhoneNumber = "0888888886",
-                    AdminId = 2,
+                    AdminId = 1,
                 },
                 new Field
                 {
@@ -268,13 +224,13 @@
                     Parking = true,
                     Shower = true,
                     PhoneNumber = "0888888885",
-                    AdminId = 2,
+                    AdminId = 1,
                 });
 
             data.SaveChanges();
         }
 
-        private static void AddCities(MiniFootballDbContext data)
+        private static void CreateCities(MiniFootballDbContext data)
         {
             if (data.Cities.Any() == false)
             {
@@ -297,7 +253,7 @@
                             .Select(c => c.Id)
                             .FirstOrDefault(),
                         Name = "Plovdiv",
-                        AdminId = 2,
+                        AdminId = 1,
                     },
                     new City
                     {
@@ -317,7 +273,7 @@
                             .Select(c => c.Id)
                             .FirstOrDefault(),
                         Name = "Tokyo",
-                        AdminId = 3,
+                        AdminId = 1,
                     }
                 );
 
@@ -325,78 +281,116 @@
             }
         }
 
-        private static void AddAdmins(MiniFootballDbContext data)
+        private static void CreateGames(MiniFootballDbContext data)
         {
-            if (data.Admins.Any() == false)
+            if (data.Games.Any() == false)
             {
-                for (int i = 1; i <= 3; i++)
-                {
-                    var user = data.Users.FirstOrDefault(x => x.UserName == $"admin{i}@admin.com");
+                var today = DateTime.Today;
+                var day = today.Day + 2;
+                var month = today.Month;
+                var year = today.Year;
 
-                    data.Admins.Add(new Admin
+                if (today.Day > 24)
+                {
+                    day = 2;
+                    month += 1;
+                    if (month >= 12)
                     {
-                        Name = $"admin{i}",
-                        UserId = user?.Id,
+                        month = 1;
+                        year += 1;
+                    }
+                }
+
+                var adminUserId = data
+                    .Admins
+                    .FirstOrDefault(a => a.Id == 1)?
+                    .UserId;
+                
+                var phoneNumber = data.Users
+                    .Where(u => u.Id == adminUserId)
+                    .Select(u => u.PhoneNumber)
+                    .FirstOrDefault();
+
+                data.Games.AddRange(
+                    new Game
+                    {
+                        AdminId = 1,
+                        FieldId = 3,
+                        Date = DateTime.ParseExact($"{month:D2}/{day:D2}/{year}", "d", CultureInfo.InvariantCulture),
+                        Time = 20,
+                        Ball = true,
+                        Jerseys = true,
+                        Description = "Just friendly game. It will be fun!",
+                        NumberOfPlayers = 12,
+                        Places = 12,
+                        HasPlaces = true,
+                        FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
+                        PhoneNumber = phoneNumber,
+                    },
+                    new Game
+                    {
+                        AdminId = 1,
+                        FieldId = 5,
+                        Date = DateTime.ParseExact($"{month:D2}/{(day + 2):D2}/{year}", "d", CultureInfo.InvariantCulture),
+                        Time = 19,
+                        Ball = true,
+                        Jerseys = true,
+                        Description = "The level of the game will be one step more than the amateur.",
+                        NumberOfPlayers = 8,
+                        Places = 8,
+                        HasPlaces = true,
+                        FacebookUrl = "https://www.facebook.com/profile.php?id=100001781550068",
+                        PhoneNumber = phoneNumber,
                     });
 
-                    data.SaveChanges();
-                }
+                data.SaveChanges();
             }
         }
-
-        private static void AddUsers(MiniFootballDbContext data, IPasswordHasher<User> passwordHasher)
+        
+        private static void CreateRoleManager(IServiceProvider services)
         {
-            if (data.Users.Any() == false)
-            {
-                var name = string.Empty;
-                for (var i = 1; i <= 5; i++)
-                {
-                    name = i >= 1 && i <= 3 
-                        ? "admin" 
-                        : "user";
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-                    var applicationUser = new User
+            Task
+                .Run(async () =>
+                {
+                    if (await roleManager.RoleExistsAsync(GlobalConstant.Manager.ManagerRoleName))
                     {
-                        UserName = $"{name}{i}@{name}.com",
-                        Email = $"{name}{i}@{name}.com",
-                        NormalizedUserName = $"{name}{i}@{name}.com",
-                        FirstName = $"FirstName-{name}{i}",
-                        LastName = $"LastName-{name}{i}",
-                        NickName = $"NickName-{name}{i}",
-                        PhoneNumber = $"088691149{i}",
+                        return;
+                    }
+
+                    var role = new IdentityRole
+                    {
+                        Name = GlobalConstant.Manager.ManagerRoleName
+                    };
+
+                    await roleManager.CreateAsync(role);
+
+                    const string managerEmail = "manager@manager.com";
+                    const string managerPassword = "123456";
+
+                    var user = new User
+                    {
+                        Email = managerEmail,
+                        UserName = managerEmail,
+                        FirstName = "FirstName-manager",
+                        LastName = "LastName-manager",
+                        NickName = "NickName-manager",
+                        PhoneNumber = "0886911492",
+                        ImageUrl = "https://thumbs.dreamstime.com/b/manager-38039871.jpg",
                         Birthdate = DateTime.ParseExact(
-                            $"199{i}-0{i}-0{i} 1{i}:{i}0:52,531",
+                            "1995-09-30 14:00:52,531",
                             "yyyy-MM-dd HH:mm:ss,fff",
                             CultureInfo.InvariantCulture),
                     };
 
-                    applicationUser.ImageUrl = i switch
-                    {
-                        1 => "https://thumbs.dreamstime.com/b/admin-sign-laptop-icon-stock-vector-166205404.jpg",
-                        2 => "https://www.seekpng.com/png/full/356-3562377_personal-user.png",
-                        3 => "https://www.pngfind.com/pngs/m/470-4703547_icon-user-icon-hd-png-download.png",
-                        4 => "https://amzsummits.com/wp-content/uploads/2019/05/Ferry-Vermeulen.jpeg",
-                        5 => "https://www.shareicon.net/data/512x512/2016/09/15/829452_user_512x512.png",
-                        _ => applicationUser.ImageUrl
-                    };
+                    await userManager.CreateAsync(user, managerPassword);
 
-                    data.Users.Add(applicationUser);
-
-                    var hashedPassword = passwordHasher.HashPassword(applicationUser, "123456");
-                    applicationUser.SecurityStamp = Guid.NewGuid().ToString();
-                    applicationUser.PasswordHash = hashedPassword;
-
-                    data.SaveChanges();
-                }
-            }
-        }
-
-        private static void AddCountries(MiniFootballDbContext data, ICountryService countryService)
-        {
-            if (data.Countries.Any() == false)
-            {
-                countryService.SaveAll();
-            }
+                    await userManager.AddToRoleAsync(user, role.Name);
+                })
+                .GetAwaiter()
+                .GetResult();
         }
     }
 }

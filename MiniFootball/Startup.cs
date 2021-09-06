@@ -37,22 +37,40 @@ namespace MiniFootball
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddSignalR();
+                .AddDbContext<MiniFootballDbContext>(options =>
+                    options
+                        .UseSqlServer(configuration
+                            .GetConnectionString(DefaultConnection)));
+            services
+                .AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddMemoryCache();
+                .AddDefaultIdentity<User>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<MiniFootballDbContext>();
+
+            services
+                .AddIdentityCore<User>()
+                .AddRoles<IdentityRole>()
+                .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<User, IdentityRole>>()
+                .AddEntityFrameworkStores<MiniFootballDbContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
 
             services
                 .AddAutoMapper(typeof(Startup));
 
             services
-                .AddDatabaseDeveloperPageExceptionFilter();
+                .AddSignalR();
 
             services
-                .AddDbContext<MiniFootballDbContext>(options =>
-                    options
-                        .UseSqlServer(configuration
-                            .GetConnectionString(DefaultConnection)));
+                .AddMemoryCache();
 
             services
                 .AddControllersWithViews(options =>
@@ -61,7 +79,7 @@ namespace MiniFootball
                         .Add<AutoValidateAntiforgeryTokenAttribute>());
 
             services
-                .AddTransient<ClaimsPrincipal>(options =>
+                .AddTransient<ClaimsPrincipal>(options => 
                     options
                         .GetService<IHttpContextAccessor>()?
                         .HttpContext?
@@ -74,19 +92,6 @@ namespace MiniFootball
                     config.IsDismissable = true;
                     config.Position = NotyfPosition.TopCenter;
                 });
-
-            services
-                .AddDefaultIdentity<User>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<MiniFootballDbContext>();
-
-            services
-                .AddIdentityCore<User>()
-                .AddRoles<IdentityRole>()
-                .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<User, IdentityRole>>()
-                .AddEntityFrameworkStores<MiniFootballDbContext>()
-                .AddDefaultTokenProviders()
-                .AddDefaultUI();
 
             services
                 .AddTransient<ICityService, CityService>()
