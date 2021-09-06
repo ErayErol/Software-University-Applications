@@ -15,9 +15,8 @@
         private readonly IAdminService admins;
         private readonly INotyfService notifications;
 
-        public AdminsController(
-            IAdminService admins,
-            INotyfService notifications)
+        public AdminsController(IAdminService admins,
+                                INotyfService notifications)
         {
             this.admins = admins;
             this.notifications = notifications;

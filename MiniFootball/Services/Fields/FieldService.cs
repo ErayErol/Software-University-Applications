@@ -15,21 +15,19 @@
         private readonly MiniFootballDbContext data;
         private readonly IConfigurationProvider mapper;
 
-        public FieldService(
-            MiniFootballDbContext data,
-            IMapper mapper)
+        public FieldService(MiniFootballDbContext data,
+                            IMapper mapper)
         {
             this.data = data;
             this.mapper = mapper.ConfigurationProvider;
         }
 
-        public FieldQueryServiceModel All(
-            string cityName = null,
-            string searchTerm = null,
-            Sorting sorting = Sorting.DateCreated,
-            int currentPage = 1,
-            int fieldsPerPage = int.MaxValue,
-            bool publicOnly = true)
+        public FieldQueryServiceModel All(string cityName = null,
+                                          string searchTerm = null,
+                                          Sorting sorting = Sorting.DateCreated,
+                                          int currentPage = 1,
+                                          int fieldsPerPage = int.MaxValue,
+                                          bool publicOnly = true)
         {
             var fieldsQuery = data.Fields
                 .Where(f => !publicOnly || f.IsPublic);
@@ -80,19 +78,18 @@
             };
         }
 
-        public int Create(
-            string name,
-            int countryId,
-            int cityId,
-            string address,
-            string imageUrl,
-            string phoneNumber,
-            bool parking,
-            bool cafe,
-            bool shower,
-            bool changingRoom,
-            string description,
-            int adminId)
+        public int Create(string name,
+                          int countryId,
+                          int cityId,
+                          string address,
+                          string imageUrl,
+                          string phoneNumber,
+                          bool parking,
+                          bool cafe,
+                          bool shower,
+                          bool changingRoom,
+                          string description,
+                          int adminId)
         {
             var field = new Field
             {
@@ -117,18 +114,17 @@
             return field.Id;
         }
 
-        public bool Edit(
-            int id,
-            string name,
-            string address,
-            string imageUrl,
-            bool parking,
-            bool shower,
-            bool changingRoom,
-            bool cafe,
-            string description,
-            string phoneNumber,
-            bool isPublic)
+        public bool Edit(int id,
+                         string name,
+                         string address,
+                         string imageUrl,
+                         bool parking,
+                         bool shower,
+                         bool changingRoom,
+                         bool cafe,
+                         string description,
+                         string phoneNumber,
+                         bool isPublic)
         {
             var field = data.Fields.Find(id);
 

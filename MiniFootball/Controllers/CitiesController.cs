@@ -21,11 +21,10 @@
         private readonly IAdminService admins;
         private readonly INotyfService notifications;
 
-        public CitiesController(
-            ICityService cities,
-            ICountryService countries,
-            IAdminService admins,
-            INotyfService notifications)
+        public CitiesController(ICityService cities,
+                                ICountryService countries,
+                                IAdminService admins,
+                                INotyfService notifications)
         {
             this.cities = cities;
             this.countries = countries;

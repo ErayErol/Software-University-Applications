@@ -31,15 +31,14 @@
         private readonly IMapper mapper;
         private readonly INotyfService notifications;
 
-        public GamesController(
-            IGameService games,
-            IUserService users,
-            IAdminService admins,
-            ICountryService countries,
-            ICityService cities,
-            IFieldService fields,
-            IMapper mapper,
-            INotyfService notifications)
+        public GamesController(IGameService games,
+                               IUserService users,
+                               IAdminService admins,
+                               ICountryService countries,
+                               ICityService cities,
+                               IFieldService fields,
+                               IMapper mapper,
+                               INotyfService notifications)
         {
             this.games = games;
             this.users = users;
@@ -124,10 +123,9 @@
                 CountryName = gameModel.CountryName,
             };
 
-            return RedirectToAction(
-                Game.CreateGameChooseField,
-                Game.ControllerName,
-                countryAndCityViewModel);
+            return RedirectToAction(Game.CreateGameChooseField,
+                                    Game.ControllerName,
+                                    countryAndCityViewModel);
         }
 
         [Authorize]
@@ -182,10 +180,9 @@
 
             var gameLastStepViewModel = mapper.Map<CreateGameLastStepViewModel>(gameSecondStepViewModel);
 
-            return RedirectToAction(
-                Game.CreateGameLastStep,
-                Game.ControllerName,
-                gameLastStepViewModel);
+            return RedirectToAction(Game.CreateGameLastStep,
+                                    Game.ControllerName,
+                                    gameLastStepViewModel);
         }
 
         [Authorize]
@@ -247,10 +244,9 @@
             }
 
             var reserved =
-                games.IsFieldAlreadyReserved(
-                    gameModel.FieldId,
-                    gameModel.Date.Value,
-                    gameModel.Time.Value);
+                games.IsFieldAlreadyReserved(gameModel.FieldId,
+                                             gameModel.Date.Value,
+                                             gameModel.Time.Value);
 
             if (reserved)
             {
@@ -275,20 +271,19 @@
         }
 
         private string GameId(CreateGameFormModel gameModel, int adminId, string phoneNumber)
-            => games.Create(
-                gameModel.FieldId,
-                gameModel.Date.Value,
-                gameModel.Time.Value,
-                gameModel.NumberOfPlayers.Value,
-                gameModel.FacebookUrl,
-                gameModel.Ball,
-                gameModel.Jerseys,
-                gameModel.Goalkeeper,
-                gameModel.Description,
-                gameModel.Places,
-                gameModel.HasPlaces,
-                adminId,
-                phoneNumber);
+            => games.Create(gameModel.FieldId,
+                            gameModel.Date.Value,
+                            gameModel.Time.Value,
+                            gameModel.NumberOfPlayers.Value,
+                            gameModel.FacebookUrl,
+                            gameModel.Ball,
+                            gameModel.Jerseys,
+                            gameModel.Goalkeeper,
+                            gameModel.Description,
+                            gameModel.Places,
+                            gameModel.HasPlaces,
+                            adminId,
+                            phoneNumber);
 
         [Authorize]
         public IActionResult Edit(string gameId, string information)
@@ -350,9 +345,8 @@
                 return RedirectToAction(Error.Name, Error.Name);
             }
 
-            notifications.Success(
-                "Your game was edited" +
-                $"{(User.IsManager() ? string.Empty : " and is awaiting approval")}!");
+            notifications.Success("Your game was edited" +
+                                  $"{(User.IsManager() ? string.Empty : " and is awaiting approval")}!");
 
             var routeValues = new
             {
@@ -364,17 +358,16 @@
         }
 
         private bool IsEdit(GameEditServiceModel gameModel)
-            => games.Edit(
-                gameModel.GameId,
-                gameModel.Date,
-                gameModel.Time,
-                gameModel.NumberOfPlayers,
-                gameModel.FacebookUrl,
-                gameModel.Ball,
-                gameModel.Jerseys,
-                gameModel.Goalkeeper,
-                gameModel.Description,
-                User.IsManager());
+            => games.Edit(gameModel.GameId,
+                          gameModel.Date,
+                          gameModel.Time,
+                          gameModel.NumberOfPlayers,
+                          gameModel.FacebookUrl,
+                          gameModel.Ball,
+                          gameModel.Jerseys,
+                          gameModel.Goalkeeper,
+                          gameModel.Description,
+                          User.IsManager());
 
         [Authorize]
         public IActionResult Delete(string gameId, string information)
@@ -493,17 +486,6 @@
         {
             var currentUserId = User.Id();
             var currentUserAdminId = admins.IdByUser(currentUserId);
-
-            //var isNotAdminAndNotManagerAndNotCurrentUser =
-            //    currentUserAdminId == 0 && 
-            //    User.IsManager() == false && 
-            //    currentUserId != userIdToDelete;
-
-            //if (isNotAdminAndNotManagerAndNotCurrentUser)
-            //{
-            //    notifications.Error(Game.YouCanNotRemovePlayer);
-            //    return RedirectToAction(nameof(All));
-            //}
 
             var youCanNotRemovePlayer = 
                 games.IsAdminCreatorOfGame(gameId, currentUserAdminId) == false &&

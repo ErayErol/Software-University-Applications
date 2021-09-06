@@ -13,9 +13,8 @@
         private readonly IUserService users;
         private readonly INotyfService notifications;
 
-        public UsersController(
-            IUserService users,
-            INotyfService notifications)
+        public UsersController(IUserService users,
+                               INotyfService notifications)
         {
             this.users = users;
             this.notifications = notifications;

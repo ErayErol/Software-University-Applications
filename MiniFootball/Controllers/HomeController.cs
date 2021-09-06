@@ -16,9 +16,8 @@
         private readonly IGameService games;
         private readonly IMemoryCache cache;
 
-        public HomeController(
-            IGameService games,
-            IMemoryCache cache)
+        public HomeController(IGameService games,
+                              IMemoryCache cache)
         {
             this.games = games;
             this.cache = cache;
@@ -34,8 +33,9 @@
                     .Latest()
                     .ToList();
 
-                var cacheOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
+                var cacheOptions = 
+                    new MemoryCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
 
                 cache.Set(LatestGamesCacheKey, lastGames, cacheOptions);
             }

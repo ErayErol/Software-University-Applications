@@ -15,21 +15,19 @@
         private readonly MiniFootballDbContext data;
         private readonly IConfigurationProvider mapper;
 
-        public GameService(
-            MiniFootballDbContext data,
-            IMapper mapper)
+        public GameService(MiniFootballDbContext data,
+                           IMapper mapper)
         {
             this.data = data;
             this.mapper = mapper.ConfigurationProvider;
         }
 
-        public GameQueryServiceModel All(
-            string cityName = null,
-            string searchTerm = null,
-            Sorting sorting = Sorting.DateCreated,
-            int currentPage = 1,
-            int gamesPerPage = int.MaxValue,
-            bool publicOnly = true)
+        public GameQueryServiceModel All(string cityName = null,
+                                         string searchTerm = null,
+                                         Sorting sorting = Sorting.DateCreated,
+                                         int currentPage = 1,
+                                         int gamesPerPage = int.MaxValue,
+                                         bool publicOnly = true)
         {
             var city = data
                 .Cities
@@ -75,8 +73,13 @@
 
             foreach (var gameListingServiceModel in games)
             {
-                gameListingServiceModel.Field.Country = data.Countries.Find(gameListingServiceModel.Field.CountryId);
-                gameListingServiceModel.Field.City = data.Cities.Find(gameListingServiceModel.Field.CityId);
+                gameListingServiceModel.Field.Country = data
+                    .Countries
+                    .Find(gameListingServiceModel.Field.CountryId);
+
+                gameListingServiceModel.Field.City = data
+                    .Cities
+                    .Find(gameListingServiceModel.Field.CityId);
             }
 
             return new GameQueryServiceModel
@@ -89,18 +92,18 @@
         }
 
         public string Create(int fieldId,
-            DateTime date,
-            int time,
-            int numberOfPlayers,
-            string facebookUrl,
-            bool ball,
-            bool jerseys,
-            bool goalkeeper,
-            string description,
-            int places,
-            bool hasPlaces,
-            int adminId, 
-            string phoneNumber)
+                             DateTime date,
+                             int time,
+                             int numberOfPlayers,
+                             string facebookUrl,
+                             bool ball,
+                             bool jerseys,
+                             bool goalkeeper,
+                             string description,
+                             int places,
+                             bool hasPlaces,
+                             int adminId, 
+                             string phoneNumber)
         {
             var game = new Game
             {
@@ -126,17 +129,16 @@
             return game.Id;
         }
 
-        public bool Edit(
-            string id,
-            DateTime? date,
-            int? time,
-            int? numberOfPlayers,
-            string facebookUrl,
-            bool ball,
-            bool jerseys,
-            bool goalkeeper,
-            string description,
-            bool isPublic)
+        public bool Edit(string id,
+                         DateTime? date,
+                         int? time,
+                         int? numberOfPlayers,
+                         string facebookUrl,
+                         bool ball,
+                         bool jerseys,
+                         bool goalkeeper,
+                         string description,
+                         bool isPublic)
         {
             var game = data.Games.Find(id);
 
@@ -276,8 +278,13 @@
 
             foreach (var gameListingServiceModel in games)
             {
-                gameListingServiceModel.Field.Country = data.Countries.Find(gameListingServiceModel.Field.CountryId);
-                gameListingServiceModel.Field.City = data.Cities.Find(gameListingServiceModel.Field.CityId);
+                gameListingServiceModel.Field.Country = data
+                    .Countries
+                    .Find(gameListingServiceModel.Field.CountryId);
+
+                gameListingServiceModel.Field.City = data
+                    .Cities
+                    .Find(gameListingServiceModel.Field.CityId);
             }
 
             return games;

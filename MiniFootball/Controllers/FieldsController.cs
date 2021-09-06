@@ -2,7 +2,6 @@
 {
     using Areas.Admin.Controllers;
     using AspNetCoreHero.ToastNotification.Abstractions;
-    using AutoMapper;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -23,22 +22,18 @@
         private readonly IAdminService admins;
         private readonly ICountryService countries;
         private readonly ICityService cities;
-        private readonly IMapper mapper;
         private readonly INotyfService notifications;
 
-        public FieldsController(
-            IFieldService fields,
-            IAdminService admins,
-            ICountryService countries,
-            ICityService cities,
-            IMapper mapper,
-            INotyfService notifications)
+        public FieldsController(IFieldService fields,
+                                IAdminService admins,
+                                ICountryService countries,
+                                ICityService cities,
+                                INotyfService notifications)
         {
             this.fields = fields;
             this.admins = admins;
             this.countries = countries;
             this.cities = cities;
-            this.mapper = mapper;
             this.notifications = notifications;
         }
 
@@ -132,19 +127,18 @@
         }
 
         private int FieldId(FieldCreateFormModel fieldModel, int adminId) 
-            => fields.Create(
-                fieldModel.Name,
-                fieldModel.CountryId,
-                fieldModel.CityId,
-                fieldModel.Address,
-                fieldModel.ImageUrl,
-                fieldModel.PhoneNumber,
-                fieldModel.Parking,
-                fieldModel.Cafe,
-                fieldModel.Shower,
-                fieldModel.ChangingRoom,
-                fieldModel.Description,
-                adminId);
+            => fields.Create(fieldModel.Name,
+                             fieldModel.CountryId,
+                             fieldModel.CityId,
+                             fieldModel.Address,
+                             fieldModel.ImageUrl,
+                             fieldModel.PhoneNumber,
+                             fieldModel.Parking,
+                             fieldModel.Cafe,
+                             fieldModel.Shower,
+                             fieldModel.ChangingRoom,
+                             fieldModel.Description,
+                             adminId);
 
         [Authorize]
         public IActionResult Edit(int id, string information)
@@ -215,18 +209,17 @@
         }
 
         private bool IsEdit(FieldDetailServiceModel fieldModel)
-            => fields.Edit(
-                fieldModel.Id,
-                fieldModel.Name,
-                fieldModel.Address,
-                fieldModel.ImageUrl,
-                fieldModel.Parking,
-                fieldModel.Shower,
-                fieldModel.ChangingRoom,
-                fieldModel.Cafe,
-                fieldModel.Description,
-                fieldModel.PhoneNumber,
-                User.IsManager());
+            => fields.Edit(fieldModel.Id,
+                           fieldModel.Name,
+                           fieldModel.Address,
+                           fieldModel.ImageUrl,
+                           fieldModel.Parking,
+                           fieldModel.Shower,
+                           fieldModel.ChangingRoom,
+                           fieldModel.Cafe,
+                           fieldModel.Description,
+                           fieldModel.PhoneNumber,
+                           User.IsManager());
 
         [Authorize]
         public IActionResult Delete(int id, string information)

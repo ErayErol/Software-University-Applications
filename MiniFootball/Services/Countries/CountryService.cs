@@ -17,9 +17,8 @@
         private readonly MiniFootballDbContext data;
         private readonly IMemoryCache cache;
 
-        public CountryService(
-            MiniFootballDbContext data,
-            IMemoryCache cache)
+        public CountryService(MiniFootballDbContext data,
+                              IMemoryCache cache)
         {
             this.data = data;
             this.cache = cache;
@@ -32,11 +31,16 @@
 
             if (allCountries == null)
             {
-                allCountries = data.Countries.Select(country => country.Name).ToList();
+                allCountries = data
+                    .Countries
+                    .Select(country => country.Name)
+                    .ToList();
+                
                 allCountries.Sort();
 
-                var cacheOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromDays(365));
+                var cacheOptions = 
+                    new MemoryCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromDays(365));
 
                 cache.Set(LatestGamesCacheKey, allCountries, cacheOptions);
             }

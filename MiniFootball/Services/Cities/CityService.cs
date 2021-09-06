@@ -10,9 +10,8 @@
         private readonly MiniFootballDbContext data;
         private readonly ICountryService countries;
 
-        public CityService(
-            MiniFootballDbContext data,
-            ICountryService countries)
+        public CityService(MiniFootballDbContext data,
+                           ICountryService countries)
         {
             this.data = data;
             this.countries = countries;
