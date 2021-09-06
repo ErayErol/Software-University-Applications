@@ -88,7 +88,7 @@ namespace MiniFootball
             services
                 .AddNotyf(config =>
                 {
-                    config.DurationInSeconds = 10;
+                    config.DurationInSeconds = Notifications.DefaultDurationInSeconds;
                     config.IsDismissable = true;
                     config.Position = NotyfPosition.TopCenter;
                 });
@@ -128,53 +128,12 @@ namespace MiniFootball
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
+                    endpoints.MapDefaultRoute();
                     endpoints.MapDefaultAreaRoute();
-
-                    endpoints
-                        .MapControllerRoute(
-                            name: "Admin Become",
-                            pattern: "Admin/Admins/Become",
-                            defaults: new { controller = "Admins", action = "Become" });
-
-                    endpoints
-                        .MapControllerRoute(
-                        name: "Game Details",
-                        pattern: "/Games/Details/{gameId}/{information}",
-                        defaults: new { controller = "Games", action = "Details" });
-
-                    endpoints
-                        .MapControllerRoute(
-                            name: "Game Delete",
-                            pattern: "/Games/Delete/{gameId}/{information}",
-                            defaults: new { controller = "Games", action = "Delete" });
-
-                    endpoints
-                        .MapControllerRoute(
-                            name: "Game Edit",
-                            pattern: "/Games/Edit/{gameId}/{information}",
-                            defaults: new { controller = "Games", action = "Edit" });
-
-                    endpoints
-                        .MapControllerRoute(
-                            name: "Field Details",
-                            pattern: "/Fields/Details/{id}/{information}",
-                            defaults: new { controller = "Fields", action = "Details" });
-
-                    endpoints
-                        .MapControllerRoute(
-                            name: "Field Edit",
-                            pattern: "/Fields/Edit/{id}/{information}",
-                            defaults: new { controller = "Fields", action = "Edit" });
-
-                    endpoints
-                        .MapControllerRoute(
-                            name: "Field Delete",
-                            pattern: "/Fields/Delete/{id}/{information}",
-                            defaults: new { controller = "Fields", action = "Delete" });
+                    endpoints.MapDefaultControllerRoute();
 
                     endpoints.MapHub<ChatHub>("/chat");
 
-                    endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();
                 });
         }

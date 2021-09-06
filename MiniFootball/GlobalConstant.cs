@@ -25,6 +25,8 @@
         {
             public const int DurationInSeconds = 4;
             
+            public const int DefaultDurationInSeconds = 10;
+
             public const string GreenColor = "#16ff00";
             
             public const string Welcome = "Welcome to Mini Football!";
