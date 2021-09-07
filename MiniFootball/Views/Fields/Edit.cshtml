@@ -2,10 +2,18 @@
 
 @{
     ViewBag.Title = "Field Edit";
+    var photoPath = "~/Images/" + (Model.PhotoPath ?? "no-image.jpg");
 }
 
 <div class="box box-large box-info-and-edit">
-    <form method="post">
+    <form enctype="multipart/form-data" asp-controller="Fields" asp-action="Edit" method="post">
+        <input hidden asp-for="Id" />
+        <input hidden asp-for="PhotoPath" />
+        <div class="input-container">
+            <label asp-for="Photo"></label>
+            <input asp-for="Photo" type="file" class="btn mt-2 mb-3">
+        </div>
+        <img class="img-thumbnail" src="@photoPath" asp-append-version="true">
         <div class="mt-5 mb-5">
             <h3>Contacts :</h3>
         </div>
@@ -24,10 +32,6 @@
         <div class="input-container">
             <label asp-for="Name"></label>
             <input asp-for="Name" type="text" class="mt-2 mb-3" value="@Model.Name">
-        </div>
-        <div class="input-container">
-            <label asp-for="ImageUrl"></label>
-            <input asp-for="ImageUrl" type="text" class="mt-2 mb-3" value="@Model.ImageUrl">
         </div>
         <div class="input-container">
             <label asp-for="CountryName"></label>

@@ -33,7 +33,6 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
@@ -64,14 +63,14 @@
                     .WithData(data => data
                         .WithSet<Admin>(admin => admin
                             .Add(Admins.NewAdmin()))))
-                .Calling(c => c.Create(new FieldCreateFormModel
+                .Calling(c => c.Create(new FieldFormModel
                 {
                     Name = "Avenue",
                     CountryId = 24,
                     CityId = 1,
                     Description = "In the summer this place is number 1 to play mini football.",
                     Address = "ул. Дунав 1 - в парка под супермаркет авеню",
-                    ImageUrl = "https://imgrabo.com/pics/businesses/b18e8a5e845a9317f4e301b3ffd58c14.jpeg",
+                    //ImageUrl = "https://imgrabo.com/pics/businesses/b18e8a5e845a9317f4e301b3ffd58c14.jpeg",
                     Cafe = true,
                     ChangingRoom = true,
                     Parking = true,
@@ -81,7 +80,6 @@
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
-                
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
@@ -110,7 +108,7 @@
             string cityName,
             string description,
             string address,
-            string imageUrl,
+            string photoPath,
             bool cafe,
             bool changingRoom,
             bool shower,
@@ -131,14 +129,14 @@
                             .Add(Countries.NewCountry()))
                         .WithSet<City>(city => city
                             .Add(Cities.Haskovo()))))
-                .Calling(c => c.Create(new FieldCreateFormModel
+                .Calling(c => c.Create(new FieldFormModel
                 {
                     Name = name,
                     CountryName = countryName,
                     CityName = cityName,
                     Description = description,
                     Address = address,
-                    ImageUrl = imageUrl,
+                    PhotoPath = photoPath,
                     Cafe = cafe,
                     ChangingRoom = changingRoom,
                     Parking = parking,
@@ -159,7 +157,7 @@
                             f.CityId == cityId &&
                             f.Description == description &&
                             f.Address == address &&
-                            f.ImageUrl == imageUrl &&
+                            f.PhotoPath == photoPath &&
                             f.Cafe == cafe &&
                             f.ChangingRoom == changingRoom &&
                             f.Parking == parking &&
@@ -242,7 +240,7 @@
             string name,
             string description,
             string address,
-            string imageUrl,
+            string photoPath,
             bool cafe,
             bool changingRoom,
             bool shower,
@@ -271,7 +269,7 @@
                     Name = name,
                     Description = description,
                     Address = address,
-                    ImageUrl = imageUrl,
+                    PhotoPath = photoPath,
                     Cafe = cafe,
                     ChangingRoom = changingRoom,
                     Parking = parking,
@@ -291,7 +289,7 @@
                             f.CityId == cityId &&
                             f.Description == description &&
                             f.Address == address &&
-                            f.ImageUrl == imageUrl &&
+                            f.PhotoPath == photoPath &&
                             f.Cafe == cafe &&
                             f.ChangingRoom == changingRoom &&
                             f.Parking == parking &&
@@ -365,7 +363,7 @@
             1)]
         public void PostDeleteWhenEverythingIsOkShouldReturnView(
             string name,
-            string imageUrl,
+            string photoPath,
             int fieldId,
             int adminId,
             int countryId,
@@ -387,7 +385,7 @@
                 {
                     Id = fieldId,
                     Name = name,
-                    ImageUrl = imageUrl,
+                    //ImageUrl = photoPath,
                 }))
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
@@ -401,7 +399,7 @@
                             f.CountryId == countryId &&
                             f.CityId == cityId &&
                             f.AdminId == adminId &&
-                            f.ImageUrl == imageUrl) == false))
+                            f.PhotoPath == photoPath) == false))
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect

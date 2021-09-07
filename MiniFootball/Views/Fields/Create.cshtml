@@ -1,4 +1,4 @@
-﻿@model FieldCreateFormModel
+﻿@model FieldFormModel
 
 @{
     ViewBag.Title = "Create Field";
@@ -11,7 +11,7 @@
             <h3>@ViewBag.Title</h3>
         </div>
 
-        <form asp-controller="Fields" asp-action="Create" method="post">
+        <form enctype="multipart/form-data" asp-controller="Fields" asp-action="Create" method="post">
             <div class="input-container mt-5">
                 <label asp-for="Name"></label>
                 <input asp-for="Name" type="text" class="mt-2 mb-3">
@@ -49,9 +49,9 @@
                 <span asp-validation-for="Address" class="small text-danger"></span>
             </div>
             <div class="input-container">
-                <label asp-for="ImageUrl"></label>
-                <input asp-for="ImageUrl" type="url" class="mt-2 mb-3">
-                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+                <label asp-for="Photo"></label>
+                <input asp-for="Photo" type="file" class="btn mt-2 mb-3">
+                <span asp-validation-for="Photo" class="small text-danger"></span>
             </div>
             <div class="textarea-container">
                 <label asp-for="Description"></label>

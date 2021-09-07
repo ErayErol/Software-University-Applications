@@ -82,7 +82,7 @@
                           int countryId,
                           int cityId,
                           string address,
-                          string imageUrl,
+                          string photoPath,
                           string phoneNumber,
                           bool parking,
                           bool cafe,
@@ -97,7 +97,7 @@
                 CountryId = countryId,
                 CityId = cityId,
                 Address = ToSentenceCase(address),
-                ImageUrl = imageUrl,
+                PhotoPath = photoPath,
                 PhoneNumber = phoneNumber,
                 Parking = parking,
                 Cafe = cafe,
@@ -136,7 +136,7 @@
             field.PhoneNumber = phoneNumber;
             field.Name = ToTitleCase(name);
             field.Address = ToSentenceCase(address);
-            field.ImageUrl = imageUrl;
+            field.PhotoPath = imageUrl;
             field.Parking = parking;
             field.Shower = shower;
             field.ChangingRoom = changingRoom;

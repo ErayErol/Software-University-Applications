@@ -2,7 +2,7 @@
 {
     using Data;
     using System.ComponentModel.DataAnnotations;
-
+    using Microsoft.AspNetCore.Http;
     using static Data.DataConstants;
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.Field;
@@ -32,10 +32,9 @@
         [StringLength(AddressMaxLength, MinimumLength = AddressMinLength, ErrorMessage = Range)]
         public string Address { get; set; }
 
-        [Required]
-        [Display(Name = DataConstants.ImageUrl)]
-        [Url(ErrorMessage = Url)]
-        public string ImageUrl { get; set; }
+        public IFormFile Photo { get; set; }
+
+        public string PhotoPath { get; set; }
 
         [Required(ErrorMessage = Empty)]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = Range)]

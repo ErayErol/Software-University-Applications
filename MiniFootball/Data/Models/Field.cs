@@ -25,15 +25,18 @@
         public virtual City City { get; set; }
 
         [Required]
+        [MaxLength(PhoneNumberMaxLength)]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         [MaxLength(AddressMaxLength)]
         public string Address { get; set; }
 
-        [Required]
-        public string ImageUrl { get; set; }
+        public string PhotoPath { get; set; }
 
         [Required]
-        [MaxLength(PhoneNumberMaxLength)]
-        public string PhoneNumber { get; set; }
+        [MaxLength(DescriptionMaxLength)]
+        public string Description { get; set; }
 
         public bool Parking { get; set; }
 
@@ -45,12 +48,7 @@
 
         public bool IsPublic { get; set; }
 
-        [Required]
-        [MaxLength(DescriptionMaxLength)]
-        public string Description { get; set; }
-
         public int AdminId { get; set; }
-
         public virtual Admin Admin { get; set; }
 
         public virtual ICollection<Game> Games { get; init; } = new HashSet<Game>();

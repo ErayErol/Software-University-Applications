@@ -3,11 +3,13 @@
 
 @foreach (var field in Model)
 {
+    var photoPath = "~/Images/" + (field.PhotoPath ?? "no-image.jpg");
+
     <div class="col-md-4">
         <div class="card mb-3 img-thumbnail">
             @if (ViewBag.AllowImage == true)
             {
-                <img class="card-img-top" src="@field.ImageUrl" alt="@field.Name @field.Country - @field.City">
+                <img class="card-img-top" src="@photoPath" alt="@field.Name" asp-append-version="true">
             }
             <div class="card-body text-center">
                 <div class="text-center mb-4">

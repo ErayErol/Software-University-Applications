@@ -1,5 +1,7 @@
 ﻿namespace MiniFootball.Controllers
 {
+    using System;
+    using System.IO;
     using Areas.Admin.Controllers;
     using AspNetCoreHero.ToastNotification.Abstractions;
     using Infrastructure;
@@ -11,6 +13,8 @@
     using Services.Countries;
     using Services.Fields;
     using System.Linq;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Hosting;
 
     using static Convert;
     using static GlobalConstant;
@@ -23,18 +27,21 @@
         private readonly ICountryService countries;
         private readonly ICityService cities;
         private readonly INotyfService notifications;
+        private readonly IWebHostEnvironment hostEnvironment;
 
         public FieldsController(IFieldService fields,
                                 IAdminService admins,
                                 ICountryService countries,
                                 ICityService cities,
-                                INotyfService notifications)
+                                INotyfService notifications,
+                                IWebHostEnvironment hostEnvironment)
         {
             this.fields = fields;
             this.admins = admins;
             this.countries = countries;
             this.cities = cities;
             this.notifications = notifications;
+            this.hostEnvironment = hostEnvironment;
         }
 
         public IActionResult All([FromQuery] FieldAllQueryModel query)
@@ -69,7 +76,7 @@
                 return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
-            var createFormModel = new FieldCreateFormModel
+            var createFormModel = new FieldFormModel
             {
                 Countries = countries.All()
             };
@@ -79,7 +86,7 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(FieldCreateFormModel fieldModel)
+        public IActionResult Create(FieldFormModel fieldModel)
         {
             var adminId = admins.IdByUser(User.Id());
 
@@ -114,7 +121,9 @@
             fieldModel.CountryName = ToTitleCase(fieldModel.CountryName);
             fieldModel.CityName = ToTitleCase(fieldModel.CityName);
 
-            var fieldId = FieldId(fieldModel, adminId);
+            var uniqueFileName = ProcessUploadFile(fieldModel);
+
+            var fieldId = FieldId(fieldModel, uniqueFileName, adminId);
 
             if (fieldId == 0)
             {
@@ -126,12 +135,14 @@
             return RedirectToAction(nameof(Mine));
         }
 
-        private int FieldId(FieldCreateFormModel fieldModel, int adminId) 
+        private int FieldId(FieldFormModel fieldModel,
+                            string uniqueFileName,
+                            int adminId)
             => fields.Create(fieldModel.Name,
                              fieldModel.CountryId,
                              fieldModel.CityId,
                              fieldModel.Address,
-                             fieldModel.ImageUrl,
+                             uniqueFileName,
                              fieldModel.PhoneNumber,
                              fieldModel.Parking,
                              fieldModel.Cafe,
@@ -185,7 +196,12 @@
                 return RedirectToAction(Name, Name);
             }
 
-            var isEdit = IsEdit(fieldModel);
+            if (fieldModel.Photo != null)
+            {
+                fieldModel.PhotoPath = ProcessUploadFile(fieldModel);
+            }
+
+            var isEdit = IsEdit(fieldModel, fieldModel.PhotoPath);
 
             if (isEdit == false)
             {
@@ -208,11 +224,25 @@
             return RedirectToAction(nameof(Details), routeValues);
         }
 
-        private bool IsEdit(FieldDetailServiceModel fieldModel)
+        private string ProcessUploadFile(FieldDetailServiceModel fieldModel)
+        {
+            string uniqueFileName = null;
+            if (fieldModel.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(hostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + fieldModel.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                fieldModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+            }
+
+            return uniqueFileName;
+        }
+
+        private bool IsEdit(FieldDetailServiceModel fieldModel, string uniqueFileName)
             => fields.Edit(fieldModel.Id,
                            fieldModel.Name,
                            fieldModel.Address,
-                           fieldModel.ImageUrl,
+                           uniqueFileName,
                            fieldModel.Parking,
                            fieldModel.Shower,
                            fieldModel.ChangingRoom,

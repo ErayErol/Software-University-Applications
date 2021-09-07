@@ -2,11 +2,12 @@
 
 @{
     ViewBag.Title = "Field Details";
+    var photoPath = "~/Images/" + (Model.PhotoPath ?? "no-image.jpg");
 }
 
 <div class="box box-large">
     <form method="get">
-        <img class="img-thumbnail" src="@Model.ImageUrl" alt="@Model.Name @Model.CountryName - @Model.CityName">
+        <img class="img-thumbnail" src="@photoPath" alt="@Model.Name" asp-append-version="true">
 
         <div class="mt-5 mb-5">
             <h3>Contacts :</h3>
