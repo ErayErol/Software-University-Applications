@@ -6,10 +6,7 @@
 
 <div class="box box-large box-info-and-edit">
     <form asp-controller="Games" asp-action="Edit" method="post">
-        <div class="hidden">
-            <label asp-for="FieldName"></label>
-            <input asp-for="FieldName">
-        </div>
+        <input hidden asp-for="FieldName">
         <div class="input-container mt-5">
             <label asp-for="FieldName"></label>
             <input asp-for="FieldName" class="mt-2 mb-3" disabled>

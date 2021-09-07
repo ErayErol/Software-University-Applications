@@ -1,9 +1,8 @@
-﻿namespace MiniFootball.Models.Fields
+﻿namespace MiniFootball.Services.Fields
 {
     using System.Collections.Generic;
-    using Services.Fields;
 
-    public class FieldFormModel : FieldDetailServiceModel
+    public class FieldFormServiceModel : FieldDetailServiceModel
     {
         public int CountryId { get; set; }
         public IEnumerable<string> Countries { get; set; }

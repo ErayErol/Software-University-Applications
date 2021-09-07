@@ -24,9 +24,10 @@
                         @for (int i = 0; i < Model.Count; i++)
                         {
                             var game = Model[i];
+                            var photoPath = "~/Images/" + (game.Field.PhotoPath ?? "no-image.jpg");
 
                             <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
-                                @*<img class="d-block w-100 img-thumbnail" src="@game.Field.ImageUrl" alt="First slide">*@
+                                <img class="d-block w-100 img-thumbnail" src="@photoPath" alt="First slide" asp-append-version="true">
                                 <div class="carousel-caption my-item-center">
                                     <a asp-controller="Games" asp-action="Details" asp-route-gameId="@game.Id" asp-route-information="@game.Field.Name" class="btn min-width-size home-button-size">@game.Field.Name - @game.Date.ToString("D") @game.Time:00</a>
                                 </div>

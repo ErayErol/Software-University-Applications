@@ -184,10 +184,9 @@
             field.City = data.Cities.Find(field.CityId);
 
             return
-                field != null &&
-                field.Name.ToLower() == name.ToLower() &&
-                field.Country.Name.ToLower() == countryName.ToLower() &&
-                field.City.Name.ToLower() == cityName.ToLower();
+                field.Name.ToLower().Equals(name.ToLower()) &&
+                field.Country.Name.ToLower().Equals(countryName.ToLower()) &&
+                field.City.Name.ToLower().Equals(cityName.ToLower());
         }
 
         public void ChangeVisibility(int id)
@@ -238,11 +237,11 @@
                 .Select(f => f.Name)
                 .FirstOrDefault();
 
-        public FieldDetailServiceModel GetDetails(int id)
+        public FieldFormServiceModel Details(int id)
             => data
                 .Fields
                 .Where(f => f.Id == id)
-                .ProjectTo<FieldDetailServiceModel>(mapper)
+                .ProjectTo<FieldFormServiceModel>(mapper)
                 .FirstOrDefault();
 
         public IEnumerable<FieldListingServiceModel> FieldsWhereCreatorIsUser(string userId)

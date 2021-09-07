@@ -2,11 +2,13 @@
 
 @{
     ViewBag.Title = "Game Details";
+    var photoPath = "~/Images/" + (Model.FieldPhotoPath ?? "no-image.jpg");
+
 }
 
 <div class="box box-large box-info-and-edit">
     <form method="get">
-        <img class="img-thumbnail" src="@Model.FieldImageUrl" alt="image">
+        <img class="img-thumbnail" src="@photoPath" alt="image" asp-append-version="true">
 
         <div>
             @if (Model.HasPlaces)

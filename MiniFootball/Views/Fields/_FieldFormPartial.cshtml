@@ -1,0 +1,92 @@
+﻿@model FieldFormServiceModel
+
+@{
+    var photoPath = "~/Images/" + (Model.PhotoPath ?? "no-image.jpg");
+
+    string name = ViewBag.Title == "Create Field" ? "Create" : "Edit";
+}
+
+<div class="box box-large box-info-and-edit">
+    <form enctype="multipart/form-data" asp-controller="Fields" asp-action=@name method="post">
+        <div class="input-container">
+            <label asp-for="Photo"></label>
+            <input asp-for="Photo" type="file" class="btn mt-2 mb-3">
+        </div>
+        @if (ViewBag.Title == "Edit Field")
+        {
+            <img class="img-thumbnail mt-5" src="@photoPath" asp-append-version="true">
+        }
+        <div class="mt-5 mb-5">
+            <h3>Contacts :</h3>
+        </div>
+        <div class="input-container">
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" class="mt-2 mb-3" />
+        </div>
+        <div class="input-container">
+            <label asp-for="Address"></label>
+            <input asp-for="Address" type="tel" class="mt-2 mb-3" value="@Model.Address">
+        </div>
+        <div class="mt-4 mb-5">
+            <h3>Details :</h3>
+        </div>
+        <div class="input-container">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" type="text" class="mt-2 mb-3" value="@Model.Name">
+        </div>
+        @if (ViewBag.Title == "Create Field")
+        {
+            <div class="select-container">
+                <label asp-for="CountryName"></label>
+                <select asp-for="CountryName" class="mt-2 mb-3">
+                    @foreach (var country in Model.Countries)
+                    {
+                        @if (country == "Bulgaria")
+                        {
+                            <option selected="selected" value="@country"> @country </option>
+                        }
+                        else
+                        {
+                            <option value="@country"> @country </option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="input-container">
+                <label asp-for="CityName"></label>
+                <input asp-for="CityName" type="tel" class="mt-2 mb-3" value="@Model.CityName">
+            </div>
+        }
+        else
+        {
+            <div class="input-container">
+                <label asp-for="CountryName"></label>
+                <input asp-for="CountryName" readonly="readonly" type="tel" class="mt-2 mb-3" value="@Model.CountryName">
+            </div>
+            <div class="input-container">
+                <label asp-for="CityName"></label>
+                <input asp-for="CityName" readonly="readonly" type="tel" class="mt-2 mb-3" value="@Model.CityName">
+            </div>
+        }
+        <div class="textarea-container">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="mt-2 mb-3" rows="2"></textarea>
+        </div>
+        <div class="mt-4 mb-3 createPlaygroundChechboxes">
+            <input class="checkbox-down" asp-for="Parking" type="checkbox" value="@Model.Parking">
+            <label asp-for="Parking"></label>
+
+            <input class="checkbox-down" asp-for="Shower" type="checkbox" value="@Model.Shower">
+            <label asp-for="Shower"></label>
+
+            <input class="checkbox-down" asp-for="ChangingRoom" type="checkbox" value="@Model.ChangingRoom">
+            <label asp-for="ChangingRoom"></label>
+
+            <input class="checkbox-down" asp-for="Cafe" type="checkbox" value="@Model.Cafe">
+            <label asp-for="Cafe"></label>
+        </div>
+        <div>
+            <input class="btn btn-form-size ml-xl-0 ml-lg-0 ml-md-0 ml-sm-0 ml-3" type="submit" value=@name />
+        </div>
+    </form>
+</div>

@@ -30,8 +30,8 @@
         [Url(ErrorMessage = Url)]
         public string FacebookUrl { get; set; }
 
-        [Display(Name = Field.FieldImage)]
-        public string FieldImageUrl { get; set; }
+        [Display(Name = Field.FieldPhotoPath)]
+        public string FieldPhotoPath { get; set; }
 
         [Display(Name = Field.FieldName)]
         public string FieldName { get; set; }

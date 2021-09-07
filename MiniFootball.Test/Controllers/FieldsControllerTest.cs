@@ -63,7 +63,7 @@
                     .WithData(data => data
                         .WithSet<Admin>(admin => admin
                             .Add(Admins.NewAdmin()))))
-                .Calling(c => c.Create(new FieldFormModel
+                .Calling(c => c.Create(new FieldFormServiceModel
                 {
                     Name = "Avenue",
                     CountryId = 24,
@@ -129,7 +129,7 @@
                             .Add(Countries.NewCountry()))
                         .WithSet<City>(city => city
                             .Add(Cities.Haskovo()))))
-                .Calling(c => c.Create(new FieldFormModel
+                .Calling(c => c.Create(new FieldFormServiceModel
                 {
                     Name = name,
                     CountryName = countryName,
@@ -212,7 +212,7 @@
         public void PostEditWhenUserIsNotAdminShouldRedirectToBecomeAdmin()
             => MyController<FieldsController>
                 .Instance()
-                .Calling(c => c.Edit(new FieldDetailServiceModel()))
+                .Calling(c => c.Edit(new FieldFormServiceModel()))
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests())
@@ -263,7 +263,7 @@
                             .Add(Cities.Haskovo()))
                         .WithSet<Field>(field => field
                             .Add(Fields.Avenue()))))
-                .Calling(c => c.Edit(new FieldDetailServiceModel
+                .Calling(c => c.Edit(new FieldFormServiceModel
                 {
                     Id = fieldId,
                     Name = name,

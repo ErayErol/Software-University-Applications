@@ -31,7 +31,7 @@
                 .ShouldMap(request => request
                     .WithPath("/Fields/Create")
                     .WithMethod(HttpMethod.Post))
-                .To<FieldsController>(c => c.Create(With.Any<FieldFormModel>()));
+                .To<FieldsController>(c => c.Create(With.Any<FieldFormServiceModel>()));
 
         [Fact]
         public void GetEditRouteShouldBeMapped()

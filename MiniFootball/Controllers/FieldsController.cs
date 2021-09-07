@@ -13,6 +13,7 @@
     using Services.Countries;
     using Services.Fields;
     using System.Linq;
+    using AutoMapper;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Hosting;
 
@@ -26,6 +27,7 @@
         private readonly IAdminService admins;
         private readonly ICountryService countries;
         private readonly ICityService cities;
+        private readonly IMapper mapper;
         private readonly INotyfService notifications;
         private readonly IWebHostEnvironment hostEnvironment;
 
@@ -33,6 +35,7 @@
                                 IAdminService admins,
                                 ICountryService countries,
                                 ICityService cities,
+                                IMapper mapper,
                                 INotyfService notifications,
                                 IWebHostEnvironment hostEnvironment)
         {
@@ -40,6 +43,7 @@
             this.admins = admins;
             this.countries = countries;
             this.cities = cities;
+            this.mapper = mapper;
             this.notifications = notifications;
             this.hostEnvironment = hostEnvironment;
         }
@@ -76,7 +80,7 @@
                 return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
-            var createFormModel = new FieldFormModel
+            var createFormModel = new FieldFormServiceModel
             {
                 Countries = countries.All()
             };
@@ -86,7 +90,7 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(FieldFormModel fieldModel)
+        public IActionResult Create(FieldFormServiceModel fieldServiceModel)
         {
             var adminId = admins.IdByUser(User.Id());
 
@@ -98,32 +102,32 @@
 
             if (ModelState.IsValid == false)
             {
-                fieldModel.Countries = countries.All();
-                return View(fieldModel);
+                fieldServiceModel.Countries = countries.All();
+                return View(fieldServiceModel);
             }
 
-            fieldModel.CountryId = countries.CountryIdByName(fieldModel.CountryName);
-            fieldModel.CityId = cities.CityIdByName(fieldModel.CityName);
+            fieldServiceModel.CountryId = countries.CountryIdByName(fieldServiceModel.CountryName);
+            fieldServiceModel.CityId = cities.CityIdByName(fieldServiceModel.CityName);
 
-            if (fieldModel.CityId == 0)
+            if (fieldServiceModel.CityId == 0)
             {
                 notifications.Error(City.CityDoesNotExistInCountry);
                 return RedirectToAction(GlobalConstant.Create, City.ControllerName);
             }
 
-            if (fields.IsAlreadyExist(fieldModel.Name, fieldModel.CountryId, fieldModel.CityId))
+            if (fields.IsAlreadyExist(fieldServiceModel.Name, fieldServiceModel.CountryId, fieldServiceModel.CityId))
             {
-                fieldModel.Countries = countries.All();
+                fieldServiceModel.Countries = countries.All();
                 notifications.Error(Field.ThereAreAlreadyExistField);
-                return View(fieldModel);
+                return View(fieldServiceModel);
             }
 
-            fieldModel.CountryName = ToTitleCase(fieldModel.CountryName);
-            fieldModel.CityName = ToTitleCase(fieldModel.CityName);
+            fieldServiceModel.CountryName = ToTitleCase(fieldServiceModel.CountryName);
+            fieldServiceModel.CityName = ToTitleCase(fieldServiceModel.CityName);
 
-            var uniqueFileName = ProcessUploadFile(fieldModel);
+            fieldServiceModel.PhotoPath = ProcessUploadFile(fieldServiceModel);
 
-            var fieldId = FieldId(fieldModel, uniqueFileName, adminId);
+            var fieldId = FieldId(fieldServiceModel, adminId);
 
             if (fieldId == 0)
             {
@@ -135,20 +139,18 @@
             return RedirectToAction(nameof(Mine));
         }
 
-        private int FieldId(FieldFormModel fieldModel,
-                            string uniqueFileName,
-                            int adminId)
-            => fields.Create(fieldModel.Name,
-                             fieldModel.CountryId,
-                             fieldModel.CityId,
-                             fieldModel.Address,
-                             uniqueFileName,
-                             fieldModel.PhoneNumber,
-                             fieldModel.Parking,
-                             fieldModel.Cafe,
-                             fieldModel.Shower,
-                             fieldModel.ChangingRoom,
-                             fieldModel.Description,
+        private int FieldId(FieldFormServiceModel fieldServiceModel, int adminId)
+            => fields.Create(fieldServiceModel.Name,
+                             fieldServiceModel.CountryId,
+                             fieldServiceModel.CityId,
+                             fieldServiceModel.Address,
+                             fieldServiceModel.PhotoPath,
+                             fieldServiceModel.PhoneNumber,
+                             fieldServiceModel.Parking,
+                             fieldServiceModel.Cafe,
+                             fieldServiceModel.Shower,
+                             fieldServiceModel.ChangingRoom,
+                             fieldServiceModel.Description,
                              adminId);
 
         [Authorize]
@@ -162,20 +164,20 @@
                 return RedirectToAction(nameof(AdminsController.Become), Admin.ControllerName);
             }
 
-            var fieldDetails = fields.GetDetails(id);
+            var fieldModel = fields.Details(id);
 
-            if (fieldDetails.Name.Equals(information) == false)
+            if (fieldModel.Name.Equals(information) == false)
             {
                 notifications.Error(SomethingIsWrong);
                 return RedirectToAction(Name, Name);
             }
 
-            return View(fieldDetails);
+            return View(fieldModel);
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Edit(FieldDetailServiceModel fieldModel)
+        public IActionResult Edit(FieldFormServiceModel fieldModel)
         {
             var adminId = admins.IdByUser(User.Id());
 
@@ -201,9 +203,7 @@
                 fieldModel.PhotoPath = ProcessUploadFile(fieldModel);
             }
 
-            var isEdit = IsEdit(fieldModel, fieldModel.PhotoPath);
-
-            if (isEdit == false)
+            if (IsEdit(fieldModel) == false)
             {
                 notifications.Error(SomethingIsWrong);
                 return RedirectToAction(Name, Name);
@@ -213,36 +213,20 @@
                 "Your field was edited" +
                 $"{(User.IsManager() ? string.Empty : " and is awaiting approval")}!");
 
-            var fieldName = fields.FieldName(fieldModel.Id);
-
             var routeValues = new
             {
                 id = fieldModel.Id,
-                information = fieldName
+                information = fields.FieldName(fieldModel.Id)
             };
 
             return RedirectToAction(nameof(Details), routeValues);
         }
 
-        private string ProcessUploadFile(FieldDetailServiceModel fieldModel)
-        {
-            string uniqueFileName = null;
-            if (fieldModel.Photo != null)
-            {
-                string uploadsFolder = Path.Combine(hostEnvironment.WebRootPath, "images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + fieldModel.Photo.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                fieldModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
-            }
-
-            return uniqueFileName;
-        }
-
-        private bool IsEdit(FieldDetailServiceModel fieldModel, string uniqueFileName)
+        private bool IsEdit(FieldDetailServiceModel fieldModel)
             => fields.Edit(fieldModel.Id,
                            fieldModel.Name,
                            fieldModel.Address,
-                           uniqueFileName,
+                           fieldModel.PhotoPath,
                            fieldModel.Parking,
                            fieldModel.Shower,
                            fieldModel.ChangingRoom,
@@ -312,15 +296,14 @@
         [Authorize]
         public IActionResult Details(int id, string information)
         {
-            var fieldDetails = fields.GetDetails(id);
-
-            if (fieldDetails == null || fieldDetails.Name.Equals(information) == false)
+            var fieldModel = mapper.Map<FieldDetailServiceModel>(fields.Details(id));
+            if (fieldModel == null || fieldModel.Name.Equals(information) == false)
             {
                 notifications.Error(SomethingIsWrong);
                 return RedirectToAction(Name, Name);
             }
 
-            return View(fieldDetails);
+            return View(fieldModel);
         }
 
         [Authorize]
@@ -343,6 +326,21 @@
             }
 
             return View(myFields);
+        }
+
+        private string ProcessUploadFile(FieldDetailServiceModel fieldModel)
+        {
+            string uniqueFileName = null;
+
+            if (fieldModel.Photo != null)
+            {
+                var uploadsFolder = Path.Combine(hostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + fieldModel.Photo.FileName;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                fieldModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+            }
+
+            return uniqueFileName;
         }
     }
 }

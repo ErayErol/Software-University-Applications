@@ -45,7 +45,7 @@
 
         IEnumerable<FieldListingServiceModel> FieldsWhereCreatorIsUser(string id);
 
-        FieldDetailServiceModel GetDetails(int id);
+        FieldFormServiceModel Details(int id);
 
         FieldDeleteServiceModel FieldDeleteInfo(int id);
 

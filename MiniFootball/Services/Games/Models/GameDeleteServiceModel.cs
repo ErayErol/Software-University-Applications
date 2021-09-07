@@ -10,7 +10,7 @@
 
         public string FieldName { get; set; }
 
-        public string FieldImageUrl { get; set; }
+        public string FieldPhotoPath { get; set; }
         
         public string FieldCountryName { get; set; }
         

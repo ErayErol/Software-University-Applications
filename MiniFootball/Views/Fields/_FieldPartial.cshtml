@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<FieldListingServiceModel>
 
-
 @foreach (var field in Model)
 {
     var photoPath = "~/Images/" + (field.PhotoPath ?? "no-image.jpg");

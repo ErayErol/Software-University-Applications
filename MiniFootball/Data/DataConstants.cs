@@ -93,7 +93,7 @@
             
             public const string FieldName = "Field";
             
-            public const string FieldImage = "Image";
+            public const string FieldPhotoPath = "Photo Path";
 
             public const int NameMinLength = 2;
             public const int NameMaxLength = 26;

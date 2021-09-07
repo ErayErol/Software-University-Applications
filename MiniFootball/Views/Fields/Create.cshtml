@@ -1,4 +1,4 @@
-﻿@model FieldFormModel
+﻿@model FieldFormServiceModel
 
 @{
     ViewBag.Title = "Create Field";
@@ -6,78 +6,7 @@
 
 @if (@Model != null)
 {
-    <div class="box box-large">
-        <div class="text-center">
-            <h3>@ViewBag.Title</h3>
-        </div>
-
-        <form enctype="multipart/form-data" asp-controller="Fields" asp-action="Create" method="post">
-            <div class="input-container mt-5">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" type="text" class="mt-2 mb-3">
-                <span asp-validation-for="Name" class="small text-danger"></span>
-            </div>
-            <div class="input-container">
-                <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" type="text" class="mt-2 mb-3">
-                <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
-            </div>
-            <div class="select-container">
-                <label asp-for="CountryName"></label>
-                <select asp-for="CountryName" class="mt-2 mb-3">
-                    @foreach (var country in Model.Countries)
-                    {
-                        @if (country == "Bulgaria")
-                        {
-                            <option selected="selected" value="@country"> @country </option>
-                        }
-                        else
-                        {
-                            <option value="@country"> @country </option>
-                        }
-                    }
-                </select>
-            </div>
-            <div class="input-container">
-                <label asp-for="CityName"></label>
-                <input asp-for="CityName" type="text" class="mt-2 mb-3">
-                <span asp-validation-for="CityName" class="small text-danger"></span>
-            </div>
-            <div class="input-container">
-                <label asp-for="Address"></label>
-                <input asp-for="Address" type="text" class="mt-2 mb-3">
-                <span asp-validation-for="Address" class="small text-danger"></span>
-            </div>
-            <div class="input-container">
-                <label asp-for="Photo"></label>
-                <input asp-for="Photo" type="file" class="btn mt-2 mb-3">
-                <span asp-validation-for="Photo" class="small text-danger"></span>
-            </div>
-            <div class="textarea-container">
-                <label asp-for="Description"></label>
-                <textarea asp-for="Description" class="mt-2 mb-3">rows="2"></textarea>
-                <span asp-validation-for="Description" class="small text-danger"></span>
-            </div>
-
-            <div class="mt-4 mb-3 ml-3 createPlaygroundChechboxes">
-                <input class="checkbox-down" asp-for="Parking" type="checkbox">
-                <label asp-for="Parking">Parking</label>
-
-                <input class="checkbox-down" asp-for="Shower" type="checkbox">
-                <label asp-for="Shower">Shower</label>
-
-                <input class="checkbox-down" asp-for="ChangingRoom" type="checkbox">
-                <label asp-for="ChangingRoom">Changing Room</label>
-
-                <input class="checkbox-down" asp-for="Cafe" type="checkbox">
-                <label asp-for="Cafe">Cafe</label>
-            </div>
-
-            <div>
-                <input class="btn btn-form-size ml-xl-0 ml-lg-0 ml-md-0 ml-sm-0 ml-3" type="submit" value="Create" />
-            </div>
-        </form>
-    </div>
+    <partial name="_FieldFormPartial" model="@Model" />
 }
 
 @section Scripts {

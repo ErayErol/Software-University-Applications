@@ -2,11 +2,14 @@
 
 @foreach (var game in Model)
 {
+    var photoPath = "~/Images/" + (game.Field.PhotoPath ?? "no-image.jpg");
+
+
     <div class="col-md-4">
         <div class="card mb-4 img-thumbnail">
             @if (ViewBag.AllowImage == true)
             {
-                @*<img class="card-img-top" src="@game.Field.ImageUrl" alt="@game.Field.Name @game.Field.Country.Name - @game.Field.City.Name">*@
+            <img class="card-img-top" src="@photoPath" alt="@game.Field.Name" asp-append-version="true">
             }
             <div class="card-body">
                 <div class="text-center mb-4">
