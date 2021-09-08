@@ -89,11 +89,11 @@
                             CultureInfo.InvariantCulture),
                     };
 
-                    applicationUser.ImageUrl = i switch
+                    applicationUser.PhotoPath = i switch
                     {
-                        1 => "https://thumbs.dreamstime.com/b/admin-sign-laptop-icon-stock-vector-166205404.jpg",
-                        2 => "https://amzsummits.com/wp-content/uploads/2019/05/Ferry-Vermeulen.jpeg",
-                        _ => applicationUser.ImageUrl
+                        1 => "avangard.jpg",
+                        2 => "avenue.jpeg",
+                        _ => applicationUser.PhotoPath
                     };
 
                     data.Users.Add(applicationUser);
@@ -378,7 +378,7 @@
                         LastName = "LastName-manager",
                         NickName = "NickName-manager",
                         PhoneNumber = "0886911492",
-                        ImageUrl = "https://thumbs.dreamstime.com/b/manager-38039871.jpg",
+                        PhotoPath = "manager.jpg",
                         Birthdate = DateTime.ParseExact(
                             "1995-09-30 14:00:52,531",
                             "yyyy-MM-dd HH:mm:ss,fff",

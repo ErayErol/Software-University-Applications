@@ -70,7 +70,7 @@
                     CityId = 1,
                     Description = "In the summer this place is number 1 to play mini football.",
                     Address = "ул. Дунав 1 - в парка под супермаркет авеню",
-                    //ImageUrl = "https://imgrabo.com/pics/businesses/b18e8a5e845a9317f4e301b3ffd58c14.jpeg",
+                    //PhotoPath = "https://imgrabo.com/pics/businesses/b18e8a5e845a9317f4e301b3ffd58c14.jpeg",
                     Cafe = true,
                     ChangingRoom = true,
                     Parking = true,
@@ -385,7 +385,7 @@
                 {
                     Id = fieldId,
                     Name = name,
-                    //ImageUrl = photoPath,
+                    //PhotoPath = photoPath,
                 }))
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes

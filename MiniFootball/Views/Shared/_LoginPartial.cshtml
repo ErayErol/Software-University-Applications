@@ -12,7 +12,9 @@
         var userId = User.Id();
         var userIsAdmin = Admins.IsAdmin(userId);
         var userIsManager = User.IsManager();
-        var userImg = AppUser.UserInfo(userId).ImageUrl;
+        var userPhotoPath = AppUser.UserInfo(userId).PhotoPath;
+        var photoPath = "~/Images/" + (userPhotoPath ?? "no-image.jpg");
+
 
         if (userIsAdmin && userIsManager == false)
         {
@@ -45,7 +47,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Account">
-                <img src=@userImg class="user-img-navbar" />
+                <img src=@photoPath class="user-img-navbar" asp-append-version="true"/>
             </a>
         </li>
     }

@@ -211,7 +211,7 @@
                 {
                     GameId = gameId,
                     UserId = g.User.Id,
-                    ImageUrl = g.User.ImageUrl,
+                    PhotoPath = g.User.PhotoPath,
                     FirstName = g.User.FirstName,
                     LastName = g.User.LastName,
                     NickName = g.User.NickName,

@@ -25,7 +25,7 @@
                                 Email = "zwp@gmail.com",
                                 UserName = "zwp@gmail.com",
                                 PhoneNumber = "0886911492",
-                                ImageUrl = "https://www.facebook.com/photo?fbid=3996431367092876&set=a.107988282603890",
+                                PhotoPath = "https://www.facebook.com/photo?fbid=3996431367092876&set=a.107988282603890",
                                 Birthdate = DateTime.ParseExact(
                                     "1995-09-30 14:00:52,531",
                                     "yyyy-MM-dd HH:mm:ss,fff",

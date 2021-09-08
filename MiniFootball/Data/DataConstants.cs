@@ -6,8 +6,6 @@
 
         public const string PhoneNumber = "Phone Number";
 
-        public const string ImageUrl = "Image URL";
-        
         public const string FacebookUrl = "Facebook URL";
 
         public class ErrorMessages
@@ -22,6 +20,8 @@
         public class Register
         {
             public const string ConfirmPassword = "Confirm Password";
+        
+            public const string PhotoPath = "Photo Path";
 
             public const string NotMatchPassword = "The password and confirmation password do not match.";
             

@@ -8,7 +8,10 @@
     using MiniFootball.Data.Models;
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.IO;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
 
     using static Convert;
     using static Data.DataConstants.User;
@@ -18,13 +21,15 @@
     {
         private readonly UserManager<User> userManager;
         private readonly INotyfService notifications;
+        private readonly IWebHostEnvironment hostEnvironment;
 
-        public RegisterModel(
-            UserManager<User> userManager, 
-            INotyfService notifications)
+        public RegisterModel(UserManager<User> userManager, 
+                             INotyfService notifications, 
+                             IWebHostEnvironment hostEnvironment)
         {
             this.userManager = userManager;
             this.notifications = notifications;
+            this.hostEnvironment = hostEnvironment;
         }
 
         [BindProperty]
@@ -55,10 +60,11 @@
             [Required]
             public DateTime? Birthdate { get; set; }
 
+            [Display(Name = Data.DataConstants.Register.PhotoPath)]
+            public string PhotoPath { get; set; }
+
             [Required]
-            [Display(Name = Data.DataConstants.ImageUrl)]
-            [Url(ErrorMessage = Data.DataConstants.ErrorMessages.Url)]
-            public string ImageUrl { get; set; }
+            public IFormFile Photo { get; set; }
 
             [Required]
             [Display(Name = Data.DataConstants.PhoneNumber)]
@@ -88,6 +94,8 @@
                 Input.LastName = ToTitleCase(Input.LastName);
                 Input.NickName = ToTitleCase(Input.NickName);
 
+                Input.PhotoPath = ProcessUploadFile(Input);
+
                 var user = new User
                 {
                     UserName = Input.Email,
@@ -96,7 +104,7 @@
                     LastName = Input.LastName,
                     NickName = Input.NickName,
                     Birthdate = Input.Birthdate,
-                    ImageUrl = Input.ImageUrl,
+                    PhotoPath = Input.PhotoPath,
                     PhoneNumber = Input.PhoneNumber,
                 };
 
@@ -116,6 +124,21 @@
             }
 
             return Page();
+        }
+
+        private string ProcessUploadFile(InputModel inputModel)
+        {
+            string uniqueFileName = null;
+
+            if (inputModel.Photo != null)
+            {
+                var uploadsFolder = Path.Combine(hostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + inputModel.Photo.FileName;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                inputModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+            }
+
+            return uniqueFileName;
         }
     }
 }

@@ -1,22 +1,21 @@
 ﻿namespace MiniFootball.Controllers
 {
-    using System;
-    using System.IO;
     using Areas.Admin.Controllers;
     using AspNetCoreHero.ToastNotification.Abstractions;
+    using AutoMapper;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Models.Fields;
     using Services.Admins;
     using Services.Cities;
     using Services.Countries;
     using Services.Fields;
+    using System;
+    using System.IO;
     using System.Linq;
-    using AutoMapper;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Hosting;
-
+    
     using static Convert;
     using static GlobalConstant;
     using static GlobalConstant.Error;

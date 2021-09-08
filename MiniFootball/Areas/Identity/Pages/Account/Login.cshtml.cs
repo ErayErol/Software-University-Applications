@@ -68,7 +68,10 @@
 
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await signInManager.PasswordSignInAsync(Input.Email, 
+                                                                     Input.Password, 
+                                                                     Input.RememberMe, 
+                                                                     lockoutOnFailure: false);
 
                 if (result.Succeeded)
                 {

@@ -22,9 +22,8 @@
         [Required]
         public override string PhoneNumber { get; set; }
 
-        [Url]
         [Required]
-        public string ImageUrl { get; set; }
+        public string PhotoPath { get; set; }
 
         public virtual IEnumerable<UserGame> UserGames { get; init; } = new HashSet<UserGame>();
     }

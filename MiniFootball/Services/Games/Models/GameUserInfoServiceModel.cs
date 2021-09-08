@@ -4,7 +4,7 @@
     {
         public string UserId { get; set; }
 
-        public string ImageUrl { get; set; }
+        public string PhotoPath { get; set; }
 
         public string FirstName { get; set; }
 

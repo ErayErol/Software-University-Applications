@@ -32,7 +32,7 @@
                     LastName = x.LastName,
                     NickName = x.NickName,
                     PhoneNumber = x.PhoneNumber,
-                    ImageUrl = x.ImageUrl,
+                    PhotoPath = x.PhotoPath,
                 })
                 .FirstOrDefault();
 

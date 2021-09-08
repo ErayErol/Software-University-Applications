@@ -49,11 +49,10 @@
             <span asp-validation-for="Input.Birthdate" class="small text-danger"></span>
         </div>
         <div class="input-container">
-            <label asp-for="Input.ImageUrl"></label>
-            <input asp-for="Input.ImageUrl" class="mt-2 mb-3"/>
-            <span asp-validation-for="Input.ImageUrl" class="small text-danger"></span>
+            <label asp-for="Input.Photo"></label>
+            <input asp-for="Input.Photo" type="file" class="mt-2 mb-3"/>
+            <span asp-validation-for="Input.Photo" class="small text-danger"></span>
         </div>
-
         <div>
             <button class="btn btn-form-size ml-xl-0 ml-lg-0 ml-md-0 ml-sm-0 ml-3" type="submit" >Register</button>
         </div>
