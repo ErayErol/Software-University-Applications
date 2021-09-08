@@ -1,24 +1,30 @@
 ﻿namespace MiniFootball.Services.Users
 {
     using System;
+    using System.IO;
     using Data;
     using Games.Models;
     using System.Linq;
+    using Areas.Identity.Pages.Account.Manage;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
+    using Data.Models;
+    using Microsoft.AspNetCore.Hosting;
 
     public class UserService : IUserService
     {
         private readonly MiniFootballDbContext data;
         private readonly IConfigurationProvider mapper;
+        private readonly IWebHostEnvironment hostEnvironment;
 
 
         public UserService(MiniFootballDbContext data, 
-                           IMapper mapper)
+                           IMapper mapper, 
+                           IWebHostEnvironment hostEnvironment)
         {
             this.data = data;
             this.mapper = mapper.ConfigurationProvider;
-
+            this.hostEnvironment = hostEnvironment;
         }
 
         public GameUserInfoServiceModel UserInfo(string id)
@@ -50,6 +56,59 @@
             }
 
             return user;
+        }
+
+        public bool Edit(User user, IndexModel.InputModel input)
+        {
+            var userId = this.data
+                .Users
+                .Where(u => u.Id == user.Id)
+                .Select(u => u.Id)
+                .FirstOrDefault();
+
+            if (string.Empty.Equals(userId))
+            {
+                return false;
+            }
+
+            user.PhoneNumber = input.PhoneNumber;
+            user.Email = input.Email;
+            user.FirstName = input.FirstName;
+            user.LastName = input.LastName;
+            user.NickName = input.NickName;
+            user.PhoneNumber = input.PhoneNumber;
+            user.Birthdate = input.Birthdate.Value;
+
+            if (input.Photo != null)
+            {
+                input.PhotoPath = ProcessUploadFile(input);
+                user.PhotoPath = input.PhotoPath;
+            }
+            else
+            {
+                input.PhotoPath = user.PhotoPath;
+            }
+
+            data.Users.Update(user);
+            data.SaveChanges();
+
+            return true;
+        }
+
+
+        private string ProcessUploadFile(IndexModel.InputModel inputModel)
+        {
+            string uniqueFileName = null;
+
+            if (inputModel.Photo != null)
+            {
+                var uploadsFolder = Path.Combine(hostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + inputModel.Photo.FileName;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                inputModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+            }
+
+            return uniqueFileName;
         }
 
         private static void CorrectAge(UserDetailsServiceModel userDetails)

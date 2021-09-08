@@ -1,46 +1,42 @@
 ﻿namespace MiniFootball.Areas.Identity.Pages.Account.Manage
 {
+    using AspNetCoreHero.ToastNotification.Abstractions;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using MiniFootball.Data.Models;
+    using Services.Users;
     using System;
     using System.ComponentModel.DataAnnotations;
-    using System.IO;
     using System.Threading.Tasks;
-    using Data;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
 
     using static Convert;
     using static Data.DataConstants.User;
 
     public partial class IndexModel : PageModel
     {
-        private readonly MiniFootballDbContext data;
+        private readonly IUserService users;
         private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
-        private readonly IWebHostEnvironment hostEnvironment;
+        private readonly INotyfService notifications;
 
         public IndexModel(UserManager<User> userManager,
                           SignInManager<User> signInManager,
-                          IWebHostEnvironment hostEnvironment,
-                          MiniFootballDbContext data)
+                          IUserService users,
+                          INotyfService notifications)
         {
             this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.hostEnvironment = hostEnvironment;
-            this.data = data;
+            this.users = users;
+            this.notifications = notifications;
         }
-
-        [TempData]
-        public string StatusMessage { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
         public class InputModel
         {
+            public string Id { get; set; }
+
             public string Email { get; set; }
 
             [Required]
@@ -84,43 +80,26 @@
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                if (users.Edit(user, Input))
+                {
+                    notifications.Success("Your profile has been updated");
+                }
+            }
+            else
             {
                 user.FirstName = ToTitleCase(user.FirstName);
                 user.LastName = ToTitleCase(user.LastName);
                 user.NickName = ToTitleCase(user.NickName);
-
-                await LoadAsync(user);
-                return Page();
             }
 
-            user.PhoneNumber = Input.PhoneNumber;
-            user.Email = Input.Email;
-            user.FirstName = Input.FirstName;
-            user.LastName = Input.LastName;
-            user.NickName = Input.NickName;
-            user.PhoneNumber = Input.PhoneNumber;
-            user.Birthdate = Input.Birthdate.Value;
-
-            if (Input.Photo != null)
-            {
-                Input.PhotoPath = ProcessUploadFile(Input);
-                user.PhotoPath = Input.PhotoPath;
-            }
-            else
-            {
-                Input.PhotoPath = user.PhotoPath;
-            }
-
-            data.Users.Update(user);
-            await data.SaveChangesAsync();
-
-            StatusMessage = "Your profile has been updated";
             await LoadAsync(user);
             return Page();
         }
@@ -137,21 +116,6 @@
                 Birthdate = user.Birthdate.Value,
                 PhotoPath = user.PhotoPath,
             };
-        }
-
-        private string ProcessUploadFile(InputModel inputModel)
-        {
-            string uniqueFileName = null;
-
-            if (inputModel.Photo != null)
-            {
-                var uploadsFolder = Path.Combine(hostEnvironment.WebRootPath, "images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + inputModel.Photo.FileName;
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                inputModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
-            }
-
-            return uniqueFileName;
         }
     }
 }
