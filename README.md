@@ -3,7 +3,6 @@
 # 🎯 Purpose
 - MiniFootball makes it simple to discover mini football activities happening in your city or nearby, as well as the people that want to participate in them or the people who looking for players.
 - If you are Mini Football Field Manager you can also add it to our database and gain more customers.
-### URL : https://mini-football.azurewebsites.net/
 # :information_source: How It Works
 - Guest visitors:
   - Can view all approved games and fields.
@@ -46,8 +45,8 @@ is in `appsettings.json`. If you use SQLEXPRESS, you should replace `Server=.;` 
 would be applied when you run the application, since the `ASPNETCORE-ENVIRONMENT` is set to `Development`. If you change it, you should apply the migrations yourself.
 ### 3. Seeding sample data
 would happen once you run the application, including Test Accounts:
-  - User: user4@user.com / password: 123456
-  - Admin: admin1@admin.com / password: 123456
+  - User: user@user.com / password: 123456
+  - Admin: admin@admin.com / password: 123456
 
 # :scroll: General Requirements
 
