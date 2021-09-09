@@ -2,12 +2,12 @@
 
 @{
     ViewBag.Title = "Player Details";
+    var photoPath = "~/Images/" + (Model.PhotoPath ?? "no-image.jpg");
 }
 
 <div class="box box-large box-acount-manage">
     <form id="profile-form" method="post">
-        <img src="@Model.ImageUrl" class="img-thumbnail" />
-
+        <img src="@photoPath" class="img-thumbnail" asp-append-version="true"/>
         <div class="mt-5 mb-5">
             <h3>Contacts :</h3>
         </div>
@@ -19,7 +19,6 @@
             <label asp-for="Email" class=""></label>
             <input asp-for="Email" readonly="readonly" class="mt-2 mb-3"/>
         </div>
-
         <div class="mt-4 mb-5">
             <h3>Details :</h3>
         </div>

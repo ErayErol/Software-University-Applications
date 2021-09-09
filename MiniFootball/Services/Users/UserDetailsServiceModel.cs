@@ -9,8 +9,8 @@
     {
         public string Id { get; set; }
 
-        [Display(Name = User.Image)]
-        public string ImageUrl { get; set; }
+        [Display(Name = User.PhotoPath)]
+        public string PhotoPath { get; set; }
 
         [Display(Name = DataConstants.PhoneNumber)]
         public string PhoneNumber { get; set; }

@@ -32,7 +32,7 @@
 
         public class User
         {
-            public const string Image = "Image";
+            public const string PhotoPath = "Photo Path";
             
             public const string FirstName = "First Name";
             
