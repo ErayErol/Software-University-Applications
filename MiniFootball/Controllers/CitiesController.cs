@@ -14,6 +14,7 @@
     using static GlobalConstant;
     using static GlobalConstant.Notifications;
 
+    [Authorize]
     public class CitiesController : Controller
     {
         private readonly ICityService cities;
@@ -32,7 +33,6 @@
             this.notifications = notifications;
         }
 
-        [Authorize]
         public IActionResult Create()
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
@@ -49,7 +49,6 @@
             return View(cityFormModel);
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult Create(CityFormModel cityModel)
         {

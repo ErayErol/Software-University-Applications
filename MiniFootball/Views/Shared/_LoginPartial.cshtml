@@ -1,8 +1,6 @@
-﻿@using MiniFootball.Data.Models
-@using Microsoft.AspNetCore.Identity
-
-@inject SignInManager<User> SignInManager
+﻿@inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+
 @inject IUserService AppUser
 @inject IAdminService Admins
 
@@ -10,10 +8,12 @@
     @if (SignInManager.IsSignedIn(User))
     {
         var userId = User.Id();
+        
         var userIsAdmin = Admins.IsAdmin(userId);
         var userIsManager = User.IsManager();
+
         var userPhotoPath = AppUser.UserInfo(userId).PhotoPath;
-        var photoPath = "~/Images/" + (userPhotoPath ?? "no-image.jpg");
+        var photoPath = "~/Images/" + (userPhotoPath ?? "no-user.jpg");
 
 
         if (userIsAdmin && userIsManager == false)

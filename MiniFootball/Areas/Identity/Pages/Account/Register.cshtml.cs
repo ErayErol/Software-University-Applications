@@ -108,7 +108,8 @@
                     PhoneNumber = Input.PhoneNumber,
                 };
 
-                var result = await userManager.CreateAsync(user, Input.Password);
+                var result = await userManager
+                    .CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {

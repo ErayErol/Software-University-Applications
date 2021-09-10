@@ -20,6 +20,7 @@
     using static GlobalConstant;
     using static GlobalConstant.Error;
 
+    [Authorize]
     public class FieldsController : Controller
     {
         private readonly IFieldService fields;
@@ -47,6 +48,7 @@
             this.hostEnvironment = hostEnvironment;
         }
 
+        [AllowAnonymous]
         public IActionResult All([FromQuery] FieldAllQueryModel query)
         {
             var queryResult = fields.All(
@@ -70,7 +72,6 @@
             return View(query);
         }
 
-        [Authorize]
         public IActionResult Create()
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
@@ -87,7 +88,6 @@
             return View(createFormModel);
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult Create(FieldFormServiceModel fieldServiceModel)
         {
@@ -152,7 +152,7 @@
                              fieldServiceModel.Description,
                              adminId);
 
-        [Authorize]
+        
         public IActionResult Edit(int id, string information)
         {
             var userId = User.Id();
@@ -175,7 +175,6 @@
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Edit(FieldFormServiceModel fieldModel)
         {
             var adminId = admins.IdByUser(User.Id());
@@ -234,7 +233,7 @@
                            fieldModel.PhoneNumber,
                            User.IsManager());
 
-        [Authorize]
+        
         public IActionResult Delete(int id, string information)
         {
             var userId = User.Id();
@@ -265,7 +264,6 @@
         }
 
         [HttpPost]
-        [Authorize]
         public RedirectToActionResult Delete(FieldDeleteServiceModel fieldModel)
         {
             var adminId = admins.IdByUser(User.Id());
@@ -290,9 +288,8 @@
 
             notifications.Warning(Field.SuccessfullyDelete);
             return RedirectToAction(nameof(All));
-        }
+        } 
 
-        [Authorize]
         public IActionResult Details(int id, string information)
         {
             var fieldModel = mapper.Map<FieldDetailServiceModel>(fields.Details(id));
@@ -305,7 +302,6 @@
             return View(fieldModel);
         }
 
-        [Authorize]
         public IActionResult Mine()
         {
             var userId = User.Id();

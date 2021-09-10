@@ -66,31 +66,32 @@
         {
             returnUrl ??= Url.Content("~/");
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid == false)
             {
-                var result = await signInManager.PasswordSignInAsync(Input.Email, 
-                                                                     Input.Password, 
-                                                                     Input.RememberMe, 
-                                                                     lockoutOnFailure: false);
-
-                if (result.Succeeded)
-                {
-                    notifications.Success(Welcome, DurationInSeconds);
-                    return LocalRedirect(returnUrl);
-                }
-
-                if (result.IsLockedOut)
-                {
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    notifications.Error(InvalidEmailOrPassword);
-                    return Page();
-                }
+                return Page();
             }
 
-            return Page();
+            var result = await signInManager
+                .PasswordSignInAsync(Input.Email,
+                                     Input.Password, 
+                                     Input.RememberMe, 
+                                     false);
+
+            if (result.Succeeded)
+            {
+                notifications.Success(Welcome, DurationInSeconds);
+                return LocalRedirect(returnUrl);
+            }
+
+            if (result.IsLockedOut)
+            {
+                return RedirectToPage("./Lockout");
+            }
+            else
+            {
+                notifications.Error(InvalidEmailOrPassword);
+                return Page();
+            }
         }
     }
 }

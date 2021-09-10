@@ -20,6 +20,7 @@
     using static Convert;
     using static GlobalConstant;
 
+    [Authorize]
     public class GamesController : Controller
     {
         private readonly IGameService games;
@@ -50,6 +51,7 @@
             this.notifications = notifications;
         }
 
+        [AllowAnonymous]
         public ViewResult All([FromQuery] GameAllQueryModel query)
         {
             var queryResult = games
@@ -74,7 +76,6 @@
             return View(query);
         }
 
-        [Authorize]
         public IActionResult CreateGameFirstStep()
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
@@ -91,7 +92,6 @@
             return View(firstStepViewModel);
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult CreateGameFirstStep(CreateGameFirstStepViewModel gameModel)
         {
@@ -128,7 +128,6 @@
                                     countryAndCityViewModel);
         }
 
-        [Authorize]
         public IActionResult CreateGameChooseField(CreateGameCountryAndCityViewModel gameModel)
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
@@ -157,7 +156,6 @@
             return View(gameSecondStepViewModel);
         }
 
-        [Authorize]
         [HttpPost]
         public RedirectToActionResult CreateGameChooseField(CreateGameSecondStepViewModel gameSecondStepViewModel)
         {
@@ -185,7 +183,6 @@
                                     gameLastStepViewModel);
         }
 
-        [Authorize]
         public IActionResult CreateGameLastStep(CreateGameLastStepViewModel gameModel)
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())
@@ -216,7 +213,6 @@
             return View(gameFormModel);
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult CreateGameLastStep(CreateGameFormModel gameModel)
         {
@@ -285,7 +281,6 @@
                             adminId,
                             phoneNumber);
 
-        [Authorize]
         public IActionResult Edit(string gameId, string information)
         {
             var userId = User.Id();
@@ -315,7 +310,6 @@
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Edit(GameEditServiceModel gameModel)
         {
             var adminId = admins.IdByUser(User.Id());
@@ -369,7 +363,6 @@
                           gameModel.Description,
                           User.IsManager());
 
-        [Authorize]
         public IActionResult Delete(string gameId, string information)
         {
             var userId = User.Id();
@@ -402,7 +395,6 @@
         }
 
         [HttpPost]
-        [Authorize]
         public RedirectToActionResult Delete(GameDeleteServiceModel gameModel)
         {
             var adminId = admins.IdByUser(User.Id());
@@ -431,7 +423,6 @@
             return RedirectToAction(nameof(All));
         }
 
-        [Authorize]
         public IActionResult AddUserToGame(string gameId)
         {
             if (ModelState.IsValid == false)
@@ -449,7 +440,6 @@
             return Redirect($"SeePlayers?gameId={gameId}");
         }
 
-        [Authorize]
         public IActionResult SeePlayers(string gameId)
         {
             if (games.GetDetails(gameId) == null)
@@ -481,7 +471,6 @@
             return View(joinedPlayers);
         }
 
-        [Authorize]
         public RedirectToActionResult ExitGame(string gameId, string userIdToDelete)
         {
             var currentUserId = User.Id();
@@ -510,7 +499,6 @@
             return RedirectToAction(nameof(All));
         }
 
-        [Authorize]
         public IActionResult Details(string gameId, string information)
         {
             var gameDetails = games.GetDetails(gameId);
@@ -529,7 +517,6 @@
             return View(gameDetails);
         }
 
-        [Authorize]
         public IActionResult Mine()
         {
             if (admins.IsAdmin(User.Id()) == false || User.IsManager())

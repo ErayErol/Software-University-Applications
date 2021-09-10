@@ -11,7 +11,7 @@
 <div class="row">
     @foreach (var user in Model)
     {
-        var photoPath = "~/Images/" + (user.PhotoPath ?? "no-image.jpg");
+        var photoPath = "~/Images/" + (user.PhotoPath ?? "no-user.jpg");
 
         <div class="col-md-2">
             <div class="card mb-4">
