@@ -31,7 +31,11 @@
                 return View();
             }
 
-            var formModel = new BecomeAdminFormModel { Name = User.Identity?.Name };
+            var formModel = new BecomeAdminFormModel
+            {
+                Name = User.Identity?.Name
+            };
+
             return View(formModel);
         }
 
@@ -45,7 +49,8 @@
             }
 
             admins.Become(adminModel.Name, User.Id());
-            notifications.Success(Admin.SuccessfullyBecome);
+            notifications.Information("You have successfully stated that you want to become an admin. " +
+                                      "Please wait for the approval!");
             return Redirect(Home.HomePage);
         }
     }

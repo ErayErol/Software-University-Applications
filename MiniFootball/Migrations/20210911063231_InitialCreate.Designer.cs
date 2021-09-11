@@ -10,7 +10,7 @@ using MiniFootball.Data;
 namespace MiniFootball.Migrations
 {
     [DbContext(typeof(MiniFootballDbContext))]
-    [Migration("20210907181454_InitialCreate")]
+    [Migration("20210911063231_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,6 +162,9 @@ namespace MiniFootball.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

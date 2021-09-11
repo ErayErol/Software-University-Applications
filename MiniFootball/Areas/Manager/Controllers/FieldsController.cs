@@ -4,7 +4,9 @@
     using Microsoft.AspNetCore.Mvc;
     using Services.Fields;
 
-    [Area(GlobalConstant.Manager.AreaName)]
+    using static GlobalConstant;
+
+    [Area(Manager.AreaName)]
     public class FieldsController : ManagerController
     {
         private readonly IFieldService fields;

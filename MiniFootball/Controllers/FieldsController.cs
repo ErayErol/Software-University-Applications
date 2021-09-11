@@ -233,7 +233,6 @@
                            fieldModel.PhoneNumber,
                            User.IsManager());
 
-        
         public IActionResult Delete(int id, string information)
         {
             var userId = User.Id();

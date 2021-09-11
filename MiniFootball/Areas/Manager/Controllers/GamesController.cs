@@ -3,8 +3,9 @@
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
     using Services.Games;
+    using static GlobalConstant;
 
-    [Area(GlobalConstant.Manager.AreaName)]
+    [Area(Manager.AreaName)]
     public class GamesController : ManagerController
     {
         private readonly IGameService games;

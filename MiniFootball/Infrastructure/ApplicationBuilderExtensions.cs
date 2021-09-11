@@ -91,8 +91,8 @@
 
                     applicationUser.PhotoPath = i switch
                     {
-                        1 => "avangard.jpg",
-                        2 => "avenue.jpeg",
+                        1 => "admin.jpg",
+                        2 => "user.jpeg",
                         _ => applicationUser.PhotoPath
                     };
 
@@ -114,8 +114,9 @@
 
                 data.Admins.Add(new Admin
                 {
-                    Name = "admin",
+                    Name = "admin@admin.com",
                     UserId = user?.Id,
+                    IsPublic = false,
                 });
 
                 data.SaveChanges();

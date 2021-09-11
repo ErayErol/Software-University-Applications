@@ -4,6 +4,7 @@
     using Data.Models;
     using Models.Fields;
     using Models.Games;
+    using Services.Admins;
     using Services.Fields;
     using Services.Games.Models;
     using Services.Users;
@@ -17,6 +18,9 @@
             Fields();
 
             Users();
+
+            CreateMap<Admin, AdminListingServiceModel>();
+
         }
 
         private void Users()

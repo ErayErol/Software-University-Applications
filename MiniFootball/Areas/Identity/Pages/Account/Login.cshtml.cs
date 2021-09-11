@@ -77,7 +77,7 @@
                                      Input.RememberMe, 
                                      false);
 
-            if (result.Succeeded)
+            if (result.Succeeded && Url.IsLocalUrl(returnUrl))
             {
                 notifications.Success(Welcome, DurationInSeconds);
                 return LocalRedirect(returnUrl);

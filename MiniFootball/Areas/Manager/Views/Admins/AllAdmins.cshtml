@@ -1,0 +1,50 @@
+﻿@model IEnumerable<AdminListingServiceModel>
+
+@{
+    ViewBag.Title = "Management admins";
+}
+
+<div>
+    <table class="table box">
+        <thead class="thead-dark text-center">
+            <tr>
+                <th scope="col">Admin Id</th>
+                <th scope="col">User Id</th>
+                <th scope="col">Email</th>
+                <th scope="col">Approved</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody class="tbody-green text-center">
+            @foreach (var admin in Model)
+            {
+                <tr>
+                    <td scope="col">@admin.Id</td>
+                    <td scope="col">@admin.UserId</td>
+                    <td scope="col">@admin.Name</td>
+                    @if (admin.IsPublic)
+                    {
+                        <td scope="col">Yes</td>
+                    }
+                    else
+                    {
+                        <td style="color: red" scope="col">No</td>
+                    }
+                    <td scope="col">
+                        @*<a asp-area="" asp-controller="Users" asp-action="Delete" asp-route-id="@admin.UserId" asp-route-information="@admin.Name" class="btn btn-danger float-right ml-3">Delete</a>
+                        <a asp-area="" asp-controller="Users" asp-action="Edit" asp-route-id="@admin.UserId" asp-route-information="@admin.Name" class="btn btn-warning float-right ml-3">Edit</a>*@
+                        <a asp-area="" asp-controller="Users" asp-action="Details" asp-route-id="@admin.UserId" asp-route-information="@admin.Name" class="btn btn-primary float-right ml-3">View</a>
+                        @if (admin.IsPublic)
+                        {
+                            <a asp-area="Manager" asp-controller="Admins" asp-action="ChangeVisibility" asp-route-id="@admin.Id" class="btn btn-danger float-right ml-3">Refuse</a>
+                        }
+                        else
+                        {
+                            <a asp-area="Manager" asp-controller="Admins" asp-action="ChangeVisibility" asp-route-id="@admin.Id" class="btn float-right ml-3">Approve</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

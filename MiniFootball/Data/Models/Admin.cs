@@ -16,6 +16,8 @@
         [Required]
         public string UserId { get; set; }
 
+        public bool IsPublic { get; set; }
+
         public virtual IEnumerable<Game> Games { get; init; } = new List<Game>();
 
         public virtual IEnumerable<Field> Fields { get; init; } = new List<Field>();

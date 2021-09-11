@@ -8,7 +8,7 @@
     @if (SignInManager.IsSignedIn(User))
     {
         var userId = User.Id();
-        
+
         var userIsAdmin = Admins.IsAdmin(userId);
         var userIsManager = User.IsManager();
 
@@ -37,7 +37,10 @@
                 <a asp-area="Manager" asp-controller="Games" asp-action="AllGames" class="nav-link btn btn-link min-width-nav-size mr-xl-3 mr-lg-3">All Games</a>
             </li>
             <li class="nav-item">
-                <a asp-area="Manager" asp-controller="Fields" asp-action="AllFields" class="nav-link btn btn-link min-width-nav-size">All Fields</a>
+                <a asp-area="Manager" asp-controller="Fields" asp-action="AllFields" class="nav-link btn btn-link min-width-nav-size mr-xl-3 mr-lg-3">All Fields</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Manager" asp-controller="Admins" asp-action="AllAdmins" class="nav-link btn btn-link min-width-nav-size">All Admins</a>
             </li>
         }
         <li class="nav-item">
@@ -47,7 +50,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Account">
-                <img src=@photoPath class="user-img-navbar" asp-append-version="true"/>
+                <img src=@photoPath class="user-img-navbar" asp-append-version="true" />
             </a>
         </li>
     }
