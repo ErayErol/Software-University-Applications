@@ -55,6 +55,13 @@ namespace MiniFootball
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MiniFootballDbContext>();
 
+            services.AddAuthentication()
+                .AddGoogle(option =>
+                {
+                    option.ClientId = "370487414412-i5rqnqr0j7s29e4q7fr5d2bjuci3c3u1.apps.googleusercontent.com";
+                    option.ClientSecret = "ILLW7sDLhZXcVGdkXiVcKCUo";
+                });
+
             services
                 .AddIdentityCore<User>()
                 .AddRoles<IdentityRole>()

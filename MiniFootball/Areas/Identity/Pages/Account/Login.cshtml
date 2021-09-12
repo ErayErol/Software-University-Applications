@@ -8,7 +8,7 @@
 <div class="box box-small">
     <h1 class="text-center mb-5">@ViewData["Title"]</h1>
 
-    <form id="account" class="mt-4" method="post">
+    <form asp-page-handler="Async" id="account" class="mt-4" method="post">
         <div class="input-container">
             <label asp-for="Input.Email" class="mb-2"></label>
             <input asp-for="Input.Email" class="mt-2" />
@@ -33,6 +33,22 @@
             <p>
                 <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
             </p>
+        </div>
+    </form>
+
+    <form asp-page-handler="ExternalLogin" class="mt-4" method="post">
+        <div class="mt-2 mb-4">
+            @foreach (var provider in Model.ExternalLogins)
+            {
+                <button 
+                    type="submit" 
+                    class="btn btn-primary" 
+                    name="provider"
+                    title="Login using your @provider.DisplayName account"
+                    value="@provider.Name">
+                    @provider.DisplayName
+                </button>
+            }
         </div>
     </form>
 </div>
