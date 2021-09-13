@@ -61,6 +61,11 @@ namespace MiniFootball
                 {
                     option.ClientId = "370487414412-i5rqnqr0j7s29e4q7fr5d2bjuci3c3u1.apps.googleusercontent.com";
                     option.ClientSecret = "ILLW7sDLhZXcVGdkXiVcKCUo";
+                })
+                .AddFacebook(option =>
+                {
+                    option.AppId = "256844406302512";
+                    option.AppSecret = "e5c5bcc493b644399b39b69995cb8b55";
                 });
 
             services
