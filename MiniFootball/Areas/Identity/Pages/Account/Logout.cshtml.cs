@@ -9,7 +9,7 @@
     using System.Threading.Tasks;
     using AspNetCoreHero.ToastNotification.Abstractions;
 
-    using static GlobalConstant.Notifications;
+    using static GlobalConstants.Notifications;
 
     [AllowAnonymous]
     public class LogoutModel : PageModel

@@ -11,8 +11,8 @@
     using Services.Countries;
 
     using static Convert;
-    using static GlobalConstant;
-    using static GlobalConstant.Notifications;
+    using static GlobalConstants;
+    using static GlobalConstants.Notifications;
 
     [Authorize]
     public class CitiesController : Controller

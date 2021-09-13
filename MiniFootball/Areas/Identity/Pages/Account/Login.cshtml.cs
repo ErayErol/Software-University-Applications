@@ -12,7 +12,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authentication;
-    using static GlobalConstant.Notifications;
+    using static GlobalConstants.Notifications;
 
     [AllowAnonymous]
     public class LoginModel : PageModel
@@ -48,7 +48,7 @@
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = GlobalConstant.Login.RememberMe)]
+            [Display(Name = GlobalConstants.Login.RememberMe)]
             public bool RememberMe { get; set; }
         }
 

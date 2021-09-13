@@ -17,8 +17,8 @@
     using System.Linq;
     
     using static Convert;
-    using static GlobalConstant;
-    using static GlobalConstant.Error;
+    using static GlobalConstants;
+    using static GlobalConstants.Error;
 
     [Authorize]
     public class FieldsController : Controller
@@ -111,7 +111,7 @@
             if (fieldServiceModel.CityId == 0)
             {
                 notifications.Error(City.CityDoesNotExistInCountry);
-                return RedirectToAction(GlobalConstant.Create, City.ControllerName);
+                return RedirectToAction(GlobalConstants.Create, City.ControllerName);
             }
 
             if (fields.IsAlreadyExist(fieldServiceModel.Name, fieldServiceModel.CountryId, fieldServiceModel.CityId))

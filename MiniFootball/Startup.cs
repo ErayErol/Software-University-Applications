@@ -1,5 +1,6 @@
 namespace MiniFootball
 {
+    using System;
     using AspNetCoreHero.ToastNotification;
     using Data;
     using Data.Models;
@@ -23,7 +24,7 @@ namespace MiniFootball
     using Services.Users;
     using System.Security.Claims;
 
-    using static GlobalConstant;
+    using static GlobalConstants;
 
     public class Startup
     {
@@ -56,7 +57,23 @@ namespace MiniFootball
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MiniFootballDbContext>();
 
-            services.AddAuthentication()
+            services
+                .Configure<CookiePolicyOptions>(options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.Strict;
+                });
+
+            services
+                .AddSession(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.IdleTimeout = TimeSpan.FromDays(CookieTimeOut);
+                    options.Cookie.IsEssential = true;
+                });
+
+            services
+                .AddAuthentication()
                 .AddGoogle(option =>
                 {
                     option.ClientId = "370487414412-i5rqnqr0j7s29e4q7fr5d2bjuci3c3u1.apps.googleusercontent.com";
@@ -92,7 +109,7 @@ namespace MiniFootball
                         .Add<AutoValidateAntiforgeryTokenAttribute>());
 
             services
-                .AddTransient<ClaimsPrincipal>(options => 
+                .AddTransient<ClaimsPrincipal>(options =>
                     options
                         .GetService<IHttpContextAccessor>()?
                         .HttpContext?

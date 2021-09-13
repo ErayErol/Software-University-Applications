@@ -3,7 +3,7 @@
     using MiniFootball.Controllers.Api;
     using MyTested.AspNetCore.Mvc;
     using Xunit;
-    using static GlobalConstant.Api;
+    using static GlobalConstants.Api;
 
     public class ApiStatisticsControllerTest
     {

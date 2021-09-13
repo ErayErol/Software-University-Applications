@@ -9,7 +9,7 @@
     using Data;
     using Models.Games;
     using Xunit;
-    using static GlobalConstant.Home;
+    using static GlobalConstants.Home;
     using static WebConstants;
 
     public class AdminsControllerTest

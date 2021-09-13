@@ -8,7 +8,7 @@
     using System.Globalization;
     using System.Linq;
 
-    using static GlobalConstant;
+    using static GlobalConstants;
 
     public class CountryService : ICountryService
     {

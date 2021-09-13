@@ -18,7 +18,7 @@
     using System.Linq;
 
     using static Convert;
-    using static GlobalConstant;
+    using static GlobalConstants;
 
     [Authorize]
     public class GamesController : Controller

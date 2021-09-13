@@ -8,6 +8,6 @@
             => user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         public static bool IsManager(this ClaimsPrincipal user)
-            => user.IsInRole(GlobalConstant.Manager.ManagerRoleName);
+            => user.IsInRole(GlobalConstants.Manager.ManagerRoleName);
     }
 }

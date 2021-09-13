@@ -11,8 +11,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using Xunit;
-    using static GlobalConstant;
-    using static GlobalConstant.Game;
+    using static GlobalConstants;
+    using static GlobalConstants.Game;
     using static WebConstants;
     using Admin = MiniFootball.Data.Models.Admin;
     using City = MiniFootball.Data.Models.City;
@@ -96,7 +96,7 @@
                     .RestrictingForAuthorizedRequests())
                 .AndAlso()
                 .ShouldReturn()
-                .RedirectToAction(Create, GlobalConstant.City.ControllerName);
+                .RedirectToAction(Create, GlobalConstants.City.ControllerName);
 
         [Theory]
         [InlineData(

@@ -5,7 +5,7 @@
     using Services.Admins;
     using Services.Fields;
 
-    using static GlobalConstant;
+    using static GlobalConstants;
 
     [Area(Manager.AreaName)]
     public class AdminsController : ManagerController

@@ -4,7 +4,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Services.Fields;
 
-    using static GlobalConstant;
+    using static GlobalConstants;
 
     [Area(Manager.AreaName)]
     public class FieldsController : ManagerController

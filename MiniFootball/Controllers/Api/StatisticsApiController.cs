@@ -3,7 +3,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Services.Statistics;
 
-    using static GlobalConstant;
+    using static GlobalConstants;
 
     [ApiController]
     [Route(Api.ApiStatisticsRoute)]

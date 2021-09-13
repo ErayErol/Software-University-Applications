@@ -3,7 +3,7 @@
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
     using Services.Games;
-    using static GlobalConstant;
+    using static GlobalConstants;
 
     [Area(Manager.AreaName)]
     public class GamesController : ManagerController

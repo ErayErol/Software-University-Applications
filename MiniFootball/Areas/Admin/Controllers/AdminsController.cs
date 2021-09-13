@@ -7,7 +7,7 @@
     using Models.Admins;
     using Services.Admins;
 
-    using static GlobalConstant;
+    using static GlobalConstants;
 
     [Area(Admin.AreaName)]
     public class AdminsController : Controller

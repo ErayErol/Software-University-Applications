@@ -356,14 +356,14 @@
             Task
                 .Run(async () =>
                 {
-                    if (await roleManager.RoleExistsAsync(GlobalConstant.Manager.ManagerRoleName))
+                    if (await roleManager.RoleExistsAsync(GlobalConstants.Manager.ManagerRoleName))
                     {
                         return;
                     }
 
                     var role = new IdentityRole
                     {
-                        Name = GlobalConstant.Manager.ManagerRoleName
+                        Name = GlobalConstants.Manager.ManagerRoleName
                     };
 
                     await roleManager.CreateAsync(role);

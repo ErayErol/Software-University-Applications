@@ -4,7 +4,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Models;
 
-    using static GlobalConstant.Error;
+    using static GlobalConstants.Error;
 
     public class ErrorController : Controller
     {

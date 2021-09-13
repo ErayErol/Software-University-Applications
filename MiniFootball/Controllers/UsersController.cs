@@ -5,8 +5,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Services.Users;
 
-    using static GlobalConstant.Error;
-    using static GlobalConstant.GameUser;
+    using static GlobalConstants.Error;
+    using static GlobalConstants.GameUser;
 
     public class UsersController : Controller
     {
