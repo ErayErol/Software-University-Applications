@@ -51,6 +51,7 @@ namespace MiniFootball
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
+                    options.SignIn.RequireConfirmedAccount = false;
                 })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MiniFootballDbContext>();
@@ -114,7 +115,7 @@ namespace MiniFootball
         {
             app.PrepareDatabase();
 
-            if (env.IsDevelopment())
+            if (!env.IsDevelopment())
             {
                 app
                     .UseDeveloperExceptionPage()

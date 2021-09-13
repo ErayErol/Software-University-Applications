@@ -39,12 +39,10 @@
 
             public string Email { get; set; }
 
-            [Required]
             [Display(Name = "First Name")]
             [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
             public string FirstName { get; set; }
 
-            [Required]
             [Display(Name = "Last Name")]
             [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
             public string LastName { get; set; }
@@ -53,10 +51,8 @@
             [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
             public string NickName { get; set; }
 
-            [Required]
-            public DateTime? Birthdate { get; set; }
+            public DateTime Birthdate { get; set; }
 
-            [Required]
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
 
@@ -113,7 +109,7 @@
                 LastName = user.LastName,
                 NickName = user.NickName,
                 PhoneNumber = user.PhoneNumber,
-                Birthdate = user.Birthdate.Value,
+                Birthdate = user.Birthdate,
                 PhotoPath = user.PhotoPath,
             };
         }

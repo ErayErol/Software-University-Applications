@@ -57,8 +57,7 @@
             [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
             public string NickName { get; set; }
 
-            [Required]
-            public DateTime? Birthdate { get; set; }
+            public DateTime Birthdate { get; set; }
 
             [Display(Name = Data.DataConstants.Register.PhotoPath)]
             public string PhotoPath { get; set; }

@@ -36,7 +36,7 @@
         </div>
         <div class="input-container">
             <label asp-for="Input.Birthdate" class="mb-2"></label>
-            <input asp-for="Input.Birthdate" value="@Model.Input.Birthdate.Value.ToString("dd.MM.yyyy")" type="datetime" class="mt-2" />
+            <input asp-for="Input.Birthdate" value="@Model.Input.Birthdate.ToString("dd.MM.yyyy")" type="date" class="mt-2" />
             <span asp-validation-for="Input.Birthdate" class="small text-danger"></span>
         </div>
         <div class="input-container">

@@ -77,7 +77,7 @@
             user.LastName = input.LastName;
             user.NickName = input.NickName;
             user.PhoneNumber = input.PhoneNumber;
-            user.Birthdate = input.Birthdate.Value;
+            user.Birthdate = input.Birthdate;
 
             if (input.Photo != null)
             {
@@ -115,6 +115,11 @@
         {
             var today = DateTime.Today;
             userDetails.Age = (today.Year - userDetails.Birthdate.Date.Year) - 1;
+
+            if (userDetails.Age > 100)
+            {
+                userDetails.Age = 0;
+            }
 
             if (today.Month > userDetails.Birthdate.Month)
             {
