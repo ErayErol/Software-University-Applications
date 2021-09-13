@@ -57,27 +57,27 @@ namespace MiniFootball
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MiniFootballDbContext>();
 
-            services
-                .Configure<CookiePolicyOptions>(options =>
-                {
-                    options.CheckConsentNeeded = context => true;
-                    options.MinimumSameSitePolicy = SameSiteMode.Strict;
-                });
+            //services
+            //    .Configure<CookiePolicyOptions>(options =>
+            //    {
+            //        options.CheckConsentNeeded = context => true;
+            //        options.MinimumSameSitePolicy = SameSiteMode.Strict;
+            //    });
 
-            services
-                .AddSession(options =>
-                {
-                    options.Cookie.HttpOnly = true;
-                    options.IdleTimeout = TimeSpan.FromDays(CookieTimeOut);
-                    options.Cookie.IsEssential = true;
-                });
+            //services
+            //    .AddSession(options =>
+            //    {
+            //        options.Cookie.HttpOnly = true;
+            //        options.IdleTimeout = TimeSpan.FromDays(CookieTimeOut);
+            //        options.Cookie.IsEssential = true;
+            //    });
 
             services
                 .AddAuthentication()
                 .AddGoogle(option =>
                 {
-                    option.ClientId = "370487414412-i5rqnqr0j7s29e4q7fr5d2bjuci3c3u1.apps.googleusercontent.com";
-                    option.ClientSecret = "ILLW7sDLhZXcVGdkXiVcKCUo";
+                    option.ClientId = configuration["App:GoogleClientId"];
+                    option.ClientSecret = configuration["App:GoogleClientSecret"];
                 })
                 .AddFacebook(option =>
                 {
@@ -137,7 +137,7 @@ namespace MiniFootball
         {
             app.PrepareDatabase();
 
-            if (!env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 app
                     .UseDeveloperExceptionPage()
