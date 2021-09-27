@@ -1,0 +1,47 @@
+﻿@model CityFormModel
+
+@{
+    ViewBag.Title = "Create City";
+}
+
+@if (@Model != null)
+{
+    <div class="box box-small">
+        <div class="text-center">
+            <h3>Create City</h3>
+        </div>
+
+        <form asp-controller="Cities" asp-action="Create" method="post">
+            <div class="select-container mt-5 mb-5">
+                <label asp-for="CountryName"></label>
+                <select asp-for="CountryName" class="mt-2 mb-3">
+                    @foreach (var country in Model.Countries)
+                    {
+                        @if (country == "Bulgaria")
+                        {
+                            <option selected="selected" value="@country"> @country </option>
+                        }
+                        else
+                        {
+                            <option value="@country"> @country </option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="input-container">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" type="text" class="mt-2 mb-3">
+                <span asp-validation-for="Name" class="small text-danger"></span>
+            </div>
+
+            <div>
+                <input class="btn btn-form-size ml-xl-0 ml-lg-0 ml-md-0 ml-sm-0 ml-3" type="submit" value="Create" />
+            </div>
+        </form>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

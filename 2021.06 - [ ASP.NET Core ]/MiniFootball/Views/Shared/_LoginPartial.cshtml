@@ -1,0 +1,66 @@
+﻿@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@inject IUserService AppUser
+@inject IAdminService Admins
+
+<ul class="navbar-nav mobile-version-center-btns">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var userId = User.Id();
+
+        var userIsAdmin = Admins.IsAdmin(userId);
+        var userIsManager = User.IsManager();
+
+        var userPhotoPath = AppUser.UserInfo(userId).PhotoPath;
+        var photoPath = "~/Images/" + (userPhotoPath ?? "no-user.jpg");
+
+
+        if (userIsAdmin && userIsManager == false)
+        {
+            <li class="nav-item">
+                <a asp-area="" asp-controller="Games" asp-action="Mine" class="nav-link min-width-nav-size btn btn-link mr-xl-3 mr-lg-3">My Games</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="" asp-controller="Fields" asp-action="Mine" class="nav-link btn btn-link min-width-nav-size">My Fields</a>
+            </li>
+        }
+        else if (userIsManager == false)
+        {
+            <li class="nav-item">
+                <a asp-area="Admin" asp-controller="Admins" asp-action="Become" class="nav-link btn btn-link min-width-nav-size">Become Admin</a>
+            </li>
+        }
+        else if (userIsManager)
+        {
+            <li class="nav-item">
+                <a asp-area="Manager" asp-controller="Games" asp-action="AllGames" class="nav-link btn btn-link min-width-nav-size mr-xl-3 mr-lg-3">All Games</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Manager" asp-controller="Fields" asp-action="AllFields" class="nav-link btn btn-link min-width-nav-size mr-xl-3 mr-lg-3">All Fields</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Manager" asp-controller="Admins" asp-action="AllAdmins" class="nav-link btn btn-link min-width-nav-size">All Admins</a>
+            </li>
+        }
+        <li class="nav-item">
+            <form class="form-inline mb-md-2 mb-2" style="justify-content: center" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn-logout">Logout</button>
+            </form>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Account">
+                <img src=@photoPath class="user-img-navbar" asp-append-version="true" />
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a asp-area="Identity" asp-page="/Account/Register" class="nav-link btn btn-link mr-2 min-width-nav-size">Register</a>
+        </li>
+        <li class="nav-item">
+            <a asp-area="Identity" asp-page="/Account/Login" class="nav-link btn btn-link mr-2 min-width-nav-size">Login</a>
+        </li>
+    }
+</ul>

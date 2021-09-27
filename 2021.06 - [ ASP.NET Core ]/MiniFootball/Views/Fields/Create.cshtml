@@ -1,0 +1,14 @@
+﻿@model FieldFormServiceModel
+
+@{
+    ViewBag.Title = "Create Field";
+}
+
+@if (@Model != null)
+{
+    <partial name="_FieldFormPartial" model="@Model" />
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

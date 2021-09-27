@@ -1,0 +1,8 @@
+﻿@model FieldFormServiceModel
+
+@{
+    ViewBag.Title = "Edit Field";
+    var photoPath = "~/Images/" + (Model.PhotoPath ?? "no-image.jpg");
+}
+
+<partial name="_FieldFormPartial" model="@Model" />

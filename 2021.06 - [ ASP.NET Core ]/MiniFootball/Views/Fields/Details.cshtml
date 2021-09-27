@@ -1,0 +1,58 @@
+﻿@model FieldDetailServiceModel
+
+@{
+    ViewBag.Title = "Field Details";
+    var photoPath = "~/Images/" + (Model.PhotoPath ?? "no-image.jpg");
+}
+
+<div class="box box-large">
+    <form method="get">
+        <img class="img-thumbnail" src="@photoPath" alt="@Model.Name" asp-append-version="true">
+
+        <div class="mt-5 mb-5">
+            <h3>Contacts :</h3>
+        </div>
+        <div class="input-container">
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" readonly="readonly" class="mt-2 mb-3"/>
+        </div>
+        <div class="input-container">
+            <label asp-for="Address"></label>
+            <input asp-for="Address" readonly="readonly" type="tel" class="mt-2 mb-3" value="@Model.Address">
+        </div>
+
+        <div class="mt-4 mb-5">
+            <h3>Details :</h3>
+        </div>
+        <div class="input-container">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" readonly="readonly" type="tel" class="mt-2 mb-3" value="@Model.Name">
+        </div>
+        <div class="input-container">
+            <label asp-for="CountryName"></label>
+            <input asp-for="CountryName" readonly="readonly" type="tel" class="mt-2 mb-3" value="@Model.CountryName">
+        </div>
+        <div class="input-container">
+            <label asp-for="CityName"></label>
+            <input asp-for="CityName" readonly="readonly" type="tel" class="mt-2 mb-3" value="@Model.CityName">
+        </div>
+        <div class="textarea-container">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="mt-2 mb-3" rows="2" readonly="readonly"></textarea>
+        </div>
+
+        <div class="mt-4 mb-3 createPlaygroundChechboxes">
+            <input class="checkbox-down" asp-for="Parking" type="checkbox" value="@Model.Parking" onclick="return false;">
+            <label asp-for="Parking"></label>
+
+            <input class="checkbox-down" asp-for="Shower" type="checkbox" value="@Model.Shower" onclick="return false;">
+            <label asp-for="Shower"></label>
+
+            <input class="checkbox-down" asp-for="ChangingRoom" type="checkbox" value="@Model.ChangingRoom" onclick="return false;">
+            <label asp-for="ChangingRoom"></label>
+
+            <input class="checkbox-down" asp-for="Cafe" type="checkbox" value="@Model.Cafe" onclick="return false;">
+            <label asp-for="Cafe"></label>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,27 @@
+﻿@model CreateGameSecondStepViewModel
+
+<div class="box box-small">
+    <div class="text-center">
+        <h3>Fields in @Model.CountryName - @Model.CityName</h3>
+    </div>
+
+    <form method="post">
+        <div class="select-container mt-5 mb-5">
+            <label asp-for="FieldId"></label>
+            <select asp-for="FieldId" class="mt-2">
+                @foreach (var field in Model.Fields)
+                {
+                    <option value="@field.Id">@field.Name</option>
+                }
+            </select>
+        </div>
+
+        <div>
+            <input class="btn btn-form-size ml-xl-0 ml-lg-0 ml-md-0 ml-sm-0 ml-3" type="submit" value="Next" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

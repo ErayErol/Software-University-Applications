@@ -1,0 +1,27 @@
+{{> head}}
+
+<body>
+    <header>
+        {{> nav}}
+    </header>
+    <main>
+        <form action="#/cats/edit/{{cat.id}}" method="POST" class="cat-form" enctype="multipart/form-data">
+            <h2>Edit Cat</h2>
+            <label for="name">Name</label>
+            <input name="name" type="text" id="name" value="{{cat.name}}">
+            <label for="description">Description</label>
+            <textarea name="description" id="description">{{cat.description}}</textarea>
+            <label for="image">Image</label>
+            <input name="upload" type="file" id="image">
+            <label for="group">Breed</label>
+            <select name="breed" id="group">
+                {{#each breeds}}
+                <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+            <button type="submit">Edit Cat</button>
+        </form>
+    </main>
+</body>
+
+</html>

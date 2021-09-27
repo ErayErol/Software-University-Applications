@@ -1,0 +1,20 @@
+{
+  "name": "npm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./index.js",
+    "debug": "node --nolazy --debug-brk=5858 homeController.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-handlebars": "^5.3.4",
+    "multer": "^1.4.3",
+    "nodemon": "^2.0.12"
+  },
+  "keywords": [],
+  "description": ""
+}

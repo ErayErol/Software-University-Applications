@@ -1,0 +1,37 @@
+﻿@model IEnumerable<GameListingServiceModel>
+
+@foreach (var game in Model)
+{
+    var photoPath = "~/Images/" + (game.Field.PhotoPath ?? "no-image.jpg");
+
+
+    <div class="col-md-4">
+        <div class="card mb-4 img-thumbnail">
+            @if (ViewBag.AllowImage == true)
+            {
+            <img class="card-img-top" src="@photoPath" alt="@game.Field.Name" asp-append-version="true">
+            }
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="card-title h4-like">@game.Field.Name</div>
+                </div>
+                <h6 class="card-title">Place : @game.Field.Country.Name, @game.Field.City.Name</h6>
+                <h6 class="card-title">Date : @game.Date.ToString("d") @game.Time:00</h6>
+                @if (ViewBag.AllowCarEdit == true || User.IsManager())
+                {
+                    <div class="text-center mt-4 my-item-center my-item-center-btns">
+                        <a asp-controller="Games" asp-action="Details" asp-route-gameId="@game.Id" asp-route-information="@game.Field.Name" class="btn min-width-size">Info</a>
+                        <a asp-controller="Games" asp-action="Edit" asp-route-gameId="@game.Id" asp-route-information="@game.Field.Name" class="btn btn-warning min-width-size">Edit</a>
+                        <a asp-controller="Games" asp-action="Delete" asp-route-gameId="@game.Id" asp-route-information="@game.Field.Name" class="btn btn-danger min-width-size">Delete</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center mt-4 my-item-center">
+                        <a asp-controller="Games" asp-action="Details" asp-route-gameId="@game.Id" asp-route-information="@game.Field.Name" class="btn min-width-size-btn">Info</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

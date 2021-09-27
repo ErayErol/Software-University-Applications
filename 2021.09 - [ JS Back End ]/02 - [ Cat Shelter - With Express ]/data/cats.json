@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "Persi",
+    "description": "Persian Amazing White Cat <3",
+    "breed": "Persian",
+    "image": "persian-cat.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Henry",
+    "description": "Super cute cat!",
+    "breed": "Scottish Fold",
+    "image": "cat.jpg"
+  }
+]
