@@ -279,8 +279,12 @@ would happen once you run the application, including Test Accounts:
 ### Fields Approving (Manager)
 <img src="https://github.com/ErayErol/Software-University-Applications/blob/main/2021.06 - [ ASP.NET Core ]/MiniFootball/wwwroot/images-github/approving-fields-manager.png?raw=true"/>
 
-### Chat (User)
+### Chat & Responsive Design (Manager)
+<img src="https://github.com/ErayErol/Software-University-Applications/blob/main/2021.06 - [ ASP.NET Core ]/MiniFootball/wwwroot/images-github/chat-2.png?raw=true"/>
+
+### Chat & Responsive Design (Manager)
 <img src="https://github.com/ErayErol/Software-University-Applications/blob/main/2021.06 - [ ASP.NET Core ]/MiniFootball/wwwroot/images-github/chat.png?raw=true"/>
+
 
 ## ⭐️Leave a feedback
  - If you like the app, star the repository and show it to your friends!
