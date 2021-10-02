@@ -1,33 +1,41 @@
-const express = require('express');
+// 1. Controller
+// 1.1 is responsible to receive user input and decide what to do
+// 1.2 determines what response to send back to a user when a user makes a browser request.
 
+//**************************** Import Modules **********************
+const router = require('express').Router();
+
+//**************************** Import Services **********************
 const cubeService = require('../services/cubeService');
+const cubeAccessoryController = require('./cubeAccessoryController');
 
-const router = express.Router();
-
+//**************************** Functions **********************
 const getCreateCubePage = (req, res) => {
-    let cubes = cubeService.getAll();
-
-    console.log(cubes);
-    
-    res.render('create');
+    res.render('cube/create');
 };
 
-const createCube = (req, res) => {
+const createCube = async (req, res) => {
     let { name, description, imageUrl, difficulty } = req.body;
 
-    cubeService.create(name, description, imageUrl, difficulty);
-    
-    res.redirect('/');
+    try {
+        await cubeService.create(name, description, imageUrl, difficulty);
+
+        res.redirect('/');
+    } catch (error) {
+        res.status(400).send(error.message).end();
+    }
 };
 
-const cubeDetails = (req, res) => {
-    let cube = cubeService.getOne(req.params.cubeId);
+const cubeDetails = async (req, res) => {
+    let cube = await cubeService.getOne(req.params.cubeId);
 
-    res.render('details', { ...cube });
+    res.render('cube/details', { ...cube });
 };
 
-router.get('/create', getCreateCubePage);
+// Router handle requests
+router.get('/create', getCreateCubePage); // handle requests '/create' and execute function getCreateCubePage
 router.post('/create', createCube);
 router.get('/:cubeId', cubeDetails);
+router.use('/:cubeId/accessory', cubeAccessoryController);
 
 module.exports = router;
