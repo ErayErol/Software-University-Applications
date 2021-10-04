@@ -3,7 +3,7 @@ const handlebars = require('express-handlebars');
 const path = require('path');
 
 //*********************** Setup **********************
-const initHandlebars = (app) => {
+const setupHandlebars = (app) => {
     const hbs = handlebars({
         extname: 'hbs',
     });
@@ -13,4 +13,4 @@ const initHandlebars = (app) => {
     app.set('view engine', 'hbs');
 };
 
-module.exports = initHandlebars;
+module.exports = setupHandlebars;

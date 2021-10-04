@@ -11,8 +11,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-  },
   "dependencies": {
     "express": "^4.17.1",
     "express-handlebars": "^5.3.4",
