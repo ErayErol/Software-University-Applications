@@ -1,4 +1,5 @@
 //**************************** Import Modules **********************
+// This function is used when you want to create a new router object in your program to handle requests
 const router = require('express').Router();
 
 //**************************** Import Controllers **********************
